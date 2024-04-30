@@ -34,13 +34,13 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 
 
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers',], function () {
-    Route::get('/dysfonctionnement', 'EmployeeController@dysfonction')->name('emp.dysfonction');
-    Route::get('/n1/dysfonctionnement', 'EmployeeController@n1dysfonction')->name('emp.n1dysfonction');
-    Route::get('/messignalements', 'EmployeeController@listeSignalement')->name('emp.signalement');
-        Route::get('/plans', 'EmployeeController@planif')->name('emp.planif');
+    Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
+    Route::get('/rq/n1/dysfonctionnement', 'RQController@n1dysfonction')->name('rq.n1dysfonction');
+    Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
+        Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
-    Route::get('/employee/dashboard', 'EmployeeController@index')->name('emp.index');
-    Route::get('/employee/profile', 'EmployeeController@profile')->name('emp.profile');
+    Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
+    Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
 
     
 
