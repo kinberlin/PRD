@@ -45,6 +45,9 @@ class DepartmentController extends Controller
 
                 $name = $row[2];
                 $enterprise = $row[1];
+                if(Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null){
+                    throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : ".$name ." dans l'entreprise dont l'ID est : ".$enterprise, 1);    
+                }
                 $department = new Department();
                 $department->name = $name;
                 $department->enterprise = $enterprise;

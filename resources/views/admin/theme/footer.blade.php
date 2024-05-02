@@ -29,7 +29,7 @@
             ©
             <script>
                 document.write(new Date().getFullYear())
-            </script>, Cadyst Group - <a href="">WorkWave</a>
+            </script>, Cadyst Group - <a href="">PRD</a>
         </div>
     </div>
 </footer>

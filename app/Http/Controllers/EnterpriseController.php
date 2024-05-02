@@ -81,28 +81,9 @@ class EnterpriseController extends Controller
             DB::beginTransaction();
             $d = Enterprise::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            $d->manager = empty($request->input('manager')) ? $d->manager : $request->input('manager');
-            $u = Users::find($request->input('manager'));
-            $de = Department::find($u->department);
-            $message = '';
-            if ($de->manager == $u->id) {
-                $de->manager = null;
-                $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager du département " . $d->name;
-            }
-            if ($u->service != null) {
-                $s = Service::find($u->service);
-                if ($s->manager == $u->id) {
-                    $s->manager = null;
-                    $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager du service " . $s->name;
-                }
-                $s->save();
-            }
-            $u->service = null;
-            $u->save();
-            $de->save();
             $d->save();
             DB::commit();
-            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. " . $message);
+            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

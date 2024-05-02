@@ -38,7 +38,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Utilisateur">Gestion</span>
         </li>
-        <li class="menu-item @if(request()->route()->getName() == "admin.enterprise" || request()->route()->getName() == "admin.department" || request()->route()->getName() == "admin.service" || request()->route()->getName() == "admin.employee") active open @endif">
+        <li class="menu-item @if(request()->route()->getName() == "admin.enterprise" || request()->route()->getName() == "admin.department" || request()->route()->getName() == "admin.site" || request()->route()->getName() == "admin.employee") active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-square"></i>
                 <div class="text-truncate" data-i18n="Le Groupe">Le Groupe</div>

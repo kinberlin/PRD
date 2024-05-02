@@ -78,9 +78,9 @@
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>
-                                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#delentreprise{{ $d->id }}">Désactiver</a>
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                        <button class="btn btn-danger " data-bs-toggle="modal"
+                                            data-bs-target="#delentreprise{{ $d->id }}">Désactiver</button>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">
                                             M.A.J
                                         </button>
@@ -133,28 +133,6 @@
                                                                 <input type="text" id="nameBasic" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row g-2">
-                                                            <div class="col mb-0">
-                                                                <label for="defaultSelect" class="form-label">Manager
-                                                                    (*)
-                                                                </label>
-                                                                <select id="defaultSelect" name="manager"
-                                                                    class="form-select" required>
-                                                                    @foreach (\App\Models\Users::where('enterprise', $d->id)->whereNull('service')->get() as $u)
-                                                                        @if ($u->id == $d->manager)
-                                                                            <option value="{{ $u->id }}" selected>
-                                                                                {{ $u->firstname . ' ' . $u->lastname }}
-                                                                            </option>
-                                                                        @else
-                                                                            <option value="{{ $u->id }}">
-                                                                                {{ $u->firstname . ' ' . $u->lastname }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-
-                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>

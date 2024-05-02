@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Site;
 use App\Models\Enterprise;
 use App\Models\Holliday;
 use App\Models\HollidaySubstitution;
@@ -45,7 +46,7 @@ class AdminController extends Controller
     {
         $data = Site::all();
         $ents = Enterprise::all();
-        return view('admin/department', compact("data", "ents"));
+        return view('admin/site', compact("data", "ents"));
     }
     public function service()
     {

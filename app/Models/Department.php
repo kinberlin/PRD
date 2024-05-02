@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property int    $deleted_at
  * @property int    $enterprise
- * @property int    $manager
- * @property int    $vice_manager
  * @property string $name
  */
 class Department extends Model
@@ -35,7 +33,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'deleted_at', 'enterprise', 'manager', 'name', 'vice_manager'
+        'deleted_at', 'enterprise', 'name'
     ];
 
     /**
@@ -53,7 +51,7 @@ class Department extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp', 'enterprise' => 'int', 'manager' => 'int', 'name' => 'string', 'vice_manager' => 'int'
+        'id' => 'int', 'deleted_at' => 'timestamp', 'enterprise' => 'int', 'name' => 'string'
     ];
 
     /**
