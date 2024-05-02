@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Site;
 use App\Models\Enterprise;
-use App\Models\Users;
+use App\Models\Site;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -61,7 +60,7 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Department $department)
+    public function show(Site $site)
     {
         //
     }
@@ -69,7 +68,7 @@ class SiteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Department $department)
+    public function edit(Site $site)
     {
         //
     }
@@ -81,30 +80,13 @@ class SiteController extends Controller
     {
         try {
             DB::beginTransaction();
-            $d = Department::find($id);
+            $d = Site::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            $d->manager = empty($request->input('manager')) ? $d->manager : $request->input('manager');
-            $u = Users::find($request->input('manager'));
-            $de = Enterprise::find($u->enterprise);
-            $message = '';
-            if ($de->manager == $u->id) {
-                $de->manager = null;
-                $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager de l'entreprise " . $de->name;
-            }
-            if ($u->service != null) {
-                $s = Service::find($u->service);
-                if ($s->manager == $u->id) {
-                    $s->manager = null;
-                    $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager du service " . $s->name;
-                }
-                $s->save();
-            }
-            $u->service = null;
-            $u->save();
-            $de->save();
+            $d->location = empty($request->input('location')) ? $d->location : $request->input('location');
+            $d->enterprise = empty($request->input('enterprise')) ? $d->enterprise : $request->input('enterprise');
             $d->save();
             DB::commit();
-            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. " . $message);
+            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -117,12 +99,12 @@ class SiteController extends Controller
     {
         try {
             DB::beginTransaction();
-            $rec = Department::find($id);
+            $rec = Site::find($id);
             $rec->delete();
             DB::commit();
             return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
         } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : ".$th->getMessage());
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
 }

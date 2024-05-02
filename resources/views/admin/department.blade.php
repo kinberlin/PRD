@@ -88,7 +88,7 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{ $d->enterprise }}</td>
+                                    <td>{{$ents->where('id', $d->enterprise)->first()->name}} (ID : {{ $d->enterprise }})</td>
                                     <td>{{ $d->name }}</td>
                                     <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">
@@ -119,8 +119,7 @@
                                                             <div class="col mb-3">
                                                                 <label for="nameBasic" class="form-label">Choisissez
                                                                     l'Entreprise</label>
-                                                                <select name="enterprise" class="form-select" required
-                                                                    readonly disabled>
+                                                                <select name="enterprise" class="form-select" required>
                                                                     @foreach ($ents as $e)
                                                                         @if ($d->enterprise == $e->id)
                                                                             <option value="{{ $e->id }}" selected>
@@ -133,40 +132,6 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="row g-2">
-                                                            <div class="col mb-0">
-                                                                <label for="defaultSelect" class="form-label">Manager
-                                                                    (*)
-                                                                </label>
-                                                                <select name="manager" class="form-select" required>
-                                                                    @foreach ($manager->where('enterprise', $d->enterprise)->where('department', $d->id) as $m)
-                                                                        @if ($d->manager == $m->id)
-                                                                            <option value="{{ $m->id }}" selected>
-                                                                                {{ $m->firstname . ' ' . $m->lastname }}
-                                                                            </option>
-                                                                        @else
-                                                                            <option value="{{ $m->id }}">
-                                                                                {{ $m->firstname . ' ' . $m->lastname }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <!--<div class="col mb-0">
-                                                                    <div class="col mb-0">
-                                                                        <label for="defaultSelect" class="form-label">Vice
-                                                                            Manager
-                                                                            (*)</label>
-                                                                        <select name="manager" class="form-select" required>
-                                                                            @foreach ($manager->where('enterprise', $d->enterprise)->where('department', $d->id)->where('service', '<>', null) as $m)
-    <option value="{{ $m->id }}">
-                                                                                    {{ $m->firstname . ' ' . $m->lastname }}
-                                                                                </option>
-    @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>-->
-                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
@@ -174,9 +139,9 @@
                                                         <button type="submit"
                                                             class="btn btn-primary">Enregistrer</button>
                                                     </div>
-                                                    </form>
-                                                </div>
+                                                </form>
                                             </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

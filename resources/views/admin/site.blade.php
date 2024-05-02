@@ -35,8 +35,16 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Entreprise</label>
-                                        <select id="defaultSelect" name="data[0][1]" class="form-select" required>
+                                        <label class="form-label" for="location">Emplacement</label>
+                                        <input type="text" class="form-control" id="location" placeholder="..."
+                                            name="data[0][3]" required>
+                                        <div
+                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="ents">Entreprise</label>
+                                        <select id="ents" name="data[0][1]" class="form-select" required>
                                             @foreach ($ents as $e)
                                                 <option value="{{ $e->id }}">{{ $e->name }}</option>
                                             @endforeach
@@ -81,6 +89,7 @@
                                 <th>#Id</th>
                                 <th>Entreprise</th>
                                 <th>Site</th>
+                                <th>Emplacement</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -88,8 +97,9 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{ $d->enterprise }}</td>
-                                    <td>{{ $d->name }}</td>
+                                    <td>{{$ents->where('id', $d->enterprise)->first()->name}} (ID :{{ $d->enterprise }})</td>
+                                    <td>{{ $d->name }} </td>
+                                    <td>{{ $d->location }}</td>
                                     <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">
                                             M.A.J
@@ -109,18 +119,25 @@
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Nom</label>
-                                                                <input type="text" name="name"
+                                                                <label for="nameBasic{{$d->id}}" class="form-label">Nom</label>
+                                                                <input type="text" id="nameBasic{{$d->id}}" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Choisissez
+                                                                <label for="namelocation{{$d->id}}" class="form-label">Emplacement</label>
+                                                                <input type="text" name="location"
+                                                                    value="{{ $d->location }}" id="namelocation{{$d->id}}" class="form-control"
+                                                                    placeholder="Entrer l'emplacement">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <label for="nameents{{$d->id}}" class="form-label">Choisissez
                                                                     l'Entreprise</label>
-                                                                <select name="enterprise" class="form-select" required
-                                                                    readonly disabled>
+                                                                <select name="enterprise" id="nameents{{$d->id}}" class="form-select" required>
                                                                     @foreach ($ents as $e)
                                                                         @if ($d->enterprise == $e->id)
                                                                             <option value="{{ $e->id }}" selected>

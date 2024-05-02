@@ -85,28 +85,17 @@ class DepartmentController extends Controller
             DB::beginTransaction();
             $d = Department::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            $d->manager = empty($request->input('manager')) ? $d->manager : $request->input('manager');
-            $u = Users::find($request->input('manager'));
-            $de = Enterprise::find($u->enterprise);
-            $message = '';
-            if ($de->manager == $u->id) {
-                $de->manager = null;
-                $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager de l'entreprise " . $de->name;
-            }
-            if ($u->service != null) {
-                $s = Service::find($u->service);
-                if ($s->manager == $u->id) {
-                    $s->manager = null;
-                    $message .= $u->firstname . ' ' . $u->lastname . " n'est plus manager du service " . $s->name;
-                }
-                $s->save();
-            }
-            $u->service = null;
-            $u->save();
-            $de->save();
+            if($d->enterprise != $request->input('enterprise')){
+                $number = count(Users::where('department', $d->id)->get());
+            if($number > 0){
+                throw new Exception("Il n'est pas possible de changer l'entreprise au quel appartient ce département. Car, nous avons trouvés ".$number ." 
+                employé(s). Pour pouvoir modifier ce département, affecter ou vider les employés de ce département.", 1);
+                
+            }}
+            $d->enterprise =  $request->input('enterprise');
             $d->save();
             DB::commit();
-            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. " . $message);
+            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
