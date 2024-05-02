@@ -3,6 +3,8 @@
     Page de Planification de Reunion Pour Signalements
 @endsection
 @section('manualstyle')
+    <link rel="stylesheet" href="{!! url('assets/vendor/libs/quill/editor.css') !!}" />
+    <link rel="stylesheet" href="{!! url('assets/vendor/libs/%40form-validation/form-validation.css') !!}" />
     <link rel="stylesheet" href="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.css') !!}" />
     <link rel="stylesheet" href="{!! url('assets/vendor/css/pages/app-calendar.css') !!}" />
 @endsection
@@ -40,33 +42,33 @@
                             <label class="form-check-label" for="selectAll">Voir tout</label>
                         </div>
 
-                        <!--<div class="app-calendar-events-filter">
-                                                        <div class="form-check form-check-danger mb-2">
-                                                            <input class="form-check-input input-filter" type="checkbox" id="select-personal"
-                                                                data-value="personal" checked />
-                                                            <label class="form-check-label" for="select-personal">Personal</label>
-                                                        </div>
-                                                        <div class="form-check mb-2">
-                                                            <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                                                data-value="business" checked />
-                                                            <label class="form-check-label" for="select-business">Business</label>
-                                                        </div>
-                                                        <div class="form-check form-check-warning mb-2">
-                                                            <input class="form-check-input input-filter" type="checkbox" id="select-family"
-                                                                data-value="family" checked />
-                                                            <label class="form-check-label" for="select-family">Family</label>
-                                                        </div>
-                                                        <div class="form-check form-check-success mb-2">
-                                                            <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
-                                                                data-value="holiday" checked />
-                                                            <label class="form-check-label" for="select-holiday">Holiday</label>
-                                                        </div>
-                                                        <div class="form-check form-check-info">
-                                                            <input class="form-check-input input-filter" type="checkbox" id="select-etc"
-                                                                data-value="etc" checked />
-                                                            <label class="form-check-label" for="select-etc">ETC</label>
-                                                        </div>
-                                                    </div>-->
+                        <div class="app-calendar-events-filter">
+                            <div class="form-check form-check-danger mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-personal"
+                                    data-value="personal" checked />
+                                <label class="form-check-label" for="select-personal">Personal</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                    data-value="business" checked />
+                                <label class="form-check-label" for="select-business">Business</label>
+                            </div>
+                            <div class="form-check form-check-warning mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-family"
+                                    data-value="family" checked />
+                                <label class="form-check-label" for="select-family">Family</label>
+                            </div>
+                            <div class="form-check form-check-success mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
+                                    data-value="holiday" checked />
+                                <label class="form-check-label" for="select-holiday">Holiday</label>
+                            </div>
+                            <div class="form-check form-check-info">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-etc"
+                                    data-value="etc" checked />
+                                <label class="form-check-label" for="select-etc">ETC</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /Calendar Sidebar -->
@@ -94,13 +96,13 @@
                             <form class="event-form pt-0" id="eventForm" onsubmit="return false">
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
-                                    <input type="text" class="form-control" id="eventTitle" name="Objet de Réunion"
-                                        placeholder="Event Title" />
+                                    <input type="text" class="form-control" id="eventTitle" name="object"
+                                        placeholder="Objet de Réunion" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLabel">Motif</label>
                                     <select class="select2 select-event-label form-select" id="eventLabel"
-                                        name="eventLabel">
+                                        name="motif">
                                         <option data-label="primary" value="Business" selected>
                                             Résolution de Dysfonctionnement
                                         </option>
@@ -126,10 +128,6 @@
                                     <label class="form-label" for="eventURL">Lien de la réunion</label>
                                     <input type="url" class="form-control" id="eventURL" name="link"
                                         placeholder="https://www.google.com/" />
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="eventDescription">Description</label>
-                                    <textarea class="form-control" name="description" id="eventDescription"></textarea>
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
@@ -180,7 +178,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventDescription">Description</label>
-                                    <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
+                                    <textarea class="form-control" name="description" id="eventDescription"></textarea>
                                 </div>
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
                                     <div>
@@ -192,7 +190,11 @@
                                             Annuler
                                         </button>
                                     </div>
+                                    <button class="btn btn-label-danger btn-delete-event d-none">
+                                    Supprimer
+                                </button>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>
@@ -204,8 +206,20 @@
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.js') !!}"></script>
+    <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
+    <script src="{!! url('assets/vendor/libs/%40form-validation/bootstrap5.js') !!}"></script>
+    <script src="{!! url('assets/vendor/libs/moment/moment.js') !!}"></script>
+    <script src="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.js') !!}"></script>
+    <script src="{!! url('assets/vendor/libs/%40form-validation/auto-focus.js') !!}"></script>
     <script src="{!! url('assets/js/js/app-calendar-events.js') !!}"></script>
     <script src="{!! url('assets/js/js/app-calendar.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
+    <script>
+        $(document).ready(function() {
+            var currentDate = new Date().toISOString().split('T')[0];
+            $('#eventStartDate').attr('min', currentDate);
+
+        });
+    </script>
 @endsection

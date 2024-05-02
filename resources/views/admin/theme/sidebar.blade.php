@@ -12,7 +12,7 @@
                             <img src="{!! url('assets/img/logo/cadyst.png') !!}" width="90" height="22.5" />
 
                         </span>
-                        <span class="app-brand-text demo fw-bold" style="font-size : 1rem">WorkWave</span>
+                        <span class="app-brand-text demo fw-bold" style="font-size : 1rem">PRD</span>
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -56,9 +56,9 @@
                     </a>
                 </li>
                 
-                <li class="menu-item @if(request()->route()->getName() == "admin.service") active @endif">
-                    <a href="/admin/service" class="menu-link">
-                        <div class="text-truncate" data-i18n="Services">Services</div>
+                <li class="menu-item @if(request()->route()->getName() == "admin.site") active @endif">
+                    <a href="/admin/site" class="menu-link">
+                        <div class="text-truncate" data-i18n="Sites">Sites</div>
                     </a>
                 </li>
                 

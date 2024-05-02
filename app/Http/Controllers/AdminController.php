@@ -27,65 +27,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $currentYear = Carbon::now()->year;
-
-        $reports = count(Pme::whereYear('created_at', $currentYear)->where('status', 4)->get()) + count(Pne::whereYear('created_at', $currentYear)->where('status', 4)->get()) + count(Holliday::whereYear('created_at', $currentYear)->where('status', 4)->get());
-        $pne = Pne::where('status', 4)->get();
-        $holliday = Holliday::where('status', 4)->get();
-        $pme = Pme::where('status', 4)->get();
-        $ents = Enterprise::all();
-        $enterprise = Enterprise::withCount('users')->get();
-        return view('admin/adashboard', compact('pne', 'holliday', 'pme', 'ents', 'enterprise', 'reports'));
+        return view('admin/adashboard');
     }
-    public function indexEndPoint()
-    {
-        $pne = Pne::where('status', 4)->get();
-        $holliday = Holliday::where('status', 4)->get();
-        $pme = Pme::where('status', 4)->get();
-        $currentDate = now();
-        $month = $currentDate->month;
-        $tdemande = count($pme) + count($pne) + count($holliday);
-        $avg = 0;
-        if ($tdemande > 0) {
-            $avg = round(($tdemande / $month), 1);
-        } else {
-            $avg = 0;
-        }
-        $data = [
-            'labels' => ["Permission Non Exceptionelle", "Permissions Exceptionelle", "Demandes de Congés"],
-            'series' => [count($pne), count($pme), count($holliday)],
-            'avg' => $avg,
-            'per' => '/Mois'
-        ];
 
-        // Return the data as JSON
-        return response()->json($data);
-    }
-    public function indexEndPoint2()
-    {
-        $ents = Enterprise::withCount('users')->get();
-        $labels = [];
-        $sliste = [];
-        $series = [];
-        $cseries = ['s.donut.series1', 's.donut.series2', 's.donut.series3', 's.donut.series4'];
-        $i = 0;
-        foreach ($ents as $e) {
-            if ($i > 3) {
-                $i = 0;
-            }
-            $sliste[] = $i;
-            $labels[] = $e->name;
-            $series[] = $e->users_count;
-        }
-        $data = [
-            'labels' => $labels,
-            'series' => $series,
-            'colors' => $sliste,
-        ];
-
-        // Return the data as JSON
-        return response()->json($data);
-    }
     public function enterprise()
     {
         $data = Enterprise::all();
@@ -95,8 +39,13 @@ class AdminController extends Controller
     {
         $data = Department::all();
         $ents = Enterprise::all();
-        $manager = Users::where('role', 2)->get();
-        return view('admin/department', compact("data", "ents", "manager"));
+        return view('admin/department', compact("data", "ents"));
+    }
+        public function site()
+    {
+        $data = Site::all();
+        $ents = Enterprise::all();
+        return view('admin/department', compact("data", "ents"));
     }
     public function service()
     {

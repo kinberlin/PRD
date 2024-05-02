@@ -43,6 +43,20 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers',], 
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
 
     
+    Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
+    Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
+    Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
+    Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
+    
+    Route::get('/admin/department', 'AdminController@department')->name('admin.department');
+    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
+    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
+    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
+
+    Route::get('/admin/site', 'AdminController@site')->name('admin.site');
+    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
+    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
+    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
@@ -52,15 +66,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/dashboard/ep1', 'AdminController@indexEndPoint')->name('admin.indexep1');
     Route::get('/admin/dashboard/ep2', 'AdminController@indexEndPoint2')->name('admin.indexep2');
-    Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
-    Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
-    Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
-    Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
-
-    Route::get('/admin/department', 'AdminController@department')->name('admin.department');
-    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
-    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
-    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
 
     Route::get('/admin/service', 'AdminController@service')->name('admin.service');
     Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.service.destroy');
