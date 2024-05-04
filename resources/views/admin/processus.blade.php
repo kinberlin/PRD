@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des Entreprises
+    Gestion des Processus
 @endsection
 @section('manualstyle')
 @endsection
@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="/admin/enterprise" method="POST">
+                                    novalidate="novalidate" action="/admin/processes" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Processus</label>
@@ -45,7 +45,7 @@
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="/admin/enterprise" method="POST">
+                        <form action="/admin/processes" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -74,6 +74,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($data as $d)
+                                <tr>
+                                    <td>{{$d->id}}</td>
+                                    <td>{{$d->name}}</td>
+                                    <td>Non définies</td>
+                                    <td>Les actions ne sont pas encore définies</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

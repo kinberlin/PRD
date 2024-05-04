@@ -29,7 +29,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item @if(request()->route()->getName() == "admin.index") active @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.index') active @endif">
             <a href="/admin/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div class="text-truncate" data-i18n="Accueil">Accueil</div>
@@ -38,100 +38,85 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
         </li>
-        <li class="menu-item @if(request()->route()->getName() == "admin.enterprise" || request()->route()->getName() == "admin.department" || request()->route()->getName() == "admin.site" || request()->route()->getName() == "admin.employee") active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
+                request()->route()->getName() == 'admin.department' ||
+                request()->route()->getName() == 'admin.site' ||
+                request()->route()->getName() == 'admin.employee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-square"></i>
                 <div class="text-truncate" data-i18n="Le Groupe">Le Groupe</div>
-               <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @if(request()->route()->getName() == "admin.enterprise") active @endif">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise') active @endif">
                     <a href="/admin/enterprise" class="menu-link">
                         <div class="text-truncate" data-i18n="Entreprises">Entreprises</div>
                     </a>
                 </li>
-                <li class="menu-item @if(request()->route()->getName() == "admin.department") active @endif">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
                     <a href="/admin/department" class="menu-link">
                         <div class="text-truncate" data-i18n="Départements">Départements</div>
                     </a>
                 </li>
-                
-                <li class="menu-item @if(request()->route()->getName() == "admin.site") active @endif">
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
                     <a href="/admin/site" class="menu-link">
                         <div class="text-truncate" data-i18n="Sites">Sites</div>
                     </a>
                 </li>
-                
-                <li class="menu-item @if(request()->route()->getName() == "admin.employee") active @endif">
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
                     <a href="/admin/employee" class="menu-link">
                         <div class="text-truncate" data-i18n="Employés">Employés</div>
                     </a>
                 </li>
             </ul>
         </li>
-                <li class="menu-header small text-uppercase">
+        <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Dysfonctionnements">Dysfonctionnements</span>
         </li>
-        <li class="menu-item @if(request()->route()->getName() == "admin.enterprise" || request()->route()->getName() == "admin.department" || request()->route()->getName() == "admin.site" || request()->route()->getName() == "admin.employee") active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
+                request()->route()->getName() == 'admin.processes' ||
+                request()->route()->getName() == 'admin.site' ||
+                request()->route()->getName() == 'admin.employee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
-                <div class="text-truncate" data-i18n="Siganlements">Signalements</div>
-               <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+                <div class="text-truncate" data-i18n="Signalements">Signalements</div>
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @if(request()->route()->getName() == "admin.enterprise") active @endif">
-                    <a href="/admin/enterprise" class="menu-link">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.processes') active @endif">
+                    <a href="/admin/processes" class="menu-link">
                         <div class="text-truncate" data-i18n="Processus">Processus</div>
                     </a>
                 </li>
-                <li class="menu-item @if(request()->route()->getName() == "admin.department") active @endif">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
                     <a href="/admin/department" class="menu-link">
                         <div class="text-truncate" data-i18n="Signalements">Signalements</div>
                     </a>
                 </li>
-                
-                <li class="menu-item @if(request()->route()->getName() == "admin.site") active @endif">
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
                     <a href="/admin/site" class="menu-link">
                         <div class="text-truncate" data-i18n="Planification">Planifications</div>
                     </a>
                 </li>
-                
-                <li class="menu-item @if(request()->route()->getName() == "admin.employee") active @endif">
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
                     <a href="/admin/employee" class="menu-link">
-                        <div class="text-truncate" data-i18n="Pilotes">Responsable Qualité</div>
+                        <div class="text-truncate" data-i18n="Responsable Qualité">Responsable Qualité</div>
+                    </a>
+                </li>
+                <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
+                    <a href="/admin/employee" class="menu-link">
+                        <div class="text-truncate" data-i18n="Pilotes">Pilotes</div>
                     </a>
                 </li>
             </ul>
-        </li>
-        <li class="menu-item @if(request()->route()->getName() == "admin.pme" || request()->route()->getName() == "admin.pne") active open @endif">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons fas fa-person-running"></i>
-                <div class="text-truncate" data-i18n="Les Demandes">Les Demandes</div>
-               <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item @if(request()->route()->getName() == "admin.pme") active @endif">
-                    <a href="/admin/pme" class="menu-link">
-                        <div class="text-truncate" data-i18n="Permissions Exceptionelles">Permissions Exceptionelles</div>
-                    </a>
-                </li>
-                <li class="menu-item @if(request()->route()->getName() == "admin.pne") active @endif">
-                    <a href="/admin/pne" class="menu-link">
-                        <div class="text-truncate" data-i18n="Permissions Non Exceptionelles">Permissions Non Exceptionelles</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item  @if(request()->route()->getName() == "admin.holliday") active @endif">
-            <a href="/admin/holliday" class="menu-link">
-                <i class="menu-icon tf-icons fas fa-bed"></i>
-                <div class="text-truncate" data-i18n="Congés">Congés</div>
-            </a>
         </li>
 
         <!-- Misc -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text"
-                data-i18n="Misc">Misc</span></li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>
         <li class="menu-item">
             <a href="#" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
@@ -139,8 +124,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="#"
-                target="_blank" class="menu-link">
+            <a href="#" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div class="text-truncate" data-i18n="Documentation">Documentation</div>
             </a>

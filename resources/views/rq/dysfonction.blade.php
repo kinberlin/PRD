@@ -14,20 +14,20 @@
                     @csrf
                     <!--<div class="mb-3 row">
 
-                                <div class="col-md-8">
-                                    <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
-                                        data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
-                                        data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
-                                        aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
-                                        ?</label>
-                                    <div class="col-md-9">
-                                        <select id="pmetype" name="type" class="form-select" required>
-                                            <option value="0" data-extra-info="0" selected>
-                                                Achat</option>
-                                        </select>
+                                    <div class="col-md-8">
+                                        <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
+                                            data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
+                                            data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
+                                            aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
+                                            ?</label>
+                                        <div class="col-md-9">
+                                            <select id="pmetype" name="type" class="form-select" required>
+                                                <option value="0" data-extra-info="0" selected>
+                                                    Achat</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>-->
+                                </div>-->
                     <div class="mb-3 row">
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
@@ -45,7 +45,10 @@
                                 aria-describedby="tooltip732616">Filiale/Entreprise : ?(<span
                                     style="color: red">*</span>)</label>
                             <div class="col-md-10">
-                                <select id="enterprise" name="enterprise" class="form-select" required>
+                                <select id="selectents" name="enterprise" class="form-select" required>
+                                    @foreach ($ents as $e)
+                                        <option value="{{ $e->id }}">{{ $e->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -54,7 +57,11 @@
                             <label for="html5-text-input" class="col-md-4 col-form-label">Site : (<span
                                     style="color: red">*</span>)</label>
                             <div class="col-md-10">
-                                <select id="site" name="site" class="form-select" required>
+                                <select id="selectsite" name="site" class="form-select" required>
+                                     @foreach ($site as $d)
+                                                <option value="{{ $d->id }}" data-extra-info="{{ $d->enterprise }}">
+                                                    {{ $d->name }}({{$d->location}})</option>
+                                            @endforeach
                                 </select>
                             </div>
                         </div>
@@ -72,10 +79,12 @@
                                             data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
                                             data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Veuillez fournir des documents justificatifs inferieurs a 5mb.</span>"
                                             aria-describedby="tooltip732616">Pieces Jointes ? (<span class="text-danger"
-                                                style="font-size: 11px" style="">Si vous n'avez pas choisi de piece jointe pour ce champ, pensez a cliquer sur le bouton : "Retirer la Piece"</span>)
+                                                style="font-size: 11px" style="">Si vous n'avez pas choisi de piece
+                                                jointe pour ce champ, pensez a cliquer sur le bouton : "Retirer la
+                                                Piece"</span>)
                                             ?</label>
-                                        <input class="form-control" type="file" name="pj"
-                                            onchange="getFile(this)" required>
+                                        <input class="form-control" type="file" name="pj" onchange="getFile(this)"
+                                            required>
                                         <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
                                             <button class="btn btn-label-danger mt-4" type="button" data-repeater-delete>
                                                 <i class="bx bx-x me-1"></i>
@@ -106,5 +115,23 @@
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
     <script src="{!! url('assets/js/js/dysfonction.js') !!}"></script>
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            $('#selectents').change(function() {
+                var selectedValue = $(this).val();
+                $('#selectsite').prop('disabled', false);
+                $('#selectsite option').hide();
+                $('#selectsite option[data-extra-info="' + selectedValue + '"]').show();
+                $('#selectsite').val($('#selectsite option:visible:first').val());
+            });
+            $('#selectsite').change(function() {
+                var selectedValue = $('#selectsite').val();
+                $('#selectservice').prop('disabled', false);
+                $('#selectservice option').hide();
+                $('#selectservice option[data-extra-info="' + selectedValue +
+                    '"').show();
+                $('#selectservice').val($('#selectservice option:visible:first').val());
+            });
+        });
+    </script>
 @endsection

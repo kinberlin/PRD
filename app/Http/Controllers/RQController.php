@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Enterprise;
+use App\Models\Site;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +23,9 @@ class RQController extends Controller
     }
     public function dysfonction()
     {
-        return view('rq/dysfonction');
+        $ents = Enterprise::all();
+        $site = Site::all();
+        return view('rq/dysfonction', compact('ents', 'site'));
     }
     public function n1dysfonction()
     {
@@ -33,234 +38,6 @@ class RQController extends Controller
         public function planif()
     {
         return view('rq/planifs');
-    }
-    public function pme()
-    {
-        $type = TypePme::all();
-        return view('employees/pme', compact('type'));
-    }
-    public function opme()
-    {
-        $type = TypePme::all();
-        $ousers = null;
-        $isdepartment = Department::where('manager', Auth::user()->id)
-            ->orWhere('vice_manager', Auth::user()->id)
-            ->get()->first();
-        if (Auth::user()->service != null) {
-        }
-        $isservice = Service::where('manager', Auth::user()->id)->get()->first();
-        if ($isdepartment != null) {
-            $ser_ = Service::where('department', Auth::user()->department)
-                ->where('level', 0)
-                ->get()->first();
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy", ['child_id' => $ser_->id]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        } elseif ($isservice != null) {
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy
-        ", ['child_id' => Auth::user()->service]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        }
-        if ($ousers == null) {
-            $ousers = [];
-        }
-        return view('employees/opme', compact('type', 'ousers'));
-    }
-    public function vpme()
-    {
-        $data = Validation::where('validator', Auth::user()->id)->where('status', 1)->get();
-        //$data = [];
-        $type = TypePme::all();
-        $vid = Validation::where('validator', Auth::user()->id)->where('status', 1)->get()->pluck('pme');
-        $pme = Pme::whereIn('id', $vid)->get();
-        $pmeid = Pme::whereIn('id', $vid)->get()->pluck('id');
-        $ferier = PublicHolliday::whereIn('pme', $pmeid)->get();
-        return view('employees/vpme', compact('data', 'pme', 'type', 'ferier'));
-    }
-    public function pne()
-    {
-        $type = TypePne::all();
-        return view('employees/pne', compact("type"));
-    }
-    public function opne()
-    {
-        $type = TypePne::all();
-        $ousers = null;
-        $isdepartment = Department::where('manager', Auth::user()->id)
-            ->orWhere('vice_manager', Auth::user()->id)
-            ->get();
-        if (Auth::user()->service != null) {
-        }
-        $isservice = Service::where('manager', Auth::user()->id);
-        if ($isdepartment != null) {
-            $ser_ = Service::where('department', Auth::user()->department)
-                ->where('level', 0)
-                ->get()->first();
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy", ['child_id' => $ser_->id]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        } elseif ($isservice != null) {
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy
-        ", ['child_id' => Auth::user()->service]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        }
-        return view('employees/opne', compact('type', 'ousers'));
-    }
-    public function vpne()
-    {
-        $data = Validation::where('validator', Auth::user()->id)->where('status', 1)->get();
-        //$data = [];
-        $type = TypePne::all();
-        $vid = Validation::where('validator', Auth::user()->id)->where('status', 1)->get()->pluck('pne');
-        $pne = Pne::whereIn('id', $vid)->get();
-        $pneid = Pne::whereIn('id', $vid)->get()->pluck('id');
-        $ferier = PublicHolliday::whereIn('pne', $pneid)->get();
-        return view('employees/vpne', compact('data', 'pne', 'type', 'ferier'));
-    }
-    public function vholliday()
-    {
-        $data = Validation::where('validator', Auth::user()->id)->where('status', 1)->get();
-        //$data = [];
-        $type = HollidaySubstitution::all();
-        $vid = Validation::where('validator', Auth::user()->id)->where('status', 1)->get()->pluck('holliday');
-        $holliday = Holliday::whereIn('id', $vid)->get();
-        $hollidayid = Holliday::whereIn('id', $vid)->get()->pluck('id');
-        $ferier = PublicHolliday::whereIn('holliday', $hollidayid)->get();
-        return view('employees/vholliday', compact('data', 'holliday', 'type', 'ferier'));
-    }
-    public function holliday()
-    {
-        $type = TypePne::all();
-        return view('employees/holliday', compact("type"));
-    }
-    public function oholliday()
-    {
-        $type = TypePne::all();
-        $ousers = null;
-        $isdepartment = Department::where('manager', Auth::user()->id)
-            ->orWhere('vice_manager', Auth::user()->id)
-            ->get();
-        if (Auth::user()->service != null) {
-        }
-        $isservice = Service::where('manager', Auth::user()->id);
-        if ($isdepartment != null) {
-            $ser_ = Service::where('department', Auth::user()->department)
-                ->where('level', 0)
-                ->get()->first();
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy", ['child_id' => $ser_->id]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        } elseif ($isservice != null) {
-            $services = DB::select("
-            WITH RECURSIVE ServiceHierarchy AS (
-                SELECT id, parent
-                FROM service
-                WHERE id = :child_id
-
-                UNION ALL
-
-                SELECT p.id, p.parent
-                FROM service p
-                INNER JOIN ServiceHierarchy ch ON p.parent = ch.id
-            )
-            SELECT *
-            FROM ServiceHierarchy
-        ", ['child_id' => Auth::user()->service]);
-            $childIds = array_map(function ($child) {
-                return $child->id;
-            }, $services);
-
-            // Use the extracted IDs in the subsequent query
-            $ousers = Users::whereIn('service', $childIds)->get();
-        }
-        return view('employees/oholliday', compact("type", "ousers"));
     }
     public function empty()
     {
