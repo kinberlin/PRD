@@ -47,6 +47,11 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers',], 
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
     Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
+        
+    Route::get('/admin/processes', 'AdminController@processes')->name('admin.processes');
+    Route::get('/admin/processes/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
+    Route::post('/admin/processes', 'ProcessesController@store')->name('admin.processes.store');
+    Route::post('/admin/processes/{id}', 'ProcessesController@update')->name('admin.processes.update');
     
     Route::get('/admin/department', 'AdminController@department')->name('admin.department');
     Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');

@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Demande de Congés - Authentification</title>
+    <title>Résolution des Dysfonctionnements - Authentification</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{!! url('assets/img/logo/favicon.png') !!}" />

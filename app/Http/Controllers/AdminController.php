@@ -9,6 +9,7 @@ use App\Models\Holliday;
 use App\Models\HollidaySubstitution;
 use App\Models\Pme;
 use App\Models\Pne;
+use App\Models\Processes;
 use App\Models\PublicHolliday;
 use App\Models\Service;
 use App\Models\Status;
@@ -35,6 +36,11 @@ class AdminController extends Controller
     {
         $data = Enterprise::all();
         return view('admin/enterprise', compact('data'));
+    }
+        public function processes()
+    {
+        $data = Processes::all();
+        return view('admin/processus', compact('data'));
     }
     public function department()
     {

@@ -1,11 +1,16 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="col-12">
         <div class="card mb-4">
-            <h5 class="card-header">Sitess</h5>
+            <h5 class="card-header">Sites
+                <span wire:loading wire:target="save"><button class="btn btn-secondary" disabled>
+                        <span class="spinner-grow me-1" aria-hidden="true"></span>
+                        En Cours d'execution ...
+                    </button></span>
+            </h5>
             <div class="card-body">
                 <div class="demo-inline-spacing">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                        aria-controls="offcanvasEnd">Ajouter un Site</button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">Ajouter un Site</button>
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                         aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                         <div class="offcanvas-header">
@@ -16,34 +21,43 @@
                         </div>
                         <div class="offcanvas-body mx-0 flex-grow-0">
                             <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                action="/admin/site" method="POST">
+                                wire:submit="save">
                                 @csrf
                                 <div class="mb-3 fv-plugins-icon-container">
                                     <label class="form-label" for="name">Nom du Site</label>
                                     <input type="text" class="form-control" id="name" placeholder="..."
-                                        name="data[0][2]" required>
-                                    <input type="hidden" class="form-control" name="data[0][0]">
+                                        wire:model.debounce.1s="name" required>
                                     <div
                                         class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        @error('name')
+                                            <span class="error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="mb-3 fv-plugins-icon-container">
                                     <label class="form-label" for="location">Emplacement</label>
                                     <input type="text" class="form-control" id="location" placeholder="..."
-                                        name="data[0][3]" required>
+                                        wire:model.debounce.1s="location" required>
                                     <div
                                         class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        @error('location')
+                                            <span class="error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="mb-3 fv-plugins-icon-container">
                                     <label class="form-label" for="ents">Entreprise</label>
-                                    <select id="ents" name="data[0][1]" class="form-select" required>
+                                    <select id="ents" class="form-select" wire:model="enterprise" required>
+                                        <option value="" style="display: none;"></option>
                                         @foreach ($ents as $e)
                                             <option value="{{ $e->id }}">{{ $e->name }}</option>
                                         @endforeach
                                     </select>
                                     <div
                                         class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        @error('enterprise')
+                                            <span class="error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
