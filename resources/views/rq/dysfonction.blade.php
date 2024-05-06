@@ -83,7 +83,7 @@
                                                 jointe pour ce champ, pensez a cliquer sur le bouton : "Retirer la
                                                 Piece"</span>)
                                             ?</label>
-                                        <input class="form-control" type="file" name="pj[]" onchange="getFile(this)"
+                                        <input class="form-control" type="file" name="pj" onchange="getFile(this)"
                                             required>
                                         <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
                                             <button class="btn btn-label-danger mt-4" type="button" data-repeater-delete>
