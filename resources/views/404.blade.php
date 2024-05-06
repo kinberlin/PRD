@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WorkWave - Ressources Non Authorisée ou Introuvable</title>
+    <title>PRD - Ressources Non Authorisée ou Introuvable</title>
     <meta name="description" content="@yield('description')">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{!! url('assets/img/logo/favicon.png') !!}" />
@@ -57,7 +57,7 @@
                     laquelle
                     vous souhaitez avoir accès. <br><b>Soit vous n’avez pas suffisamment de droits ou alors, la ressource a
                     été
-                    déplacé ou supprimé de façon à ce que WorkWave ne puisse plus l’exploité.</b></p>
+                    déplacé ou supprimé de façon à ce que PRD ne puisse plus l’exploité.</b></p>
                 <input type="submit" class="btn btn-primary" value="Cliquer ici pour retourner" ></input>
                 <div class="mt-5">
                     <img src="{!! url('assets/img/illustrations/girl-with-laptop-light.png') !!}" alt="page-misc-not-authorized-light" width="450"

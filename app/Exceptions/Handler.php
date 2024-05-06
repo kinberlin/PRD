@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +27,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+        public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof PostTooLargeException) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['file' => "Les fichiers soumis dépassent la taille des fichiers autorisés. " .$exception->getMessage()]);
+        }
+
+        return parent::render($request, $exception);
     }
 }

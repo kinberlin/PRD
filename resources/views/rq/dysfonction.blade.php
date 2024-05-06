@@ -10,24 +10,24 @@
             <!-- HTML5 Inputs -->
             <div class="card mb-4">
                 <h5 class="card-header">Formulaire de Signalement de Dysfonctionnement</h5>
-                <form class="card-body" action="" method="get" enctype="multipart/form-data">
+                <form class="card-body" action="{!! route('dysfunction.init') !!}" method="GET" enctype="multipart/form-data">
                     @csrf
                     <!--<div class="mb-3 row">
 
-                                    <div class="col-md-8">
-                                        <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
-                                            data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
-                                            data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
-                                            aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
-                                            ?</label>
-                                        <div class="col-md-9">
-                                            <select id="pmetype" name="type" class="form-select" required>
-                                                <option value="0" data-extra-info="0" selected>
-                                                    Achat</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>-->
+                                            <div class="col-md-8">
+                                                <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
+                                                    data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
+                                                    data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
+                                                    aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
+                                                    ?</label>
+                                                <div class="col-md-9">
+                                                    <select id="pmetype" name="type" class="form-select" required>
+                                                        <option value="0" data-extra-info="0" selected>
+                                                            Achat</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>-->
                     <div class="mb-3 row">
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
@@ -58,10 +58,10 @@
                                     style="color: red">*</span>)</label>
                             <div class="col-md-10">
                                 <select id="selectsite" name="site" class="form-select" required>
-                                     @foreach ($site as $d)
-                                                <option value="{{ $d->name }}" data-extra-info="{{ $d->enterprise }}">
-                                                    {{ $d->name }}({{$d->location}})</option>
-                                            @endforeach
+                                    @foreach ($site as $d)
+                                        <option value="{{ $d->name }}" data-extra-info="{{ $d->enterprise }}">
+                                            {{ $d->name }}({{ $d->location }})</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                                 jointe pour ce champ, pensez a cliquer sur le bouton : "Retirer la
                                                 Piece"</span>)
                                             ?</label>
-                                        <input class="form-control" type="file" name="pj" onchange="getFile(this)"
+                                        <input class="form-control" type="file" name="pj[]" onchange="getFile(this)"
                                             required>
                                         <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
                                             <button class="btn btn-label-danger mt-4" type="button" data-repeater-delete>
