@@ -1,10 +1,27 @@
 function getFile(input) {
-    var file = input.files[0];
-    if (file.size > 5500000) {
-        alert("La taille du fichier ne doit pas dépasser 5Mb (5120kb) ");
-        input.value = "";
-        return;
-    }
+        // Get all file input fields
+        const fileInputs = document.querySelectorAll('input[type="file"][name^="group-a"]');
+        let totalSize = 0;
+
+        // Calculate the total size of selected files
+        fileInputs.forEach(input => {
+            if (input.files.length > 0) {
+                totalSize += input.files[0].size; // Assuming only one file is selected per input
+            }
+        });
+
+        // Convert total size to MB
+        const totalSizeInMB = totalSize / (1024 * 1024);
+
+        // Check if total size exceeds 5MB
+        if (totalSizeInMB > 5) {
+            // Display error message
+            alert('Total size of files cannot exceed 5MB.');
+            // Clear the file input fields to prevent submission
+            fileInputs.forEach(input => {
+                input.value = ''; // Clear the file input value
+            });
+        }
 }
 
 $(document).ready(function () {

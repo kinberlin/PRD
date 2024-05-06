@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dysfunction;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
 
 class DysfunctionController extends Controller
@@ -43,28 +43,62 @@ class DysfunctionController extends Controller
         $dys->emp_signaling = 'Test First'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
         $dys->emp_matricule = 'YU14AS'; //Auth::user()->matricule;
         $dys->emp_email = 't@t.t'; //Auth::user()->email;
-        if ($request->hasFile('group-a')) {
-            $totalSize = 0;
-            throw new Exception("Error Processing Request", 1);
-            foreach ($request->file('group-a') as $index => $fileData) {
-                $file = $fileData['pj'];
-                $totalSize += $file->getSize();
+        $totalSize = 0;
+        $filePaths = [];
+        $files = $request->files->all();
+        dd($files);
+        //dd($files);
+        foreach ($files as $inputName => $fileArray) {
+            // Check if files were uploaded for the current input field
+            if (is_array($fileArray)) {
+                foreach ($fileArray as $file) {
+                    if (is_array($file)) {
+                        foreach ($file as $f) {
+                            // Check if $file is an UploadedFile instance
+                            if ($f instanceof UploadedFile) {
+                                $totalSize += $f->getSize(); // Get the size of each file in bytes
+                           }
+                        }
+                    }
+                }
             }
-            if ($totalSize > 5 * 1024 * 1024) { // Convert 5MB to bytes
-                throw new Exception("La taille des fichiers soumis sont supérieures a 5mb. Vous avez soumis en tous ."($totalSize / (1024 * 1024)) . ' mb', 1);
-            }
-            $filePaths = [];
-            foreach ($request->file('group-a') as $index => $fileData) {
-                $file = $fileData['pj'];
-                $fileName = time() . '_' .$file->getClientOriginalName();
-                $file->storeAs('uploads/dysfunctions', $fileName);
-                
-                $file->move(public_path('uploads/dysfunctions'), $fileName);
-                $path= asset('uploads/dysfunctions/' . $fileName);
-                $filePaths[] = $path;
-            }
-            $dys->pj = json_encode($filePaths);
         }
+        $totalSize = ($totalSize / (1024 * 1024));
+        dd($totalSize);
+        /*foreach ($request->file('group-a') as $index => $fileData) {
+
+        dd($request->file('group-a'));
+        if ($fileData->isValid()) {
+        $file = $fileData;
+        $totalSize += $file->getSize();
+        }
+        }
+        if ($totalSize > 5 * 1024 * 1024) { // Convert 5MB to bytes
+        throw new Exception("La taille des fichiers soumis sont supérieures a 5mb. Vous avez soumis en tous ."($totalSize / (1024 * 1024)) . ' mb', 1);
+        }
+        foreach ($request->file('group-a') as $index => $file) {
+        if ($file->isValid()) {
+        $filename = 'file_' . $index . '_' . time() . '.' . $file->getClientOriginalName();
+
+        // Upload the file to the server
+        $file->storeAs('uploads/dysfunctions', $filename);
+
+        // Store the file route in an array
+        $filePaths[] = 'uploads/dysfunctions/' . $filename;
+        }
+        }
+
+        /*foreach ($request->file('group-a') as $index => $fileData) {
+        $file = $fileData['pj'];
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('uploads/dysfunctions', $fileName);
+
+        $file->move(public_path('uploads/dysfunctions'), $fileName);
+        $path = asset('uploads/dysfunctions/' . $fileName);
+        $filePaths[] = $path;
+        }*/
+        $dys->pj = json_encode($filePaths);
+        dd($dys);
         //$dys->save();
         DB::commit();
         return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");

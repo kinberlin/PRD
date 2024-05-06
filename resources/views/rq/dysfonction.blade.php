@@ -10,7 +10,7 @@
             <!-- HTML5 Inputs -->
             <div class="card mb-4">
                 <h5 class="card-header">Formulaire de Signalement de Dysfonctionnement</h5>
-                <form class="card-body" action="{!! route('dysfunction.init') !!}" method="GET" enctype="multipart/form-data">
+                <form class="card-body" action="{!! route('dysfunction.init') !!}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <!--<div class="mb-3 row">
 
@@ -71,7 +71,7 @@
                         <textarea class="form-control" name="description" rows="4" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <div class="form-repeater">
+                        <div class="form-repeater" >
                             <div data-repeater-list="group-a">
                                 <div data-repeater-item>
                                     <div class="row">
