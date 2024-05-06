@@ -10,7 +10,7 @@
             <!-- HTML5 Inputs -->
             <div class="card mb-4">
                 <h5 class="card-header">Formulaire de Signalement de Dysfonctionnement</h5>
-                <form class="card-body" action="/employee/pme" method="POST" enctype="multipart/form-data">
+                <form class="card-body" action="" method="get" enctype="multipart/form-data">
                     @csrf
                     <!--<div class="mb-3 row">
 
@@ -32,7 +32,7 @@
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
                         <div class="col-md-9">
-                            <input class="form-control" type="date" id="occur_date"
+                            <input class="form-control" type="date" name="occur_date" id="occur_date"
                                 placeholder="Renseigner la date a laquelle vous avez effectuer le constat">
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             <div class="col-md-10">
                                 <select id="selectents" name="enterprise" class="form-select" required>
                                     @foreach ($ents as $e)
-                                        <option value="{{ $e->id }}">{{ $e->name }}</option>
+                                        <option value="{{ $e->name }}">{{ $e->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -59,7 +59,7 @@
                             <div class="col-md-10">
                                 <select id="selectsite" name="site" class="form-select" required>
                                      @foreach ($site as $d)
-                                                <option value="{{ $d->id }}" data-extra-info="{{ $d->enterprise }}">
+                                                <option value="{{ $d->name }}" data-extra-info="{{ $d->enterprise }}">
                                                     {{ $d->name }}({{$d->location}})</option>
                                             @endforeach
                                 </select>

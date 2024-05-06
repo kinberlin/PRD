@@ -100,6 +100,21 @@
                                         placeholder="Objet de Réunion" />
                                 </div>
                                 <div class="mb-3">
+                                    <label class="form-label" >Dysfonctionnement Concerné</label>
+                                    <select class="select2 select-event-label form-select"
+                                        name="motif">
+                                        <option value="Business" selected>
+                                            Résolution de Dysfonctionnement
+                                        </option>
+                                        <option value="Personal">
+                                            Evaluation de Dysfonctionnement
+                                        </option>
+                                        <option value="Family">
+                                            Autres
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label class="form-label" for="eventLabel">Motif</label>
                                     <select class="select2 select-event-label form-select" id="eventLabel"
                                         name="motif">
