@@ -77,7 +77,7 @@
         </li>
         <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
                 request()->route()->getName() == 'admin.processes' ||
-                request()->route()->getName() == 'admin.site' ||
+                request()->route()->getName() == 'admin.signals' ||
                 request()->route()->getName() == 'admin.employee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
@@ -90,14 +90,14 @@
                         <div class="text-truncate" data-i18n="Processus">Processus</div>
                     </a>
                 </li>
-                <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
-                    <a href="/admin/department" class="menu-link">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.signals') active @endif">
+                    <a href="/admin/signal" class="menu-link">
                         <div class="text-truncate" data-i18n="Signalements">Signalements</div>
                     </a>
                 </li>
 
-                <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
-                    <a href="/admin/site" class="menu-link">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.plans') active @endif">
+                    <a href="/admin/plans" class="menu-link">
                         <div class="text-truncate" data-i18n="Planification">Planifications</div>
                     </a>
                 </li>

@@ -54,13 +54,9 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         return view('admin/site', compact("data", "ents"));
     }
-    public function service()
+    public function signals()
     {
-        $ents = Enterprise::all();
-        $deps = Department::all();
-        $services = Service::all();
-        $manager = Users::where('role', 2)->get();
-        return view('admin/service', compact('ents', 'deps', 'services', 'manager'));
+        return view('admin/signal');
     }
     public function employee()
     {

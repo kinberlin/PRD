@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Sitemap\SitemapGenerator;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +12,7 @@ use Spatie\Sitemap\SitemapGenerator;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
-
+ */
 
 Route::get('/', function () {
     return view('login');
@@ -32,31 +30,29 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 
-
-Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers',], function () {
+Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/n1/dysfonctionnement', 'RQController@n1dysfonction')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
-        Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
+    Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
 
-    
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
     Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
-        
-    Route::get('/admin/signal', 'AdminController@signals')->name('admin.processes');/*to be done */
-    Route::get('/admin/signal/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
-    Route::post('/admin/signal', 'ProcessesController@store')->name('admin.processes.store');
-    Route::post('/admin/signal/{id}', 'ProcessesController@update')->name('admin.processes.update');
-    
+
     Route::get('/admin/processes', 'AdminController@processes')->name('admin.processes');
     Route::get('/admin/processes/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
     Route::post('/admin/processes', 'ProcessesController@store')->name('admin.processes.store');
     Route::post('/admin/processes/{id}', 'ProcessesController@update')->name('admin.processes.update');
+
+    Route::get('/admin/signal', 'AdminController@signals')->name('admin.signals'); /*to be done */
+    Route::get('/admin/signal/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
+    Route::post('/admin/signal', 'ProcessesController@store')->name('admin.processes.store');
+    Route::post('/admin/signal/{id}', 'ProcessesController@update')->name('admin.processes.update');
 
     Route::get('/admin/department', 'AdminController@department')->name('admin.department');
     Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
@@ -68,9 +64,14 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers',], 
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
+    Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
+    Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
+    Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
+    Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
+
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
-Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers',], function () {
+Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //Admins
 
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
