@@ -1,13 +1,13 @@
 @extends('rq.theme.main')
 @section('title')
-    Signaler un Dysfonctionnement
+    Détails sur le signalement {{ $data->id }}
 @endsection
 @section('manualstyle')
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">......</span> .....
+            <span class="text-muted fw-light">Vue Complémentaire sur le signalement </span> No. {{ $data->id }}
         </h4>
         <!-- Basic Layout -->
         <div class="row">
@@ -22,34 +22,36 @@
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-fullname">Noms</label>
                                 <input type="text" class="form-control" id="basic-default-fullname"
-                                    placeholder="Drystan Tchamba" readonly>
+                                    value={{ $data->emp_signaling }} readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-company">Matricule</label>
-                                <input type="text" class="form-control" id="basic-default-company" placeholder="OOMMAHU"
-                                    readonly>
+                                <input type="text" class="form-control" id="basic-default-company"
+                                    value="{{ $data->emp_matricule }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-email">Contact</label>
                                 <div class="input-group input-group-merge">
                                     <input type="text" id="basic-default-email" class="form-control"
-                                        placeholder="john.doe" aria-label="john.doe"
+                                        value="{{ $data->emp_email }}" aria-label="john.doe"
                                         aria-describedby="basic-default-email2">
-                                    <span class="input-group-text" id="basic-default-email2">@example.com/673955909</span>
+                                    <span class="input-group-text" id="basic-default-email2">@</span>
                                 </div>
                                 <div class="form-text"> Extras</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Date d'enregistrement sur Glitch</label>
-                                <input type="date" class="form-control" value="2024-04-02" readonly>
+                                <input type="text" class="form-control"
+                                    value="{{ \Carbon\Carbon::parse($data->created_at)->format('d-m-Y H:i:s') }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-message">Date de Constat</label>
-                                <input type="date" class="form-control" value="2024-04-04" readonly>
+                                <input type="text" class="form-control"
+                                    value="{{ \Carbon\Carbon::parse($data->occur_date)->format('d-m-Y') }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-message">Description</label>
-                                <textarea id="basic-default-message" class="form-control" placeholder="Jai constaté que .... " readonly></textarea>
+                                <textarea id="basic-default-message" class="form-control" placeholder="Aucune description n'a été faites" readonly> {{ $data->description }}</textarea>
                             </div>
                         </form>
                     </div>
@@ -62,7 +64,22 @@
                         <small class="text-muted float-end">avec ce Signalement </small>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form class="col-md-12">
+                            @if ($data->pj != null)
+                                @foreach (json_decode($data->pj) as $index => $item)
+                                    <div class="d-flex mt-3">
+                                        <a href="{{ $item }}" target="_blank"
+                                            class="d-flex align-items-center me-3">
+                                            <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="46"
+                                                class="me-2">
+                                            <h4 class="mb-0">Pieces Jointes No. {{ $index }}</h4>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @else
+                                Aucune Piece Jointe n'a été soumis.
+                            @endif
+
                         </form>
                     </div>
                 </div>
@@ -75,20 +92,30 @@
                 <hr class="my-4 mx-n4">
                 <h6> Info Supplementaires</h6>
                 <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="multicol-last-name">Entreprise Concerné (Non Modifiable)</label>
+                        <input type="text" value="{{ $data->enterprise }}" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="multicol-last-name">Site Concerné (Non Modifiable)</label>
+                        <input type="text" value="{{ $data->site }}" class="form-control" readonly>
+                    </div>
                     <div class="col-md-6 select2-primary">
-                        <label class="form-label" for="multicol-language1">Processus Concernés (<span style="color: red">*</span>)</label>
-                        <select id="multicol-language1" class="select2 form-select" required>
-                            <option value="en" selected>Achats</option>
-                            <option value="fr">Productions</option>
-                            <option value="de">Ventes</option>
+                        <label class="form-label" for="multicol-language1">Processus Concernés (<span
+                                style="color: red">*</span>)</label>
+                        <select id="multicol-language1" name="concern_processes" class="select2 form-select" required>
+                            @foreach ($processes as $p)
+                                <option value="{{ $p->name }}">{{ $p->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 select2-primary">
-                        <label class="form-label" for="multicol-language2">Processus Impactés (<span style="color: red">*</span>)</label>
-                        <select id="multicol-language2" class="select2 form-select" multiple required>
-                            <option value="en" selected>Achats</option>
-                            <option value="fr" selected>Productions</option>
-                            <option value="de">Ventes</option>
+                        <label class="form-label" for="multicol-language2">Processus Impactés (<span
+                                style="color: red">*</span>)</label>
+                        <select id="multicol-language2" name="impact_processes" class="select2 form-select" multiple required>
+                            @foreach ($processes as $p)
+                                <option value="{{ $p->name }}">{{ $p->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -100,11 +127,13 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Probabilité (<span style="color: red">*</span>)</label>
-                        <input type="number" placeholder="Entrer un chiffre" class="form-control" required>
+                        <label class="form-label" for="multicol-last-name">Probabilité(<span
+                                style="color: red">*</span>) <span>compris entre 1 & 5</span></label>
+                        <input type="number" min="1" max="5" placeholder="Entrer un chiffre" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-country">Site Concernés(<span style="color: red">*</span>)</label>
+                        <label class="form-label" for="multicol-country">Site Concernés(<span
+                                style="color: red">*</span>)</label>
                         <select id="multicol-country" class="select2 form-select" data-allow-clear="true" required>
                             <option value="">Choisissez un site</option>
                             <option value="Australia">Australia</option>

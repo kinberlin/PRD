@@ -44,9 +44,9 @@
                                     <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
-                                    <td><a href="/rq/detail/dysfonctionnemnt/{{$d->id}}" class="btn rounded-pill btn-icon btn-info">
+                                    <td><a href="/rq/detail/dysfonctionnement/{{$d->id}}" target="_blank" class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>
-                                        </herf></td>
+                                        </a></td>
                                 </tr>
                             @endforeach
                         </tbody>

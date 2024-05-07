@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
 use App\Models\Users;
@@ -73,8 +74,11 @@ class RQController extends Controller
                 throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
             }
             $status = Status::all();
+            $processes = Processes::all();
+            $ents = Enterprise::all();
+            $site = Site::all();
             $data = $dys;
-            return view('rq/infos', compact('data', 'status'));
+            return view('rq/infos', compact('data', 'status', 'processes', 'ents', 'site'));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

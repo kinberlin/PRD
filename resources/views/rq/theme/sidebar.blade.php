@@ -50,12 +50,6 @@
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.n1dysfonction') active @endif">
-            <a href="{!! route('rq.n1dysfonction') !!}" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-check"></i>
-                <div class="text-truncate">Status</div>
-            </a>
-        </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.signalement') active @endif">
             <a href="{!! route('rq.signalement') !!}" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-case"></i>
