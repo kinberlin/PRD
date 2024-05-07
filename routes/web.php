@@ -33,7 +33,7 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::post('/dysfunctionnemnt/nouveau', 'DysfunctionController@init')->name('dysfunction.init');
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
-    Route::get('/rq/n1/dysfonctionnement', 'RQController@n1dysfonction')->name('rq.n1dysfonction');
+    Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');

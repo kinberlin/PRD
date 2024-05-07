@@ -6,14 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int    $id
- * @property int    $id
- * @property int    $id
- * @property int    $id
- * @property int    $id
- * @property string $name
- * @property string $name
- * @property string $name
- * @property string $name
+ * @property int    $step
  * @property string $name
  */
 class Status extends Model
@@ -38,7 +31,7 @@ class Status extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'name', 'name', 'name', 'name'
+        'name', 'step'
     ];
 
     /**
@@ -56,7 +49,7 @@ class Status extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'id' => 'int', 'id' => 'int', 'id' => 'int', 'id' => 'int', 'name' => 'string', 'name' => 'string', 'name' => 'string', 'name' => 'string', 'name' => 'string'
+        'id' => 'int', 'step' => 'int', 'name' => 'string'
     ];
 
     /**

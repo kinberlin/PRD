@@ -33,20 +33,22 @@
                                 <th>Date de Constat</th>
                                 <th>Description</th>
                                 <th>Statut</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
+                                <th>Actiond</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!--<tr>
-                                <td>No.</td>
-                                <td>Date de soumission</td>
-                                <td>Date de Constat</td>
-                                <td>Description</td>
-                                <td>Statut</td>
-                                <td>Statut</td>
-                                <td>Actions</td>
-                            </tr>-->
+                            @foreach ($data as $d)
+                                <tr>
+                                    <td>{{ $d->id }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y H:i:s') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
+                                    <td>{{ $d->description }}</td>
+                                    <td>{{ $status->where('id', $d->status)->first()->name }}</td>
+                                    <td><a href="/rq/detail/dysfonctionnemnt/{{$d->id}}" class="btn rounded-pill btn-icon btn-info">
+                                            <span class="tf-icons bx bx-info-circle"></span>
+                                        </herf></td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -65,21 +67,21 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Datatables Orders
-            $("#datatables-orders").DataTable({
-                "paging": true,
-                "pageLength": 10,
-                "dom": 'Bfrtip', // Show buttons (B) for export
-                "buttons": [
-                    'excel' // Add export button for Excel
-                ],
-                responsive: true,
-                aoColumnDefs: [{
-                    bSortable: false,
-                    aTargets: [-1]
-                }]
-            });
-        });
+        /* document.addEventListener("DOMContentLoaded", function() {
+                // Datatables Orders
+                $("#datatables-order").DataTable({
+                    "paging": true,
+                    "pageLength": 10,
+                    "dom": 'Bfrtip', // Show buttons (B) for export
+                    "buttons": [
+                        'excel' // Add export button for Excel
+                    ],
+                    responsive: true,
+                    aoColumnDefs: [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }]
+                });
+            });*/
     </script>
 @endsection
