@@ -93,19 +93,16 @@
                 <h6> Info Supplementaires</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Entreprise Concerné (Non Modifiable)</label>
-                        <input type="text" value="{{ $data->enterprise }}" class="form-control" readonly>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Site Concerné (Non Modifiable)</label>
-                        <input type="text" value="{{ $data->site }}" class="form-control" readonly>
+                        <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné (Non Modifiable)</label>
+                        <input type="text" value="{{ $data->enterprise }}  ({{$data->site}})" class="form-control" readonly>
                     </div>
                     <div class="col-md-6 select2-primary">
                         <label class="form-label" for="multicol-language1">Processus Concernés (<span
                                 style="color: red">*</span>)</label>
                         <select id="multicol-language1" name="concern_processes" class="select2 form-select" required>
+                            <option value="" style="display: none;"></option>
                             @foreach ($processes as $p)
-                                <option value="{{ $p->name }}">{{ $p->name }}</option>
+                                <option value="{{ $p->name }}" data-extra-info="{{$p->id}}">{{ $p->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -114,33 +111,22 @@
                                 style="color: red">*</span>)</label>
                         <select id="multicol-language2" name="impact_processes" class="select2 form-select" multiple required>
                             @foreach ($processes as $p)
-                                <option value="{{ $p->name }}">{{ $p->name }}</option>
+                                <option value="{{ $p->name }}" data-extra-info="{{$p->id}}">{{ $p->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
-                        <select class="form-control" data-allow-clear="true" required>
-                            <option value="en" selected>Légere</option>
-                            <option value="fr" selected>Grave</option>
-                            <option value="de">Tres Grave</option>
+                        <select class="form-control" name="gravity" data-allow-clear="true" required>
+                            @foreach ($gravity as $g)
+                                <option value="{{$g->name}}" selected>{{$g->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-last-name">Probabilité(<span
                                 style="color: red">*</span>) <span>compris entre 1 & 5</span></label>
-                        <input type="number" min="1" max="5" placeholder="Entrer un chiffre" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label" for="multicol-country">Site Concernés(<span
-                                style="color: red">*</span>)</label>
-                        <select id="multicol-country" class="select2 form-select" data-allow-clear="true" required>
-                            <option value="">Choisissez un site</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Bangladesh">Bangladesh</option>
-                            <option value="Belarus">Belarus</option>
-                            <option value="Brazil">Brazil</option>
-                        </select>
+                        <input type="number" min="1" max="5" name="probability" placeholder="Entrer un chiffre" class="form-control" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsables probable de l'incident</label>
@@ -149,8 +135,8 @@
                     </div>
                 </div>
                 <div class="pt-4">
-                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Soumettre</button>
-                    <button type="reset" class="btn btn-label-secondary">Annulé</button>
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Mettre a Jour</button>
+                    <button type="reset" class="btn btn-label-secondary">Annuler ce Signalement</button>
                 </div>
             </form>
         </div>
@@ -233,7 +219,7 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
-    <script src="{!! url('assets/js/js/dysfonction.js') !!}"></script>
+    <script src="{!! url('assets/js/js/info.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
     <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
 @endsection

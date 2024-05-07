@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Gravity;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
 use App\Models\Users;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class RQController extends Controller
@@ -70,15 +69,21 @@ class RQController extends Controller
     {
         try {
             $dys = Dysfunction::find($id);
-            if($dys == null){
+            if ($dys == null) {
                 throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
             }
             $status = Status::all();
             $processes = Processes::all();
             $ents = Enterprise::all();
             $site = Site::all();
+            $gravity = Gravity::all();
             $data = $dys;
-            return view('rq/infos', compact('data', 'status', 'processes', 'ents', 'site'));
+            return view('rq/infos', compact('data',
+                'status',
+                'processes',
+                'ents',
+                'site',
+                'gravity'));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

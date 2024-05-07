@@ -14,20 +14,20 @@
                     @csrf
                     <!--<div class="mb-3 row">
 
-                                            <div class="col-md-8">
-                                                <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
-                                                    data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
-                                                    data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
-                                                    aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
-                                                    ?</label>
-                                                <div class="col-md-9">
-                                                    <select id="pmetype" name="type" class="form-select" required>
-                                                        <option value="0" data-extra-info="0" selected>
-                                                            Achat</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>-->
+                                                            <div class="col-md-8">
+                                                                <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
+                                                                    data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
+                                                                    data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
+                                                                    aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
+                                                                    ?</label>
+                                                                <div class="col-md-9">
+                                                                    <select id="pmetype" name="type" class="form-select" required>
+                                                                        <option value="0" data-extra-info="0" selected>
+                                                                            Achat</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>-->
                     <div class="mb-3 row">
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
@@ -46,8 +46,10 @@
                                     style="color: red">*</span>)</label>
                             <div class="col-md-10">
                                 <select id="selectents" name="enterprise" class="form-select" required>
+                                    <option value="" style="display: none;"></option>
                                     @foreach ($ents as $e)
-                                        <option value="{{ $e->name }}">{{ $e->name }}</option>
+                                        <option value="{{ $e->name }}" data-extra-info="{{ $e->id }}">
+                                            {{ $e->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -59,8 +61,9 @@
                             <div class="col-md-10">
                                 <select id="selectsite" name="site" class="form-select" required>
                                     @foreach ($site as $d)
-                                        <option value="{{ $d->name }}" data-extra-info="{{ $d->enterprise }}">
-                                            {{ $d->name }}({{ $d->location }})</option>
+                                        <option value="{{ $d->name }}, {{ $d->location }}"
+                                            data-extra-info="{{ $d->enterprise }}">
+                                            {{ $d->name }} ({{ $d->location }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -71,7 +74,7 @@
                         <textarea class="form-control" name="description" rows="4" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <div class="form-repeater" >
+                        <div class="form-repeater">
                             <div data-repeater-list="group-a">
                                 <div data-repeater-item>
                                     <div class="row">
@@ -123,14 +126,6 @@
                 $('#selectsite option').hide();
                 $('#selectsite option[data-extra-info="' + selectedValue + '"]').show();
                 $('#selectsite').val($('#selectsite option:visible:first').val());
-            });
-            $('#selectsite').change(function() {
-                var selectedValue = $('#selectsite').val();
-                $('#selectservice').prop('disabled', false);
-                $('#selectservice option').hide();
-                $('#selectservice option[data-extra-info="' + selectedValue +
-                    '"').show();
-                $('#selectservice').val($('#selectservice option:visible:first').val());
             });
         });
     </script>
