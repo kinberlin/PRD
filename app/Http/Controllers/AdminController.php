@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Models\Site;
 use App\Models\Enterprise;
+use App\Models\Gravity;
 use App\Models\Holliday;
 use App\Models\HollidaySubstitution;
 use App\Models\Pme;
@@ -12,13 +12,11 @@ use App\Models\Pne;
 use App\Models\Processes;
 use App\Models\PublicHolliday;
 use App\Models\Service;
+use App\Models\Site;
 use App\Models\Status;
 use App\Models\TypePme;
 use App\Models\TypePne;
 use App\Models\Users;
-use App\Models\Validation;
-use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -37,7 +35,12 @@ class AdminController extends Controller
         $data = Enterprise::all();
         return view('admin/enterprise', compact('data'));
     }
-        public function processes()
+    public function gravity()
+    {
+        $data = Gravity::all();
+        return view('admin/gravity', compact('data'));
+    }
+    public function processes()
     {
         $data = Processes::all();
         return view('admin/processus', compact('data'));
@@ -48,7 +51,7 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         return view('admin/department', compact("data", "ents"));
     }
-        public function site()
+    public function site()
     {
         $data = Site::all();
         $ents = Enterprise::all();

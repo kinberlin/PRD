@@ -45,6 +45,11 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
     Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
 
+    Route::get('/admin/gravity', 'AdminController@gravity')->name('admin.gravity');
+    Route::get('/admin/gravity/{id}', 'GravityController@destroy')->name('admin.gravity.destroy');
+    Route::post('/admin/gravity', 'GravityController@store')->name('admin.gravity.store');
+    Route::post('/admin/gravity/{id}', 'GravityController@update')->name('admin.gravity.update');
+
     Route::get('/admin/processes', 'AdminController@processes')->name('admin.processes');
     Route::get('/admin/processes/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
     Route::post('/admin/processes', 'ProcessesController@store')->name('admin.processes.store');

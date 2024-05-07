@@ -114,6 +114,20 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-plus"></i>
+                <div class="text-truncate" data-i18n="Accessoires">Accessoires</div>
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active @endif">
+                    <a href="/admin/gravity" class="menu-link">
+                        <div class="text-truncate" data-i18n="Gravité">Gravité</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
         <!-- Misc -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>

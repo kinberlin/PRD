@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property string $name
+ * @property int    $id
  * @property int    $created_at
  * @property int    $deleted_at
- * @property int    $id
+ * @property string $name
  */
 class Gravity extends Model
 {use SoftDeletes;
@@ -25,7 +25,7 @@ class Gravity extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'name';
+    protected $primaryKey = 'id';
 
     /**
      * Attributes that should be mass-assignable.
@@ -33,7 +33,7 @@ class Gravity extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'id'
+        'created_at', 'deleted_at', 'name'
     ];
 
     /**
@@ -51,7 +51,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'id' => 'int'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'name' => 'string'
     ];
 
     /**

@@ -97,7 +97,7 @@
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <p class="card-text">
-                                                                Souhaitez vous vraiment désactiver l'gravity :
+                                                                Souhaitez vous vraiment désactiver :
                                                                 {{ $d->name }} ?
                                                                 <b>Noter que cela reviens a supprimer partiellement celle-ci
                                                                     et que vous ne serez pas capable de le restaurer
@@ -108,7 +108,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="/admin/enterprise/{{ $d->id }}"
+                                                        <a href="/admin/gravity/{{ $d->id }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
@@ -117,7 +117,7 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majgravity{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="/admin/enterprise/{{ $d->id }}"
+                                                <form class="modal-content" action="/admin/gravity/{{ $d->id }}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J

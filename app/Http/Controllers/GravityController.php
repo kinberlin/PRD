@@ -33,7 +33,7 @@ class GravityController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        //try {
             DB::beginTransaction();
             $data = $request->input('data');
             if (!is_array($data)) {
@@ -49,9 +49,9 @@ class GravityController extends Controller
             }
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
 
     /**
