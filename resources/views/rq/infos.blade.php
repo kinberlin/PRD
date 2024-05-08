@@ -66,16 +66,29 @@
                     <div class="card-body">
                         <form class="col-md-12">
                             @if ($data->pj != null)
-                                @foreach (json_decode($data->pj) as $index => $item)
-                                    <div class="d-flex mt-3">
-                                        <a href="{{ $item }}" target="_blank"
-                                            class="d-flex align-items-center me-3">
-                                            <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="46"
-                                                class="me-2">
-                                            <h4 class="mb-0">Pieces Jointes No. {{ $index }}</h4>
-                                        </a>
-                                    </div>
-                                @endforeach
+                                @if (count(json_decode($data->pj)) < 8)
+                                    @foreach (json_decode($data->pj) as $index => $item)
+                                        <div class="d-flex mt-3">
+                                            <a href="{{ $item }}" target="_blank"
+                                                class="d-flex align-items-center me-3">
+                                                <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="46"
+                                                    class="me-2">
+                                                <h4 class="mb-0">Pieces Jointes No. {{ $index }}</h4>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach (json_decode($data->pj) as $index => $item)
+                                        <div class="d-flex mt-3">
+                                            <a href="{{ $item }}" target="_blank"
+                                                class="d-flex align-items-center me-3">
+                                                <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="23"
+                                                    class="me-2">
+                                                <h6 class="mb-0">Pieces Jointes No. {{ $index }}</h6>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                @endif
                             @else
                                 Aucune Piece Jointe n'a été soumis.
                             @endif
@@ -89,12 +102,14 @@
         <div class="card mb-4">
             <h5 class="card-header">Informations complementaires</h5>
             <form class="card-body">
-                <hr class="my-4 mx-n4">
-                <h6> Info Supplementaires</h6>
+                <!--<hr class="my-4 mx-n4">
+                <h6> Info Supplementaires</h6>-->
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné (Non Modifiable)</label>
-                        <input type="text" value="{{ $data->enterprise }}  ({{$data->site}})" class="form-control" readonly>
+                        <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné (Non
+                            Modifiable)</label>
+                        <input type="text" value="{{ $data->enterprise }}  ({{ $data->site }})" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6 select2-primary">
                         <label class="form-label" for="multicol-language1">Processus Concernés (<span
@@ -102,16 +117,19 @@
                         <select id="multicol-language1" name="concern_processes" class="select2 form-select" required>
                             <option value="" style="display: none;"></option>
                             @foreach ($processes as $p)
-                                <option value="{{ $p->name }}" data-extra-info="{{$p->id}}">{{ $p->name }}</option>
+                                <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}">
+                                    {{ $p->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 select2-primary">
                         <label class="form-label" for="multicol-language2">Processus Impactés (<span
                                 style="color: red">*</span>)</label>
-                        <select id="multicol-language2" name="impact_processes" class="select2 form-select" multiple required>
+                        <select id="multicol-language2" name="impact_processes" class="select2 form-select" multiple
+                            required>
                             @foreach ($processes as $p)
-                                <option value="{{ $p->name }}" data-extra-info="{{$p->id}}">{{ $p->name }}</option>
+                                <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}">
+                                    {{ $p->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -119,18 +137,19 @@
                         <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
                         <select class="form-control" name="gravity" data-allow-clear="true" required>
                             @foreach ($gravity as $g)
-                                <option value="{{$g->name}}" selected>{{$g->name}}</option>
+                                <option value="{{ $g->name }}" selected>{{ $g->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Probabilité(<span
-                                style="color: red">*</span>) <span>compris entre 1 & 5</span></label>
-                        <input type="number" min="1" max="5" name="probability" placeholder="Entrer un chiffre" class="form-control" required>
+                        <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)
+                            <span>compris entre 1 & 5</span></label>
+                        <input type="number" min="1" max="5" name="probability"
+                            placeholder="Entrer un chiffre" class="form-control" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsables probable de l'incident</label>
-                        <input type="text" class="form-control"
+                        <input type="text" name="cause" class="form-control"
                             placeholder="Le(s) Nom(s) de(s) Responsable(s) & matricule(s) si possible">
                     </div>
                 </div>

@@ -1,26 +1,16 @@
-$(document).ready(function() {
-  $("#multicol-language1").change(function() {
-    var selectedOptions = $(this).find("option:selected");
 
-    // Clear all options from multicol-language2
-    $("#multicol-language2").empty();
+$(document).ready(function () {
+  // Store the original options of select2
+  var select2Options = $('#multicol-language2 option').clone();
 
-    // Repopulate multicol-language2 options except for the selected options in select1
-    $("#multicol-language2 option").each(function() {
-      var optionValue = $(this).val();
-      var optionData = $(this).attr("data-extra-info");
-      var optionExists = false;
+  $('#multicol-language1').change(function () {
+    var selectedValue = $(this).val();
+    var selectedExtraInfo = $(this).find('option:selected').data('extra-info');
 
-      selectedOptions.each(function() {
-        if ($(this).val() === optionValue && $(this).attr("data-extra-info") === optionData) {
-          optionExists = true;
-          return false; // Exit the inner loop
-        }
-      });
+    // Clear select2 and add the original options
+    $('#multicol-language2').empty().append(select2Options);
 
-      if (!optionExists) {
-        $("#multicol-language2").append('<option value="' + optionValue + '" data-extra-info="' + optionData + '">' + $(this).text() + '</option>');
-      }
-    });
+    // Filter and remove the corresponding option based on the selected extra info
+    $('#multicol-language2 option[data-extra-info="' + selectedExtraInfo + '"]').remove();
   });
 });
