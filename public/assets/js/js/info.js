@@ -1,4 +1,8 @@
 
+document.getElementById("myForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission
+  // Additional logic or actions can be performed here
+});
 $(document).ready(function () {
   // Store the original options of select2
   var select2Options = $('#multicol-language2 option').clone();
@@ -13,9 +17,8 @@ $(document).ready(function () {
     // Filter and remove the corresponding option based on the selected extra info
     $('#multicol-language2 option[data-extra-info="' + selectedExtraInfo + '"]').remove();
   });
-  $('#myForm').submit(function (event) {
-    // Prevent the default form submission
-    event.preventDefault();
+  $("#saveActionsBtn").click(function (event) {
+    // Submit the form
 
     $("input[name*='delay']").each(function () {
       $(this).attr('name', 'delay[]');
@@ -29,11 +32,15 @@ $(document).ready(function () {
     $("select[name*='departmentt']").each(function () {
       $(this).attr('name', 'department[]');
     });
+    var form = $("#myForm");
 
-    // After updating the names, submit the form
-   // $(this).unbind('submit').submit();
+    // Check if all required fields are filled
+    if (form[0].checkValidity()) {
+      // Submit the form if all required fields are filled
+      form.submit();
+    } else {
+      // If required fields are not filled, trigger HTML5 validation
+      form[0].reportValidity();
+    }
   });
-});
-$(document).ready(function () {
-
 });

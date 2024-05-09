@@ -57,7 +57,7 @@
     })
 })(),
 $(function() {
-    var n, o, e = $(".bootstrap-maxlength-example"),
+    var n, o, e = $(".bootstrap-maxlength-example"), _tt = $(".repeater"),
         t = $(".form-repeater");
     
     e.length && e.each(function() {
@@ -86,6 +86,13 @@ $(function() {
             n++, 
             $(this).slideDown()
         },
+        hide: function(e) {
+            confirm("Êtes-vous sûre de vouloir supprimer cet élément ? ") && $(this).slideUp(e)
+        }
+    })),
+    _tt.length && ( _tt.on("submit", function(e) {
+        e.preventDefault()
+    }), _tt.repeater({
         hide: function(e) {
             confirm("Êtes-vous sûre de vouloir supprimer cet élément ? ") && $(this).slideUp(e)
         }
