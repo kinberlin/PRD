@@ -78,7 +78,7 @@ $(function() {
         show: function() {
             var r = $(this).find(".form-control, .form-select"),
                 a = $(this).find(".form-label");
-            
+                
             r.each(function(e) {
                 var t = "form-repeater-" + n + "-" + o;
                 $(r[e]).attr("id", t), $(a[e]).attr("for", t), o++

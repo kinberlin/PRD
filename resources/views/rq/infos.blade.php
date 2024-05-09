@@ -196,13 +196,13 @@
                                                         <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
                                                             <label class="form-label" for="repeater-1-1">Action</label>
                                                             <input type="text" name="action" id="repeater-1-1"
-                                                                class="form-control" placeholder="..." />
+                                                                class="form-control" placeholder="..." required/>
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label"
                                                                 for="form-repeater-1-3">Département</label>
                                                             <select id="form-repeater-1-3" name="departmentt"
-                                                                class="form-select">
+                                                                class="form-select"required>
                                                                 <option value="Male">Info...</option>
                                                                 <option value="Female">RH...</option>
                                                             </select>
@@ -211,7 +211,7 @@
                                                             <label class="form-label"
                                                                 for="multicol-country">Personnes</label>
                                                             <select id="multicol-country" name="userr"
-                                                                class="select2 form-select" data-allow-clear="true">
+                                                                class="select2 form-select" data-allow-clear="true"required>
                                                                 <option value="Australia">Monsieur Y</option>
                                                                 <option value="Bangladesh">M. Z</option>
                                                                 <option value="Belarus">M. B</option>
@@ -220,8 +220,8 @@
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label">Delai</label>
-                                                            <input type="text" name="delay"
-                                                                class="form-control dob-picker" placeholder="YYYY-MM-DD">
+                                                            <input type="date" name="delay"
+                                                                class="form-control" placeholder="YYYY-MM-DD"required>
                                                         </div>
                                                         <div
                                                             class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
@@ -267,8 +267,8 @@
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label">Delai</label>
-                                                            <input type="text" name="delay"
-                                                                class="form-control dob-picker" placeholder="YYYY-MM-DD" required>
+                                                            <input type="date" name="delay"
+                                                                class="form-control" placeholder="YYYY-MM-DD" required>
                                                         </div>
                                                         <div
                                                             class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">

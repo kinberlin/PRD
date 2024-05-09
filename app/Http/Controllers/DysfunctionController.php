@@ -110,7 +110,6 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("Impossible de trouver la ressource demandée.", 404);
             }
-            dd($request);
             $corrections = [];
             for ($i = 0; $i < count($request->user); $i++) {
                 // Create a new Person object for each row and add it to the array
@@ -122,7 +121,8 @@ class DysfunctionController extends Controller
                 );
             }
             $corrective_acts = json_encode($corrections);
-            dd($corrective_acts);
+            $dys->corrective_acts = $corrective_acts;
+            //dd($corrective_acts);
             if ($dys->status == 1) {$dys->status = 2;}
             $dys->save();
             DB::commit();
