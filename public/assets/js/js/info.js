@@ -17,21 +17,21 @@ $(document).ready(function () {
     // Prevent the default form submission
     event.preventDefault();
 
-    $('input[name^="delay"]').each(function () {
+    $("input[name*='delay']").each(function () {
       $(this).attr('name', 'delay[]');
     });
-    $('input[name^="action"]').each(function () {
+    $("input[name*='action']").each(function () {
       $(this).attr('name', 'action[]');
     });
-    $('input[name^="user"]').each(function () {
+    $("select[name*='userr']").each(function () {
       $(this).attr('name', 'user[]');
     });
-    $('input[name^="department"]').each(function () {
+    $("select[name*='departmentt']").each(function () {
       $(this).attr('name', 'department[]');
     });
 
     // After updating the names, submit the form
-    $(this).unbind('submit').submit();
+   // $(this).unbind('submit').submit();
   });
 });
 $(document).ready(function () {

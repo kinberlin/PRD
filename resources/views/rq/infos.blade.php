@@ -186,7 +186,8 @@
                             <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
                                 data-bs-parent="#collapsibleSection">
                                 <div class="accordion-body">
-                                    <form class="row g-3" action="" method="POST" id="myForm">
+                                    <form class="row g-3" action="{!! route('dysfunction.action', ['id' => $data->id]) !!}" method="POST" id="myForm">
+                                        @csrf
                                         <div class="form-repeater col-md-12">
                                             <div data-repeater-list="group-a">
                                                 <div data-repeater-item>
@@ -235,12 +236,12 @@
                                                             <label class="form-label"
                                                                 for="form-repeater-1-1">Action</label>
                                                             <input type="text" name="action" id="form-repeater-1-1"
-                                                                class="form-control" placeholder="..." />
+                                                                class="form-control" placeholder="..."  required/>
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label"
                                                                 for="form-repeater-1-3">Département</label>
-                                                            <select id="form-repeater-1-3" name="department" class="form-select">
+                                                            <select id="form-repeater-1-3" name="departmentt" class="form-select" required>
                                                                 <option value="Male">Info...</option>
                                                                 <option value="Female">RH...</option>
                                                             </select>
@@ -248,8 +249,8 @@
                                                         <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
                                                             <label class="form-label"
                                                                 for="multicol-country">Personnes</label>
-                                                            <select id="multicol-country" name="user" class="select2 form-select"
-                                                                data-allow-clear="true">
+                                                            <select id="multicol-country" name="userr" class="select2 form-select"
+                                                                data-allow-clear="true" required>
                                                                 <option value="Australia">Monsieur Y</option>
                                                                 <option value="Bangladesh">M. Z</option>
                                                                 <option value="Belarus">M. B</option>
@@ -259,7 +260,7 @@
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label">Delai</label>
                                                             <input type="text" name="delay" class="form-control dob-picker"
-                                                                placeholder="YYYY-MM-DD">
+                                                                placeholder="YYYY-MM-DD" required>
                                                         </div>
                                                         <div
                                                             class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Correction;
 use App\Models\Dysfunction;
 use App\Models\Status;
 use Exception;
@@ -103,26 +104,32 @@ class DysfunctionController extends Controller
     }
     public function action(Request $request, $id)
     {
-        try {
+       // try {
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
             if ($dys == null) {
                 throw new Exception("Impossible de trouver la ressource demandée.", 404);
             }
-            foreach ($request->suppliers as $supplierName) {
-                Supplier::create([
-                    'product_id' => $productId,
-                    'name' => $supplierName,
-                ]);
+            dd($request);
+            $corrections = [];
+            for ($i = 0; $i < count($request->user); $i++) {
+                // Create a new Person object for each row and add it to the array
+                $corrections[] = new Correction(
+                    $request->action[$i],
+                    $request->department[$i],
+                    $request->user[$i],
+                    $request->delay[$i]
+                );
             }
-
+            $corrective_acts = json_encode($corrections);
+            dd($corrective_acts);
             if ($dys->status == 1) {$dys->status = 2;}
             $dys->save();
             DB::commit();
             return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-        } catch (Throwable $th) {
+       /* } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
     /**
      * Display the specified resource.

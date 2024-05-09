@@ -1,17 +1,18 @@
 <?php
 namespace App\Models;
 
-class Corrections
+class Correction
 {
     public $action;
-    public $surname;
-    public $created;
+    public $department;
+    public $user;
+    public $end_date;
 
-    public function __construct($name, $surname, $created)
+    public function __construct($action, $department, $user,  $end_date)
     {
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->created = $created;
+        $this->action = $action;
+        $this->department = $department;
+        $this->user = $user;
+        $this->end_date = $end_date;
     }
 }
-?>
