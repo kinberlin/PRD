@@ -20,6 +20,9 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return redirect('/admin/dashboard');
 });
+Route::get('/planner', function () {
+    return view('rq/planner');
+});
 Route::get('/employee', function () {
     return redirect('/employee/dashboard');
 });

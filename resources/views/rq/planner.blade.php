@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="./codebase/dhtmlxgantt.js"></script>
-    <link rel="stylesheet" href="./codebase/dhtmlxgantt.css" type="text/css" />
+    <script src="{!! url('assets/js/gantt-master/codebase/dhtmlxgantt.js') !!}"></script>
+    <link rel="stylesheet" href="{!! url('assets/js/gantt-master/codebase/dhtmlxgantt.css') !!}" type="text/css" />
     <title>Document</title>
   </head>
   <body>
