@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Rest\CartController;
-use App\Http\Controllers\Rest\WishlistController;
+use App\Http\Controllers\GanttController;
+use App\Http\Controllers\Rest\TaskController;
+use App\Http\Controllers\Rest\LinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,14 +16,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::resource('task', TaskController::class);
+Route::resource('link', LinkController::class);
+Route::get('/data', [GanttController::class, 'get']);
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware(['web'])->group(function () {
-    Route::get('/wishlist/delete/{id}', [WishlistController::class, 'destroy']);
-    Route::post('/wishlist', [WishlistController::class, 'store']);
-    Route::get('/cart/delete/{id}/{qty}', [CartController::class, 'destroy']);
-    Route::post('/cart', [CartController::class, 'store']);
+
     //Route::apiResource("cart", CartController::class);
-  });
+  });*/

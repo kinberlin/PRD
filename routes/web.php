@@ -33,7 +33,10 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 
+
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
+    Route::get('/dys/data', 'GanttController@get');
+
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
@@ -76,11 +79,11 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
-    Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
+ /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
     Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
     Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
-
+*/
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
