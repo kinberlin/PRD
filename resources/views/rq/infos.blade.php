@@ -192,6 +192,7 @@
                                         <div class="repeater col-md-12">
                                             <div data-repeater-item>
                                                 <div data-repeater-list="original">
+                                                    @foreach (json_decode($data->corrective_acts) as $index => $item)
                                                     <div class="row">
                                                         <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
                                                             <label class="form-label" for="repeater-1-1">Action</label>
@@ -232,6 +233,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>

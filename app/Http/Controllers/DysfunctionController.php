@@ -117,7 +117,8 @@ class DysfunctionController extends Controller
                     $request->action[$i],
                     $request->department[$i],
                     $request->user[$i],
-                    $request->delay[$i]
+                    $request->delay[$i],
+                    'Test User'
                 );
             }
             $corrective_acts = json_encode($corrections);
