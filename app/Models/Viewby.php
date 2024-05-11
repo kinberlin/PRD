@@ -9,7 +9,7 @@ class Viewby
     public $department;
     public $view_at = null;
 
-    public function __construct( $user, $department, $view_at)
+    public function __construct( $user, $department)
     {
         $this->department = $department;
         $this->user = $user;

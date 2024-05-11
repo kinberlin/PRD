@@ -217,12 +217,12 @@ deferred.promise().then(function (processList) {
     };
 
     gantt.attachEvent("onBeforeTaskUpdate", function(id, task) {
-        task.id = 1;
+        task.dysfunction = $('#uselessDysId').val();
         return true; // Return true to allow the task update to proceed
     });
 
     gantt.attachEvent("onBeforeTaskAdd", function(task) {
-        task.id = 1; 
+        task.dysfunction = $('#uselessDysId').val(); 
         return true; 
     });
     gantt.init("gantt_here");

@@ -46,6 +46,8 @@
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dysfonctionnement No.{{$id}} /</span> Actions Correctives</h4>
+        <input type="hidden" value="{{$id}}" id="uselessDysId"/>
         <div id="gantt_here" style="width: 100%; height: 100vh"></div>
     </div>
 @endsection

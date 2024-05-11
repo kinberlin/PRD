@@ -90,7 +90,10 @@ class DysfunctionController extends Controller
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
             if ($dys == null) {
-                throw new Exception("Error Processing Request", 1);
+                throw new Exception("La ressource spécifié est introuvable.", 1);
+            }
+            if ($dys->status  == 3) {
+                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 1);
             }
             $dys->status = 3;
 
