@@ -19,6 +19,7 @@ class TaskController extends RoutingController
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         $task->sortorder = Task::max("sortorder") + 1;
+        $task->created_by = 'Demo User'; 
 
         $task->save();
 

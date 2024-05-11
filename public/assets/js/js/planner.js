@@ -215,6 +215,16 @@ deferred.promise().then(function (processList) {
             return "weekend"
         }
     };
+
+    gantt.attachEvent("onBeforeTaskUpdate", function(id, task) {
+        task.id = 1;
+        return true; // Return true to allow the task update to proceed
+    });
+
+    gantt.attachEvent("onBeforeTaskAdd", function(task) {
+        task.id = 1; 
+        return true; 
+    });
     gantt.init("gantt_here");
 
     gantt.attachEvent("onLightboxButton", function (button_id, node, e) {
