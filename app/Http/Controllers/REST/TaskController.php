@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\REST;
 
+use App\Models\Dysfunction;
 use App\Models\Task;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
 
@@ -12,14 +14,18 @@ class TaskController extends RoutingController
     {
 
         $task = new Task();
-
+        $dyst = Dysfunction::find($request->dysfunction);
+        if ($dyst == null) {
+            throw new Exception('Ce dysfonctionnement est introuvable: '.$request->dysfunction, 404);
+        }
         $task->text = $request->text;
         $task->start_date = $request->start_date;
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         $task->sortorder = Task::max("sortorder") + 1;
-        $task->created_by = 'Demo User'; 
+        $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
+        $task->created_by = 'Demo User';
 
         $task->save();
 
@@ -32,7 +38,10 @@ class TaskController extends RoutingController
     public function update($id, Request $request)
     {
         $task = Task::find($id);
-
+        $dyst = Dysfunction::find($request->dysfunction);
+        if ($dyst == null) {
+            throw new Exception('Ce dysfonctionnement est introuvable : '.$request->dysfunction, 404);
+        }
         $task->text = $request->text;
         $task->start_date = $request->start_date;
         $task->duration = $request->duration;
@@ -41,6 +50,7 @@ class TaskController extends RoutingController
         $task->process = $request->has('process') ? $request->process : null;
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
+                $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
         $task->open = $request->open == "true" ? 1 : 0;
 
         $task->save();

@@ -14,12 +14,14 @@ use Throwable;
 
 class GanttController extends Controller
 {
-    public function get(){
- 
+    public function get($id){
+        $data = Task::where('dysfunction', $id)->orderBy('sortorder')->get();
+        $links = Link::whereIn('source', $data->pluck('id'))->orWhereIn('target', $data->pluck('id'))->get();
         return response()->json([
-            "data" => Task::orderBy('sortorder')->get(),
-            "links" => Link::all(),
-            "processes" => Processes::all()
+            "data" => $data,
+            "links" => $links,
+            "processes" => Processes::all(),
+            "dysfunction" => Dysfunction::where('id', $id)->get()
         ]);
     }
 

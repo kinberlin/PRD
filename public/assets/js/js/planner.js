@@ -2,7 +2,7 @@
 
 var deferred = $.Deferred();
 $.ajax({
-    url: '/api/data',
+    url: '/api/data/' + $('#uselessDysId').val(),
     method: 'GET',
     dataType: 'json',
     success: function (response) {
@@ -216,15 +216,7 @@ deferred.promise().then(function (processList) {
         }
     };
 
-    gantt.attachEvent("onBeforeTaskUpdate", function(id, task) {
-        task.dysfunction = $('#uselessDysId').val();
-        return true; // Return true to allow the task update to proceed
-    });
 
-    gantt.attachEvent("onBeforeTaskAdd", function(task) {
-        task.dysfunction = $('#uselessDysId').val(); 
-        return true; 
-    });
     gantt.init("gantt_here");
 
     gantt.attachEvent("onLightboxButton", function (button_id, node, e) {
@@ -244,7 +236,7 @@ deferred.promise().then(function (processList) {
         return true;
     });
 
-    gantt.load("/api/data");
+    gantt.load("/api/data/" + $('#uselessDysId').val());
 
     var dp = new gantt.dataProcessor("/api");
     dp.init(gantt);

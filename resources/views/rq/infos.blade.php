@@ -103,7 +103,7 @@
             <h5 class="card-header">Informations complementaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                        <h6> Info Supplementaires</h6>-->
+                                                            <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -172,7 +172,7 @@
             </form>
         </div>
         <!-- Collapsible Section -->
-        @if ($data->status != 1 && $data->status != 3)
+        @if ($data->status > 5 && $data->status != 3)
             <div class="row my-4">
                 <div class="col">
                     <h6> Mesures correctives</h6>
@@ -192,49 +192,54 @@
                                         <div class="repeater col-md-12">
                                             <div data-repeater-item>
                                                 <div data-repeater-list="original">
-                                                    @if($data->corrective_acts != null)
-                                                    @foreach (json_decode($data->corrective_acts) as $index => $item)
-                                                    <div class="row">
-                                                        <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                            <label class="form-label" for="repeater-1-1">Action</label>
-                                                            <input type="text" name="action" id="repeater-1-1"
-                                                                class="form-control" placeholder="..." required/>
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                            <label class="form-label"
-                                                                for="form-repeater-1-3">Département</label>
-                                                            <select id="form-repeater-1-3" name="departmentt"
-                                                                class="form-select"required>
-                                                                <option value="Male">Info...</option>
-                                                                <option value="Female">RH...</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                            <label class="form-label"
-                                                                for="multicol-country">Personnes</label>
-                                                            <select id="multicol-country" name="userr"
-                                                                class="select2 form-select" data-allow-clear="true"required>
-                                                                <option value="Australia">Monsieur Y</option>
-                                                                <option value="Bangladesh">M. Z</option>
-                                                                <option value="Belarus">M. B</option>
-                                                                <option value="Brazil">M. A</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                            <label class="form-label">Delai</label>
-                                                            <input type="date" name="delay"
-                                                                class="form-control" placeholder="YYYY-MM-DD"required>
-                                                        </div>
-                                                        <div
-                                                            class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
-                                                            <button class="btn btn-label-danger mt-4" data-repeater-delete>
-                                                                <i class="bx bx-x me-1"></i>
-                                                                <span class="align-middle">Retirer</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    @endforeach
+                                                    @if ($data->corrective_acts != null)
+                                                        @foreach (json_decode($data->corrective_acts) as $index => $item)
+                                                            <div class="row">
+                                                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                                                                    <label class="form-label"
+                                                                        for="repeater-1-1">Action</label>
+                                                                    <input type="text" name="action"
+                                                                        id="repeater-1-1" class="form-control"
+                                                                        placeholder="..." required />
+                                                                </div>
+                                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                                    <label class="form-label"
+                                                                        for="form-repeater-1-3">Département</label>
+                                                                    <select id="form-repeater-1-3" name="departmentt"
+                                                                        class="form-select"required>
+                                                                        <option value="Male">Info...</option>
+                                                                        <option value="Female">RH...</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                                                                    <label class="form-label"
+                                                                        for="multicol-country">Personnes</label>
+                                                                    <select id="multicol-country" name="userr"
+                                                                        class="select2 form-select"
+                                                                        data-allow-clear="true"required>
+                                                                        <option value="Australia">Monsieur Y</option>
+                                                                        <option value="Bangladesh">M. Z</option>
+                                                                        <option value="Belarus">M. B</option>
+                                                                        <option value="Brazil">M. A</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                                    <label class="form-label">Delai</label>
+                                                                    <input type="date" name="delay"
+                                                                        class="form-control"
+                                                                        placeholder="YYYY-MM-DD"required>
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                                                                    <button class="btn btn-label-danger mt-4"
+                                                                        data-repeater-delete>
+                                                                        <i class="bx bx-x me-1"></i>
+                                                                        <span class="align-middle">Retirer</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                        @endforeach
                                                     @endif
                                                 </div>
                                             </div>
@@ -247,7 +252,7 @@
                                                             <label class="form-label"
                                                                 for="form-repeater-1-1">Action</label>
                                                             <input type="text" name="action" id="form-repeater-1-1"
-                                                                class="form-control" placeholder="..."  required/>
+                                                                class="form-control" placeholder="..." required />
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label"
@@ -262,7 +267,8 @@
                                                             <label class="form-label"
                                                                 for="multicol-country">Personnes</label>
                                                             <select id="multicol-country" name="userr"
-                                                                class="select2 form-select" data-allow-clear="true" required>
+                                                                class="select2 form-select" data-allow-clear="true"
+                                                                required>
                                                                 <option value="Australia">Monsieur Y</option>
                                                                 <option value="Bangladesh">M. Z</option>
                                                                 <option value="Belarus">M. B</option>
@@ -271,8 +277,8 @@
                                                         </div>
                                                         <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                             <label class="form-label">Delai</label>
-                                                            <input type="date" name="delay"
-                                                                class="form-control" placeholder="YYYY-MM-DD" required>
+                                                            <input type="date" name="delay" class="form-control"
+                                                                placeholder="YYYY-MM-DD" required>
                                                         </div>
                                                         <div
                                                             class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
@@ -297,6 +303,34 @@
                                             <button type="submit" id="saveActionsBtn"
                                                 class="btn btn-success me-sm-3 me-1">Enregistrer les
                                                 actions</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if ($data->status != 1 && $data->status != 3)
+            <div class="row my-4">
+                <div class="col">
+                    <h6> Mesures correctives</h6>
+                    <div class="accordion" id="collapsibleSection2">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionPlanner" aria-expanded="true"
+                                    aria-controls="accordionPlanner"> Actions correctives</button>
+                            </h2>
+                            <div id="accordionPlanner" class="accordion-collapse collapse show"
+                                data-bs-parent="#collapsibleSection2">
+                                <div class="accordion-body">
+                                    <form class="row g-3" action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
+                                        <div class="pt-4">
+                                            <button type="submit" id="saveActionsBtn"
+                                                class="btn btn-success me-sm-3 me-1">Aller a la Page de
+                                                Planification</button>
                                         </div>
                                     </form>
                                 </div>
