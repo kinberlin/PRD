@@ -42,6 +42,28 @@
         .gantt_selected .weekend {
             background: #f7eb91;
         }
+
+        /*recalculations*/
+        .gantt_task_line.gantt_dependent_task {
+			background-color: #65c16f;
+			border: 1px solid #3c9445;
+		}
+
+		.gantt_task_line.gantt_dependent_task .gantt_task_progress {
+			background-color: #46ad51;
+		}
+
+		.hide_project_progress_drag .gantt_task_progress_drag {
+			visibility: hidden;
+		}
+
+		.gantt_task_progress {
+			text-align: left;
+			padding-left: 10px;
+			box-sizing: border-box;
+			color: white;
+			font-weight: bold;
+		}
     </style>
 @endsection
 @section('mainContent')

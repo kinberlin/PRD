@@ -16,14 +16,17 @@ class TaskController extends RoutingController
         $task = new Task();
         $dyst = Dysfunction::find($request->dysfunction);
         if ($dyst == null) {
-            throw new Exception('Ce dysfonctionnement est introuvable: '.$request->dysfunction, 404);
+            throw new Exception('Ce dysfonctionnement est introuvable: ' . $request->dysfunction, 404);
         }
         $task->text = $request->text;
         $task->start_date = $request->start_date;
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
+        $task->process = $request->has('process') ? $request->process : null;
         $task->sortorder = Task::max("sortorder") + 1;
+        $task->description = $request->has('description') ? $request->description : null;
+        $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
         $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
         $task->created_by = 'Demo User';
 
@@ -40,17 +43,17 @@ class TaskController extends RoutingController
         $task = Task::find($id);
         $dyst = Dysfunction::find($request->dysfunction);
         if ($dyst == null) {
-            throw new Exception('Ce dysfonctionnement est introuvable : '.$request->dysfunction, 404);
+            throw new Exception('Ce dysfonctionnement est introuvable : ' . $request->dysfunction, 404);
         }
         $task->text = $request->text;
         $task->start_date = $request->start_date;
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
-        $task->process = $request->has('process') ? $request->process : null;
+        $task->process = $request->has('process') ? $request->process : $task->process;
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
-                $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
+        $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
         $task->open = $request->open == "true" ? 1 : 0;
 
         $task->save();

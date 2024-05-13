@@ -8,6 +8,7 @@ $.ajax({
     success: function (response) {
         // Parse the JSON response
         var processes = response.processes;
+        var dysfunctions = response.dysfunctions;
 
         // Map the processes array to the required format
         var processList = processes.map(function (process) {
@@ -16,14 +17,24 @@ $.ajax({
                 label: process.name
             };
         });
-        deferred.resolve(processList);
+        var dysList = dysfunctions.map(function (dys) {
+            return {
+                key: dys.id,
+                label: '(No. : ' + dys.id + ') ' + 'Processus : ' + JSON.parse(dys.concern_processes)[0]
+            };
+        });
+        deferred.resolve([processList, dysList]);
     },
+
     error: function (xhr, status, error) {
         console.error('Error fetching data from the API:', error);
         alert('Error fetching data from the API: '.error);
     }
 });
-deferred.promise().then(function (processList) {
+deferred.promise().then(function (valuesArray) {
+    var processList = valuesArray[0];
+    var dysList = valuesArray[1];
+
     gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
     gantt.config.order_branch = true;
     gantt.config.order_branch_free = true;
@@ -63,32 +74,41 @@ deferred.promise().then(function (processList) {
         }
     });
     gantt.serverList("process", processList);
-    gantt.config.lightbox.sections = [{
-        name: "description",
-        height: 50,
-        map_to: "description",
-        type: "textarea",
-        focus: true
-    },
-    {
-        name: "text",
-        height: 30,
-        map_to: "text",
-        type: "textarea",
+    gantt.serverList("dysList", dysList);
+    gantt.config.lightbox.sections = [
+        {
+            name: "dysfunction",
+            height: 30,
+            map_to: "dysfunction",
+            type: "select",
+            options: gantt.serverList("dysList")
+        },
+        {
+            name: "description",
+            height: 50,
+            map_to: "description",
+            type: "textarea",
+            focus: true
+        },
+        {
+            name: "text",
+            height: 30,
+            map_to: "text",
+            type: "textarea",
 
-    },
-    {
-        name: "process",
-        height: 30,
-        map_to: "process",
-        type: "select",
-        options: gantt.serverList("process")
-    },
-    {
-        name: "time",
-        type: "duration",
-        map_to: "auto"
-    }
+        },
+        {
+            name: "process",
+            height: 30,
+            map_to: "process",
+            type: "select",
+            options: gantt.serverList("process")
+        },
+        {
+            name: "time",
+            type: "duration",
+            map_to: "auto"
+        }
     ];
     gantt.templates.rightside_text = function (start, end, task) {
         return byId(gantt.serverList('process'), task.process);
@@ -103,7 +123,11 @@ deferred.promise().then(function (processList) {
             if (task.process) {
                 css.push("gantt_resource_task gantt_resource_" + task.process);
             }
-
+            if (task.dysfunction) {
+                css.push("gantt_resource_task gantt_resource_" + task.dysfunction);
+            }
+            if (task.type == gantt.config.types.project) { return "hide_project_progress_drag"; }
+            if (task.progress == 1) { return "completed_task"; } else { return ""; }
             return css.join(" ");
         };
     gantt.attachEvent("onLightboxSave", function (id, task, is_new) {
@@ -152,17 +176,89 @@ deferred.promise().then(function (processList) {
             });
         }
     });
+    // recalculate progress of summary tasks when the progress of subtasks changes
+    (function dynamicProgress() {
+
+        function calculateSummaryProgress(task) {
+            if (task.type != gantt.config.types.project)
+                return task.progress;
+            var totalToDo = 0;
+            var totalDone = 0;
+            gantt.eachTask(function (child) {
+                if (child.type != gantt.config.types.project) {
+                    totalToDo += child.duration;
+                    totalDone += (child.progress || 0) * child.duration;
+                }
+            }, task.id);
+            if (!totalToDo) return 0;
+            else return totalDone / totalToDo;
+        }
+
+        function refreshSummaryProgress(id, submit) {
+            if (!gantt.isTaskExists(id))
+                return;
+
+            var task = gantt.getTask(id);
+            var newProgress = calculateSummaryProgress(task);
+
+            if (newProgress !== task.progress) {
+                task.progress = newProgress;
+
+                if (!submit) {
+                    gantt.refreshTask(id);
+                } else {
+                    gantt.updateTask(id);
+                }
+            }
+
+            if (!submit && gantt.getParent(id) !== gantt.config.root_id) {
+                refreshSummaryProgress(gantt.getParent(id), submit);
+            }
+        }
+
+
+        gantt.attachEvent("onParse", function () {
+            gantt.eachTask(function (task) {
+                task.progress = calculateSummaryProgress(task);
+            });
+        });
+
+        gantt.attachEvent("onAfterTaskUpdate", function (id) {
+            refreshSummaryProgress(gantt.getParent(id), true);
+        });
+
+        gantt.attachEvent("onTaskDrag", function (id) {
+            refreshSummaryProgress(gantt.getParent(id), false);
+        });
+        gantt.attachEvent("onAfterTaskAdd", function (id) {
+            refreshSummaryProgress(gantt.getParent(id), true);
+        });
+
+
+        (function () {
+            var idParentBeforeDeleteTask = 0;
+            gantt.attachEvent("onBeforeTaskDelete", function (id) {
+                idParentBeforeDeleteTask = gantt.getParent(id);
+            });
+            gantt.attachEvent("onAfterTaskDelete", function () {
+                refreshSummaryProgress(idParentBeforeDeleteTask, true);
+            });
+        })();
+    })();
+    gantt.config.auto_types = true;
+    gantt.templates.progress_text = function (start, end, task) {
+        return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
+    };
+
+    //end recalculations
     var labels = gantt.locale.labels;
+    labels.column_dysfunction = labels.section_dysfunction = "Dysfonctionnement / Signalement";
     labels.column_process = labels.section_process = "Processus Ciblé";
     labels.column_text = labels.section_text = "Action";
     labels.column_description = labels.section_description = "Description";
     gantt.locale.labels["complete_button"] = "Complete";
     gantt.config.buttons_left = ["dhx_save_btn", "dhx_cancel_btn", "complete_button"];
-    gantt.templates.task_class = function (start, end, task) {
-        if (task.progress == 1)
-            return "completed_task";
-        return "";
-    };
+
     function byId(list, id) {
         for (var i = 0; i < list.length; i++) {
             if (list[i].key == id)

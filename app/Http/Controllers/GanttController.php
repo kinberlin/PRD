@@ -21,7 +21,7 @@ class GanttController extends Controller
             "data" => $data,
             "links" => $links,
             "processes" => Processes::all(),
-            "dysfunction" => Dysfunction::where('id', $id)->get()
+            "dysfunctions" => Dysfunction::where('id', $id)->get()
         ]);
     }
 
