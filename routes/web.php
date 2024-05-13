@@ -47,6 +47,8 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
+    Route::post('/rq/invitation', 'InvitationController@store')->name('invitation.store');
+
 
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');

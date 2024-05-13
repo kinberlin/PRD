@@ -94,18 +94,19 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+                            <form class="event-form pt-0" id="myForm" action="{!! route('invitation.store') !!}" method="POST">
+                                @csrf
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
                                     <input type="text" class="form-control" id="eventTitle" name="object"
-                                        placeholder="Objet de Réunion" />
+                                        placeholder="Objet de Réunion"  required/>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dysfunctionList" class="form-label">Signalement / Dysfonctionnement</label>
                                     <select id="dysfunctionList" class="select2-searching form-select form-select-lg"
-                                        data-allow-clear="true" name="dysfunction">
+                                        data-allow-clear="true" name="dysfunction" required>
                                         @foreach ($dys as $_d)
-                                            <option value="{{ $_d }}">
+                                            <option value="{{ $_d->id }}">
                                                 ID : {{ $_d->id }} | Emp. :
                                                 {{ $_d->enterprise . ' (' . $_d->site . ')' }}
                                             </option>
@@ -116,7 +117,7 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLabel">Motif</label>
                                     <select class="select2 select-event-label form-select" id="eventLabel"
-                                        name="motif">
+                                        name="motif" required>
                                         <option data-label="primary" value="Business" selected>
                                             Résolution de Dysfonctionnement
                                         </option>
@@ -131,22 +132,22 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="eventStartDate">Date et Heure</label>
                                     <input type="text" class="form-control" id="eventStartDate" name="dates"
-                                        placeholder="Horraire de la réunion" />
+                                        placeholder="Horraire de la réunion"  required/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLocation">Lieu</label>
                                     <input type="text" class="form-control" id="eventLocation" name="place"
-                                        placeholder="Entrer le Lieu" />
+                                        placeholder="Entrer le Lieu"  required/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventURL">Lien de la réunion</label>
                                     <input type="url" class="form-control" id="eventURL" name="link"
-                                        placeholder="https://www.google.com/" />
+                                        placeholder="https://www.google.com/"  required/>
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
                                     <select class="select2 select-event-guests form-select" id="eventGuests"
-                                        name="eventGuests" multiple>
+                                        name="internal_invites[]" multiple required>
                                         <option data-avatar="JF" value="Jane Foster">
                                             Jane Foster
                                         </option>
@@ -182,7 +183,7 @@
                                             <div data-repeater-item>
                                                 <div class="row">
                                                     <input type="email" class="form-control" id="idemail"
-                                                        name="link" placeholder="@ex.com" />
+                                                        name="extuser" placeholder="@ex.com"  required/>
                                                     <button class="btn btn-label-danger" data-repeater-delete>
                                                         <i class="bx bx-x me-1"></i>
                                                     </button>
@@ -200,11 +201,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventDescription">Description</label>
-                                    <textarea class="form-control" name="description" id="eventDescription"></textarea>
+                                    <textarea class="form-control" name="description" id="eventDescription" required></textarea>
                                 </div>
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
                                     <div>
-                                        <button type="submit" class="btn btn-primary btn-add-event me-sm-3 me-1">
+                                        <button type="submit" id="regInvitation" class="btn btn-primary btn-add-event me-sm-3 me-1">
                                             Ajouter
                                         </button>
                                         <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1"

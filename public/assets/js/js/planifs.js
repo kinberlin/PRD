@@ -1,8 +1,30 @@
+document.getElementById("myForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission
+  // Additional logic or actions can be performed here
+});
 $(document).ready(function () {
     var currentDate = new Date().toISOString().split('T')[0];
     $('#eventStartDate').attr('min', currentDate);
+      $("#regInvitation").click(function (event) {
+    // Submit the form
+
+    $("input[name*='extuser']").each(function () {
+      $(this).attr('name', 'extuser[]');
+    });
+    var form = $("#myForm");
+
+    // Check if all required fields are filled
+    if (form[0].checkValidity()) {
+      // Submit the form if all required fields are filled
+      form.submit();
+    } else {
+      // If required fields are not filled, trigger HTML5 validation
+      form[0].reportValidity();
+    }
+  });
 
 });
+
 "use strict";
 $(function () {
     var e = $(".selectpicker"),

@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $object
  * @property string $place
  * @property string $rq
+ * @property mixed  $internal_invites
+ * @property mixed  $external_invites
  */
 class Invitation extends Model
 {use SoftDeletes;
@@ -41,7 +43,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'dates', 'deleted_at', 'description', 'duration', 'dysfonction', 'link', 'motif', 'object', 'place', 'rq'
+        'created_at', 'dates', 'deleted_at', 'description', 'duration', 'dysfonction', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites'
     ];
 
     /**
