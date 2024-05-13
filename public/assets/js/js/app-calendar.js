@@ -169,7 +169,7 @@ isRtl && (direction = "rtl"),
                     e = moment(e.date).format("YYYY-MM-DD");
                     u(),
                         C.show(),
-                        b && (b.innerHTML = "Add Event"),
+                        b && (b.innerHTML = "Ajouter un Evenement"),
                         (y.innerHTML = "Add"),
                         y.classList.remove("btn-update-event"),
                         y.classList.add("btn-add-event"),
@@ -319,7 +319,7 @@ isRtl && (direction = "rtl"),
                     u();
                 }),
                 h.addEventListener("click", (e) => {
-                    b && (b.innerHTML = "Add Event"),
+                    b && (b.innerHTML = "Ajouter un Evenement"),
                         (y.innerHTML = "Add"),
                         y.classList.remove("btn-update-event"),
                         y.classList.add("btn-add-event"),

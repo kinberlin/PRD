@@ -41,7 +41,8 @@ class RQController extends Controller
     }
     public function planif()
     {
-        return view('rq/planifs');
+        $dys = Dysfunction::all();
+        return view('rq/planifs', compact('dys'));
     }
     public function empty()
     {

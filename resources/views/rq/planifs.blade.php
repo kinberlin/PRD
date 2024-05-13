@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{!! url('assets/vendor/libs/%40form-validation/form-validation.css') !!}" />
     <link rel="stylesheet" href="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.css') !!}" />
     <link rel="stylesheet" href="{!! url('assets/vendor/css/pages/app-calendar.css') !!}" />
+    <link rel="stylesheet" href="{!! url('assets/vendor/libs/tagify/tagify.css') !!}" />
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -100,18 +101,16 @@
                                         placeholder="Objet de Réunion" />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label" >Dysfonctionnement Concerné</label>
-                                    <select class="select2 select-event-label form-select"
-                                        name="motif">
-                                        <option value="Business" selected>
-                                            Résolution de Dysfonctionnement
-                                        </option>
-                                        <option value="Personal">
-                                            Evaluation de Dysfonctionnement
-                                        </option>
-                                        <option value="Family">
-                                            Autres
-                                        </option>
+                                    <label for="dysfunctionList" class="form-label">Signalement / Dysfonctionnement</label>
+                                    <select id="dysfunctionList" class="select2-searching form-select form-select-lg"
+                                        data-allow-clear="true" name="dysfunction">
+                                        @foreach ($dys as $_d)
+                                            <option value="{{ $_d }}">
+                                                ID : {{ $_d->id }} | Emp. :
+                                                {{ $_d->enterprise . ' (' . $_d->site . ')' }}
+                                            </option>
+                                        @endforeach
+
                                     </select>
                                 </div>
                                 <div class="mb-3">
@@ -167,7 +166,15 @@
                                             Cheryl May
                                         </option>
                                     </select>
-                                </div>
+                                </div><!--
+                                <div class="mb-3">
+                                    <label class="form-label" for="idemail">Invités externe sur PRD</label>
+                                     <input id="TagifyEmailList" class="tagify-email-list"
+                                        value="some56.name@website.com">
+                                    <button type="button"
+                                        class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
+                                            class="tf-icons bx bx-plus"></span> </button>
+                                </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
                                     <div class="form-repeater col-md-12">
@@ -206,10 +213,10 @@
                                         </button>
                                     </div>
                                     <button class="btn btn-label-danger btn-delete-event d-none">
-                                    Supprimer
-                                </button>
+                                        Supprimer
+                                    </button>
                                 </div>
-                                
+
                             </form>
                         </div>
                     </div>
@@ -220,6 +227,7 @@
     </div>
 @endsection
 @section('scriptContent')
+    <script src="{!! url('assets/vendor/libs/tagify/tagify.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/bootstrap5.js') !!}"></script>
@@ -230,11 +238,5 @@
     <script src="{!! url('assets/js/js/app-calendar.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
-    <script>
-        $(document).ready(function() {
-            var currentDate = new Date().toISOString().split('T')[0];
-            $('#eventStartDate').attr('min', currentDate);
-
-        });
-    </script>
+    <script src="{!! url('assets/js/js/planifs.js') !!}"></script>
 @endsection
