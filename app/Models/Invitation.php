@@ -8,22 +8,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int    $id
  * @property int    $created_at
+ * @property int    $dates
  * @property int    $deleted_at
- * @property int    $holliday
- * @property int    $pme
- * @property int    $pne
- * @property int    $status
- * @property int    $validator
- * @property string $reasons
+ * @property int    $duration
+ * @property int    $dysfonction
+ * @property string $description
+ * @property string $link
+ * @property string $motif
+ * @property string $object
+ * @property string $place
+ * @property string $rq
  */
-class Validation extends Model
+class Invitation extends Model
 {use SoftDeletes;
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'validation';
+    protected $table = 'invitation';
 
     /**
      * The primary key for the model.
@@ -38,7 +41,7 @@ class Validation extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'holliday', 'pme', 'pne', 'reasons', 'status', 'validator'
+        'created_at', 'dates', 'deleted_at', 'description', 'duration', 'dysfonction', 'link', 'motif', 'object', 'place', 'rq'
     ];
 
     /**
@@ -56,7 +59,7 @@ class Validation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'holliday' => 'int', 'pme' => 'int', 'pne' => 'int', 'reasons' => 'string', 'status' => 'int', 'validator' => 'int'
+        'id' => 'int', 'created_at' => 'timestamp', 'dates' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'duration' => 'int', 'dysfonction' => 'int', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
     ];
 
     /**
@@ -65,7 +68,7 @@ class Validation extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'dates', 'deleted_at'
     ];
 
     /**
