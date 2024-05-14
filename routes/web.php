@@ -43,11 +43,12 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
+    Route::post('/rq/invitation', 'InvitationController@store')->name('invitation.store');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
-    Route::post('/rq/invitation', 'InvitationController@store')->name('invitation.store');
+    
 
 
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');

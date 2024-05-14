@@ -42,7 +42,8 @@ class RQController extends Controller
     public function planif()
     {
         $dys = Dysfunction::all();
-        return view('rq/planifs', compact('dys'));
+        $users = Users::all();
+        return view('rq/planifs', compact('dys','users'));
     }
     public function empty()
     {

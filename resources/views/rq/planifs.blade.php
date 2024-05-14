@@ -99,10 +99,11 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
                                     <input type="text" class="form-control" id="eventTitle" name="object"
-                                        placeholder="Objet de Réunion"  required/>
+                                        placeholder="Objet de Réunion" required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="dysfunctionList" class="form-label">Signalement / Dysfonctionnement</label>
+                                    <label for="dysfunctionList" class="form-label">Signalement /
+                                        Dysfonctionnement</label>
                                     <select id="dysfunctionList" class="select2-searching form-select form-select-lg"
                                         data-allow-clear="true" name="dysfunction" required>
                                         @foreach ($dys as $_d)
@@ -116,8 +117,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLabel">Motif</label>
-                                    <select class="select2 select-event-label form-select" id="eventLabel"
-                                        name="motif" required>
+                                    <select class="select2 select-event-label form-select" id="eventLabel" name="motif"
+                                        required>
                                         <option data-label="primary" value="Business" selected>
                                             Résolution de Dysfonctionnement
                                         </option>
@@ -132,50 +133,37 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="eventStartDate">Date et Heure</label>
                                     <input type="text" class="form-control" id="eventStartDate" name="dates"
-                                        placeholder="Horraire de la réunion"  required/>
+                                        placeholder="Horraire de la réunion" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLocation">Lieu</label>
                                     <input type="text" class="form-control" id="eventLocation" name="place"
-                                        placeholder="Entrer le Lieu"  required/>
+                                        placeholder="Entrer le Lieu" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventURL">Lien de la réunion</label>
                                     <input type="url" class="form-control" id="eventURL" name="link"
-                                        placeholder="https://www.google.com/"  required/>
+                                        placeholder="https://www.google.com/" required />
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
                                     <select class="select2 select-event-guests form-select" id="eventGuests"
                                         name="internal_invites[]" multiple required>
-                                        <option data-avatar="JF" value="Jane Foster">
-                                            Jane Foster
-                                        </option>
-                                        <option data-avatar="3.png" value="Donna Frank">
-                                            Donna Frank
-                                        </option>
-                                        <option data-avatar="5.png" value="Gabrielle Robertson">
-                                            Gabrielle Robertson
-                                        </option>
-                                        <option data-avatar="7.png" value="Lori Spears">
-                                            Lori Spears
-                                        </option>
-                                        <option data-avatar="9.png" value="Sandy Vega">
-                                            Sandy Vega
-                                        </option>
-                                        <option data-avatar="11.png" value="Cheryl May">
-                                            Cheryl May
-                                        </option>
+                                        @foreach ($users as $u)
+                                            <option data-avatar="{{$u->image}}" value="{{$u->email}}" @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif>
+                                                {{$u->email}} <br> Matricule : {{$u->matricule}}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div><!--
-                                <div class="mb-3">
-                                    <label class="form-label" for="idemail">Invités externe sur PRD</label>
-                                     <input id="TagifyEmailList" class="tagify-email-list"
-                                        value="some56.name@website.com">
-                                    <button type="button"
-                                        class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
-                                            class="tf-icons bx bx-plus"></span> </button>
-                                </div>-->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="idemail">Invités externe sur PRD</label>
+                                         <input id="TagifyEmailList" class="tagify-email-list"
+                                            value="some56.name@website.com">
+                                        <button type="button"
+                                            class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
+                                                class="tf-icons bx bx-plus"></span> </button>
+                                    </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
                                     <div class="form-repeater col-md-12">
@@ -183,7 +171,7 @@
                                             <div data-repeater-item>
                                                 <div class="row">
                                                     <input type="email" class="form-control" id="idemail"
-                                                        name="extuser" placeholder="@ex.com"  required/>
+                                                        name="extuser" placeholder="@ex.com" required />
                                                     <button class="btn btn-label-danger" data-repeater-delete>
                                                         <i class="bx bx-x me-1"></i>
                                                     </button>
@@ -205,7 +193,8 @@
                                 </div>
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
                                     <div>
-                                        <button type="submit" id="regInvitation" class="btn btn-primary btn-add-event me-sm-3 me-1">
+                                        <button type="submit" id="regInvitation"
+                                            class="btn btn-primary btn-add-event me-sm-3 me-1">
                                             Ajouter
                                         </button>
                                         <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1"
