@@ -119,13 +119,13 @@
                                     <label class="form-label" for="eventLabel">Motif</label>
                                     <select class="select2 select-event-label form-select" id="eventLabel" name="motif"
                                         required>
-                                        <option data-label="primary" value="Business" selected>
+                                        <option data-label="primary" value="Résolution de Dysfonctionnement" selected>
                                             Résolution de Dysfonctionnement
                                         </option>
-                                        <option data-label="danger" value="Personal">
+                                        <option data-label="danger" value="Evaluation de Dysfonctionnement">
                                             Evaluation de Dysfonctionnement
                                         </option>
-                                        <option data-label="warning" value="Family">
+                                        <option data-label="warning" value="Autres">
                                             Autres
                                         </option>
                                     </select>
@@ -134,6 +134,16 @@
                                     <label class="form-label" for="eventStartDate">Date et Heure</label>
                                     <input type="text" class="form-control" id="eventStartDate" name="dates"
                                         placeholder="Horraire de la réunion" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="flatpickr-begintime" class="form-label">Heure de Début</label>
+                                    <input type="text" class="form-control" placeholder="HH:MM" name="begin"
+                                        id="flatpickr-begintime" placeholder="Heure de Début de la réunion" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="flatpickr-endtime" class="form-label">Heure de Fin</label>
+                                    <input type="text" class="form-control" placeholder="HH:MM" id="flatpickr-endtime"
+                                        name="end" placeholder="Heure de Fin de la réunion" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLocation">Lieu</label>
@@ -148,22 +158,23 @@
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
                                     <select class="select2 select-event-guests form-select" id="eventGuests"
-                                        name="internal_invites[]" multiple required>
+                                        name="internal_invites[]" multiple>
                                         @foreach ($users as $u)
-                                            <option data-avatar="{{$u->image}}" value="{{$u->email}}" @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif>
-                                                {{$u->email}} <br> Matricule : {{$u->matricule}}
+                                            <option data-avatar="{{ $u->image }}" value="{{ $u->email }}"
+                                                @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif>
+                                                {{ $u->email }} <br> Matricule : {{ $u->matricule }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div><!--
-                                    <div class="mb-3">
-                                        <label class="form-label" for="idemail">Invités externe sur PRD</label>
-                                         <input id="TagifyEmailList" class="tagify-email-list"
-                                            value="some56.name@website.com">
-                                        <button type="button"
-                                            class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
-                                                class="tf-icons bx bx-plus"></span> </button>
-                                    </div>-->
+                                            <div class="mb-3">
+                                                <label class="form-label" for="idemail">Invités externe sur PRD</label>
+                                                 <input id="TagifyEmailList" class="tagify-email-list"
+                                                    value="some56.name@website.com">
+                                                <button type="button"
+                                                    class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
+                                                        class="tf-icons bx bx-plus"></span> </button>
+                                            </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
                                     <div class="form-repeater col-md-12">

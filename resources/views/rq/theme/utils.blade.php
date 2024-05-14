@@ -17,7 +17,6 @@
 <script src="{!! url('assets/vendor/libs/sweetalert2/sweetalert2.js') !!}"></script>
 <script src="{!! url('assets/vendor/libs/flatpickr/flatpickr.js') !!}"></script>
 <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
-<script src="{!! url('assets/vendor/libs/flatpickr/flatpickr.js') !!}"></script>
 <!-- Main JS -->
 <script src="{!! url('assets/js/js/main.js') !!}"></script>
 <script>

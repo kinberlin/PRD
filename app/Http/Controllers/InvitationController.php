@@ -35,29 +35,33 @@ class InvitationController extends Controller
         // try {
         DB::beginTransaction();
         $data = new Invitation();
+        $data->rq = 'Test RQ Mtricule 35258';//waiting Auth
         $data->object = $request->input('object');
-        $data->dysfonction = $request->input('dysfonction');
+        $data->dysfonction = $request->input('dysfunction');
         $data->motif = $request->input('motif');
         $data->dates = $request->input('dates');
         $data->place = $request->input('place');
         $data->link = $request->input('link');
-        $data->description  = $request->input('description');
+        $data->description = $request->input('description');
+        $data->begin = $request->input('begin');
+        $data->end = $request->input('end');
         $i_v = $request->input('internal_invites', []);
         $internal_invites = [];
-        foreach ($i_v as $option) {
-            $internal_invites[] = new Invites( Users::where('email', $option)->get()->first());
-        }
+        if (!empty($i_v)) {foreach ($i_v as $option) {
+            $internal_invites[] = new Invites(Users::where('email', $option)->get()->first());
+        }}
         $data->internal_invites = json_encode($internal_invites);
-            $ext_u = [];
-        for ($i = 0; $i < count($request->extuser); $i++) {
-            // Create a new Person object for each row and add it to the array
-            $ext_u[] =  $request->extuser[$i];
+        $ext_u = [];
+        if ($request->has('extuser') && !empty($request->extuser)) {
+            for ($i = 0; $i < count($request->extuser); $i++) {
+                // Create a new Person object for each row and add it to the array
+                $ext_u[] = $request->extuser[$i];
+            }
         }
         $data->external_invites = json_encode($ext_u);
-        dd($data);
-        //$data->save();
+        $data->save();
         DB::commit();
-        return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        return redirect()->back()->with('error', "La réunion a été créer avec succes.");
         /* } catch (Throwable $th) {
     return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
     }*/

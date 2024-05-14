@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $created_at
  * @property int    $dates
  * @property int    $deleted_at
- * @property int    $duration
  * @property int    $dysfonction
  * @property string $description
  * @property string $link
+ * @property string $begin
+ * @property string $end
  * @property string $motif
  * @property string $object
  * @property string $place
@@ -43,7 +44,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'dates', 'deleted_at', 'description', 'duration', 'dysfonction', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites'
+        'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'begin', 'end'
     ];
 
     /**
@@ -61,7 +62,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'dates' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'duration' => 'int', 'dysfonction' => 'int', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
+        'id' => 'int', 'created_at' => 'timestamp', 'dates' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'begin' => 'string', 'end' => 'string'
     ];
 
     /**

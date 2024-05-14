@@ -1,27 +1,27 @@
 document.getElementById("myForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent default form submission
-  // Additional logic or actions can be performed here
+    event.preventDefault(); // Prevent default form submission
+    // Additional logic or actions can be performed here
 });
 $(document).ready(function () {
     var currentDate = new Date().toISOString().split('T')[0];
     $('#eventStartDate').attr('min', currentDate);
-      $("#regInvitation").click(function (event) {
-    // Submit the form
+    $("#regInvitation").click(function (event) {
+        // Submit the form
 
-    $("input[name*='extuser']").each(function () {
-      $(this).attr('name', 'extuser[]');
+        $("input[name*='extuser']").each(function () {
+            $(this).attr('name', 'extuser[]');
+        });
+        var form = $("#myForm");
+
+        // Check if all required fields are filled
+        if (form[0].checkValidity()) {
+            // Submit the form if all required fields are filled
+            form.submit();
+        } else {
+            // If required fields are not filled, trigger HTML5 validation
+            form[0].reportValidity();
+        }
     });
-    var form = $("#myForm");
-
-    // Check if all required fields are filled
-    if (form[0].checkValidity()) {
-      // Submit the form if all required fields are filled
-      form.submit();
-    } else {
-      // If required fields are not filled, trigger HTML5 validation
-      form[0].reportValidity();
-    }
-  });
 
 });
 
@@ -29,8 +29,11 @@ $(document).ready(function () {
 $(function () {
     var e = $(".selectpicker"),
         t = $(".select2-searching"),
-        n = $(".select2-icons");
-
+        n = $(".select2-icons"),
+        t = document.querySelector("#flatpickr-endtime"),
+        b = document.querySelector("#flatpickr-begintime");
+    t.flatpickr({ enableTime: !0, noCalendar: !0 });
+    b.flatpickr({ enableTime: !0, noCalendar: !0 });
     function i(e) {
         return e.id ?
             "<i class='" + $(e.element).data("icon") + " me-2'></i>" + e.text :
@@ -55,15 +58,15 @@ $(function () {
             },
         });
 });
-var     e = Array.apply(null, Array(100)).map(function () {
-        return (
-            Array.apply(null, Array(~~(10 * Math.random() + 3)))
-                .map(function () {
-                    return String.fromCharCode(26 * Math.random() + 97);
-                })
-                .join("") + "@gmail.com"
-        );
-    });
+var e = Array.apply(null, Array(100)).map(function () {
+    return (
+        Array.apply(null, Array(~~(10 * Math.random() + 3)))
+            .map(function () {
+                return String.fromCharCode(26 * Math.random() + 97);
+            })
+            .join("") + "@gmail.com"
+    );
+});
 const n = document.querySelector("#TagifyEmailList"),
     s = new Tagify(n, {
         pattern:
