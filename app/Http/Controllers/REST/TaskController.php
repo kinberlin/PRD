@@ -12,7 +12,6 @@ class TaskController extends RoutingController
 {
     public function store(Request $request)
     {
-
         $task = new Task();
         $dyst = Dysfunction::find($request->dysfunction);
         if ($dyst == null) {

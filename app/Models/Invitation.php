@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int    $id
@@ -11,10 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $dates
  * @property int    $deleted_at
  * @property int    $dysfonction
- * @property string $description
- * @property string $link
  * @property string $begin
+ * @property string $description
  * @property string $end
+ * @property string $link
  * @property string $motif
  * @property string $object
  * @property string $place
@@ -23,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property mixed  $external_invites
  */
 class Invitation extends Model
-{use SoftDeletes;
+{
     /**
      * The database table used by the model.
      *
@@ -44,7 +43,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'begin', 'end'
+        'begin', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq','internal_invites', 'external_invites'
     ];
 
     /**
@@ -53,7 +52,7 @@ class Invitation extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -62,7 +61,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'dates' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'begin' => 'string', 'end' => 'string'
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string',
     ];
 
     /**
@@ -71,7 +70,7 @@ class Invitation extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'dates', 'deleted_at'
+        'created_at', 'dates', 'deleted_at',
     ];
 
     /**

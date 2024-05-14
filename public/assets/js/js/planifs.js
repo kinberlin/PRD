@@ -58,6 +58,7 @@ $(function () {
             },
         });
 });
+/*
 var e = Array.apply(null, Array(100)).map(function () {
     return (
         Array.apply(null, Array(~~(10 * Math.random() + 3)))
@@ -82,4 +83,4 @@ const n = document.querySelector("#TagifyEmailList"),
     l = n.nextElementSibling;
 l.addEventListener("click", function () {
     s.addEmptyTag();
-});
+});*/

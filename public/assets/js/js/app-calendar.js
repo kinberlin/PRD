@@ -1,4 +1,4 @@
-"use strict";
+
 let direction = "ltr";
 isRtl && (direction = "rtl"),
     document.addEventListener("DOMContentLoaded", function () {
@@ -39,20 +39,20 @@ isRtl && (direction = "rtl"),
             function t(e) {
                 return e.id
                     ? "<span class='badge badge-dot bg-" +
-                          $(e.element).data("label") +
-                          " me-2'> </span>" +
-                          e.text
+                    $(e.element).data("label") +
+                    " me-2'> </span>" +
+                    e.text
                     : e.text;
             }
             function n(e) {
                 return e.id
                     ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
-                          assetsPath +
-                          "img/avatars/" +
-                          $(e.element).data("avatar") +
-                          "' alt='avatar' class='rounded-circle' /></div>" +
-                          e.text +
-                          "</div>"
+                    assetsPath +
+                    "img/avatars/" +
+                    $(e.element).data("avatar") +
+                    "' alt='avatar' class='rounded-circle' /></div>" +
+                    e.text +
+                    "</div>"
                     : e.text;
             }
             var d, o;
@@ -60,7 +60,7 @@ isRtl && (direction = "rtl"),
                 var e = document.querySelector(".fc-sidebarToggle-button");
                 for (
                     e.classList.remove("fc-button-primary"),
-                        e.classList.add("d-lg-none", "d-inline-block", "ps-0");
+                    e.classList.add("d-lg-none", "d-inline-block", "ps-0");
                     e.firstChild;
 
                 )
@@ -85,40 +85,40 @@ isRtl && (direction = "rtl"),
                     },
                 }),
                 D.length &&
-                    D.wrap('<div class="position-relative"></div>').select2({
-                        placeholder: "Select value",
-                        dropdownParent: D.parent(),
-                        closeOnSelect: !1,
-                        templateResult: n,
-                        templateSelection: n,
-                        escapeMarkup: function (e) {
-                            return e;
-                        },
-                    }),
+                D.wrap('<div class="position-relative"></div>').select2({
+                    placeholder: "Select value",
+                    dropdownParent: D.parent(),
+                    closeOnSelect: !1,
+                    templateResult: n,
+                    templateSelection: n,
+                    escapeMarkup: function (e) {
+                        return e;
+                    },
+                }),
                 k &&
-                    (d = k.flatpickr({
-                        enableTime: !0,
-                        altFormat: "Y-m-dTH:i:S",
-                        minDate: "today",
-                        onReady: function (e, t, n) {
-                            n.isMobile &&
-                                n.mobileInput.setAttribute("step", null);
-                        },
-                    })),
+                (d = k.flatpickr({
+                    enableTime: !0,
+                    altFormat: "Y-m-dTH:i:S",
+                    minDate: "today",
+                    onReady: function (e, t, n) {
+                        n.isMobile &&
+                            n.mobileInput.setAttribute("step", null);
+                    },
+                })),
                 w &&
-                    (o = w.flatpickr({
-                        enableTime: !0,
-                        altFormat: "Y-m-dTH:i:S",
-                        onReady: function (e, t, n) {
-                            n.isMobile &&
-                                n.mobileInput.setAttribute("step", null);
-                        },
-                    })),
+                (o = w.flatpickr({
+                    enableTime: !0,
+                    altFormat: "Y-m-dTH:i:S",
+                    onReady: function (e, t, n) {
+                        n.isMobile &&
+                            n.mobileInput.setAttribute("step", null);
+                    },
+                })),
                 Y &&
-                    (e = Y.flatpickr({
-                        monthSelectorType: "static",
-                        inline: !0,
-                    }));
+                (e = Y.flatpickr({
+                    monthSelectorType: "static",
+                    inline: !0,
+                }));
             let i = new Calendar(v, {
                 initialView: "dayGridMonth",
                 events: function (e, t) {
@@ -174,13 +174,13 @@ isRtl && (direction = "rtl"),
                         y.classList.remove("btn-update-event"),
                         y.classList.add("btn-add-event"),
                         S.classList.add("d-none"),
-                        (k.value = e),
-                        (w.value = e);
+                        (k.value = e);
+                        //(w.value = e);
                 },
                 eventClick: function (e) {
                     (e = e),
                         (a = e.event).url &&
-                            (e.jsEvent.preventDefault(),
+                        (e.jsEvent.preventDefault(),
                             window.open(a.url, "_blank")),
                         C.show(),
                         b && (b.innerHTML = "Mettre a jour"),
@@ -196,11 +196,57 @@ isRtl && (direction = "rtl"),
                             : o.setDate(a.start, !0, "Y-m-d"),
                         q.val(a.extendedProps.calendar).trigger("change"),
                         void 0 !== a.extendedProps.location &&
-                            (P.value = a.extendedProps.location),
+                        (P.value = a.extendedProps.location),
                         void 0 !== a.extendedProps.guests &&
-                            D.val(a.extendedProps.guests).trigger("change"),
+                        D.val(a.extendedProps.guests).trigger("change"),
                         void 0 !== a.extendedProps.description &&
-                            (M.value = a.extendedProps.description);
+                        (M.value = a.extendedProps.description);
+                    $.ajax({
+                        url: '/invitations/show/'+a.id,
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            // Loop through the array of events
+                            $.each(response.data, function (index, eventData) {
+                                // Populate the form fields with the event data
+                                $('#eventTitle').val(eventData.object);
+                                $('#dysfunctionList').val(eventData.dysfunction);
+                                $('#eventLabel').val(eventData.motif);
+                                $('#eventStartDate').val(eventData.dates);
+                                $('#flatpickr-begintime').val(eventData.begin);
+                                $('#flatpickr-endtime').val(eventData.end);
+                                $('#eventLocation').val(eventData.place);
+                                $('#eventURL').val(eventData.link);
+                                $('#eventDescription').val(eventData.description);
+
+                                // For internal invites select box
+                                $.each(eventData.internal_invites, function (index, email) {
+                                    $('#eventGuests').append($('<option>', {
+                                        value: email,
+                                        text: email,
+                                        selected: true // Set the option as selected
+                                    }));
+                                });
+
+                                // For external invites input fields
+                                var externalInvitesContainer = $('[data-repeater-list="group-a"]');
+                                $.each(eventData.external_invites, function (index, email) {
+                                    var newItem = $('<div data-repeater-item>\
+                        <div class="row">\
+                            <input type="email" class="form-control" name="extuser" placeholder="@ex.com" required value="' + email + '" />\
+                            <button class="btn btn-label-danger" data-repeater-delete>\
+                                <i class="bx bx-x me-1"></i>\
+                            </button>\
+                        </div>\
+                    </div>');
+                                    externalInvitesContainer.append(newItem);
+                                });
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching events:', error);
+                        }
+                    });
                 },
                 datesSet: function () {
                     s();
@@ -212,19 +258,24 @@ isRtl && (direction = "rtl"),
             i.render(), s();
             var c = document.getElementById("eventForm");
             function u() {
-                    (x.value = ""),
+                (x.value = ""),
                     (k.value = ""),
                     (E.value = ""),
                     (P.value = ""),
                     D.val("").trigger("change"),
                     (M.value = "");
-                    console.log("Im in");
+                console.log("Im in");
             }
             FormValidation.formValidation(c, {
                 fields: {
                     object: {
                         validators: {
                             notEmpty: { message: "Entrer un Objet " },
+                        },
+                    },
+                    dysfunction: {
+                        validators: {
+                            notEmpty: { message: "Veuillez choisir le dysfonctionnement concerné " },
                         },
                     },
                     motif: {
@@ -235,6 +286,26 @@ isRtl && (direction = "rtl"),
                     dates: {
                         validators: {
                             notEmpty: { message: "Entrer la date et l'heure  " },
+                        },
+                    },
+                    begin: {
+                        validators: {
+                            notEmpty: { message: "Entrer l'heure de début " },
+                        },
+                    },
+                    end: {
+                        validators: {
+                            notEmpty: { message: "Entrer l'heure de fin " },
+                        },
+                    },
+                    place: {
+                        validators: {
+                            notEmpty: { message: "Entrer un lieu " },
+                        },
+                    },
+                    link: {
+                        validators: {
+
                         },
                     },
                     description: {
@@ -262,49 +333,49 @@ isRtl && (direction = "rtl"),
                     r = !1;
                 }),
                 h &&
-                    h.addEventListener("click", (e) => {
-                        L.classList.remove("d-none");
-                    }),
+                h.addEventListener("click", (e) => {
+                    L.classList.remove("d-none");
+                }),
                 y.addEventListener("click", (e) => {
                     var t, n;
                     y.classList.contains("btn-add-event")
                         ? r &&
-                          ((n = {
-                              id: i.getEvents().length + 1,
-                              title: E.value,
-                              start: k.value,
-                              startStr: k.value,
-                              display: "block",
-                              extendedProps: {
-                                  location: P.value,
-                                  guests: D.val(),
-                                  calendar: q.val(),
-                                  description: M.value,
-                              },
-                          }),
-                          x.value && (n.url = x.value),
-                          (n = n),
-                          l.push(n),
-                          i.refetchEvents(),
-                          C.hide())
+                        ((n = {
+                            id: i.getEvents().length + 1,
+                            title: E.value,
+                            start: k.value,
+                            startStr: k.value,
+                            display: "block",
+                            extendedProps: {
+                                location: P.value,
+                                guests: D.val(),
+                                calendar: q.val(),
+                                description: M.value,
+                            },
+                        }),
+                            x.value && (n.url = x.value),
+                            (n = n),
+                            l.push(n),
+                            i.refetchEvents(),
+                            C.hide())
                         : r &&
-                          ((n = {
-                              id: a.id,
-                              title: E.value,
-                              start: k.value,
-                              url: x.value,
-                              extendedProps: {
-                                  location: P.value,
-                                  guests: D.val(),
-                                  calendar: q.val(),
-                                  description: M.value,
-                              },
-                              display: "block",
-                          }),
-                          ((t = n).id = parseInt(t.id)),
-                          (l[l.findIndex((e) => e.id === t.id)] = t),
-                          i.refetchEvents(),
-                          C.hide());
+                        ((n = {
+                            id: a.id,
+                            title: E.value,
+                            start: k.value,
+                            url: x.value,
+                            extendedProps: {
+                                location: P.value,
+                                guests: D.val(),
+                                calendar: q.val(),
+                                description: M.value,
+                            },
+                            display: "block",
+                        }),
+                            ((t = n).id = parseInt(t.id)),
+                            (l[l.findIndex((e) => e.id === t.id)] = t),
+                            i.refetchEvents(),
+                            C.hide());
                 }),
                 S.addEventListener("click", (e) => {
                     var t;
@@ -328,27 +399,27 @@ isRtl && (direction = "rtl"),
                         f.classList.remove("show");
                 }),
                 A &&
-                    A.addEventListener("click", (e) => {
-                        e.currentTarget.checked
-                            ? document
-                                  .querySelectorAll(".input-filter")
-                                  .forEach((e) => (e.checked = 1))
-                            : document
-                                  .querySelectorAll(".input-filter")
-                                  .forEach((e) => (e.checked = 0)),
-                            i.refetchEvents();
-                    }),
+                A.addEventListener("click", (e) => {
+                    e.currentTarget.checked
+                        ? document
+                            .querySelectorAll(".input-filter")
+                            .forEach((e) => (e.checked = 1))
+                        : document
+                            .querySelectorAll(".input-filter")
+                            .forEach((e) => (e.checked = 0)),
+                        i.refetchEvents();
+                }),
                 F &&
-                    F.forEach((e) => {
-                        e.addEventListener("click", () => {
-                            document.querySelectorAll(".input-filter:checked")
-                                .length <
+                F.forEach((e) => {
+                    e.addEventListener("click", () => {
+                        document.querySelectorAll(".input-filter:checked")
+                            .length <
                             document.querySelectorAll(".input-filter").length
-                                ? (A.checked = !1)
-                                : (A.checked = !0),
-                                i.refetchEvents();
-                        });
-                    }),
+                            ? (A.checked = !1)
+                            : (A.checked = !0),
+                            i.refetchEvents();
+                    });
+                }),
                 e.config.onChange.push(function (e) {
                     i.changeView(
                         i.view.type,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Invites;
 use App\Models\Users;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,10 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        //
+        $data = Invitation::all();
+        return response()->json([
+            "events" => json_encode($data)
+        ]);
     }
 
     /**
@@ -35,7 +39,7 @@ class InvitationController extends Controller
         // try {
         DB::beginTransaction();
         $data = new Invitation();
-        $data->rq = 'Test RQ Mtricule 35258';//waiting Auth
+        $data->rq = 'Test RQ Mtricule 35258'; //waiting Auth
         $data->object = $request->input('object');
         $data->dysfonction = $request->input('dysfunction');
         $data->motif = $request->input('motif');
@@ -70,9 +74,15 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invitation $invitation)
+    public function show($id)
     {
-        //
+        $data = Invitation::where('id', $id)->get();
+        if ($data == null) {
+            throw new Exception('Nous ne trouvons pas cette invitation: ' . $id, 404);
+        }
+        return response()->json([
+            "data" => json_encode($data),
+        ]);
     }
 
     /**
