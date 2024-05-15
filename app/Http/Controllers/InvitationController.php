@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Invites;
 use App\Models\Users;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -18,9 +17,10 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        $data = $this->parseDates(Invitation::all());
+        $data = json_encode(Invitation::all());
+        //dd($data);
         return response()->json([
-            "events" => json_encode($data),
+            "events" => $data,
         ]);
     }
 
@@ -108,14 +108,5 @@ class InvitationController extends Controller
     public function destroy(Invitation $invitation)
     {
         //
-    }
-
-    public function parseDates($collection)
-    {
-        return $collection->map(function ($item) {
-            // Parse the created_at attribute using Carbon and format it
-            $item->dates = Carbon::parse($item->dates)->format('Y-m-d H:i');
-            return $item;
-        });
     }
 }

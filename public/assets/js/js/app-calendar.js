@@ -1,4 +1,4 @@
-"use strict"
+
 function executeAfterAjax() {
     let direction = "ltr"; // Initialize direction
     // Check if RTL mode is enabled and adjust direction if needed
@@ -8,11 +8,9 @@ function executeAfterAjax() {
         p = document.getElementById("addEventSidebar"),
         f = document.querySelector(".app-overlay"),
         g = {
-            Business: "primary",
-            Holiday: "success",
-            Personal: "danger",
-            Family: "warning",
-            ETC: "info",
+            "Résolution de Dysfonctionnement": "primary",
+            "Evaluation de Dysfonctionnement": "danger",
+            Autres: "warning",
         },
         b = document.querySelector(".offcanvas-title"),
         h = document.querySelector(".btn-toggle-sidebar"),
@@ -36,7 +34,7 @@ function executeAfterAjax() {
         r = !1,
         e;
     const C = new bootstrap.Offcanvas(p);
-    console.log(l);
+    
     function t(e) {
         return e.id
             ? "<span class='badge badge-dot bg-" +
@@ -132,13 +130,16 @@ function executeAfterAjax() {
                     );
                 return (
                     e.forEach((e) => {
-                        t.push(e.getAttribute("data-value"));
+                        t.push(e.getAttribute("data-value").toLowerCase());
                     }),
                     t
                 );
             })();
             t(
                 l.filter(function (e) {
+                    console.log(n.includes(
+                        e.extendedProps.calendar.toLowerCase()
+                    ));
                     return n.includes(
                         e.extendedProps.calendar.toLowerCase()
                     );

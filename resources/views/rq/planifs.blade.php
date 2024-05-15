@@ -46,28 +46,18 @@
                         <div class="app-calendar-events-filter">
                             <div class="form-check form-check-danger mb-2">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-personal"
-                                    data-value="personal" checked />
-                                <label class="form-check-label" for="select-personal">Personal</label>
+                                    data-value="Evaluation de Dysfonctionnement" checked />
+                                <label class="form-check-label" for="select-personal">Evaluation</label>
                             </div>
                             <div class="form-check mb-2">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                    data-value="business" checked />
-                                <label class="form-check-label" for="select-business">Business</label>
+                                    data-value="Résolution de Dysfonctionnement" checked />
+                                <label class="form-check-label" for="select-business">Résolution</label>
                             </div>
                             <div class="form-check form-check-warning mb-2">
                                 <input class="form-check-input input-filter" type="checkbox" id="select-family"
-                                    data-value="family" checked />
-                                <label class="form-check-label" for="select-family">Family</label>
-                            </div>
-                            <div class="form-check form-check-success mb-2">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
-                                    data-value="holiday" checked />
-                                <label class="form-check-label" for="select-holiday">Holiday</label>
-                            </div>
-                            <div class="form-check form-check-info">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-etc"
-                                    data-value="etc" checked />
-                                <label class="form-check-label" for="select-etc">ETC</label>
+                                    data-value="Autres" checked />
+                                <label class="form-check-label" for="select-family">Autres</label>
                             </div>
                         </div>
                     </div>

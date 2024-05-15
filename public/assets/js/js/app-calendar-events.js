@@ -28,25 +28,35 @@ $(document).ready(function () {
                     id: eventData.id,
                     url: eventData.link,
                     title: eventData.object,
-                    start: eventData.dates,
+                    start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
                     end: eventData.end,
                     allDay: !1,
                     extendedProps: { calendar: eventData.motif }
                 };
                 window.events.push(event);
             });
-            initializeCalendar(window.events);
-            if (typeof executeAfterAjax === 'function') {
-                executeAfterAjax();
-            }
+                var eventt = {
+                    id: 3,
+                    url: "",
+                    title: "Design Review",
+                    start: date,
+                    end: nextDay,
+                    allDay: !1,
+                    extendedProps: { calendar: "Autres" },
+                }
+                window.events.push(eventt);
+                initializeCalendar(window.events);
+                if (typeof executeAfterAjax === 'function') {
+                    executeAfterAjax();
+                }
 
-            // You can now use window.events array containing events data
-            //console.log('Events data:', window.events);
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching events:', error);
-        }
-    });
+                // You can now use window.events array containing events data
+                //console.log('Events data:', window.events);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching events:', error);
+            }
+        });
 
 
 });
