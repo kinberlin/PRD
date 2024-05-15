@@ -1,13 +1,28 @@
-window.events = [];
+
 $(document).ready(function () {
+
+    window.events = [];
+    let date = new Date(),
+        nextDay = new Date(new Date().getTime() + 864e5),
+        nextMonth =
+            11 === date.getMonth()
+                ? new Date(date.getFullYear() + 1, 0, 1)
+                : new Date(date.getFullYear(), date.getMonth() + 1, 1),
+        prevMonth =
+            11 === date.getMonth()
+                ? new Date(date.getFullYear() - 1, 0, 1)
+                : new Date(date.getFullYear(), date.getMonth() - 1, 1);
     // Make an AJAX request to fetch the events from the API
+    function initializeCalendar(events) {
+        console.log(window.events);
+    }
     $.ajax({
         url: '/invitations/index',
         method: 'GET',
         dataType: 'json',
         success: function (response) {
-
-            $.each(response.events, function (index, eventData) {
+            var eventsArray = JSON.parse(response.events);
+            $.each(eventsArray, function (index, eventData) {
                 // Process each event as needed and push it into the window.events array
                 var event = {
                     id: eventData.id,
@@ -16,30 +31,25 @@ $(document).ready(function () {
                     start: eventData.dates,
                     end: eventData.end,
                     allDay: !1,
-                    extendedProps: eventData.motif
+                    extendedProps: { calendar: eventData.motif }
                 };
                 window.events.push(event);
             });
-
+            initializeCalendar(window.events);
+            if (typeof executeAfterAjax === 'function') {
+                executeAfterAjax();
+            }
 
             // You can now use window.events array containing events data
-            console.log('Events data:', window.events);
+            //console.log('Events data:', window.events);
         },
         error: function (xhr, status, error) {
             console.error('Error fetching events:', error);
         }
     });
+
+
 });
-let date = new Date(),
-    nextDay = new Date(new Date().getTime() + 864e5),
-    nextMonth =
-        11 === date.getMonth()
-            ? new Date(date.getFullYear() + 1, 0, 1)
-            : new Date(date.getFullYear(), date.getMonth() + 1, 1),
-    prevMonth =
-        11 === date.getMonth()
-            ? new Date(date.getFullYear() - 1, 0, 1)
-            : new Date(date.getFullYear(), date.getMonth() - 1, 1);
 /*//Model Template
 window.events = [
     {
