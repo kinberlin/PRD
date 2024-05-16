@@ -60,6 +60,33 @@
                                 <label class="form-check-label" for="select-family">Autres</label>
                             </div>
                         </div>
+                        <!--<div class="app-calendar-events-filter">
+                            <div class="form-check form-check-danger mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-personal"
+                                    data-value="personal" checked />
+                                <label class="form-check-label" for="select-personal">Personal</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                    data-value="business" checked />
+                                <label class="form-check-label" for="select-business">Business</label>
+                            </div>
+                            <div class="form-check form-check-warning mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-family"
+                                    data-value="family" checked />
+                                <label class="form-check-label" for="select-family">Family</label>
+                            </div>
+                            <div class="form-check form-check-success mb-2">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
+                                    data-value="holiday" checked />
+                                <label class="form-check-label" for="select-holiday">Holiday</label>
+                            </div>
+                            <div class="form-check form-check-info">
+                                <input class="form-check-input input-filter" type="checkbox" id="select-etc"
+                                    data-value="etc" checked />
+                                <label class="form-check-label" for="select-etc">ETC</label>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
                 <!-- /Calendar Sidebar -->
@@ -84,7 +111,8 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <form class="event-form pt-0" id="myForm" action="{!! route('invitation.store') !!}" method="POST">
+                            <form class="event-form pt-0" id="myForm" action="{!! route('invitation.store') !!}"
+                                method="POST">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
@@ -132,8 +160,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="flatpickr-endtime" class="form-label">Heure de Fin</label>
-                                    <input type="text" class="form-control" placeholder="HH:MM" id="flatpickr-endtime"
-                                        name="end" placeholder="Heure de Fin de la réunion" />
+                                    <input type="text" class="form-control" placeholder="HH:MM"
+                                        id="flatpickr-endtime" name="end" placeholder="Heure de Fin de la réunion" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLocation">Lieu</label>
@@ -157,14 +185,14 @@
                                         @endforeach
                                     </select>
                                 </div><!--
-                                            <div class="mb-3">
-                                                <label class="form-label" for="idemail">Invités externe sur PRD</label>
-                                                 <input id="TagifyEmailList" class="tagify-email-list"
-                                                    value="some56.name@website.com">
-                                                <button type="button"
-                                                    class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
-                                                        class="tf-icons bx bx-plus"></span> </button>
-                                            </div>-->
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="idemail">Invités externe sur PRD</label>
+                                                     <input id="TagifyEmailList" class="tagify-email-list"
+                                                        value="some56.name@website.com">
+                                                    <button type="button"
+                                                        class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
+                                                            class="tf-icons bx bx-plus"></span> </button>
+                                                </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
                                     <div class="form-repeater col-md-12" class="ext_invites">
@@ -194,7 +222,7 @@
                                 </div>
                                 <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
                                     <div>
-                                        <button type="submit" id="regInvitation"
+                                        <button type="submit" id="regInvitation" value=""
                                             class="btn btn-primary btn-add-event me-sm-3 me-1">
                                             Ajouter
                                         </button>
@@ -225,8 +253,8 @@
     <script src="{!! url('assets/vendor/libs/moment/moment.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/fullcalendar/fullcalendar.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/auto-focus.js') !!}"></script>
-    <script src="{!! url('assets/js/js/app-calendar-events.js') !!}"></script>
-    <script src="{!! url('assets/js/js/app-calendar.js') !!}"></script>
+    <script src="{!! url('assets/js/js/app-calendar-eventss.js') !!}"></script>
+    <script src="{!! url('assets/js/js/app-calendarr.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
     <script src="{!! url('assets/js/js/planifs.js') !!}"></script>

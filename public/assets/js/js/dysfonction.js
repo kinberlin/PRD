@@ -18,9 +18,10 @@ function getFile(input) {
             // Display error message
             alert('Total size of files cannot exceed 5MB.');
             // Clear the file input fields to prevent submission
-            fileInputs.forEach(input => {
+            input.value = '';
+            /*fileInputs.forEach(input => {
                 input.value = ''; // Clear the file input value
-            });
+            });*/
         }
 }
 
