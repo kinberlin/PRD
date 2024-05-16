@@ -167,9 +167,9 @@
                                             </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
-                                    <div class="form-repeater col-md-12">
-                                        <div data-repeater-list="group-a">
-                                            <div data-repeater-item>
+                                    <div class="form-repeater col-md-12" class="ext_invites">
+                                        <div data-repeater-list="group-a" class="ext_invites1">
+                                            <div data-repeater-item class="ext_invites2">
                                                 <div class="row">
                                                     <input type="email" class="form-control" id="idemail"
                                                         name="extuser" placeholder="@ex.com" required />

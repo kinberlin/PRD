@@ -77,13 +77,18 @@ class InvitationController extends Controller
      */
     public function show($id)
     {
-        $data = Invitation::where('id', $id)->get();
-        if ($data == null) {
-            throw new Exception('Nous ne trouvons pas cette invitation: ' . $id, 404);
+        try {
+            $data = Invitation::where('id', $id)->get();
+            if ($data->isEmpty()) {
+                throw new Exception('Nous ne trouvons pas cette invitation: ' . $id, 404);
+            }
+            return response()->json([
+                "data" => json_encode($data),
+            ]);
+        } catch (\Exception $e) {
+            // Return a failure response indicating an error occurred
+            return response()->json(['error' => $e->getMessage()], 404);
         }
-        return response()->json([
-            "data" => json_encode($data),
-        ]);
     }
 
     /**

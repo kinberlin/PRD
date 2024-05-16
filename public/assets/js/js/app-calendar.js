@@ -34,7 +34,7 @@ function executeAfterAjax() {
         r = !1,
         e;
     const C = new bootstrap.Offcanvas(p);
-    
+
     function t(e) {
         return e.id
             ? "<span class='badge badge-dot bg-" +
@@ -137,9 +137,6 @@ function executeAfterAjax() {
             })();
             t(
                 l.filter(function (e) {
-                    console.log(n.includes(
-                        e.extendedProps.calendar.toLowerCase()
-                    ));
                     return n.includes(
                         e.extendedProps.calendar.toLowerCase()
                     );
@@ -192,10 +189,10 @@ function executeAfterAjax() {
                 S.classList.remove("d-none"),
                 (E.value = a.title),
                 d.setDate(a.start, !0, "Y-m-d"),
-                !0 === a.allDay ? (T.checked = !0) : (T.checked = !1),
-                null !== a.end
+                //!0 === a.allDay ? (T.checked = !0) : (T.checked = !1),
+                /*null !== a.end
                     ? o.setDate(a.end, !0, "Y-m-d")
-                    : o.setDate(a.start, !0, "Y-m-d"),
+                    : o.setDate(a.start, !0, "Y-m-d"),*/
                 q.val(a.extendedProps.calendar).trigger("change"),
                 void 0 !== a.extendedProps.location &&
                 (P.value = a.extendedProps.location),
@@ -203,13 +200,15 @@ function executeAfterAjax() {
                 D.val(a.extendedProps.guests).trigger("change"),
                 void 0 !== a.extendedProps.description &&
                 (M.value = a.extendedProps.description);
+            console.log('Click evenement');
             $.ajax({
                 url: '/invitations/show/' + a.id,
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
                     // Loop through the array of events
-                    $.each(response.data, function (index, eventData) {
+                    var eventsArray = JSON.parse(response.data);
+                    $.each(eventsArray, function (index, eventData) {
                         // Populate the form fields with the event data
                         $('#eventTitle').val(eventData.object);
                         $('#dysfunctionList').val(eventData.dysfunction);
@@ -222,7 +221,7 @@ function executeAfterAjax() {
                         $('#eventDescription').val(eventData.description);
 
                         // For internal invites select box
-                        $.each(eventData.internal_invites, function (index, email) {
+                        $.each(JSON.parse(eventData.internal_invites), function (index, email) {
                             $('#eventGuests').append($('<option>', {
                                 value: email,
                                 text: email,
@@ -231,18 +230,19 @@ function executeAfterAjax() {
                         });
 
                         // For external invites input fields
-                        var externalInvitesContainer = $('[data-repeater-list="group-a"]');
-                        $.each(eventData.external_invites, function (index, email) {
-                            var newItem = $('<div data-repeater-item>\
-                        <div class="row">\
-                            <input type="email" class="form-control" name="extuser" placeholder="@ex.com" required value="' + email + '" />\
-                            <button class="btn btn-label-danger" data-repeater-delete>\
-                                <i class="bx bx-x me-1"></i>\
-                            </button>\
-                        </div>\
-                    </div>');
-                            externalInvitesContainer.append(newItem);
+                        //var externalInvitesContainer = $('[data-repeater-list="group-a"]');
+                        $.each(JSON.parse(eventData.external_invites), function (index, email) {
+                            var newItem = $('<div class="row">' +
+                                '<input type="email" class="form-control" name="group-a[' + (-1 * (1 + index)) + '][extuser]" value="' + email + '" placeholder="@ex.com" required>' +
+                                '<button class="btn btn-label-danger" data-repeater-delete>' +
+                                '<i class="bx bx-x me-1"></i>' +
+                                '</button>' +
+                                '</div>');
+                            if ($('.ext_invites2')) { $('.ext_invites2').append(newItem); }
+                            else if ($('.ext_invites1')) { $('.ext_invites1').append('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
+                            else if ($('.ext_invites')) { $('.ext_invites').append('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }
                         });
+
                     });
                 },
                 error: function (xhr, status, error) {
