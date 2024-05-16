@@ -40,7 +40,7 @@ class InvitationController extends Controller
         // try {
         DB::beginTransaction();
         $data = new Invitation();
-        $data->rq = 'Test RQ Mtricule 35258'; //waiting Auth
+        $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
         $data->object = $request->input('object');
         $data->dysfonction = $request->input('dysfunction');
         $data->motif = $request->input('motif');
@@ -102,9 +102,45 @@ class InvitationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invitation $invitation)
+    public function update(Request $request, $id)
     {
-        //
+        // try {
+        DB::beginTransaction();
+        $data = Invitation::find($id);
+        if($data == null){
+            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+            
+        }
+        $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
+        $data->object = $request->has('object') ? $request->input('object') : $data->object;
+        $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
+        $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
+        $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
+        $data->place = $request->has('place') ? $request->input('place') : $data->place;
+        $data->link = $request->has('link') ? $request->input('link') : $data->link;
+        $data->description = $request->has('description') ? $request->input('description') : $data->description;
+        $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
+        $data->end = $request->has('end') ? $request->input('end') : $data->end;
+        $i_v = $request->input('internal_invites', []);
+        $internal_invites = [];
+        if (!empty($i_v)) {foreach ($i_v as $option) {
+            $internal_invites[] = new Invites(Users::where('email', $option)->get()->first());
+        }}
+        $data->internal_invites = json_encode($internal_invites);
+        $ext_u = [];
+        if ($request->has('extuser') && !empty($request->extuser)) {
+            for ($i = 0; $i < count($request->extuser); $i++) {
+                // Create a new Person object for each row and add it to the array
+                $ext_u[] = $request->extuser[$i];
+            }
+        }
+        $data->external_invites = json_encode($ext_u);
+        $data->save();
+        DB::commit();
+        return redirect()->back()->with('error', "La réunion a été créer Mis a Jour avec succes.");
+        /* } catch (Throwable $th) {
+    return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+    }*/
     }
 
     /**

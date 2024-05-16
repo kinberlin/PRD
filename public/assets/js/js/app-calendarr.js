@@ -15,6 +15,7 @@ function executeAfterAjax() {
         b = document.querySelector(".offcanvas-title"),
         h = document.querySelector(".btn-toggle-sidebar"),
         //y = document.querySelector('button[type="submit"]'),
+        y = document.getElementById("regInvitation"),
         z = document.querySelector('button[type="submit"]'),
         S = document.querySelector(".btn-delete-event"),
         L = document.querySelector(".btn-cancel"),
@@ -55,6 +56,7 @@ function executeAfterAjax() {
         $('#eventLocation').val('');
         $('#eventURL').val('');
         $('#eventDescription').val('');
+         $('.ext_invites').html('');
     });
     function t(e) {
         return e.id
@@ -204,7 +206,7 @@ function executeAfterAjax() {
                     window.open(a.url, "_blank")),
                 C.show(),
                 b && (b.innerHTML = "Mettre a jour"),
-                (y.innerHTML = "Update"),
+                (y.innerHTML = "MAJ"),
                 y.classList.add("btn-update-event"),
                 y.classList.remove("btn-add-event"),
                 S.classList.remove("d-none"),
@@ -253,17 +255,22 @@ function executeAfterAjax() {
 
                         // For external invites input fields
                         //var externalInvitesContainer = $('[data-repeater-list="group-a"]');
+                        let newItem =  '';
                         $.each(JSON.parse(eventData.external_invites), function (index, email) {
-                            var newItem = $('<div class="row">' +
+                            newItem += '<div class="row">' +
                                 '<input type="email" class="form-control" name="group-a[' + ( (2 + index) * 1) + '][extuser]" value="' + email + '" placeholder="@ex.com" required>' +
                                 '<button class="btn btn-label-danger" data-repeater-delete>' +
                                 '<i class="bx bx-x me-1"></i>' +
                                 '</button>' +
-                                '</div>');
-                            if ($('.ext_invites2')) { $('.ext_invites2').append(newItem); }
-                            else if ($('.ext_invites1')) { $('.ext_invites1').append('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
-                            else if ($('.ext_invites')) { $('.ext_invites').append('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }
+                                '</div>';
+                            /*Code below To Append
+                            if ($('.ext_invites2').length) { $('.ext_invites2').append(newItem); }
+                            else if ($('.ext_invites1').length) { $('.ext_invites1').append('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
+                            else if ($('.ext_invites').length) { $('.ext_invites').append('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }*/
                         });
+                        if ($('.ext_invites2').length) { $('.ext_invites2').html(newItem); }
+                            else if ($('.ext_invites1').length) { $('.ext_invites1').html('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
+                            else if ($('.ext_invites').length) { $('.ext_invites').html('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }
 
                     });
                 },
