@@ -89,17 +89,17 @@ function executeAfterAjax() {
                     i.refetchEvents();
             });
         });
-        function n(e) {
-            return e.id
-                ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
-                assetsPath +
-                "img/avatars/" +
-                $(e.element).data("avatar") +
-                "' alt='avatar' class='rounded-circle' /></div>" +
-                e.text +
-                "</div>"
-                : e.text;
-        }
+    function n(e) {
+        return e.id
+            ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
+            assetsPath +
+            "img/avatars/" +
+            $(e.element).data("avatar") +
+            "' alt='avatar' class='rounded-circle' /></div>" +
+            e.text +
+            "</div>"
+            : e.text;
+    }
     var d, o;
     function s() {
         var e = document.querySelector(".fc-sidebarToggle-button");
@@ -219,6 +219,16 @@ function executeAfterAjax() {
                 y.classList.remove("btn-update-event"),
                 y.classList.add("btn-add-event"),
                 S.classList.add("d-none"),
+                $('#eventTitle').val(""),
+                $('#dysfunctionList').val('1'),
+                $('#eventLabel').val(''),
+                $('#eventStartDate').val(''),
+                $('#flatpickr-begintime').val(''),
+                $('#flatpickr-endtime').val(''),
+                $('#eventLocation').val(''),
+                $('#eventURL').val(''),
+                $('#eventDescription').val(''),
+                $('.ext_invites').html(''),
                 (k.value = e);
             //(w.value = e);
         },
