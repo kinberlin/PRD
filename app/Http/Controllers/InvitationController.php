@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class InvitationController extends Controller
 {
     /**
@@ -46,7 +48,7 @@ class InvitationController extends Controller
         $data->motif = $request->input('motif');
         $data->dates = $request->input('dates');
         $data->place = $request->input('place');
-        $data->link = $request->input('link');
+        $data->link = isEmpty($request->input('link')) ? null : $request->input('link');
         $data->description = $request->input('description');
         $data->begin = $request->input('begin');
         $data->end = $request->input('end');
@@ -117,7 +119,7 @@ class InvitationController extends Controller
         $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
         $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
         $data->place = $request->has('place') ? $request->input('place') : $data->place;
-        $data->link = $request->has('link') ? $request->input('link') : $data->link;
+        $data->link = isEmpty($request->has('link')) ? $request->input('link') : $data->link;
         $data->description = $request->has('description') ? $request->input('description') : $data->description;
         $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
         $data->end = $request->has('end') ? $request->input('end') : $data->end;

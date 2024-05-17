@@ -5,43 +5,45 @@ document.getElementById("myForm").addEventListener("submit", function (event) {
 $(document).ready(function () {
     var currentDate = new Date().toISOString().split('T')[0];
     $('#eventStartDate').attr('min', currentDate);
-    $(".btn-add-event").click(function (event) {
+    $("#regInvitation").click(function (event) {
+        if ((this).classList.contains("btn-add-event"))
         // Submit the form
 
-        $("input[name*='extuser']").each(function () {
-            $(this).attr('name', 'extuser[]');
-        });
-        var form = $("#myForm");
+        {
+            $("input[name*='extuser']").each(function () {
+                $(this).attr('name', 'extuser[]');
+            });
+            var form = $("#myForm");
 
-        // Check if all required fields are filled
-        if (form[0].checkValidity()) {
-            // Submit the form if all required fields are filled
-            form.action = "/rq/invitation";
-            form.submit();
-        } else {
-            // If required fields are not filled, trigger HTML5 validation
-            form[0].reportValidity();
+            // Check if all required fields are filled
+            if (form[0].checkValidity()) {
+                // Submit the form if all required fields are filled
+                form.action = "/rq/invitation";
+                console.log(form.action);
+                form.submit();
+            } else {
+                // If required fields are not filled, trigger HTML5 validation
+                form[0].reportValidity();
+            }
+        }
+        else if ((this).classList.contains("btn-update-event")) {
+            $("input[name*='extuser']").each(function () {
+                $(this).attr('name', 'extuser[]');
+            });
+            var form = $("#myForm");
+
+            // Check if all required fields are filled
+            if (form[0].checkValidity()) {
+                // Submit the form if all required fields are filled
+                form.action = "/rq/invitation/update/" + $('#regInvitation').val();
+                console.log(form.action);
+                form.submit();
+            } else {
+                // If required fields are not filled, trigger HTML5 validation
+                form[0].reportValidity();
+            }
         }
     });
-    $(".btn-update-event").click(function (event) {
-        // Submit the form
-
-        $("input[name*='extuser']").each(function () {
-            $(this).attr('name', 'extuser[]');
-        });
-        var form = $("#myForm");
-
-        // Check if all required fields are filled
-        if (form[0].checkValidity()) {
-            // Submit the form if all required fields are filled
-            form.action = "/rq/invitation/update/"+$('#regInvitation').val();
-            form.submit();
-        } else {
-            // If required fields are not filled, trigger HTML5 validation
-            form[0].reportValidity();
-        }
-    });
-
 });
 
 "use strict";

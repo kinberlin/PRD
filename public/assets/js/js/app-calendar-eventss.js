@@ -28,16 +28,30 @@ $(document).ready(function () {
             var eventsArray = JSON.parse(response.events);
             $.each(eventsArray, function (index, eventData) {
                 // Process each event as needed and push it into the window.events array
-                var event = {
-                    id: eventData.id,
-                    url: eventData.link,
-                    title: eventData.object,
-                    start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
-                    end: eventData.end,
-                    allDay: !1,
-                    extendedProps: { calendar: eventData.motif }
-                };
-                window.events.push(event);
+                if (eventData.link === null) {
+                    var event = {
+                        id: eventData.id,
+                        //url: eventData.link,
+                        title: eventData.object,
+                        start: eventData.dates,
+                        end: eventData.end,
+                        allDay: !1,
+                        extendedProps: { calendar: eventData.motif }
+                    };
+                    window.events.push(event);
+                }
+                else {
+                    var event = {
+                        id: eventData.id,
+                        url: eventData.link,
+                        title: eventData.object,
+                        start: eventData.dates,
+                        end: eventData.end,
+                        allDay: !1,
+                        extendedProps: { calendar: eventData.motif }
+                    };
+                    window.events.push(event);
+                }
             });
             var eventt = {
                 id: 3,

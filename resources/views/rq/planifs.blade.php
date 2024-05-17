@@ -171,7 +171,7 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="eventURL">Lien de la réunion</label>
                                     <input type="url" class="form-control" id="eventURL" name="link"
-                                        placeholder="https://www.google.com/" required />
+                                        placeholder="https://www.google.com/" />
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>

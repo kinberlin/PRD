@@ -56,7 +56,7 @@ function executeAfterAjax() {
         $('#eventLocation').val('');
         $('#eventURL').val('');
         $('#eventDescription').val('');
-         $('.ext_invites').html('');
+        $('.ext_invites').html('');
     });
     function t(e) {
         return e.id
@@ -255,13 +255,15 @@ function executeAfterAjax() {
 
                         // For external invites input fields
                         //var externalInvitesContainer = $('[data-repeater-list="group-a"]');
-                        let newItem =  '';
+                        let newItem = '';
                         $.each(JSON.parse(eventData.external_invites), function (index, email) {
-                            newItem += '<div class="row">' +
-                                '<input type="email" class="form-control" name="group-a[' + ( (2 + index) * 1) + '][extuser]" value="' + email + '" placeholder="@ex.com" required>' +
+                            newItem += '<div data-repeater-item class="ext_invites2" style>' +
+                                '<div class="row">' +
+                                '<input type="email" class="form-control" id="form-repeater--' + index + '-100" name="group-a[' + ((2 + index) * -1) + '][extuser]" value="' + email + '" placeholder="@ex.com" required>' +
                                 '<button class="btn btn-label-danger" data-repeater-delete>' +
                                 '<i class="bx bx-x me-1"></i>' +
                                 '</button>' +
+                                '</div>' +
                                 '</div>';
                             /*Code below To Append
                             if ($('.ext_invites2').length) { $('.ext_invites2').append(newItem); }
@@ -269,8 +271,8 @@ function executeAfterAjax() {
                             else if ($('.ext_invites').length) { $('.ext_invites').append('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }*/
                         });
                         if ($('.ext_invites2').length) { $('.ext_invites2').html(newItem); }
-                            else if ($('.ext_invites1').length) { $('.ext_invites1').html('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
-                            else if ($('.ext_invites').length) { $('.ext_invites').html('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }
+                        else if ($('.ext_invites1').length) { $('.ext_invites1').html('<div data-repeater-item class="ext_invites2">' + newItem + '</div>'); }
+                        else if ($('.ext_invites').length) { $('.ext_invites').html('<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' + newItem + '</div></div>'); }
 
                     });
                 },
@@ -366,47 +368,6 @@ function executeAfterAjax() {
         h &&
         h.addEventListener("click", (e) => {
             L.classList.remove("d-none");
-        }),
-        y.addEventListener("click", (e) => {
-            var t, n;
-            y.classList.contains("btn-add-event")
-                ? r &&
-                ((n = {
-                    id: i.getEvents().length + 1,
-                    title: E.value,
-                    start: k.value,
-                    startStr: k.value,
-                    display: "block",
-                    extendedProps: {
-                        location: P.value,
-                        guests: D.val(),
-                        calendar: q.val(),
-                        description: M.value,
-                    },
-                }),
-                    x.value && (n.url = x.value),
-                    (n = n),
-                    l.push(n),
-                    i.refetchEvents(),
-                    C.hide())
-                : r &&
-                ((n = {
-                    id: a.id,
-                    title: E.value,
-                    start: k.value,
-                    url: x.value,
-                    extendedProps: {
-                        location: P.value,
-                        guests: D.val(),
-                        calendar: q.val(),
-                        description: M.value,
-                    },
-                    display: "block",
-                }),
-                    ((t = n).id = parseInt(t.id)),
-                    (l[l.findIndex((e) => e.id === t.id)] = t),
-                    i.refetchEvents(),
-                    C.hide());
         }),
         S.addEventListener("click", (e) => {
             var t;
