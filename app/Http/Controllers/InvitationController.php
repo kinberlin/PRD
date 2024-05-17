@@ -119,7 +119,7 @@ class InvitationController extends Controller
         $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
         $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
         $data->place = $request->has('place') ? $request->input('place') : $data->place;
-        $data->link = isEmpty($request->has('link')) ? $request->input('link') : $data->link;
+        $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
         $data->description = $request->has('description') ? $request->input('description') : $data->description;
         $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
         $data->end = $request->has('end') ? $request->input('end') : $data->end;
@@ -139,7 +139,7 @@ class InvitationController extends Controller
         $data->external_invites = json_encode($ext_u);
         $data->save();
         DB::commit();
-        return redirect()->back()->with('error', "La réunion a été créer Mis a Jour avec succes.");
+        return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
         /* } catch (Throwable $th) {
     return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
     }*/

@@ -111,8 +111,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <form class="event-form pt-0" id="myForm" action="{!! route('invitation.store') !!}"
-                                method="POST">
+                            <form class="event-form pt-0" id="myForm"  method="POST">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>

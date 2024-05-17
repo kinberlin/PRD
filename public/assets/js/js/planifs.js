@@ -18,8 +18,7 @@ $(document).ready(function () {
             // Check if all required fields are filled
             if (form[0].checkValidity()) {
                 // Submit the form if all required fields are filled
-                form.action = "/rq/invitation";
-                console.log(form.action);
+                form.attr('action', "/rq/invitation");
                 form.submit();
             } else {
                 // If required fields are not filled, trigger HTML5 validation
@@ -35,8 +34,7 @@ $(document).ready(function () {
             // Check if all required fields are filled
             if (form[0].checkValidity()) {
                 // Submit the form if all required fields are filled
-                form.action = "/rq/invitation/update/" + $('#regInvitation').val();
-                console.log(form.action);
+                form.attr('action', "/rq/invitation/update/" + $('#regInvitation').val());
                 form.submit();
             } else {
                 // If required fields are not filled, trigger HTML5 validation

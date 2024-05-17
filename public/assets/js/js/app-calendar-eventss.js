@@ -53,16 +53,6 @@ $(document).ready(function () {
                     window.events.push(event);
                 }
             });
-            var eventt = {
-                id: 3,
-                url: "",
-                title: "Design Review",
-                start: date,
-                end: nextDay,
-                allDay: !1,
-                extendedProps: { calendar: "Autres" },
-            }
-            window.events.push(eventt);
             initializeCalendar(window.events);
             if (typeof executeAfterAjax === 'function') {
                 executeAfterAjax();
