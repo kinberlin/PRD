@@ -18,8 +18,10 @@ use App\Models\Status;
 use App\Models\TypePme;
 use App\Models\TypePne;
 use App\Models\Users;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Throwable;
 
 class AdminController extends Controller
 {
@@ -62,7 +64,37 @@ class AdminController extends Controller
     {
         $data = Dysfunction::all();
         $complainant = Dysfunction::distinct('emp_matricule')->count('matricule');
-        return view('admin/signal',compact('data', 'complainant'));
+        return view('admin/signal', compact('data', 'complainant'));
+    }
+    public function showDysfunction($id)
+    {
+        try {
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
+            }
+            $status = Status::all();
+            $processes = Processes::all();
+            $ents = Enterprise::all();
+            $site = Site::all();
+            $gravity = Gravity::all();
+            $data = $dys;
+            return view('rq/infos', compact('data',
+                'status',
+                'processes',
+                'ents',
+                'site',
+                'gravity'));
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+
+    }
+    public function planif()
+    {
+        $dys = Dysfunction::all();
+        $users = Users::all();
+        return view('admin/planifs', compact('dys', 'users'));
     }
     public function employee()
     {

@@ -78,6 +78,7 @@
         <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
                 request()->route()->getName() == 'admin.processes' ||
                 request()->route()->getName() == 'admin.signals' ||
+                request()->route()->getName() == 'admin.planif' ||
                 request()->route()->getName() == 'admin.employee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
@@ -86,18 +87,18 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @if (request()->route()->getName() == 'admin.processes') active @endif">
-                    <a href="/admin/processes" class="menu-link">
+                    <a href="{!! route('admin.processes') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Processus">Processus</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.signals') active @endif">
-                    <a href="/admin/signal" class="menu-link">
+                    <a href="{!! route('admin.signals') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Signalements">Signalements</div>
                     </a>
                 </li>
 
-                <li class="menu-item @if (request()->route()->getName() == 'admin.plans') active @endif">
-                    <a href="/admin/plans" class="menu-link">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.planif') active @endif">
+                    <a href="{!! route('admin.planif') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Planification">Planifications</div>
                     </a>
                 </li>
@@ -122,7 +123,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active @endif">
-                    <a href="/admin/gravity" class="menu-link">
+                    <a href="{!! route('admin.gravity') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Gravité">Gravité</div>
                     </a>
                 </li>

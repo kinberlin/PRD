@@ -58,7 +58,7 @@
                                             <div class="col-sm-6 col-lg-3">
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <div>
-                                                        <h3 class="mb-1">{{count($data->whereNotIn('id', [1, 3, 6]))}}</h3>
+                                                        <h3 class="mb-1">{{count($data->whereNotIn('status', [1, 3, 6]))}}</h3>
                                                         <p class="mb-0">En cours de traitement</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2">
@@ -101,7 +101,9 @@
                                     <td>{{$d->created_at}}</td>
                                     <td>{{$d->occur_date}}</td>
                                     <td>{{\App\Models\Status::find($d->status)->name}}</td>
-                                    <td></td>
+                                    <td><a href="{!! route('admin.dysfunction.show', ['id'=>$d->id]) !!}" target="_blank" class="btn rounded-pill btn-icon btn-info">
+                                            <span class="tf-icons bx bx-info-circle"></span>
+                                        </a></td>
                                 </tr>
                             @endforeach
                         </tbody>

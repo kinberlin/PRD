@@ -31,7 +31,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 
-
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
@@ -45,20 +44,21 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
-        
-    Route::post('/rq/invitation', 'InvitationController@store')->name('invitation.store');
-    Route::post('/rq/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
+
+    Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
+    Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
-    
-
 
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
     Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
+
+    Route::get('/admin/detail/dysfonctionnement/{id}', 'AdminController@showDysfunction')->name('admin.dysfunction.show');
+    Route::get('/admin/plans', 'AdminController@planif')->name('admin.planif');
 
     Route::get('/admin/gravity', 'AdminController@gravity')->name('admin.gravity');
     Route::get('/admin/gravity/{id}', 'GravityController@destroy')->name('admin.gravity.destroy');
@@ -85,11 +85,11 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
- /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
+    /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
     Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
     Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
-*/
+     */
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
