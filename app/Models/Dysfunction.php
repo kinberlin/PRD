@@ -45,5 +45,6 @@ class Dysfunction extends Model
     /**
      * @var array
      */
+    
     protected $fillable = ['enterprise', 'site', 'emp_signaling', 'emp_matricule', 'emp_email', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons'];
     public $timestamps = false;}

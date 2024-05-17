@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Gravity;
 use App\Models\Holliday;
@@ -59,7 +60,9 @@ class AdminController extends Controller
     }
     public function signals()
     {
-        return view('admin/signal');
+        $data = Dysfunction::all();
+        $complainant = Dysfunction::distinct('emp_matricule')->count('matricule');
+        return view('admin/signal',compact('data', 'complainant'));
     }
     public function employee()
     {

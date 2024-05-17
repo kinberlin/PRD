@@ -10,6 +10,7 @@ use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class InvitationController extends Controller
 {

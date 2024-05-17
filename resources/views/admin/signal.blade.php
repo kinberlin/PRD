@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des Signals
+    Gestion des Signalements
 @endsection
 @section('manualstyle')
 @endsection
@@ -21,7 +21,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
                                                     <div>
-                                                        <h3 class="mb-1">24</h3>
+                                                        <h3 class="mb-1">{{$complainant}}</h3>
                                                         <p class="mb-0">Plaignants</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-sm-4">
@@ -34,7 +34,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
                                                     <div>
-                                                        <h3 class="mb-1">165</h3>
+                                                        <h3 class="mb-1">{{count($data)}}</h3>
                                                         <p class="mb-0">Signalements</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-lg-4">
@@ -47,7 +47,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
                                                     <div>
-                                                        <h3 class="mb-1">60</h3>
+                                                        <h3 class="mb-1">{{count($data->where('status',6))}}</h3>
                                                         <p class="mb-0">Traités</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-sm-4">
@@ -58,7 +58,7 @@
                                             <div class="col-sm-6 col-lg-3">
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <div>
-                                                        <h3 class="mb-1">105</h3>
+                                                        <h3 class="mb-1">{{count($data->whereNotIn('id', [1, 3, 6]))}}</h3>
                                                         <p class="mb-0">En cours de traitement</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2">
@@ -86,12 +86,24 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Entreprise</th>
+                                <th>Lieu</th>
+                                <th>Date d'Ajout<br>sur PRD</th>
+                                <th>Date de Constat</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($data as $d)
+                                <tr>
+                                    <td>#{{$d->id}}</td>
+                                    <td>{{$d->enterprise}} ( {{$d->site}} )</td>
+                                    <td>{{$d->created_at}}</td>
+                                    <td>{{$d->occur_date}}</td>
+                                    <td>{{\App\Models\Status::find($d->status)->name}}</td>
+                                    <td></td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
