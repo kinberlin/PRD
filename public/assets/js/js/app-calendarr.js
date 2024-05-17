@@ -66,17 +66,40 @@ function executeAfterAjax() {
             e.text
             : e.text;
     }
-    function n(e) {
-        return e.id
-            ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
-            assetsPath +
-            "img/avatars/" +
-            $(e.element).data("avatar") +
-            "' alt='avatar' class='rounded-circle' /></div>" +
-            e.text +
-            "</div>"
-            : e.text;
-    }
+    A &&
+        A.addEventListener("click", (e) => {
+            console.log('clicked');
+            e.currentTarget.checked
+                ? document
+                    .querySelectorAll(".input-filter")
+                    .forEach((e) => (e.checked = 1))
+                : document
+                    .querySelectorAll(".input-filter")
+                    .forEach((e) => (e.checked = 0)),
+                i.refetchEvents();
+        });
+    F &&
+        F.forEach((e) => {
+            e.addEventListener("click", () => {
+                document.querySelectorAll(".input-filter:checked")
+                    .length <
+                    document.querySelectorAll(".input-filter").length
+                    ? (A.checked = !1)
+                    : (A.checked = !0),
+                    i.refetchEvents();
+            });
+        });
+        function n(e) {
+            return e.id
+                ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
+                assetsPath +
+                "img/avatars/" +
+                $(e.element).data("avatar") +
+                "' alt='avatar' class='rounded-circle' /></div>" +
+                e.text +
+                "</div>"
+                : e.text;
+        }
     var d, o;
     function s() {
         var e = document.querySelector(".fc-sidebarToggle-button");
@@ -234,7 +257,7 @@ function executeAfterAjax() {
                     $.each(eventsArray, function (index, eventData) {
                         // Populate the form fields with the event data
                         $('#eventTitle').val(eventData.object);
-                        $('#dysfunctionList').val(eventData.dysfunction);
+                        $('#dysfunctionList').val(eventData.dysfonction);
                         $('#eventLabel').val(eventData.motif);
                         $('#eventStartDate').val(eventData.dates);
                         $('#flatpickr-begintime').val(eventData.begin);
@@ -390,28 +413,7 @@ function executeAfterAjax() {
                 m.classList.remove("show"),
                 f.classList.remove("show");
         }),
-        A &&
-        A.addEventListener("click", (e) => {
-            e.currentTarget.checked
-                ? document
-                    .querySelectorAll(".input-filter")
-                    .forEach((e) => (e.checked = 1))
-                : document
-                    .querySelectorAll(".input-filter")
-                    .forEach((e) => (e.checked = 0)),
-                i.refetchEvents();
-        }),
-        F &&
-        F.forEach((e) => {
-            e.addEventListener("click", () => {
-                document.querySelectorAll(".input-filter:checked")
-                    .length <
-                    document.querySelectorAll(".input-filter").length
-                    ? (A.checked = !1)
-                    : (A.checked = !0),
-                    i.refetchEvents();
-            });
-        }),
+
         e.config.onChange.push(function (e) {
             i.changeView(
                 i.view.type,
