@@ -148,10 +148,24 @@ deferred.promise().then(function (valuesArray) {
 
     gantt.config.work_time = true;
 
-
+    gantt.config.duration_unit = "day";
     gantt.config.auto_scheduling = true;
     gantt.config.auto_scheduling_strict = true;
+    gantt.config.auto_scheduling_initial = true;
     gantt.config.auto_scheduling_compatibility = true;
+    gantt.templates.quick_info_content = function (start, end, task) {
+        let html = `
+                <div class='gantt_info'>
+            <div class='gantt_info_title'>
+            ${task.description ? `${task.description}` : 'Aucune description'} </div> </div>
+        <div class='gantt_info_buttons'>
+            <div class='gantt_info_btn_set'>
+                ${task.proof ? `<a class='gantt_info_btn' href='${task.proof}' target='_blank'>Voir la Preuve d'Achevement</a>` : ''}
+            </div>
+        </div>
+    `;
+        return html;
+    };
     gantt.config.scales = [{
         unit: "month",
         format: "%F, %Y"
@@ -234,7 +248,9 @@ deferred.promise().then(function (valuesArray) {
             refreshSummaryProgress(gantt.getParent(id), true);
         });
 
-
+        gantt.attachEvent("onTaskLoading", function (task) {
+            return true;
+        });
         (function () {
             var idParentBeforeDeleteTask = 0;
             gantt.attachEvent("onBeforeTaskDelete", function (id) {
