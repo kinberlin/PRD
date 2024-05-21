@@ -16,7 +16,7 @@ function getFile(input) {
         // Check if total size exceeds 5MB
         if (totalSizeInMB > 5) {
             // Display error message
-            alert('Total size of files cannot exceed 5MB.');
+            alert('Taille totale des fichiers est superieur a 5MB.');
             // Clear the file input fields to prevent submission
             input.value = '';
             /*fileInputs.forEach(input => {

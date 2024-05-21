@@ -99,4 +99,33 @@ class TaskController extends RoutingController
             "action" => "deleted",
         ]);
     }
+
+    public function proof(Request $request)
+    {
+        try {
+            $task = Task::find($request->task_id);
+            $url = null;
+            $pj = $request->hasFile('file') ? $request->file : null;
+            if ($pj == null) {
+                throw new Exception("Nous ne trouvons pas le fichier joint", 500);
+            }
+            if ($pj->isValid()) {
+                $filename = time() . '_' . $pj->getClientOriginalName();
+                $pj->move(public_path('/uploads/tasks'), $filename);
+                $url = asset('/uploads/tasks/' . $filename);
+            }
+            if ($url == null) {
+                throw new Exception("IMpossible de récuperer l'URL de la ressource", 501);
+            }
+            $task->url = $url;
+            $task->save();
+            return response()->json([
+                "action" => "updated",
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "action" => 'Erreur ' . $th->getMessage(),
+            ]);
+        }
+    }
 }

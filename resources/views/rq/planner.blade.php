@@ -45,31 +45,56 @@
 
         /*recalculations*/
         .gantt_task_line.gantt_dependent_task {
-			background-color: #65c16f;
-			border: 1px solid #3c9445;
-		}
+            background-color: #65c16f;
+            border: 1px solid #3c9445;
+        }
 
-		.gantt_task_line.gantt_dependent_task .gantt_task_progress {
-			background-color: #46ad51;
-		}
+        .gantt_task_line.gantt_dependent_task .gantt_task_progress {
+            background-color: #46ad51;
+        }
 
-		.hide_project_progress_drag .gantt_task_progress_drag {
-			visibility: hidden;
-		}
+        .hide_project_progress_drag .gantt_task_progress_drag {
+            visibility: hidden;
+        }
 
-		.gantt_task_progress {
-			text-align: left;
-			padding-left: 10px;
-			box-sizing: border-box;
-			color: white;
-			font-weight: bold;
-		}
+        .gantt_task_progress {
+            text-align: left;
+            padding-left: 10px;
+            box-sizing: border-box;
+            color: white;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dysfonctionnement No.{{$id}} /</span> Actions Correctives</h4>
-        <input type="hidden" value="{{$id}}" id="uselessDysId"/>
+        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dysfonctionnement No.{{ $id }} /</span> Actions
+            Correctives</h4>
+        <input type="hidden" value="{{ $id }}" id="uselessDysId" />
+        <!-- Modal -->
+        <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileUploadModalLabel">Upload Proof of Completion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="fileUploadForm">
+                            <div class="mb-3">
+                                <label for="proofFile" class="form-label">Select file:</label>
+                                <input type="file" class="form-control" id="proofFile" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="uploadProofButton">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="gantt_here" style="width: 100%; height: 100vh"></div>
     </div>
 @endsection

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('task', TaskController::class);
 Route::resource('link', LinkController::class);
 Route::get('/data/{id}', [GanttController::class, 'get']);
+//Route::post('/task/proof', [GanttController::class, 'proof']);
 /*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
