@@ -98,12 +98,12 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/dashboard/ep1', 'AdminController@indexEndPoint')->name('admin.indexep1');
     Route::get('/admin/dashboard/ep2', 'AdminController@indexEndPoint2')->name('admin.indexep2');
-
-    Route::get('/admin/service', 'AdminController@service')->name('admin.service');
-    Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.service.destroy');
-    Route::post('/admin/service', 'ServiceController@store')->name('admin.service.store');
-    Route::post('/admin/service/{id}', 'ServiceController@update')->name('admin.service.update');
-
+/*
+Route::get('/admin/service', 'AdminController@service')->name('admin.service');
+Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.service.destroy');
+Route::post('/admin/service', 'ServiceController@store')->name('admin.service.store');
+Route::post('/admin/service/{id}', 'ServiceController@update')->name('admin.service.update');
+ */
     Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     Route::get('/admin/pme', 'AdminController@pme')->name('admin.pme');

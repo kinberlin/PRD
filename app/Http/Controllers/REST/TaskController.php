@@ -106,6 +106,9 @@ class TaskController extends RoutingController
             $task = Task::find($request->task_id);
             $url = null;
             $pj = $request->hasFile('file') ? $request->file : null;
+            iF($task == null){
+                throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
+            }
             if ($pj == null) {
                 throw new Exception("Nous ne trouvons pas le fichier joint", 500);
             }
@@ -115,16 +118,20 @@ class TaskController extends RoutingController
                 $url = asset('/uploads/tasks/' . $filename);
             }
             if ($url == null) {
-                throw new Exception("IMpossible de récuperer l'URL de la ressource", 501);
+                throw new Exception("Impossible de récuperer l'URL de la ressource", 501);
             }
-            $task->url = $url;
+            $task->proof = $url;
+            $task->progress = 1;
             $task->save();
+
             return response()->json([
                 "action" => "updated",
+                "status" => 200
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 "action" => 'Erreur ' . $th->getMessage(),
+                "status" => 500
             ]);
         }
     }

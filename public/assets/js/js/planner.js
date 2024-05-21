@@ -317,8 +317,15 @@ deferred.promise().then(function (valuesArray) {
 
     gantt.attachEvent("onLightboxButton", function (button_id, node, e) {
         if (button_id == "complete_button") {
+            // Open the file upload modal
+            var myModal = new bootstrap.Modal(document.getElementById('fileUploadModal'));
+            myModal.show();
+
             var id = gantt.getState().lightbox;
-            gantt.getTask(id).progress = 1;
+            // Store task ID for later use
+            document.getElementById('uploadProofButton').setAttribute('data-task-id', id);
+
+            gantt.getTask(id).progress = 0.9;
             gantt.updateTask(id)
             gantt.hideLightbox();
         }
@@ -329,20 +336,13 @@ deferred.promise().then(function (valuesArray) {
             gantt.message({ text: "La tâche est déja terminée", type: "completed" });
             return false;
         }
-        // Open the file upload modal
-        var myModal = new bootstrap.Modal(document.getElementById('fileUploadModal'));
-        myModal.show();
-
-        // Store task ID for later use
-        document.getElementById('uploadProofButton').setAttribute('data-task-id', id);
-
         return true;
     });
     document.getElementById('uploadProofButton').addEventListener('click', function () {
         var taskId = this.getAttribute('data-task-id');
         var fileInput = document.getElementById('proofFile');
 
-        if (fileInput.files.length != 0 && input.files[0].size < (5*1024*1024) ) {
+        if (fileInput.files[0].size > (5 * 1024 * 1024)) {
             alert("Veuillez entrer un fichier de moins de 5mb!");
             return;
         }
@@ -353,14 +353,17 @@ deferred.promise().then(function (valuesArray) {
 
         // AJAX request to upload the file
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/upload/proof', true);
+        xhr.open('POST', '/api/task/proof', true);
         xhr.onload = function () {
             if (xhr.status === 200) {
                 // Success logic
-                alert('File uploaded successfully');
+                alert('Fichier soumis avec succes');
                 var myModalEl = document.getElementById('fileUploadModal');
                 var modal = bootstrap.Modal.getInstance(myModalEl);
                 modal.hide();
+                gantt.getTask(taskId).progress = 1;
+                gantt.updateTask(taskId)
+                console.log(xhr.action);
             } else {
                 // Error handling
                 alert('File upload failed');
