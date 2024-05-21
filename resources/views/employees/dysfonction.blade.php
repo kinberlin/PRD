@@ -32,7 +32,7 @@
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
                         <div class="col-md-9">
-                            <input class="form-control" type="date" id="occur_date"
+                            <input class="form-control" type="date" id="occur_date" name="occur_date"
                                 placeholder="Renseigner la date a laquelle vous avez effectuer le constat">
                         </div>
                     </div>

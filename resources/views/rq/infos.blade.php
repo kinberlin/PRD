@@ -165,7 +165,7 @@
                     @if ($data->status != 3)
                         <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre a Jour</button>
                         <button type="reset" class="btn btn-secondary">Annuler Modifications</button>
-                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Annuler ce Signalement</a>
+                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeté ce Signalement</a>
                     @endif
 
                 </div>

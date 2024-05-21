@@ -33,7 +33,7 @@
                                 style="color: red">*</span>)</label>
                         <div class="col-md-9">
                             <input class="form-control" type="date" name="occur_date" id="occur_date"
-                                placeholder="Renseigner la date a laquelle vous avez effectuer le constat">
+                                placeholder="Renseigner la date a laquelle vous avez effectuer le constat" required>
                         </div>
                     </div>
                     <div class="mb-3 row">

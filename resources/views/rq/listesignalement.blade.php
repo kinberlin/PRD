@@ -33,7 +33,7 @@
                                 <th>Date de Constat</th>
                                 <th>Description</th>
                                 <th>Statut</th>
-                                <th>Actiond</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
