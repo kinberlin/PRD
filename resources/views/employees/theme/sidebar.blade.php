@@ -23,48 +23,44 @@
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
-
-    <div class="menu-inner-shadow"></div>
-    <li class="menu-item @if (request()->route()->getName() == 'emp.dysfonction') active @endif">
-        <a href="{!! route('emp.dysfonction') !!}" class="menu-link">
+    <li class="menu-header small text-uppercase">
+        <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
+    </li>
+    <li class="menu-item @if (request()->route()->getName() == 'employee.dysfonction') active @endif">
+        <a href="{!! route('employee.dysfonction') !!}" target="_blank" class="menu-link">
             <i class="menu-icon tf-icons bx bx-support"></i>
             <div class="text-truncate">Signaler</div>
         </a>
     </li>
-    <li class="menu-item">
-        <a href="form-validation.html" class="menu-link">
+    <li class="menu-item @if (request()->route()->getName() == 'employee.signalement') active @endif">
+        <a href="{!! route('employee.signalement') !!}" target="_blank" class="menu-link">
             <i class="menu-icon tf-icons bx bx-list-check"></i>
-            <div class="text-truncate" data-i18n="Form Validation">
-                Form Validation
-            </div>
+            <div class="text-truncate">Mes Signalements</div>
         </a>
     </li>
+
+    <div class="menu-inner-shadow"></div>
+
     <div class="menu-inner-shadow"></div>
     <li class="menu-header small text-uppercase">
         <span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span>
     </li>
     <ul class="menu-inner py-1">
-        <li class="menu-item @if (request()->route()->getName() == 'emp.dysfonction') active @endif">
-            <a href="{!! route('emp.dysfonction') !!}" target="_blank" class="menu-link">
+        <li class="menu-item @if (request()->route()->getName() == 'rq.dysfonction') active @endif">
+            <a href="{!! route('rq.dysfonction') !!}" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'emp.n1dysfonction') active @endif">
-            <a href="{!! route('emp.n1dysfonction') !!}" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-check"></i>
-                <div class="text-truncate">Status</div>
-            </a>
-        </li>
-        <li class="menu-item @if (request()->route()->getName() == 'emp.signalement') active @endif">
-            <a href="{!! route('emp.signalement') !!}" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-case"></i>
+        <li class="menu-item @if (request()->route()->getName() == 'rq.signalement') active @endif">
+            <a href="{!! route('rq.signalement') !!}" target="_blank" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-check"></i>
                 <div class="text-truncate">Mes Signalements</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'emp.planif') active @endif">
-            <a href="{!! route('emp.planif') !!}" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-map"></i>
+        <li class="menu-item @if (request()->route()->getName() == 'rq.planif') active @endif">
+            <a href="{!! route('rq.planif') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-timer"></i>
                 <div class="text-truncate">Planifications</div>
             </a>
         </li>

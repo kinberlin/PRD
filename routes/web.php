@@ -34,6 +34,9 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
+    Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employee.dysfunction');
+    Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employee.signalement');
+
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
