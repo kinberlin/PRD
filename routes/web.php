@@ -45,6 +45,17 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
 
+    Route::get('/rq/department', 'RQController@department')->name('rq.department');
+    Route::get('/rq/department/{id}', 'DepartmentController@destroy')->name('rq.department.destroy');
+    Route::post('/rq/department', 'DepartmentController@store')->name('rq.department.store');
+    Route::post('/rq/department/{id}', 'DepartmentController@update')->name('rq.department.update');
+
+    Route::get('/rq/site', 'RQController@site')->name('rq.site');
+    Route::get('/rq/site/{id}', 'SiteController@destroy')->name('rq.site.destroy');
+    Route::post('/rq/site', 'SiteController@store')->name('rq.site.store');
+    Route::post('/rq/site/{id}', 'SiteController@update')->name('rq.site.update');
+
+
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');

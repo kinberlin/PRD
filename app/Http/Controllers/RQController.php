@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Gravity;
@@ -23,6 +24,18 @@ class RQController extends Controller
     {
 
     }
+    public function department()
+    {
+        $data = Department::all();
+        $ents = Enterprise::all();
+        return view('rq/department', compact("data", "ents"));
+    }
+    public function site()
+    {
+        $data = Site::all();
+        $ents = Enterprise::all();
+        return view('rq/site', compact("data", "ents"));
+    }
     public function dysfonction()
     {
         $ents = Enterprise::all();
@@ -43,7 +56,7 @@ class RQController extends Controller
     {
         $dys = Dysfunction::all();
         $users = Users::all();
-        return view('rq/planifs', compact('dys','users'));
+        return view('rq/planifs', compact('dys', 'users'));
     }
     public function empty()
     {
