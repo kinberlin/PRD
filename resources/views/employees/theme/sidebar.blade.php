@@ -23,53 +23,34 @@
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
-    <li class="menu-header small text-uppercase">
-        <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
-    </li>
-    <li class="menu-item @if (request()->route()->getName() == 'employee.dysfonction') active @endif">
-        <a href="{!! route('employee.dysfonction') !!}" target="_blank" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-support"></i>
-            <div class="text-truncate">Signaler</div>
-        </a>
-    </li>
-    <li class="menu-item @if (request()->route()->getName() == 'employee.signalement') active @endif">
-        <a href="{!! route('employee.signalement') !!}" target="_blank" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-list-check"></i>
-            <div class="text-truncate">Mes Signalements</div>
-        </a>
-    </li>
+    <ul class="menu-inner py-1 overflow-auto">
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
+        </li>
 
-    <div class="menu-inner-shadow"></div>
-
-    <div class="menu-inner-shadow"></div>
-    <li class="menu-header small text-uppercase">
-        <span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span>
-    </li>
-    <ul class="menu-inner py-1">
-        <li class="menu-item @if (request()->route()->getName() == 'rq.dysfonction') active @endif">
-            <a href="{!! route('rq.dysfonction') !!}" target="_blank" class="menu-link">
+        <li class="menu-item @if (request()->route()->getName() == 'employees.dysfunction') active @endif">
+            <a href="{!! route('employees.dysfunction') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.signalement') active @endif">
-            <a href="{!! route('rq.signalement') !!}" target="_blank" class="menu-link">
+        <li class="menu-item @if (request()->route()->getName() == 'employees.signalement') active @endif">
+            <a href="{!! route('employees.signalement') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-check"></i>
                 <div class="text-truncate">Mes Signalements</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.planif') active @endif">
-            <a href="{!! route('rq.planif') !!}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-timer"></i>
-                <div class="text-truncate">Planifications</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div class="text-truncate" data-i18n="Documentation">Documentation</div>
-            </a>
-        </li>
-    </ul>
 
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text" data-i18n="Autres">Autres</span>
+        </li>
+        <ul class="menu-inner py-1">
+            <li class="menu-item">
+                <a href="#" target="_blank" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div class="text-truncate" data-i18n="Documentation">Documentation</div>
+                </a>
+            </li>
+        </ul>
+    </ul>
 </aside>

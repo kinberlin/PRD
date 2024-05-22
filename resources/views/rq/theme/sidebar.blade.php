@@ -78,7 +78,7 @@
     </li>
     <div class="menu-inner-shadow"></div>
     <li class="menu-header small text-uppercase">
-        <span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span>
+        <span class="menu-header-text" data-i18n="Autres">Autres</span>
     </li>
     <ul class="menu-inner py-1">
         <li class="menu-item @if (request()->route()->getName() == 'rq.dysfonction') active @endif">

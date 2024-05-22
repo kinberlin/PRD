@@ -20,9 +20,11 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return redirect('/admin/dashboard');
 });
-
+Route::get('/rq', function () {
+    return redirect('/rq/dashboard');
+});
 Route::get('/employee', function () {
-    return redirect('/employee/dashboard');
+    return redirect('/employee/dysfonctionnement');
 });
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
@@ -34,8 +36,8 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404');
 Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
-    Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employee.dysfunction');
-    Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employee.signalement');
+    Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
+    Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employees.signalement');
 
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');

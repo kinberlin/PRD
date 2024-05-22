@@ -16,16 +16,16 @@ use Throwable;
 
 class EmployeeController extends Controller
 {
-    public function dysfonction()
+    public function dysfunction()
     {
         $ents = Enterprise::all();
         $site = Site::all();
-        return view('employee/dysfonction', compact('ents', 'site'));
+        return view('employees/dysfunction', compact('ents', 'site'));
     }
     public function listeSignalement()
     {
         $data = Dysfunction::all();
         $status = Status::all();
-        return view('employee/listesignalement', compact('data', 'status'));
+        return view('employees/listesignalement', compact('data', 'status'));
     }
 }

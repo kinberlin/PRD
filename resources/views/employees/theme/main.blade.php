@@ -2,7 +2,7 @@
 <html lang="fr" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr"
     data-theme="theme-default" data-assets-path="{!! url('assets') !!}/" data-template="vertical-menu-template">
 
-@include('rq.theme.header')
+@include('employees.theme.header')
 
 <body>
 
@@ -11,14 +11,14 @@
         <div class="layout-container">
 
             <!-- Menu -->
-            @include('rq.theme.sidebar')
+            @include('employees.theme.sidebar')
             <!-- / Menu -->
 
             <!-- Layout container -->
             <div class="layout-page">
 
                 <!-- Navbar -->
-                @include('rq.theme.navbar')
+                @include('employees.theme.navbar')
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
@@ -29,7 +29,7 @@
                     <!-- / Content -->
 
                     <!-- Footer -->
-                    @include('rq.theme.footer')
+                    @include('employees.theme.footer')
                     <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>
@@ -47,7 +47,7 @@
 
     </div>
 
-    @include('rq.theme.utils')
+    @include('employees.theme.utils')
     @yield('scriptContent')
 </body>
 
