@@ -46,6 +46,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
+        Route::get('/rq/signalements', 'RQController@allSignalement')->name('rq.allsignalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');

@@ -52,6 +52,12 @@ class RQController extends Controller
         $status = Status::all();
         return view('rq/listesignalement', compact('data', 'status'));
     }
+        public function allSignalement()
+    {
+        $data = Dysfunction::all();
+        $status = Status::all();
+        return view('rq/signalements', compact('data', 'status'));
+    }
     public function planif()
     {
         $dys = Dysfunction::all();

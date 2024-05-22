@@ -81,18 +81,36 @@
         <span class="menu-header-text" data-i18n="Autres">Autres</span>
     </li>
     <ul class="menu-inner py-1">
+            <li class="menu-item @if (request()->route()->getName() == 'rq.allsignalement' ||
+            request()->route()->getName() == 'rq.signalement') active open @endif">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-user-pin"></i>
+            <div class="text-truncate" data-i18n="Personnelle">Personnelle</div>
+            <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+        </a>
+        <ul class="menu-sub">
+        <li class="menu-item @if (request()->route()->getName() == 'rq.allsignalement') active @endif">
+            <a href="{!! route('rq.allsignalement') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-alt-check"></i>
+                <div class="text-truncate">Liste des Signalements</div>
+            </a>
+        </li>
+
+                    <li class="menu-item @if (request()->route()->getName() == 'rq.signalement') active @endif">
+            <a href="{!! route('rq.signalement') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-check"></i>
+                <div class="text-truncate">Mes Signalements</div>
+            </a>
+        </li>
+        </ul>
+    </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.dysfonction') active @endif">
             <a href="{!! route('rq.dysfonction') !!}" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.signalement') active @endif">
-            <a href="{!! route('rq.signalement') !!}" target="_blank" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-list-check"></i>
-                <div class="text-truncate">Mes Signalements</div>
-            </a>
-        </li>
+
         <li class="menu-item @if (request()->route()->getName() == 'rq.planif') active @endif">
             <a href="{!! route('rq.planif') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-timer"></i>

@@ -27,10 +27,10 @@
 
     <div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
+    <ul class="menu-inner py-1 overflow-auto">
         <!-- Dashboards -->
         <li class="menu-item @if (request()->route()->getName() == 'admin.index') active @endif">
-            <a href="/admin/dashboard" class="menu-link">
+            <a href="{!! route('admin.index')!!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div class="text-truncate" data-i18n="Accueil">Accueil</div>
             </a>
@@ -72,7 +72,8 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-header small text-uppercase">
+        <li 
+        class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Dysfonctionnements">Dysfonctionnements</span>
         </li>
         <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
