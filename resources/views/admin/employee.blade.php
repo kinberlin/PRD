@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="/admin/employee" method="POST">
+                                    action="{!! route('admin.employee.store') !!}" method="POST">
                                     <div class="mb-3 fv-plugins-icon-container">
                                         @csrf
                                         <label class="form-label" for="name">Nom du Service</label>
@@ -94,7 +94,7 @@
                         <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
                         <input type="file" style="visibility: hidden" id="excelFileInput">
 
-                        <form action="/admin/employee" method="POST">
+                        <form action="{!! route('admin.employee.store') !!}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -109,7 +109,7 @@
         <div class="card">
 
             <div class="card-body">
-                <h5 class="card-title">Liste des Employés sur WorkWave</h5>
+                <h5 class="card-title">Liste des Employés sur PRD</h5>
                 <div class=" align-items-start justify-content-between">
                     <table id="datatables-orders"
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
@@ -118,13 +118,10 @@
                                 <th>Id</th>
                                 <th>Entreprise</th>
                                 <th>Département</th>
-                                <th>Nom</th>
-                                <th>Prenom</th>
+                                <th>Noms</th>
                                 <th>Email</th>
-                                <th>Service</th>
                                 <th>Téléphone</th>
                                 <th>Matricule</th>
-                                <th>Solde<br>Vacance</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -135,29 +132,13 @@
                                     <td>{{ $ents->where('id', $d->enterprise)->first()->name }}</td>
                                     @if ($deps->where('id', $d->department)->first() != null)
                                         <td>{{ $deps->where('id', $d->department)->first()->name }}</td>
-                                    @elseif($ents->where('manager', $d->id)->first() != null)
-                                        <td>DG : {{ $ents->where('manager', $d->id)->first()->name }}</td>
                                     @else
                                         <td>Aucun département renseigner.</td>
                                     @endif
-                                    <td>{{ $d->firstname }}</td>
-                                    <td>{{ $d->lastname }}</td>
+                                    <td>{{ $d->firstname }} {{ $d->lastname }}</td>
                                     <td>{{ $d->email }}</td>
-                                    @if (empty($d->service))
-                                        @if ($deps->where('id', $d->department)->first() != null)
-                                            <td>Chef de Département
-                                                ({{ $deps->where('id', $d->department)->first()->name }})
-                                            </td>
-                                        @else
-                                            <td>Service Inconnu</td>
-                                        @endif
-                                    @else
-                                        <td>{{ $services->where('id', $d->service)->first()->name }} (ID :
-                                            {{ $d->service }})</td>
-                                    @endif
                                     <td>{{ $d->phone }}</td>
                                     <td>{{ $d->matricule }}</td>
-                                    <td>{{ $d->holiday }}j</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemployeerr{{ $d->id }}">
                                             M.A.J
