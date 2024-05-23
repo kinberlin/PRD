@@ -45,6 +45,7 @@ class DysfunctionController extends Controller
             $dys->emp_signaling = 'Test First'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
             $dys->emp_matricule = 'YU14AS'; //Auth::user()->matricule;
             $dys->emp_email = 't@t.t'; //Auth::user()->email;
+            $dys->code = 
             $urls = [];
             foreach ($request->file('group-a') as $key => $fileData) {
                 if (isset($fileData['pj']) && $fileData['pj']->isValid()) {

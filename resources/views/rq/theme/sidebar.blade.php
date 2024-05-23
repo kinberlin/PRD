@@ -82,7 +82,8 @@
     </li>
     <ul class="menu-inner py-1">
             <li class="menu-item @if (request()->route()->getName() == 'rq.allsignalement' ||
-            request()->route()->getName() == 'rq.signalement') active open @endif">
+            request()->route()->getName() == 'rq.signalement' ||
+            request()->route()->getName() == 'rq.n1dysfonction') active open @endif">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-user-pin"></i>
             <div class="text-truncate" data-i18n="Personnelle">Personnelle</div>
@@ -105,7 +106,7 @@
         </ul>
     </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.dysfonction') active @endif">
-            <a href="{!! route('rq.dysfonction') !!}" target="_blank" class="menu-link">
+            <a href="{!! route('rq.dysfonction') !!}"  class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate">Signaler</div>
             </a>
@@ -118,7 +119,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
+            <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div class="text-truncate" data-i18n="Documentation">Documentation</div>
             </a>

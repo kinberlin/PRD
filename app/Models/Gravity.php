@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property int    $created_at
  * @property int    $deleted_at
+ * @property int    $note
  * @property string $name
  */
 class Gravity extends Model
@@ -33,7 +34,7 @@ class Gravity extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'name'
+        'created_at', 'deleted_at', 'name', 'note'
     ];
 
     /**
@@ -51,7 +52,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'name' => 'string'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'name' => 'string', 'note' => 'int'
     ];
 
     /**
