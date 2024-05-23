@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int    $created_at
  * @property int    $deleted_at
  * @property string $name
+ * @property string $surfix
  */
 class Processes extends Model
 {
@@ -32,7 +33,7 @@ class Processes extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'created_at', 'deleted_at'
+        'created_at', 'deleted_at', 'name', 'surfix'
     ];
 
     /**
@@ -50,7 +51,7 @@ class Processes extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'name' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'name' => 'string', 'surfix' => 'string'
     ];
 
     /**

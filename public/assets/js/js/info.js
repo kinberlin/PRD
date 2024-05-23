@@ -1,13 +1,17 @@
 
-document.getElementById("myForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent default form submission
-  // Additional logic or actions can be performed here
-});
+var form = document.getElementById("myForm");
+  
+  if (form) {
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+      // Additional logic or actions can be performed here
+    });
+  }
 $(document).ready(function () {
   // Store the original options of select2
   var select2Options = $('#multicol-language2 option').clone();
 
-  $('#multicol-language1').change(function () {
+  /*$('#multicol-language1').change(function () {
     var selectedValue = $(this).val();
     var selectedExtraInfo = $(this).find('option:selected').data('extra-info');
 
@@ -17,6 +21,18 @@ $(document).ready(function () {
     // Filter and remove the corresponding option based on the selected extra info
     $('#multicol-language2 option[data-extra-info="' + selectedExtraInfo + '"]').remove();
   });
+    var mySelect = $('.impact_proc_select');
+    if (mySelect.length) {
+        mySelect.wrap('<div class="position-relative"></div>').select2({
+            placeholder: 'Select an option',
+            allowClear: true,
+            dropdownParent: mySelect.parent(),
+        });
+    }*/
+  $('.impact_proc_select').select2({
+                placeholder: 'Select an option',
+                allowClear: true
+            });
   $("#saveActionsBtn").click(function (event) {
     // Submit the form
 

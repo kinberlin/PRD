@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $manager
  * @property int    $vice-manager
  * @property string $name
+ * @property string $surfix
  */
 class Enterprise extends Model
 {use SoftDeletes;
@@ -34,7 +35,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $fillable = [
-        'deleted_at', 'manager', 'name', 'vice-manager'
+        'deleted_at', 'manager', 'name', 'vice-manager', 'surfix'
     ];
 
     /**
@@ -52,7 +53,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int'
+        'id' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix'=> 'string'
     ];
 
     /**

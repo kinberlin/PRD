@@ -42,11 +42,10 @@ class EnterpriseController extends Controller
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-
-                $name = $row[1];
                 Enterprise::create([
                     //'id' => $id,
-                    'name' => $name,
+                    'name' => $row[1],
+                    'surfix' => $row[2],
                 ]);
             }
             DB::commit();
@@ -81,6 +80,7 @@ class EnterpriseController extends Controller
             DB::beginTransaction();
             $d = Enterprise::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
+            $d->surfix = empty($request->input('surfix')) ? $d->surfix : $request->input('surfix');
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");

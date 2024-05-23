@@ -7,7 +7,7 @@
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">Vue Complémentaire sur le signalement </span> No. {{ $data->id }}
+            <span class="text-muted fw-light">Vue Complémentaire sur le signalement </span> No. {{ $data->code }}
         </h4>
         <!-- Basic Layout -->
         <div class="row">
@@ -100,7 +100,7 @@
         </div>
         <!-- Multi Column with Form Separator -->
         <div class="card mb-4">
-            <h5 class="card-header">Informations complementaires</h5>
+            <h5 class="card-header">Informations complémentaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
                                                                 <h6> Info Supplementaires</h6>-->
@@ -120,19 +120,19 @@
                             @foreach ($processes as $p)
                                 <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}"
                                     @if ($data->concern_processes != null && in_array($p->name, json_decode($data->concern_processes, true))) selected @endif>
-                                    {{ $p->name }}</option>
+                                    {{ $p->name }} ({{$p->surfix}})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 select2-primary">
                         <label class="form-label" for="multicol-language2">Processus Impactés (<span
                                 style="color: red">*</span>)</label>
-                        <select id="multicol-language2" name="impact_processes[]" class="select2 form-select" multiple
+                        <select name="impact_processes[]" class="select2 form-select" multiple
                             required>
                             @foreach ($processes as $p)
                                 <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}"
                                     @if ($data->concern_processes != null && in_array($p->name, json_decode($data->impact_processes, true))) selected @endif>
-                                    {{ $p->name }}
+                                    {{ $p->name }} ({{$p->surfix}})
                                 </option>
                             @endforeach
                         </select>

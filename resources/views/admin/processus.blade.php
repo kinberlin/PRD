@@ -28,8 +28,16 @@
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Processus</label>
                                         <input type="text" class="form-control" name="data[0][1]"
-                                            placeholder="Nom du Processus">
+                                            placeholder="Nom du Processus" required>
                                         <input type="hidden" class="form-control" name="data[0][0]">
+                                        <div
+                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="name">Abbréviation</label>
+                                        <input type="text" class="form-control" name="data[0][2]"
+                                            placeholder="Abbréviation du Process" required>
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
@@ -69,6 +77,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nom du Processus</th>
+                                <th>Abbrév.</th>
                                 <th>Pilote(s)</th>
                                 <th>Action</th>
                             </tr>
@@ -78,6 +87,7 @@
                                 <tr>
                                     <td>{{$d->id}}</td>
                                     <td>{{$d->name}}</td>
+                                    <td>{{$d->surfix}}</td>
                                     <td>Non définies</td>
                                     <td>Les actions ne sont pas encore définies</td>
                                 </tr>

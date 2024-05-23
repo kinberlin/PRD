@@ -34,10 +34,14 @@
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="name">Surfix de l'Entreprise</label>
+                                        <input type="text" class="form-control" name="data[0][2]"
+                                            placeholder="Surfix de l'Entreprise">
+                                    </div>
                                     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
                                         data-bs-dismiss="offcanvas">Annuler</button>
-                                    <input type="hidden">
                                 </form>
                             </div>
                         </div>
@@ -69,6 +73,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Entreprise</th>
+                                <th>Abbréviation</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -77,6 +82,7 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
+                                    <td>{{ $d->surfix }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delentreprise{{ $d->id }}">Désactiver</button>
@@ -128,11 +134,17 @@
                                                     <div class="modal-body">
                                                         @csrf
                                                         <div class="row">
-                                                            <div class="col mb-3">
+                                                            <div class="col mb-6">
                                                                 <label for="nameBasic" class="form-label">Nom</label>
                                                                 <input type="text" id="nameBasic" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
+                                                            </div>
+                                                            <div class="col mb-6">
+                                                                <label for="namesurfix" class="form-label">Abbréviation</label>
+                                                                <input type="text" id="namesurfix" name="surfix"
+                                                                    value="{{ $d->surfix }}" class="form-control"
+                                                                    placeholder="Entrer une abbreviation au nom">
                                                             </div>
                                                         </div>
                                                     </div>

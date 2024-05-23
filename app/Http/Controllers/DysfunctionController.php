@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Correction;
 use App\Models\Dysfunction;
+use App\Models\Enterprise;
+use App\Models\Processes;
 use App\Models\Status;
+use App\Models\Task;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -45,20 +49,23 @@ class DysfunctionController extends Controller
             $dys->emp_signaling = 'Test First'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
             $dys->emp_matricule = 'YU14AS'; //Auth::user()->matricule;
             $dys->emp_email = 't@t.t'; //Auth::user()->email;
-            $dys->code = 
             $urls = [];
-            foreach ($request->file('group-a') as $key => $fileData) {
-                if (isset($fileData['pj']) && $fileData['pj']->isValid()) {
-                    $pj = $fileData['pj'];
-                    $filename = time() . '_' . $pj->getClientOriginalName();
-                    $pj->move(public_path('/uploads/dysfonction'), $filename);
-                    $url = asset('/uploads/dysfonction/' . $filename);
-                    $urls[] = $url;
+            if ($request->hasFile('group-a')) {
+                foreach ($request->file('group-a') as $key => $fileData) {
+                    if (isset($fileData['pj']) && $fileData['pj']->isValid()) {
+                        $pj = $fileData['pj'];
+                        $filename = time() . '_' . $pj->getClientOriginalName();
+                        $pj->move(public_path('/uploads/dysfonction'), $filename);
+                        $url = asset('/uploads/dysfonction/' . $filename);
+                        $urls[] = $url;
+                    }
                 }
             }
             $dys->pj = json_encode($urls);
             $dys->save();
             DB::commit();
+            $dys->code = 'D'. Carbon::now()->year. Carbon::now()->month. Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix.$dys->id ;
+            $dys->save();
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -77,9 +84,25 @@ class DysfunctionController extends Controller
             $dys->gravity = $request->input('gravity');
             $dys->probability = $request->input('probability');
             $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
-            if ($dys->status == 1) {$dys->status = 2;}
+
             $dys->save();
             DB::commit();
+            if ($dys->status == 1) {
+                $dys->status = 2;
+                $task = new Task();
+                $task->dysfunction = $dys->id;
+                $task->text = 'Dysfonctionnement ' . $dys->code;
+                $task->duration = 1;
+                $task->progress = 0.01;
+                $task->start_date = Carbon::now();
+                $task->parent = 0;
+                $task->unscheduled = 0;
+                $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
+                $task->created_by = 'Demo User';
+                $dys->save();
+                $task->save();
+            }
+
             return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -93,7 +116,7 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 1);
             }
-            if ($dys->status  == 3) {
+            if ($dys->status == 3) {
                 throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 1);
             }
             $dys->status = 3;
@@ -108,33 +131,33 @@ class DysfunctionController extends Controller
     }
     public function action(Request $request, $id)
     {
-       // try {
-            DB::beginTransaction();
-            $dys = Dysfunction::find($id);
-            if ($dys == null) {
-                throw new Exception("Impossible de trouver la ressource demandée.", 404);
-            }
-            $corrections = [];
-            for ($i = 0; $i < count($request->user); $i++) {
-                // Create a new Person object for each row and add it to the array
-                $corrections[] = new Correction(
-                    $request->action[$i],
-                    $request->department[$i],
-                    $request->user[$i],
-                    $request->delay[$i],
-                    'Test User'
-                );
-            }
-            $corrective_acts = json_encode($corrections);
-            $dys->corrective_acts = $corrective_acts;
-            //dd($corrective_acts);
-            if ($dys->status == 1) {$dys->status = 2;}
-            $dys->save();
-            DB::commit();
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-       /* } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        // try {
+        DB::beginTransaction();
+        $dys = Dysfunction::find($id);
+        if ($dys == null) {
+            throw new Exception("Impossible de trouver la ressource demandée.", 404);
+        }
+        $corrections = [];
+        for ($i = 0; $i < count($request->user); $i++) {
+            // Create a new Person object for each row and add it to the array
+            $corrections[] = new Correction(
+                $request->action[$i],
+                $request->department[$i],
+                $request->user[$i],
+                $request->delay[$i],
+                'Test User'
+            );
+        }
+        $corrective_acts = json_encode($corrections);
+        $dys->corrective_acts = $corrective_acts;
+        //dd($corrective_acts);
+        if ($dys->status == 1) {$dys->status = 2;}
+        $dys->save();
+        DB::commit();
+        return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        /* } catch (Throwable $th) {
+    return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+    }*/
     }
     /**
      * Display the specified resource.
