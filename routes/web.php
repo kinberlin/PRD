@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
-        Route::get('/rq/signalements', 'RQController@allSignalement')->name('rq.allsignalement');
+    Route::get('/rq/signalements', 'RQController@allSignalement')->name('rq.allsignalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
@@ -105,6 +105,8 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
+    Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
+    Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
     Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
@@ -124,8 +126,7 @@ Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.serv
 Route::post('/admin/service', 'ServiceController@store')->name('admin.service.store');
 Route::post('/admin/service/{id}', 'ServiceController@update')->name('admin.service.update');
  */
-    Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
-    Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
+
     Route::get('/admin/pme', 'AdminController@pme')->name('admin.pme');
     Route::get('/admin/pne', 'AdminController@pne')->name('admin.pne');
     Route::get('/admin/holliday', 'AdminController@holliday')->name('admin.holliday');

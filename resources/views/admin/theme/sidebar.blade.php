@@ -76,8 +76,7 @@
         class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Dysfonctionnements">Dysfonctionnements</span>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
-                request()->route()->getName() == 'admin.processes' ||
+        <li class="menu-item @if (request()->route()->getName() == 'admin.processes' ||
                 request()->route()->getName() == 'admin.signals' ||
                 request()->route()->getName() == 'admin.planif' ||
                 request()->route()->getName() == 'admin.employee') active open @endif">

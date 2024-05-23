@@ -100,43 +100,8 @@ class AdminController extends Controller
     {
         $ents = Enterprise::all();
         $deps = Department::all();
-        $services = Service::all();
         $data = Users::where('role', 2)->get();
-        return view('admin/employee', compact('ents', 'deps', 'services', 'data'));
-    }
-    public function pme()
-    {
-        $ents = Enterprise::all();
-        $deps = Department::all();
-        $services = Service::all();
-        $typepme = TypePme::all();
-        $status = Status::all();
-        $data = Pme::where('status', 4)->orderBy('created_at', 'desc')->get();
-        $ferier = PublicHolliday::whereIn('pme', $data->pluck('id'))->get();
-        return view('admin/pme', compact('ents', 'deps', 'services', 'typepme', 'status', 'data', 'ferier'));
-    }
-    public function pne()
-    {
-        $ents = Enterprise::all();
-        $deps = Department::all();
-        $services = Service::all();
-        $typepne = TypePne::all();
-        $status = Status::all();
-        $data = Pne::where('status', 4)->orderBy('created_at', 'desc')->get();
-        $ferier = PublicHolliday::whereIn('pne', $data->pluck('id'))->get();
-        return view('admin/pne', compact('ents', 'deps', 'services', 'typepne', 'status', 'data', 'ferier'));
-    }
-    public function holliday()
-    {
-        $ents = Enterprise::all();
-        $deps = Department::all();
-        $services = Service::all();
-        $typepne = TypePne::all();
-        $substitution = HollidaySubstitution::all();
-        $status = Status::all();
-        $data = Holliday::where('status', 4)->orderBy('created_at', 'desc')->get();
-        $ferier = PublicHolliday::whereIn('pne', $data->pluck('id'))->get();
-        return view('admin/holliday', compact('ents', 'deps', 'services', 'typepne', 'substitution', 'status', 'data', 'ferier'));
+        return view('admin/employee', compact('ents', 'deps', 'data'));
     }
     /**
      * Show the form for creating a new resource.
