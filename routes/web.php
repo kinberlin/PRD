@@ -107,6 +107,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
 
     Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
+    Route::post('/admin/oneemployee', 'EmployeeController@onestore')->name('admin.employee.onestore');
     /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
     Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
