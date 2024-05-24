@@ -23,65 +23,65 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="{!! route('admin.employee.store') !!}" method="POST">
+                                    action="{!! route('admin.employee.onestore') !!}" method="POST">
                                     <div class="mb-3 fv-plugins-icon-container">
                                         @csrf
-                                        <label class="form-label" for="name">Nom du Service</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
+                                        <label class="form-label" for="selents">Entreprise/Filiale</label>
+                                        <select id="selents" name="enterprise" class="form-select" required>
+                                            @foreach ($ents as $e)
+                                                <option value="{{ $e->id }}" data-extra-info="{{ $e->id }}">
+                                                    {{ $e->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="seldep">Département</label>
+                                        <select id="seldep" name="department" class="form-select" required>
+                                            @foreach ($deps as $d)
+                                                <option value="{{ $d->id }}"
+                                                    data-extra-info="{{ $d->enterprise }}">
+                                                    {{ $d->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="firstname">Nom</label>
+                                        <input type="text" class="form-control" id="firstname" placeholder="Nom de l'employé..."
+                                            name="firstname" aria-label="Cadyst">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Responsable du Service</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
+                                        <label class="form-label" for="lastname">Prenom</label>
+                                        <input type="text" class="form-control" id="lastname" placeholder="Prenom de l'employé..."
+                                            name="lastname" aria-label="Cadyst">
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="idmat">Matricule</label>
+                                        <input type="text" class="form-control" id="idmat" placeholder="Matricule de l'employé..."
+                                            name="matricule" aria-label="Cadyst">
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="idemail">Email</label>
+                                        <input type="email" class="form-control" id="idemail" placeholder="Email de l'employé..."
+                                            name="email" aria-label="Cadyst">
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="idphone">Telephone</label>
+                                        <input type="tel" class="form-control" id="idphone" placeholder="Tel. de l'employé..."
+                                            name="phone" aria-label="Cadyst">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Vice-Responsable du Service</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
+                                        <label class="form-label" for="idposte">Poste Occupé</label>
+                                        <input type="text" class="form-control" id="idposte" placeholder="Poste de l'employé..."
+                                            name="poste" aria-label="Cadyst">
                                     </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Entreprise</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Département</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Niveau</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Service Parent</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Cadyst ...."
-                                            name="name" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
+                                    <button type="submit"
+                                        class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
                                         data-bs-dismiss="offcanvas">Annuler</button>
                                     <input type="hidden">
@@ -162,4 +162,15 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
 
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#selents').change(function() {
+                var selectedOption = $(this).find(':selected');
+                var selectedValue = selectedOption.attr('data-extra-info');
+                $('#seldep option').hide();
+                $('#seldep option[data-extra-info="' + selectedValue + '"]').show();
+                $('#seldep').val($('#selsite option:visible:first').val());
+            });
+        });
+    </script>
 @endsection
