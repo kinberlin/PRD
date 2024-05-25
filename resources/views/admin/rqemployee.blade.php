@@ -12,19 +12,46 @@
                 <h5 class="card-header">Responsable Qualités</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
+                                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
+                            aria-controls="offcanvasEnd">Ajouter un Responsable Qualité</button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
+                            aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
+                            <div class="offcanvas-header">
+                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout d'Employé</h5>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body mx-0 flex-grow-0">
+                                <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
+                                    action="{!! route('admin.employee.onestore') !!}" method="POST">
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        @csrf
+                                        <label class="form-label" for="selents">Entreprise/Filiale d'action</label>
+                                        <select id="selents" name="enterprise" class="form-select" required>
+                                            @foreach ($ents as $e)
+                                                <option value="{{ $e->id }}" data-extra-info="{{ $e->id }}">
+                                                    {{ $e->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="firstname">Intérim</label>
+                                        <input type="text" class="form-control" id="firstname" placeholder="Nom de l'employé..."
+                                            name="firstname" aria-label="Cadyst">
+                                        <div
+                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                        class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
+                                    <button type="reset" class="btn btn-label-secondary"
+                                        data-bs-dismiss="offcanvas">Annuler</button>
+                                    <input type="hidden">
+                                </form>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
-                        <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-
-                        <form action="{!! route('admin.employee.store') !!}" method="POST">
-                            @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
-                        </form>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -42,7 +69,6 @@
                                 <th>Infos sur <br> le Responsable</th>
                                 <th>Entreprise d'<br>Action & Role</th>
                                 <th>Date d'attribution</th>
-                                <th>Téléphone</th>
                                 <th>Matricule</th>
                                 <th>Actions</th>
                             </tr>
@@ -56,6 +82,7 @@
                                         <br>Noms :
                                         <b>{{ $users->where('id', $d->user)->first()->firstname . $users->where('id', $d->user)->first()->lastname }}</b>
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
+                                        <br>Tel. <b>{{$users->where('id', $d->user)->first()->phone}}</b>
                                     </td>
                                     <td>Entreprise : {{ $ents->where('id', $d->enterprise)->first()->name }}
                                         <br> Rôle : RQ @if ($data->interim == 1)
@@ -65,9 +92,8 @@
                                         @endif
                                     </td>
                                         <td>Aucun département renseigner.</td>
-                                    <td>{{ $d->firstname }} {{ $d->lastname }}</td>
+                                    <td>{{ $d->created_at }}</td>
                                     <td>{{ $d->email }}</td>
-                                    <td>{{ $d->phone }}</td>
                                     <td>{{ $d->matricule }}</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemployeerr{{ $d->id }}">

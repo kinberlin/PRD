@@ -52,7 +52,7 @@ class AuthorisationRq extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'user' => 'int', 'enterprise' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'boolean'
+        'id' => 'int', 'user' => 'int', 'enterprise' => 'int', 'created_at' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'interim' => 'boolean'
     ];
 
     /**
