@@ -12,7 +12,7 @@
                 <h5 class="card-header">Responsable Qualités</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
                             aria-controls="offcanvasEnd">Ajouter un Responsable Qualité</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
@@ -35,15 +35,36 @@
                                         </select>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="firstname">Intérim</label>
-                                        <input type="text" class="form-control" id="firstname" placeholder="Nom de l'employé..."
-                                            name="firstname" aria-label="Cadyst">
+                                        <label class="form-label" for="firstname">Employé a Pourvoir</label>
+                                        <select class="select2 select-event-guests form-select" id="eventGuests"
+                                        name="user" required>
+                                        @foreach ($employees as $u)
+                                            <option data-avatar="{{ $u->image }}" value="{{ $u->email }}">
+                                                 Matricule : ({{ $u->matricule }}) {{$u->firstname. ' '. $u->lastname}}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
-                                    <button type="submit"
-                                        class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <div class="col-md">
+                                            <label class="form-label" for="firstname">Responsable qualité en Intérim ? </label>
+                                            <div class="form-check form-check-inline mt-3">
+                                                <input class="form-check-input" type="radio" name="interim"
+                                                    id="inlineRadio1" value="1">
+                                                <label class="form-check-label" for="inlineRadio1">Oui</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="interim"
+                                                    id="inlineRadio2" value="0">
+                                                <label class="form-check-label" for="inlineRadio2">Non</label>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
                                         data-bs-dismiss="offcanvas">Annuler</button>
                                     <input type="hidden">
@@ -82,7 +103,7 @@
                                         <br>Noms :
                                         <b>{{ $users->where('id', $d->user)->first()->firstname . $users->where('id', $d->user)->first()->lastname }}</b>
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
-                                        <br>Tel. <b>{{$users->where('id', $d->user)->first()->phone}}</b>
+                                        <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }}</b>
                                     </td>
                                     <td>Entreprise : {{ $ents->where('id', $d->enterprise)->first()->name }}
                                         <br> Rôle : RQ @if ($data->interim == 1)
@@ -91,7 +112,7 @@
                                             Principale
                                         @endif
                                     </td>
-                                        <td>Aucun département renseigner.</td>
+                                    <td>Aucun département renseigner.</td>
                                     <td>{{ $d->created_at }}</td>
                                     <td>{{ $d->email }}</td>
                                     <td>{{ $d->matricule }}</td>
@@ -116,7 +137,7 @@
     <script src="{!! url('assets/vendor/libs/%40form-validation/auto-focus.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
-
+    <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
     <script>
         $(document).ready(function() {

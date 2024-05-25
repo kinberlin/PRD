@@ -110,7 +110,8 @@ class AdminController extends Controller
         $deps = Department::all();
         $data = AuthorisationRq::all();
         $users = Users::whereIn('id', $data->pluck('user'))->get();
-        return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users'));
+        $employees = Users::whereIn('role', [2,3])->get();
+        return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users', 'employees'));
     }
     /**
      * Show the form for creating a new resource.
