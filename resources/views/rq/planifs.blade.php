@@ -178,7 +178,7 @@
                                         name="internal_invites[]" multiple>
                                         @foreach ($users as $u)
                                             <option data-avatar="{{ $u->image }}" value="{{ $u->email }}"
-                                                @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif>
+                                                @if(!empty($u->internal_invites)) @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif @endif>
                                                 {{ $u->email }} <br> Matricule : {{ $u->matricule }}
                                             </option>
                                         @endforeach
