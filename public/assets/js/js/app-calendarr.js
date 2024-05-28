@@ -57,6 +57,8 @@ function executeAfterAjax() {
         $('#eventURL').val('');
         $('#eventDescription').val('');
         $('.ext_invites').html('');
+        D.prop('selected', false);
+        D.val(null).trigger('change');
     });
     function t(e) {
         return e.id
@@ -92,10 +94,9 @@ function executeAfterAjax() {
     function n(e) {
         return e.id
             ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
-            assetsPath +
-            "img/avatars/" +
+            assetsPath  +
             $(e.element).data("avatar") +
-            "' alt='avatar' class='rounded-circle' /></div>" +
+            "' alt='#' class='rounded-circle' /></div>" +
             e.text +
             "</div>"
             : e.text;
@@ -276,6 +277,8 @@ function executeAfterAjax() {
                         $('#eventURL').val(eventData.link);
                         $('#eventDescription').val(eventData.description);
                         $('#regInvitation').val(eventData.id);
+                        D.prop('selected', false);
+                        D.val(null).trigger('change');
 
                         // For internal invites select box
                         $.each(JSON.parse(eventData.internal_invites), function (index, email) {
