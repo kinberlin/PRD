@@ -19,12 +19,6 @@
                             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                 aria-label="Close"></button>
                         </div>
-                        <div class="mb-3 fv-plugins-icon-container">
-                            <label class="form-label"> test </label>
-                            <input class="form-input" type="text" wire:model="text" required><br>
-                            <label>{{ $text }}</label>
-                
-                        </div>
                         <div class="offcanvas-body mx-0 flex-grow-0">
                             <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
                                 wire:submit="save">

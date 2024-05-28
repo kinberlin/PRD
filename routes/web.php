@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,12 @@ Route::get('/rq', function () {
 });
 Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');
+});
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/custom/livewire/update', $handle);
+});
+Livewire::setScriptRoute(function ($handle) {
+    return Route::get('/custom/livewire/livewire.js', $handle);
 });
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
@@ -91,9 +98,9 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/processes/{id}', 'ProcessesController@update')->name('admin.processes.update');
 
     Route::get('/admin/signal', 'AdminController@signals')->name('admin.signals'); /*to be done */
-    Route::get('/admin/signal/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
-    Route::post('/admin/signal', 'ProcessesController@store')->name('admin.processes.store');
-    Route::post('/admin/signal/{id}', 'ProcessesController@update')->name('admin.processes.update');
+    Route::get('/admin/signal/{id}', 'SignalController@destroy')->name('admin.signal.destroy');
+    Route::post('/admin/signal', 'SignalController@store')->name('admin.signal.store');
+    Route::post('/admin/signal/{id}', 'SignalController@update')->name('admin.signal.update');
 
     Route::get('/admin/department', 'AdminController@department')->name('admin.department');
     Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
