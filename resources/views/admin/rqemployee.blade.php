@@ -3,6 +3,7 @@
     Gestion des Responsable Qualités
 @endsection
 @section('manualstyle')
+    @livewireStyles
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -21,55 +22,7 @@
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="offcanvas-body mx-0 flex-grow-0">
-                                <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="{!! route('admin.employee.onestore') !!}" method="POST">
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        @csrf
-                                        <label class="form-label" for="selents">Entreprise/Filiale d'action</label>
-                                        <select id="selents" name="enterprise" class="form-select" required>
-                                            @foreach ($ents as $e)
-                                                <option value="{{ $e->id }}" data-extra-info="{{ $e->id }}">
-                                                    {{ $e->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="firstname">Employé a Pourvoir</label>
-                                        <select class="select2 select-event-guests form-select" id="eventGuests"
-                                        name="user" required>
-                                        @foreach ($employees as $u)
-                                            <option data-avatar="{{ $u->image }}" value="{{ $u->email }}">
-                                                 Matricule : ({{ $u->matricule }}) {{$u->firstname. ' '. $u->lastname}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <div class="col-md">
-                                            <label class="form-label" for="firstname">Responsable qualité en Intérim ? </label>
-                                            <div class="form-check form-check-inline mt-3">
-                                                <input class="form-check-input" type="radio" name="interim"
-                                                    id="inlineRadio1" value="1">
-                                                <label class="form-check-label" for="inlineRadio1">Oui</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="interim"
-                                                    id="inlineRadio2" value="0">
-                                                <label class="form-check-label" for="inlineRadio2">Non</label>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
-                                    <button type="reset" class="btn btn-label-secondary"
-                                        data-bs-dismiss="offcanvas">Annuler</button>
-                                    <input type="hidden">
-                                </form>
-                            </div>
+                            @livewire('add-r-q-employee-form')
                         </div>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
@@ -139,6 +92,7 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script>
     <script>
         $(document).ready(function() {
             $('#selents').change(function() {
@@ -150,4 +104,5 @@
             });
         });
     </script>
+    @livewireScripts
 @endsection
