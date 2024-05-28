@@ -84,6 +84,7 @@
     </div>
 @endsection
 @section('scriptContent')
+@livewireScripts
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/bootstrap5.js') !!}"></script>
@@ -92,7 +93,6 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script>
     <script>
         $(document).ready(function() {
             $('#selents').change(function() {
@@ -104,5 +104,4 @@
             });
         });
     </script>
-    @livewireScripts
 @endsection

@@ -16,6 +16,7 @@ class SiteRenderer extends Component
     public $location ="";
     public $name=""; 
     public $enterprise="";
+    public $text = 'big';
 
     public function mount()
     {

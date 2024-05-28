@@ -9,6 +9,7 @@ use App\Models\Users;
 class AddRQEmployeeForm extends Component
 {
     public $enterprises;
+    public $text = 'big';
     public $users;
     public $selectedEnterprise = '';
     public $selectedUser = '';
