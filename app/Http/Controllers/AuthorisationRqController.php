@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuthorisationRq;
+use App\Models\Enterprise;
+use App\Models\Users;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class AuthorisationRqController extends Controller
 {
@@ -29,7 +34,23 @@ class AuthorisationRqController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        try {
+            DB::beginTransaction();
+            $data = new AuthorisationRq();
+            $user = Users::find($request->input('user')); 
+            $ents = Enterprise::find($request->input('enterprise'));
+            if($user == null || $ents == null){
+                throw new Exception("Nous ne trouvons pas la ressource utilisateur/entreprise correspondant.", 404);
+            }
+            $data->user = $user->id;
+            $data->enterprise = $ents->id;
+            $data->interim = $request->input('interim');
+            $data->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Authorisation ajouté avec succès");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
 
     /**

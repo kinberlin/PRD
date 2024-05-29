@@ -15,7 +15,7 @@
             </select>
         </div>
         <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" for="firstname">Employé a Pourvoir</label>
+            <label class="form-label" for="firstname">Employé a Pourvoir {{$selectedUser}}</label>
             <select class="select2 select-event-guests form-select" id="eventGuests" name="user"
                 wire:model.live="selectedUser" required>
                 @foreach ($users as $index => $u)
@@ -27,10 +27,10 @@
         </div>
         <div class="mb-3 fv-plugins-icon-container">
             <div class="col-md">
-                <label class="form-label" for="firstname">Responsable qualité en Intérim ? </label>
+                <label class="form-label" for="firstname">Responsable qualité en Intérim ? {{$isInterim}}</label>
                 <div class="form-check form-check-inline mt-3">
                     <input class="form-check-input" type="radio" name="interim" id="inlineRadio1" value="1"
-                        wire:model.live="isInterim" {{ $disableYesRadio ? 'disabled' : '' }} >
+                        wire:model.live="isInterim" {{ $disableYesRadio ? 'disabled' : '' }}>
                     <label class="form-check-label" for="inlineRadio1">Oui</label>
                 </div>
                 <div class="form-check form-check-inline">

@@ -13,9 +13,9 @@ class AddRQEmployeeForm extends Component
     public $authorisations;
     public $title = 'big';
     public $users;
-    public $selectedEnterprise = '';
-    public $selectedUser = '';
-    public $isInterim = null;
+    public $selectedEnterprise = null;
+    public $selectedUser = null;
+    public $isInterim = 1;
     public $disableNoRadio = false;
     public $disableYesRadio = false;
     public $message = null;
@@ -26,7 +26,7 @@ class AddRQEmployeeForm extends Component
         $this->enterprises = Enterprise::all();
         $this->authorisations = AuthorisationRq::all();
         $this->users = Users::all();
-        $this->selectedEnterprise = $this->enterprises[0];
+        $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
     }
 
@@ -51,12 +51,13 @@ class AddRQEmployeeForm extends Component
         $user = Users::where('email', $this->selectedUser)->first();
         if ($user) {
             $_auths = $this->authorisations->where('user', $user->id); //Oui : 1 Non : 0
-            if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', 0))) {
-                $this->disableNoRadio = true;
-                $this->disableYesRadio = false;
-                $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité principale à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
-            }
-            if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', 1))) {
+            if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', $this->isInterim))) {
+                if ($this->isInterim == 0) {
+                    $this->disableNoRadio = true;
+                    $this->disableYesRadio = false;
+                    $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité principale à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
+                }
+            } else {
                 $this->disableNoRadio = false;
                 $this->disableYesRadio = true;
                 $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
@@ -67,7 +68,7 @@ class AddRQEmployeeForm extends Component
 
     public function checkFormReady()
     {
-        if (!empty($this->selectedEnterprise) && !empty($this->selectedUser) && !is_null($this->isInterim)) {
+        if (!is_null($this->selectedEnterprise) && !is_null($this->selectedUser) && !is_null($this->isInterim)) {
             $this->disableSubmit = false;
         } else {
             $this->disableSubmit = true;
@@ -76,6 +77,7 @@ class AddRQEmployeeForm extends Component
 
     public function render()
     {
+        $this->checkFormReady();
         return view('livewire.add-r-q-employee-form');
     }
 }
