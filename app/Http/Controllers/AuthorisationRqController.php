@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuthorisationRq;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class AuthorisationRqController extends Controller
 {
@@ -28,7 +29,7 @@ class AuthorisationRqController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

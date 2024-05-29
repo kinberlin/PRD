@@ -26,6 +26,8 @@ class AddRQEmployeeForm extends Component
         $this->enterprises = Enterprise::all();
         $this->authorisations = AuthorisationRq::all();
         $this->users = Users::all();
+        $this->selectedEnterprise = $this->enterprises[0];
+        $this->selectedUser = $this->users[0]->id;
     }
 
     public function updatedSelectedEnterprise()
@@ -40,36 +42,32 @@ class AddRQEmployeeForm extends Component
 
     public function updatedIsInterim()
     {
-        $this->checkFormReady();
+        $this->checkUserInEnterprise();
     }
 
     public function checkUserInEnterprise()
     {
         // Assuming a method to check if user belongs to enterprise
         $user = Users::where('email', $this->selectedUser)->first();
-        if($user){
-            $_auths = $this->authorisations::where('user', $user->id);//Oui : 1 Non : 0
-            if(!empty($_auths::where('enterprise',$this->selectedEnterprise )->where('interim',0)) ){
+        if ($user) {
+            $_auths = $this->authorisations->where('user', $user->id); //Oui : 1 Non : 0
+            if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', 0))) {
                 $this->disableNoRadio = true;
                 $this->disableYesRadio = false;
-                $message = 'M/Mme '.$user->firstname .' est présentement RQ principale à '.$this->enterprises::where()
+                $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité principale à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
             }
-            if(!empty($_auths::where('enterprise',$this->selectedEnterprise )->where('interim',1)) ){
+            if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', 1))) {
                 $this->disableNoRadio = false;
                 $this->disableYesRadio = true;
+                $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
             }
-        if ($user && $user->enterprise == $this->selectedEnterprise) {
-            $this->disableNoRadio = true;
-        } else {
-            $this->disableNoRadio = false;
+            $this->checkFormReady();
         }
-    }
-        $this->checkFormReady();
     }
 
     public function checkFormReady()
     {
-        if ($this->selectedEnterprise && $this->selectedUser && !is_null($this->isInterim)) {
+        if (!empty($this->selectedEnterprise) && !empty($this->selectedUser) && !is_null($this->isInterim)) {
             $this->disableSubmit = false;
         } else {
             $this->disableSubmit = true;

@@ -27,12 +27,7 @@ Route::get('/rq', function () {
 Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');
 });
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/custom/livewire/update', $handle);
-});
-Livewire::setScriptRoute(function ($handle) {
-    return Route::get('/custom/livewire/livewire.js', $handle);
-});
+
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -112,10 +107,18 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
+    Route::get('/admin/authorisation/rq', 'AdminController@rqemployee')->name('admin.rqemployee');
+    Route::get('/admin/authorisation/rq/{id}', 'AuthorisationRqController@destroy')->name('admin.authrq.destroy');
+    Route::post('/admin/authorisation/rq', 'AuthorisationRqController@store')->name('admin.authrq.store');
+    Route::post('/admin/authorisation/rq/{id}', 'AuthorisationRqController@update')->name('admin.authrq.update');
+
     Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
-     Route::get('/admin/authorisation/rq', 'AdminController@rqemployee')->name('admin.rqemployee');
+    Route::delete('/admin/employee/{id}', 'EmployeeController@destroy')->name('admin.employee.destroy');
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     Route::post('/admin/oneemployee/store', 'EmployeeController@onestore')->name('admin.employee.onestore');
+
+
+
     /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
     Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
@@ -129,7 +132,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/dashboard/ep1', 'AdminController@indexEndPoint')->name('admin.indexep1');
     Route::get('/admin/dashboard/ep2', 'AdminController@indexEndPoint2')->name('admin.indexep2');
-/*
+    /*
 Route::get('/admin/service', 'AdminController@service')->name('admin.service');
 Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.service.destroy');
 Route::post('/admin/service', 'ServiceController@store')->name('admin.service.store');
