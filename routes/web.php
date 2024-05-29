@@ -63,10 +63,6 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/rq/site', 'SiteController@store')->name('rq.site.store');
     Route::post('/rq/site/{id}', 'SiteController@update')->name('rq.site.update');
 
-    Route::get('/rq/employees', 'RQController@employees')->name('rq.employees');
-    Route::get('/rq/pilotes', 'RQController@pilotes')->name('rq.pilotes');
-    Route::get('/rq/responsables', 'RQController@responsables')->name('rq.responsables');
-
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
@@ -111,6 +107,11 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/admin/authorisation/rq/{id}', 'AuthorisationRqController@destroy')->name('admin.authrq.destroy');
     Route::post('/admin/authorisation/rq', 'AuthorisationRqController@store')->name('admin.authrq.store');
     Route::post('/admin/authorisation/rq/{id}', 'AuthorisationRqController@update')->name('admin.authrq.update');
+
+    Route::get('/admin/authorisation/pilote', 'AdminController@pltemployee')->name('admin.pltemployee');
+    Route::get('/admin/authorisation/pilote/{id}', 'AuthorisationRqController@destroy')->name('admin.authplt.destroy');
+    Route::post('/admin/authorisation/pilote', 'AuthorisationRqController@store')->name('admin.authplt.store');
+    Route::post('/admin/authorisation/pilote/{id}', 'AuthorisationRqController@update')->name('admin.authplt.update');
 
     Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
     Route::delete('/admin/employee/{id}', 'EmployeeController@destroy')->name('admin.employee.destroy');

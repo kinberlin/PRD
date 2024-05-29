@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
@@ -110,8 +111,15 @@ class AdminController extends Controller
         $deps = Department::all();
         $data = AuthorisationRq::all();
         $users = Users::whereIn('id', $data->pluck('user'))->get();
-        $employees = Users::whereIn('role', [2,3])->get();
-        return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users', 'employees'));
+        return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users'));
+    }
+    public function pltemployee()
+    {
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        $data = AuthorisationPilote::all();
+        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        return view('admin/pltemployee', compact('ents', 'deps', 'data', 'users'));
     }
     /**
      * Show the form for creating a new resource.

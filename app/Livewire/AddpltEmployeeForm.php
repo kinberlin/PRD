@@ -26,6 +26,7 @@ class AddpltEmployeeForm extends Component
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
         $this->checkUserInEnterprise();
+        $this->checkFormReady();
     }
 
     public function updatedSelectedEnterprise()
@@ -75,13 +76,8 @@ class AddpltEmployeeForm extends Component
             $this->disableSubmit = true;
         }
     }
-
     public function render()
     {
-        return view('livewire.admin.add-r-q-employee-form');
-    }
-    public function render()
-    {
-        return view('livewire.addplt-employee-form');
+        return view('livewire.admin.addplt-employee-form');
     }
 }
