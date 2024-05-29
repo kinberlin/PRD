@@ -30,38 +30,7 @@ class AddRQEmployeeForm extends Component
         $this->selectedUser = $this->users[0]->id;
         $this->checkUserInEnterprise();
     }
-    public function updating($property, $value)
-    {
-        // $property: The name of the current property being updated
-        // $value: The value about to be set to the property
-        /*
-        if ($property === 'selectedEnterprise') {
-            $this->selectedEnterprise = $value;
-            dd($this->selectedEnterprise);
-            $this->checkUserInEnterprise();
-        }
-        if ($property === 'selectedUser') {
-            $this->selectedUser = $value;
-            $this->checkUserInEnterprise();
-        }
-        if ($property === 'isInterim') {
-            $this->isInterim = $value;
-            $this->checkUserInEnterprise();
-        }*/
-    }
-    /*public function updated($property)
-    {
-        if ($property === 'selectedEnterprise') {
-            dd($this->users);
-            $this->checkUserInEnterprise();
-        }
-        if ($property === 'selectedUser') {
-            $this->checkUserInEnterprise();
-        }
-        if ($property === 'isInterim') {
-            $this->checkUserInEnterprise();
-        }
-    }*/
+
     public function updatedSelectedEnterprise()
     {
         $this->checkUserInEnterprise();
@@ -113,6 +82,6 @@ class AddRQEmployeeForm extends Component
     public function render()
     {
         $this->checkFormReady();
-        return view('livewire.add-r-q-employee-form');
+        return view('livewire.admin.add-r-q-employee-form');
     }
 }
