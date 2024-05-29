@@ -37,10 +37,17 @@ class AuthorisationRqController extends Controller
         try {
             DB::beginTransaction();
             $data = new AuthorisationRq();
+            $allents = Enterprise::all();
             $user = Users::find($request->input('user'));
-            $ents = Enterprise::find($request->input('enterprise'));
+            $ents = $allents->where('id', $request->input('enterprise'))->first();
             if ($user == null || $ents == null) {
                 throw new Exception("Nous ne trouvons pas la ressource utilisateur/entreprise correspondant.", 404);
+            }
+            if ($request->input('interim') == 0) {
+                $isPrincipal = AuthorisationRq::where('user', $user->id)->where('interim', 0)->get()->first();
+                if (!is_null($isPrincipal)) {
+                    throw new Exception($user->firstname . " ne peut pas être RQ principal dans la filliale/entreprise : " . $allents->where('id', $isPrincipal->enterprise)->first()->name . ". Car il est déja RQ principal dans la filiale : " . $ents->name, 501);
+                }
             }
             $exist = AuthorisationRq::where('user', $user->id)->where('enterprise', $ents->id)->get()->first();
             if (!is_null($exist)) {
@@ -91,7 +98,7 @@ class AuthorisationRqController extends Controller
         try {
             DB::beginTransaction();
             $data = AuthorisationRq::withTrashed()->find($id);
-            if ($data== null) {
+            if ($data == null) {
                 throw new Exception("Nous ne trouvons pas la ressource demandé.", 404);
             }
             $data->forceDelete();

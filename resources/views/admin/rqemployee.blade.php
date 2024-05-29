@@ -40,23 +40,24 @@
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Infos sur <br> le Responsable</th>
                                 <th>Entreprise d'<br>Action & Role</th>
-                                <th>Date d'attribution</th>
-                                <th>Matricule</th>
+                                <th>Dates</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $d)
                                 <tr>
+                                    <td>{{ $d->id }}</td>
                                     <td>
                                         Entreprise :
                                         <b>{{ $ents->where('id', $users->where('id', $d->user)->first()->enterprise)->first()->name }}</b>
                                         <br>Noms :
                                         <b>{{ $users->where('id', $d->user)->first()->firstname .' '. $users->where('id', $d->user)->first()->lastname }}</b>
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
-                                        <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }}</b>
+                                        <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }} | {{ $users->where('id', $d->user)->first()->matricule }}</b>
                                     </td>
                                     <td>Entreprise : {{ $ents->where('id', $d->enterprise)->first()->name }}
                                         <br> Rôle : RQ @if ($d->interim == 1)
@@ -65,8 +66,7 @@
                                             Principale
                                         @endif
                                     </td>
-                                    <td>{{ $d->created_at }}</td>
-                                    <td>{{ $users->where('id', $d->user)->first()->matricule }}</td>
+                                    <td>Attribution : {{ $d->created_at }} <br> MAJ : {{$d->updated_at}}</td>
                                     <td><button type="button" class="btn btn-danger fs-5 fw-bold" data-bs-toggle="modal"
                                             data-bs-target="#delauthRQ{{ $d->id }}">
                                             Retirer l'authorisation
@@ -118,15 +118,4 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#selents').change(function() {
-                var selectedOption = $(this).find(':selected');
-                var selectedValue = selectedOption.attr('data-extra-info');
-                $('#seldep option').hide();
-                $('#seldep option[data-extra-info="' + selectedValue + '"]').show();
-                $('#seldep').val($('#selsite option:visible:first').val());
-            });
-        });
-    </script>
 @endsection

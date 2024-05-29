@@ -29,6 +29,7 @@ class AddRQEmployeeForm extends Component
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
         $this->checkUserInEnterprise();
+        $this->checkFormReady();
     }
 
     public function updatedSelectedEnterprise()
@@ -81,7 +82,6 @@ class AddRQEmployeeForm extends Component
 
     public function render()
     {
-        $this->checkFormReady();
         return view('livewire.admin.add-r-q-employee-form');
     }
 }
