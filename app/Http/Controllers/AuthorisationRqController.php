@@ -42,6 +42,11 @@ class AuthorisationRqController extends Controller
             if($user == null || $ents == null){
                 throw new Exception("Nous ne trouvons pas la ressource utilisateur/entreprise correspondant.", 404);
             }
+            $exist = AuthorisationRq::where('user', $user->id)->where('enterprise', $ents->id)->get()->first();
+            if(!is_null($exist)){
+                $exist->interim = $request->input('interim');
+                $exist->save();
+            }
             $data->user = $user->id;
             $data->enterprise = $ents->id;
             $data->interim = $request->input('interim');

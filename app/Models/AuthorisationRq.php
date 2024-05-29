@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int     $enterprise
  * @property int     $created_at
  * @property int     $deleted_at
+ * @property int     $updated_at
  * @property boolean $interim
  */
 class AuthorisationRq extends Model
@@ -34,7 +35,7 @@ class AuthorisationRq extends Model
      * @var array
      */
     protected $fillable = [
-        'user', 'enterprise', 'created_at', 'deleted_at', 'interim'
+        'user', 'enterprise', 'created_at', 'deleted_at', 'interim', 'updated_at'
     ];
 
     /**
@@ -52,7 +53,7 @@ class AuthorisationRq extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'user' => 'int', 'enterprise' => 'int', 'created_at' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'interim' => 'boolean'
+        'id' => 'int', 'user' => 'int', 'enterprise' => 'int', 'created_at' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'interim' => 'boolean', 'updated_at' => 'datetime:Y-m-d H:i',
     ];
 
     /**
@@ -61,7 +62,7 @@ class AuthorisationRq extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'deleted_at', 'updated_at'
     ];
 
     /**

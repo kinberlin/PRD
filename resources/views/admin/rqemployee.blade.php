@@ -54,20 +54,18 @@
                                         Entreprise :
                                         <b>{{ $ents->where('id', $users->where('id', $d->user)->first()->enterprise)->first()->name }}</b>
                                         <br>Noms :
-                                        <b>{{ $users->where('id', $d->user)->first()->firstname . $users->where('id', $d->user)->first()->lastname }}</b>
+                                        <b>{{ $users->where('id', $d->user)->first()->firstname .' '. $users->where('id', $d->user)->first()->lastname }}</b>
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
                                         <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }}</b>
                                     </td>
                                     <td>Entreprise : {{ $ents->where('id', $d->enterprise)->first()->name }}
-                                        <br> Rôle : RQ @if ($data->interim == 1)
+                                        <br> Rôle : RQ @if ($d->interim == 1)
                                             en Intérim
                                         @else
                                             Principale
                                         @endif
                                     </td>
-                                    <td>Aucun département renseigner.</td>
                                     <td>{{ $d->created_at }}</td>
-                                    <td>{{ $d->email }}</td>
                                     <td>{{ $d->matricule }}</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemployeerr{{ $d->id }}">

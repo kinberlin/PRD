@@ -28,8 +28,40 @@ class AddRQEmployeeForm extends Component
         $this->users = Users::all();
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
+        $this->checkUserInEnterprise();
     }
-
+    public function updating($property, $value)
+    {
+        // $property: The name of the current property being updated
+        // $value: The value about to be set to the property
+        /*
+        if ($property === 'selectedEnterprise') {
+            $this->selectedEnterprise = $value;
+            dd($this->selectedEnterprise);
+            $this->checkUserInEnterprise();
+        }
+        if ($property === 'selectedUser') {
+            $this->selectedUser = $value;
+            $this->checkUserInEnterprise();
+        }
+        if ($property === 'isInterim') {
+            $this->isInterim = $value;
+            $this->checkUserInEnterprise();
+        }*/
+    }
+    /*public function updated($property)
+    {
+        if ($property === 'selectedEnterprise') {
+            dd($this->users);
+            $this->checkUserInEnterprise();
+        }
+        if ($property === 'selectedUser') {
+            $this->checkUserInEnterprise();
+        }
+        if ($property === 'isInterim') {
+            $this->checkUserInEnterprise();
+        }
+    }*/
     public function updatedSelectedEnterprise()
     {
         $this->checkUserInEnterprise();
@@ -48,21 +80,24 @@ class AddRQEmployeeForm extends Component
     public function checkUserInEnterprise()
     {
         // Assuming a method to check if user belongs to enterprise
-        $user = Users::where('email', $this->selectedUser)->first();
-        if ($user) {
+        $user = Users::find($this->selectedUser);
+        if ($user != null) {
             $_auths = $this->authorisations->where('user', $user->id); //Oui : 1 Non : 0
+
             if (!blank($_auths->where('enterprise', $this->selectedEnterprise)->where('interim', $this->isInterim))) {
                 if ($this->isInterim == 0) {
                     $this->disableNoRadio = true;
                     $this->disableYesRadio = false;
                     $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité principale à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
+                    $this->isInterim = 1;
+                } else {
+                    $this->disableNoRadio = false;
+                    $this->disableYesRadio = true;
+                    $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
+                    $this->isInterim = 0;
                 }
-            } else {
-                $this->disableNoRadio = false;
-                $this->disableYesRadio = true;
-                $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
+                $this->checkFormReady();
             }
-            $this->checkFormReady();
         }
     }
 
