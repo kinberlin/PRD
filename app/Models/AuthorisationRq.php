@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int     $id
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AuthorisationRq extends Model
 {
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -43,9 +45,7 @@ class AuthorisationRq extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be casted to native types.

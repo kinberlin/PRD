@@ -66,11 +66,38 @@
                                         @endif
                                     </td>
                                     <td>{{ $d->created_at }}</td>
-                                    <td>{{ $d->matricule }}</td>
-                                    <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majemployeerr{{ $d->id }}">
-                                            M.A.J
-                                        </button></td>
+                                    <td>{{ $users->where('id', $d->user)->first()->matricule }}</td>
+                                    <td><button type="button" class="btn btn-danger fs-5 fw-bold" data-bs-toggle="modal"
+                                            data-bs-target="#delauthRQ{{ $d->id }}">
+                                            Retirer l'authorisation
+                                        </button>
+                                        <div class="modal modal-top fade" id="delauthRQ{{ $d->id }}"
+                                            tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <form class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                            supression!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                                En continuant, vous allez supprimer l'authorisation RQ possèdé par cet utilisateur. Voulez vous Continuer ?
+                                                                <b>Noter que cette action est irréversible!</b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <a href="{{ route('admin.authrq.destroy', ['id'=>$d->id]) }}"
+                                                            class="btn btn-danger">Continuer</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div></td>
                                 </tr>
                             @endforeach
                         </tbody>
