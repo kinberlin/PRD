@@ -55,7 +55,7 @@ class InvitationController extends Controller
             $i_v = $request->input('internal_invites', []);
             $internal_invites = [];
             if (!empty($i_v)) {foreach ($i_v as $option) {
-                $internal_invites[] = new Invites(Users::where('email', $option)->get()->first());
+                $internal_invites[] = new Invites(Users::find($option));
             }}
             $data->internal_invites = json_encode($internal_invites);
             $ext_u = [];
@@ -106,7 +106,7 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
+        //try {
             DB::beginTransaction();
             $data = Invitation::find($id);
             if ($data == null) {
@@ -126,7 +126,7 @@ class InvitationController extends Controller
             $i_v = $request->input('internal_invites', []);
             $internal_invites = [];
             if (!empty($i_v)) {foreach ($i_v as $option) {
-                $internal_invites[] = new Invites(Users::where('email', $option)->get()->first());
+                $internal_invites[] = new Invites(Users::find($option));
             }}
             $data->internal_invites = json_encode($internal_invites);
             $ext_u = [];
@@ -140,9 +140,9 @@ class InvitationController extends Controller
             $data->save();
             DB::commit();
             return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
 
     /**

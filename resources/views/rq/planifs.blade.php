@@ -177,7 +177,7 @@
                                     <select class="select2 select-event-guests form-select" id="eventGuests"
                                         name="internal_invites[]" multiple>
                                         @foreach ($users as $u)
-                                            <option data-avatar="{{ $u->image }}" value="{{ $u->email }}"
+                                            <option data-avatar="{{ $u->image }}" value="{{ $u->id }}"
                                                 @if(!empty($u->internal_invites)) @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif @endif>
                                                 {{ $u->firstname. ' '. $u->lastname }} ({{ $u->matricule }})
                                             </option>
