@@ -269,14 +269,22 @@ function executeAfterAjax() {
                         // For internal invites select box
                         // Extract emails from JSON response
                         console.log(eventData.internal_invites);
-                        var internalInvites = Array.isArray(eventData.internal_invites) ? eventData.internal_invites : JSON.parse(eventData.internal_invites);
+                        var internalInvites = Array.isArray(
+                            eventData.internal_invites
+                        )
+                            ? eventData.internal_invites
+                            : JSON.parse(eventData.internal_invites);
                         var emails = internalInvites.map(function (item) {
                             return item.email;
                         });
                         console.log(emails);
                         // Unselect all options
                         var selectElement = $("#eventGuests");
-                        selectElement.prop("selected", false);
+                        // Unselect all options
+                        selectElement
+                            .find("option")
+                            .prop("selected", false)
+                            .trigger("change");
 
                         // Track emails not found in select options
                         var emailsNotFound = [];
@@ -295,7 +303,8 @@ function executeAfterAjax() {
                                 emailsNotFound.push(email);
                             }
                         });
-
+                        // Trigger change to update Select2 display
+                        selectElement.trigger("change");
                         // Display emails not found
                         if (emailsNotFound.length > 0) {
                             var spanElement = $("<span>").text(

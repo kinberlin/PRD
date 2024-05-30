@@ -61,32 +61,32 @@
                             </div>
                         </div>
                         <!--<div class="app-calendar-events-filter">
-                            <div class="form-check form-check-danger mb-2">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-personal"
-                                    data-value="personal" checked />
-                                <label class="form-check-label" for="select-personal">Personal</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-business"
-                                    data-value="business" checked />
-                                <label class="form-check-label" for="select-business">Business</label>
-                            </div>
-                            <div class="form-check form-check-warning mb-2">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-family"
-                                    data-value="family" checked />
-                                <label class="form-check-label" for="select-family">Family</label>
-                            </div>
-                            <div class="form-check form-check-success mb-2">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
-                                    data-value="holiday" checked />
-                                <label class="form-check-label" for="select-holiday">Holiday</label>
-                            </div>
-                            <div class="form-check form-check-info">
-                                <input class="form-check-input input-filter" type="checkbox" id="select-etc"
-                                    data-value="etc" checked />
-                                <label class="form-check-label" for="select-etc">ETC</label>
-                            </div>
-                        </div>-->
+                                <div class="form-check form-check-danger mb-2">
+                                    <input class="form-check-input input-filter" type="checkbox" id="select-personal"
+                                        data-value="personal" checked />
+                                    <label class="form-check-label" for="select-personal">Personal</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input input-filter" type="checkbox" id="select-business"
+                                        data-value="business" checked />
+                                    <label class="form-check-label" for="select-business">Business</label>
+                                </div>
+                                <div class="form-check form-check-warning mb-2">
+                                    <input class="form-check-input input-filter" type="checkbox" id="select-family"
+                                        data-value="family" checked />
+                                    <label class="form-check-label" for="select-family">Family</label>
+                                </div>
+                                <div class="form-check form-check-success mb-2">
+                                    <input class="form-check-input input-filter" type="checkbox" id="select-holiday"
+                                        data-value="holiday" checked />
+                                    <label class="form-check-label" for="select-holiday">Holiday</label>
+                                </div>
+                                <div class="form-check form-check-info">
+                                    <input class="form-check-input input-filter" type="checkbox" id="select-etc"
+                                        data-value="etc" checked />
+                                    <label class="form-check-label" for="select-etc">ETC</label>
+                                </div>
+                            </div>-->
                     </div>
                 </div>
                 <!-- /Calendar Sidebar -->
@@ -111,7 +111,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <form class="event-form pt-0" id="myForm"  method="POST">
+                            <form class="event-form pt-0" id="myForm" method="POST">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
@@ -174,24 +174,25 @@
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
-                                    <select class="select2 select-event-guests form-select" id="eventGuests"
+                                    <select class="select2  form-select" id="eventGuests"
                                         name="internal_invites[]" multiple>
                                         @foreach ($users as $u)
-                                            <option data-avatar="{{ $u->image }}" value="{{ $u->id }}"
-                                                @if(!empty($u->internal_invites)) @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif @endif>
-                                                {{ $u->firstname. ' '. $u->lastname }} ({{ $u->matricule }})
+                                            <option data-avatar="{{ $u->image }}" value="{{ $u->id }}" data-extra-info="{{$u->email}}"
+                                                @if (!empty($u->internal_invites)) @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif
+                                                @endif>
+                                                {{ $u->firstname . ' ' . $u->lastname }} ({{ $u->matricule }})
                                             </option>
                                         @endforeach
                                     </select>
                                 </div><!--
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="idemail">Invités externe sur PRD</label>
-                                                     <input id="TagifyEmailList" class="tagify-email-list"
-                                                        value="some56.name@website.com">
-                                                    <button type="button"
-                                                        class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
-                                                            class="tf-icons bx bx-plus"></span> </button>
-                                                </div>-->
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="idemail">Invités externe sur PRD</label>
+                                                         <input id="TagifyEmailList" class="tagify-email-list"
+                                                            value="some56.name@website.com">
+                                                        <button type="button"
+                                                            class="btn btn-sm rounded-pill btn-icon btn-outline-primary mb-1"> <span
+                                                                class="tf-icons bx bx-plus"></span> </button>
+                                                    </div>-->
                                 <div class="mb-3">
                                     <label class="form-label" for="idemail">Invités externe sur PRD</label>
                                     <div class="form-repeater col-md-12" class="ext_invites">

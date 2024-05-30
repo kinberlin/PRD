@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="mb-3 select2-primary">
                                     <label class="form-label" for="eventGuests">Invités sur PRD</label>
-                                    <select class="select2 select-event-guests form-select" id="eventGuests"
+                                    <select class="select2  form-select" id="eventGuests"
                                         name="internal_invites[]" multiple>
                                         @foreach ($users as $u)
                                             <option data-avatar="{{ $u->image }}" value="{{ $u->id }}" data-extra-info="{{$u->email}}"

@@ -63,6 +63,10 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/rq/site', 'SiteController@store')->name('rq.site.store');
     Route::post('/rq/site/{id}', 'SiteController@update')->name('rq.site.update');
 
+    Route::get('/rq/employee', 'RqController@employee')->name('rq.employees');
+    Route::get('/rq/responsable', 'RqController@responsable')->name('rq.responsables');
+    Route::get('/rq/pilote', 'RqController@pilote')->name('rq.pilotes');
+
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
