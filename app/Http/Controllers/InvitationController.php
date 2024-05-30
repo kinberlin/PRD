@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Invites;
 use App\Models\Users;
+use Carbon\Carbon;
 use Exception;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\Request;
@@ -112,6 +113,9 @@ class InvitationController extends Controller
             if ($data == null) {
                 throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
 
+            }
+            if(Carbon::now() > $data->dates ){
+                throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);   
             }
             $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
             $data->object = $request->has('object') ? $request->input('object') : $data->object;

@@ -50,6 +50,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');
     Route::get('/rq/signalements', 'RQController@allSignalement')->name('rq.allsignalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
+    Route::get('/rq/invitations', 'RQController@invitation')->name('rq.invitation');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
 

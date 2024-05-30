@@ -61,7 +61,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string',
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'internal_invites' => 'array'
     ];
 
     /**

@@ -25,10 +25,9 @@
     </div>
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1 overflow-auto">
-    <li class="menu-header small text-uppercase">
-        <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
-    </li>
-    <ul class="menu-inner py-1">
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
+        </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.department' || request()->route()->getName() == 'rq.site') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-square"></i>
@@ -49,10 +48,7 @@
                 </li>
             </ul>
         </li>
-    </ul>
-    <div class="menu-inner-shadow"></div>
-    
-    <ul class="menu-inner py-1">
+        <div class="menu-inner-shadow"></div>
         <li class="menu-item @if (request()->route()->getName() == 'rq.employees' ||
                 request()->route()->getName() == 'rq.responsables' ||
                 request()->route()->getName() == 'rq.pilotes') active open @endif">
@@ -81,14 +77,13 @@
                 </li>
             </ul>
         </li>
-    </ul>
-    <div class="menu-inner-shadow"></div>
-    <li class="menu-header small text-uppercase">
-        <span class="menu-header-text" data-i18n="Autres">Autres</span>
-    </li>
-    <ul class="menu-inner py-1">
+        <div class="menu-inner-shadow"></div>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text" data-i18n="Autres">Autres</span>
+        </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.allsignalement' ||
                 request()->route()->getName() == 'rq.signalement' ||
+                request()->route()->getName() == 'rq.invitation' ||
                 request()->route()->getName() == 'rq.n1dysfonction') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
@@ -107,6 +102,13 @@
                     <a href="{!! route('rq.signalement') !!}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-list-check"></i>
                         <div class="text-truncate">Mes Signalements</div>
+                    </a>
+                </li>
+
+                <li class="menu-item @if (request()->route()->getName() == 'rq.invitation') active @endif">
+                    <a href="{!! route('rq.invitation') !!}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-list-check"></i>
+                        <div class="text-truncate">Mes Invitations</div>
                     </a>
                 </li>
             </ul>

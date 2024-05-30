@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Gravity;
+use App\Models\Invitation;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
@@ -93,6 +94,13 @@ class RQController extends Controller
         $data = AuthorisationPilote::all();
         $users = Users::whereIn('id', $data->pluck('user'))->get();
         return view('rq/pltemployee', compact('ents', 'processes', 'deps', 'data'));
+    }
+    public function invitation()
+    {
+        // Query to get all invitations where internal_invites contains an invite with the user's email
+        $data = Invitation::whereJsonContains('internal_invites->email', 'paulnintcheu6@gmail.fr')->get();//Waiting for auth
+        $dys = Dysfunction::whereIn('id',$data->pluck('dysfunction'))->get();
+        return view('rq/invitation', compact('data', 'dys'));
     }
     /**
      * Show the form for creating a new resource.
