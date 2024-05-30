@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des Responsable Qualités
+    Gestion des Pilotes de Processus
 @endsection
 @section('manualstyle')
     @livewireStyles
@@ -42,7 +42,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Infos sur <br> le Pilote</th>
-                                <th>Entreprise d'<br>Action & Role</th>
+                                <th>Processus d'<br>Action & Role</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -58,8 +58,8 @@
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
                                         <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }} | {{ $users->where('id', $d->user)->first()->matricule }}</b>
                                     </td>
-                                    <td>Entreprise : {{ $ents->where('id', $d->enterprise)->first()->name }}
-                                        <br> Rôle : RQ @if ($d->interim == 1)
+                                    <td>Processus : {{ $processes->where('id', $d->process)->first()->name . ' ('.$processes->where('id', $d->process)->first()->surfix.')' }}
+                                        <br> Rôle : Pilote @if ($d->interim == 1)
                                             en Intérim
                                         @else
                                             Principale
@@ -90,7 +90,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.authrq.destroy', ['id'=>$d->id]) }}"
+                                                        <a href="{{ route('admin.authplt.destroy', ['id'=>$d->id]) }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>

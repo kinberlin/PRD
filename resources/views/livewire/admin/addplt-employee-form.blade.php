@@ -1,5 +1,5 @@
 <div class="offcanvas-body mx-0 flex-grow-0">
-    <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" action="{{ route('admin.authrq.store') }}" method="POST">
+    <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" action="{{ route('admin.authplt.store') }}" method="POST">
         @csrf
         @if ($message != null)
         <div class="mb-3 fv-plugins-icon-container">
@@ -27,7 +27,7 @@
         </div>
         <div class="mb-3 fv-plugins-icon-container">
             <div class="col-md">
-                <label class="form-label" for="firstname">Responsable qualité en Intérim ?</label>
+                <label class="form-label" for="firstname">Pilote de Processus par Intérim ?</label>
                 <div class="form-check form-check-inline mt-3">
                     <input class="form-check-input" type="radio" name="interim" id="inlineRadio1" value="1"
                         wire:model.live="isInterim" {{ $disableYesRadio ? 'disabled' : '' }}>

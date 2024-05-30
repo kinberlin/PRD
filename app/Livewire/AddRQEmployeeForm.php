@@ -29,26 +29,26 @@ class AddRQEmployeeForm extends Component
         $this->users = Users::whereNotIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
-        $this->checkUserInEnterprise();
+        $this->checkUserInProcess();
         $this->checkFormReady();
     }
 
-    public function updatedSelectedEnterprise()
+    public function updatedSelectedProcess()
     {
-        $this->checkUserInEnterprise();
+        $this->checkUserInProcess();
     }
 
     public function updatedSelectedUser()
     {
-        $this->checkUserInEnterprise();
+        $this->checkUserInProcess();
     }
 
     public function updatedIsInterim()
     {
-        $this->checkUserInEnterprise();
+        $this->checkUserInProcess();
     }
 
-    public function checkUserInEnterprise()
+    public function checkUserInProcess()
     {
         // Assuming a method to check if user belongs to enterprise
         $user = Users::find($this->selectedUser);
@@ -68,12 +68,12 @@ class AddRQEmployeeForm extends Component
                     $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
                     $this->isInterim = 0;
                 }
-                $this->checkFormReady();
             }else{
                 $this->disableNoRadio = false;
                 $this->disableYesRadio = false;
             }
         }
+        $this->checkFormReady();
     }
 
     public function checkFormReady()

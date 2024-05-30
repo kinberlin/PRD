@@ -49,6 +49,10 @@ class AuthorisationPiloteController extends Controller
                 if (!is_null($isPrincipal)) {
                     throw new Exception($user->firstname . " ne peut pas être Pilote principal dans le Processus : " . $allprocs->where('id', $isPrincipal->process)->first()->name . ". Car il est déja le pilote principal du processus : " . $procs->name, 501);
                 }
+                $currentPrincipal = AuthorisationPilote::where('process', $procs->id)->where('interim', 0)->get()->first();
+                if (!is_null($currentPrincipal)) {
+                    throw new Exception($user->firstname . " ne peut pas être le Pilote principal dans le processus : " . $allprocs->where('id', $currentPrincipal->process)->first()->name . ". Car le processus : " . $procs->name.' a déja un Pilote pincipal.', 501);
+                }
             }
             $exist = AuthorisationPilote::where('user', $user->id)->where('process', $procs->id)->get()->first();
             if (!is_null($exist)) {

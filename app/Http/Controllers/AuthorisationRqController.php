@@ -48,6 +48,10 @@ class AuthorisationRqController extends Controller
                 if (!is_null($isPrincipal)) {
                     throw new Exception($user->firstname . " ne peut pas être RQ principal dans la filliale/entreprise : " . $allents->where('id', $isPrincipal->enterprise)->first()->name . ". Car il est déja RQ principal dans la filiale : " . $ents->name, 501);
                 }
+                $currentPrincipal = AuthorisationRq::where('enterprise', $ents->id)->where('interim', 0)->get()->first();
+                if (!is_null($currentPrincipal)) {
+                    throw new Exception($user->firstname . " ne peut pas être RQ principal dans la filliale/entreprise : " . $allents->where('id', $currentPrincipal->enterprise)->first()->name . ". Car la filiale : " . $ents->name.' a déja un RQ pincipal.', 501);
+                }
             }
             $exist = AuthorisationRq::where('user', $user->id)->where('enterprise', $ents->id)->get()->first();
             if (!is_null($exist)) {

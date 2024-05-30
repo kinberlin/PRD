@@ -116,10 +116,11 @@ class AdminController extends Controller
     public function pltemployee()
     {
         $ents = Enterprise::all();
+        $processes = Processes::all();
         $deps = Department::all();
         $data = AuthorisationPilote::all();
         $users = Users::whereIn('id', $data->pluck('user'))->get();
-        return view('admin/pltemployee', compact('ents', 'deps', 'data', 'users'));
+        return view('admin/pltemployee', compact('ents', 'processes', 'deps', 'data', 'users'));
     }
     /**
      * Show the form for creating a new resource.

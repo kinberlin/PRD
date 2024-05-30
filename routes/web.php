@@ -109,9 +109,9 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::post('/admin/authorisation/rq/{id}', 'AuthorisationRqController@update')->name('admin.authrq.update');
 
     Route::get('/admin/authorisation/pilote', 'AdminController@pltemployee')->name('admin.pltemployee');
-    Route::get('/admin/authorisation/pilote/{id}', 'AuthorisationRqController@destroy')->name('admin.authplt.destroy');
-    Route::post('/admin/authorisation/pilote', 'AuthorisationRqController@store')->name('admin.authplt.store');
-    Route::post('/admin/authorisation/pilote/{id}', 'AuthorisationRqController@update')->name('admin.authplt.update');
+    Route::get('/admin/authorisation/pilote/{id}', 'AuthorisationPiloteController@destroy')->name('admin.authplt.destroy');
+    Route::post('/admin/authorisation/pilote', 'AuthorisationPiloteController@store')->name('admin.authplt.store');
+    Route::post('/admin/authorisation/pilote/{id}', 'AuthorisationPiloteController@update')->name('admin.authplt.update');
 
     Route::get('/admin/employee', 'AdminController@employee')->name('admin.employee');
     Route::delete('/admin/employee/{id}', 'EmployeeController@destroy')->name('admin.employee.destroy');
