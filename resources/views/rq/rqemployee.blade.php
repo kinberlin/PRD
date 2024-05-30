@@ -1,6 +1,6 @@
-@extends('admin.theme.main')
+@extends('rq.theme.main')
 @section('title')
-    Gestion des Responsable Qualités
+    Vue sur les Responsable Qualités
 @endsection
 @section('manualstyle')
     @livewireStyles

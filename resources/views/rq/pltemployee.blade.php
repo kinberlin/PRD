@@ -1,6 +1,6 @@
-@extends('admin.theme.main')
+@extends('rq.theme.main')
 @section('title')
-    Gestion des Pilotes de Processus
+    Vue sur les Pilotes de Processus
 @endsection
 @section('manualstyle')
     @livewireStyles

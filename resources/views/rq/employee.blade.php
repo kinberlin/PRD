@@ -1,6 +1,6 @@
-@extends('admin.theme.main')
+@extends('rq.theme.main')
 @section('title')
-    Gestion des Employés
+    Vue sur les Employés
 @endsection
 @section('manualstyle')
 @endsection
@@ -12,95 +12,8 @@
                 <h5 class="card-header">Employés</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter un Employé</button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
-                            aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
-                            <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout d'Employé</h5>
-                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body mx-0 flex-grow-0">
-                                <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="{!! route('admin.employee.onestore') !!}" method="POST">
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        @csrf
-                                        <label class="form-label" for="selents">Entreprise/Filiale</label>
-                                        <select id="selents" name="enterprise" class="form-select" required>
-                                            @foreach ($ents as $e)
-                                                <option value="{{ $e->id }}" data-extra-info="{{ $e->id }}">
-                                                    {{ $e->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="seldep">Département</label>
-                                        <select id="seldep" name="department" class="form-select" required>
-                                            @foreach ($deps as $d)
-                                                <option value="{{ $d->id }}"
-                                                    data-extra-info="{{ $d->enterprise }}">
-                                                    {{ $d->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="firstname">Nom</label>
-                                        <input type="text" class="form-control" id="firstname" placeholder="Nom de l'employé..."
-                                            name="firstname" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="lastname">Prenom</label>
-                                        <input type="text" class="form-control" id="lastname" placeholder="Prenom de l'employé..."
-                                            name="lastname" aria-label="Cadyst">
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="idmat">Matricule</label>
-                                        <input type="text" class="form-control" id="idmat" placeholder="Matricule de l'employé..."
-                                            name="matricule" aria-label="Cadyst">
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="idemail">Email</label>
-                                        <input type="email" class="form-control" id="idemail" placeholder="Email de l'employé..."
-                                            name="email" aria-label="Cadyst">
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="idphone">Telephone</label>
-                                        <input type="tel" class="form-control" id="idphone" placeholder="Tel. de l'employé..."
-                                            name="phone" aria-label="Cadyst">
-                                        <div
-                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="idposte">Poste Occupé</label>
-                                        <input type="text" class="form-control" id="idposte" placeholder="Poste de l'employé..."
-                                            name="poste" aria-label="Cadyst">
-                                    </div>
-                                    <button type="submit"
-                                        class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
-                                    <button type="reset" class="btn btn-label-secondary"
-                                        data-bs-dismiss="offcanvas">Annuler</button>
-                                    <input type="hidden">
-                                </form>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
-                        <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-
-                        <form action="{!! route('admin.employee.store') !!}" method="POST">
-                            @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
-                        </form>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -122,7 +35,6 @@
                                 <th>Email</th>
                                 <th>Téléphone</th>
                                 <th>Matricule</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,10 +51,6 @@
                                     <td>{{ $d->email }}</td>
                                     <td>{{ $d->phone }}</td>
                                     <td>{{ $d->matricule }}</td>
-                                    <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majemployeerr{{ $d->id }}">
-                                            M.A.J
-                                        </button></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthorisationPilote;
+use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
@@ -67,6 +69,30 @@ class RQController extends Controller
     public function empty()
     {
         return view('employees/empty');
+    }
+    public function employee()
+    {
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        $data = Users::where('role', 2)->get();
+        return view('rq/employee', compact('ents', 'deps', 'data'));
+    }
+        public function rqemployee()
+    {
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        $data = AuthorisationRq::all();
+        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        return view('rq/rqemployee', compact('ents', 'deps', 'data', 'users'));
+    }
+    public function pltemployee()
+    {
+        $ents = Enterprise::all();
+        $processes = Processes::all();
+        $deps = Department::all();
+        $data = AuthorisationPilote::all();
+        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        return view('rq/pltemployee', compact('ents', 'processes', 'deps', 'data'));
     }
     /**
      * Show the form for creating a new resource.
