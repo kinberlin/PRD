@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $id
  * @property int $user
- * @property int $processus
+ * @property int $process
  * @property int $created_at
  * @property int $deleted_at
  * @property int $interim
@@ -37,7 +37,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $fillable = [
-        'user', 'processus', 'created_at', 'deleted_at', 'interim', 'updated_at'
+        'user', 'process', 'created_at', 'deleted_at', 'interim', 'updated_at'
     ];
 
     /**
@@ -53,7 +53,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'user' => 'int', 'processus' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int', 'updated_at' => 'timestamp'
+        'id' => 'int', 'user' => 'int', 'process' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int', 'updated_at' => 'timestamp'
     ];
 
     /**

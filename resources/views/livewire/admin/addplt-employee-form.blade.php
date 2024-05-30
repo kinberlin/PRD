@@ -7,10 +7,10 @@
         </div>
         @endif
         <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" for="selents">Entreprise/Filiale d'action</label>
-            <select id="selents" name="enterprise" class="form-select" wire:model.live="selectedEnterprise" required>
-                @foreach ($enterprises as $index => $e)
-                    <option value="{{ $e->id }}" {{ $index == 0 ? 'selected' : '' }}>{{ $e->name }}</option>
+            <label class="form-label" for="selents">Processus d'action</label>
+            <select id="selents" name="process" class="form-select" wire:model.live="selectedProcess" required>
+                @foreach ($processes as $index => $e)
+                    <option value="{{ $e->id }}" {{ $index == 0 ? 'selected' : '' }}>{{ $e->name .' ('.$e->surfix.')'}}</option>
                 @endforeach
             </select>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use Livewire\Component;
 use App\Models\Enterprise;
@@ -11,7 +12,6 @@ class AddRQEmployeeForm extends Component
 {
     public $enterprises;
     public $authorisations;
-    public $title = 'big';
     public $users;
     public $selectedEnterprise = null;
     public $selectedUser = null;
@@ -25,7 +25,8 @@ class AddRQEmployeeForm extends Component
     {
         $this->enterprises = Enterprise::all();
         $this->authorisations = AuthorisationRq::all();
-        $this->users = Users::all();
+        $pltU = AuthorisationPilote::where('interim', 0)->get();
+        $this->users = Users::whereNotIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;
         $this->checkUserInEnterprise();
@@ -51,6 +52,7 @@ class AddRQEmployeeForm extends Component
     {
         // Assuming a method to check if user belongs to enterprise
         $user = Users::find($this->selectedUser);
+
         if ($user != null) {
             $_auths = $this->authorisations->where('user', $user->id); //Oui : 1 Non : 0
 
@@ -67,6 +69,9 @@ class AddRQEmployeeForm extends Component
                     $this->isInterim = 0;
                 }
                 $this->checkFormReady();
+            }else{
+                $this->disableNoRadio = false;
+                $this->disableYesRadio = false;
             }
         }
     }

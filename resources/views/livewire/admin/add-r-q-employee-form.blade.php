@@ -10,16 +10,16 @@
             <label class="form-label" for="selents">Entreprise/Filiale d'action</label>
             <select id="selents" name="enterprise" class="form-select" wire:model.live="selectedEnterprise" required>
                 @foreach ($enterprises as $index => $e)
-                    <option value="{{ $e->id }}" {{ $index == 0 ? 'selected' : '' }}>{{ $e->name }}</option>
+                    <option value="{{ $e->id }}">{{ $e->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" for="firstname">Employé a Pourvoir</label>
+            <label class="form-label" for="eventGuests">Employé a Pourvoir</label>
             <select class="select2 select-event-guests form-select" id="eventGuests" name="user"
                 wire:model.live="selectedUser" required>
                 @foreach ($users as $index => $u)
-                    <option value="{{ $u->id }}" {{ $index == 0 ? 'selected' : '' }}>
+                    <option value="{{ $u->id }}">
                         Matricule : ({{ $u->matricule }}) {{ $u->firstname . ' ' . $u->lastname }}
                     </option>
                 @endforeach
@@ -27,7 +27,7 @@
         </div>
         <div class="mb-3 fv-plugins-icon-container">
             <div class="col-md">
-                <label class="form-label" for="firstname">Responsable qualité en Intérim ?</label>
+                <label class="form-label">Responsable qualité en Intérim ?</label>
                 <div class="form-check form-check-inline mt-3">
                     <input class="form-check-input" type="radio" name="interim" id="inlineRadio1" value="1"
                         wire:model.live="isInterim" {{ $disableYesRadio ? 'disabled' : '' }}>
