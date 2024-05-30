@@ -80,6 +80,7 @@
                 request()->route()->getName() == 'admin.signals' ||
                 request()->route()->getName() == 'admin.planif' ||
                 request()->route()->getName() == 'admin.rqemployee' ||
+                request()->route()->getName() == 'admin.pltemployee' ||
                 request()->route()->getName() == 'admin.employee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
@@ -109,8 +110,8 @@
                         <div class="text-truncate" data-i18n="Responsable Qualité">Responsable Qualité</div>
                     </a>
                 </li>
-                <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
-                    <a href="/admin/employee" class="menu-link">
+                <li class="menu-item @if (request()->route()->getName() == 'admin.pltemployee') active @endif">
+                    <a href="{{ route('admin.pltemployee')}}" class="menu-link">
                         <div class="text-truncate" data-i18n="Pilotes">Pilotes</div>
                     </a>
                 </li>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -11,9 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $created_at
  * @property int $deleted_at
  * @property int $interim
+ * @property int $updated_at
  */
 class AuthorisationPilote extends Model
 {
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -34,7 +37,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $fillable = [
-        'user', 'processus', 'created_at', 'deleted_at', 'interim'
+        'user', 'processus', 'created_at', 'deleted_at', 'interim', 'updated_at'
     ];
 
     /**
@@ -42,9 +45,7 @@ class AuthorisationPilote extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be casted to native types.
@@ -52,7 +53,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'user' => 'int', 'processus' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int'
+        'id' => 'int', 'user' => 'int', 'processus' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int', 'updated_at' => 'timestamp'
     ];
 
     /**
@@ -61,7 +62,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'deleted_at', 'updated_at'
     ];
 
     /**

@@ -10,19 +10,19 @@
         <!-- Users List Table -->
         <div class="col-12">
             <div class="card mb-4">
-                <h5 class="card-header">Responsable Qualités</h5>
+                <h5 class="card-header">Pilotes</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter un Responsable Qualité</button>
+                            aria-controls="offcanvasEnd">Ajouter un Pilote</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout d'Employé</h5>
+                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de Pilote</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
-                            @livewire('add-r-q-employee-form')
+                            @livewire('addplt-employee-form')
                         </div>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
@@ -34,16 +34,15 @@
         <div class="card">
 
             <div class="card-body">
-                <h5 class="card-title">Liste des Responsable Qualités sur PRD</h5>
+                <h5 class="card-title">Liste des Pilotes sur PRD</h5>
                 <div class=" align-items-start justify-content-between">
                     <table id="datatables-orders"
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Infos sur <br> le Responsable</th>
+                                <th>Infos sur <br> le Pilote</th>
                                 <th>Entreprise d'<br>Action & Role</th>
-                                <th>Dates</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -66,7 +65,6 @@
                                             Principale
                                         @endif
                                     </td>
-                                    <td>Attribution : {{ $d->created_at }} <br> MAJ : {{$d->updated_at}}</td>
                                     <td><button type="button" class="btn btn-danger fs-5 fw-bold" data-bs-toggle="modal"
                                             data-bs-target="#delauthRQ{{ $d->id }}">
                                             Retirer l'authorisation

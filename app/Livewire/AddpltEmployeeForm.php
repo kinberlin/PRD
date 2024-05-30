@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\AuthorisationPilote;
+use App\Models\Enterprise;
+use App\Models\Users;
 use Livewire\Component;
 
 class AddpltEmployeeForm extends Component
@@ -21,7 +24,7 @@ class AddpltEmployeeForm extends Component
     public function mount()
     {
         $this->enterprises = Enterprise::all();
-        $this->authorisations = AuthorisationRq::all();
+        $this->authorisations = AuthorisationPilote::all();
         $this->users = Users::all();
         $this->selectedEnterprise = $this->enterprises[0]->id;
         $this->selectedUser = $this->users[0]->id;

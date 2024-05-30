@@ -18,7 +18,7 @@
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout d'Employé</h5>
+                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de RQ/h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
