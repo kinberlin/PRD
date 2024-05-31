@@ -1,4 +1,4 @@
-@extends('employees.theme.main')
+@extends('admin.theme.main')
 @section('title')
     Mes Signalements cette année
 @endsection
