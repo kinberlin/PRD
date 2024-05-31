@@ -13,17 +13,6 @@
                 <h5 class="card-header">Responsable Qualités</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter un Responsable Qualité</button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
-                            aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
-                            <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de RQ/h5>
-                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                            </div>
-                            @livewire('add-r-q-employee-form')
-                        </div>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
                     </div>

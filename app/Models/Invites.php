@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -14,27 +15,39 @@ class Invites
     public $decision;
     public $deleted_at = null;
 
-    public function __construct(Users $user)
+    public function __construct(Users $user = null, $exist = null)
     {
-        $this->email = $user->email;
-        $this->department = $user->department;
-        $this->enterprise = $user->enterprise;
-        $this->matricule = $user->matricule;
-        $this->decision = 'En attente de Validation';
-        $this->created_at = Carbon::now();
+        if ($user != null) {
+            $this->email = $user->email;
+            $this->department = $user->department;
+            $this->enterprise = $user->enterprise;
+            $this->matricule = $user->matricule;
+            $this->decision = 'En attente de Validation';
+            $this->created_at = Carbon::now();
+        } else {
+            $this->email = $exist['email'];
+            $this->department = $exist['department'];
+            $this->enterprise = $exist['enterprise'];
+            $this->matricule = $exist['matricule'];
+            $this->decision = $exist['decision'];
+            $this->created_at = $exist['created_at'];
+        }
     }
 
-    public function confirm(){
+    public function confirm()
+    {
         $this->decision =  'Présence Confirmer';
         $this->reasons = 'Valider';
         return $this;
     }
-    public function cancel($reason){
+    public function cancel($reason)
+    {
         $this->decision =  'Rejeté';
         $this->reasons = $reason;
         return $this;
     }
-    public function deleted(){
+    public function deleted()
+    {
         $this->deleted_at =  Carbon::now();
         return $this;
     }

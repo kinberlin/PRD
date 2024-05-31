@@ -45,19 +45,29 @@
                                     </td>
                                     <td>Objet : <b>{{ $d->objet }}</b><br>Motif : <b>{{ $d->motif }}</b></td>
                                     <td>Lieu : <b>{{ blank($d->place) ? 'Aucun Lieu indiqué' : $d->place }}</b><br>Lien :
-                                        <b>{{ blank($d->link) ? 'Aucun Lien indiqué' : $d->link }}</b></td>
+                                        <b>{{ blank($d->link) ? 'Aucun Lien indiqué' : $d->link }}</b>
+                                    </td>
                                     <td>{{ $d->rq }}</td>
                                     <td>{{ $d->dates }}</td>
                                     <td>Début : {{ $d->begin }}<br>Fin : {{ $d->end }}</td>
+                                    @php
+                                        $invite = $d->findInviteByMatricule('PZN0131'); // Replace 'SAE0186' with the matricule you want to search waiting for auth
+                                    @endphp
                                     <td>
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#majentreprise{{ $d->id }}">
-                                            Confirmer
-                                        </button><br>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#majentreprise{{ $d->id }}">
-                                            Désister
-                                        </button>
+                                        @if ($invite)
+                                            @if ($invite->decision == 'En attente de Validation')
+                                                <button type="button" class="btn btn-success fs-5 fw-bold" data-bs-toggle="modal"
+                                                    data-bs-target="#majInvite{{ $invite->matricule }}">
+                                                    Confirmer
+                                                </button><br>
+                                                <button type="button" class="btn btn-warning fs-5 fw-bold" data-bs-toggle="modal"
+                                                    data-bs-target="#majInvite{{ $invite->matricule }}">
+                                                    Désister
+                                                </button>
+                                            @else
+                                                {{ $invite->decision }}
+                                            @endif
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
