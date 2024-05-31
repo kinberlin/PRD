@@ -79,6 +79,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
 
     Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
     Route::get('/admin/invitations', 'AdminController@invitation')->name('admin.invitation');
+    Route::get('/admin/dysfonctionnement', 'AdminController@dysfonction')->name('admin.dysfonction');
 
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');

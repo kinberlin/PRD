@@ -158,10 +158,10 @@
 
         <!-- Misc -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>
-        <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.dysfonction') active @endif">
+            <a href="{!! route('admin.dysfonction') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
-                <div class="text-truncate" data-i18n="Support">Support</div>
+                <div class="text-truncate">Signaler</div>
             </a>
         </li>
         <li class="menu-item">

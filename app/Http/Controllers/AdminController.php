@@ -138,6 +138,12 @@ class AdminController extends Controller
         $status = Status::all();
         return view('admin/listesignalement', compact('data', 'status'));
     }
+    public function dysfonction()
+    {
+        $ents = Enterprise::all();
+        $site = Site::all();
+        return view('admin/dysfonction', compact('ents', 'site'));
+    }
     /**
      * Show the form for creating a new resource.
      */
