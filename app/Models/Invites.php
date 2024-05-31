@@ -36,11 +36,11 @@ class Invites
 
     public function confirm()
     {
-        $this->decision =  'Présence Confirmer';
-        $this->reasons = 'Valider';
+        $this->decision =  'Confirmer';
+        $this->reasons = 'Je confirme ma présence';
         return $this;
     }
-    public function cancel($reason)
+    public function cancel($reason = "Je décline l'invitation, je ne pourrai pas être là.")
     {
         $this->decision =  'Rejeté';
         $this->reasons = $reason;

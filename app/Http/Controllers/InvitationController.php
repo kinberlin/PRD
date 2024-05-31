@@ -55,9 +55,11 @@ class InvitationController extends Controller
             $data->end = $request->input('end');
             $i_v = $request->input('internal_invites', []);
             $internal_invites = [];
-            if (!empty($i_v)) {foreach ($i_v as $option) {
-                $internal_invites[] = new Invites(Users::find($option));
-            }}
+            if (!empty($i_v)) {
+                foreach ($i_v as $option) {
+                    $internal_invites[] = new Invites(Users::find($option));
+                }
+            }
             $data->internal_invites = json_encode($internal_invites);
             $ext_u = [];
             if ($request->has('extuser') && !empty($request->extuser)) {
@@ -108,42 +110,43 @@ class InvitationController extends Controller
     public function update(Request $request, $id)
     {
         //try {
-            DB::beginTransaction();
-            $data = Invitation::find($id);
-            if ($data == null) {
-                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
-
-            }
-            if(Carbon::now() > $data->dates ){
-                throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);   
-            }
-            $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
-            $data->object = $request->has('object') ? $request->input('object') : $data->object;
-            $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
-            $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-            $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
-            $data->place = $request->has('place') ? $request->input('place') : $data->place;
-            $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
-            $data->description = $request->has('description') ? $request->input('description') : $data->description;
-            $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
-            $data->end = $request->has('end') ? $request->input('end') : $data->end;
-            $i_v = $request->input('internal_invites', []);
-            $internal_invites = [];
-            if (!empty($i_v)) {foreach ($i_v as $option) {
+        DB::beginTransaction();
+        $data = Invitation::find($id);
+        if ($data == null) {
+            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+        }
+        if (Carbon::now() > $data->dates) {
+            throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);
+        }
+        $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
+        $data->object = $request->has('object') ? $request->input('object') : $data->object;
+        $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
+        $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
+        $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
+        $data->place = $request->has('place') ? $request->input('place') : $data->place;
+        $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
+        $data->description = $request->has('description') ? $request->input('description') : $data->description;
+        $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
+        $data->end = $request->has('end') ? $request->input('end') : $data->end;
+        $i_v = $request->input('internal_invites', []);
+        $internal_invites = [];
+        if (!empty($i_v)) {
+            foreach ($i_v as $option) {
                 $internal_invites[] = new Invites(Users::find($option));
-            }}
-            $data->internal_invites = json_encode($internal_invites);
-            $ext_u = [];
-            if ($request->has('extuser') && !empty($request->extuser)) {
-                for ($i = 0; $i < count($request->extuser); $i++) {
-                    // Create a new Person object for each row and add it to the array
-                    $ext_u[] = $request->extuser[$i];
-                }
             }
-            $data->external_invites = json_encode($ext_u);
-            $data->save();
-            DB::commit();
-            return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
+        }
+        $data->internal_invites = json_encode($internal_invites);
+        $ext_u = [];
+        if ($request->has('extuser') && !empty($request->extuser)) {
+            for ($i = 0; $i < count($request->extuser); $i++) {
+                // Create a new Person object for each row and add it to the array
+                $ext_u[] = $request->extuser[$i];
+            }
+        }
+        $data->external_invites = json_encode($ext_u);
+        $data->save();
+        DB::commit();
+        return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
         /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }*/
@@ -151,46 +154,27 @@ class InvitationController extends Controller
     public function inviteConfirmation(Request $request)
     {
         //try {
-            DB::beginTransaction();
-            $data = Invitation::find($request->input('invitation'));
-            if ($data == null) {
-                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+        DB::beginTransaction();
+        $data = Invitation::find($request->input('invitation'));
+        if ($data == null) {
+            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+        }
+        $invites = $data->findInviteByMatricule('PZN0131'); // waiting for auth
+        if ($invites) {
+            if ($request->input('decision') == 'Accept') {
+                $invites = $invites->confirm();
+                $data->updateInviteByMatricule($invites);
+                //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                $data->save();
+            } elseif ($request->input('decision') == 'Reject') {
+                $invites = $invites->cancel();
+                $data->updateInviteByMatricule($invites);
+                //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                $data->save();
             }
-            if($request->input('decision') == 'Accept'){
-
-            }elseif($request->input('decision') == 'Reject'){
-
-            }
-            if(Carbon::now() > $data->dates ){
-                throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);   
-            }
-            $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
-            $data->object = $request->has('object') ? $request->input('object') : $data->object;
-            $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
-            $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-            $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
-            $data->place = $request->has('place') ? $request->input('place') : $data->place;
-            $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
-            $data->description = $request->has('description') ? $request->input('description') : $data->description;
-            $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
-            $data->end = $request->has('end') ? $request->input('end') : $data->end;
-            $i_v = $request->input('internal_invites', []);
-            $internal_invites = [];
-            if (!empty($i_v)) {foreach ($i_v as $option) {
-                $internal_invites[] = new Invites(Users::find($option));
-            }}
-            $data->internal_invites = json_encode($internal_invites);
-            $ext_u = [];
-            if ($request->has('extuser') && !empty($request->extuser)) {
-                for ($i = 0; $i < count($request->extuser); $i++) {
-                    // Create a new Person object for each row and add it to the array
-                    $ext_u[] = $request->extuser[$i];
-                }
-            }
-            $data->external_invites = json_encode($ext_u);
-            $data->save();
-            DB::commit();
-            return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
+        }
+        DB::commit();
+        return redirect()->back()->with('error', 'Mise a jour de la disponibilité terminé.');
         /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }*/

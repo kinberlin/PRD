@@ -94,14 +94,14 @@ class Invitation extends Model
         return $inviteObjects;
     }
     // Function to update an item of type Invite in the JSON array and save it
-    public function updateInviteByMatricule($matricule, $updatedInviteData)
+    public function updateInviteByMatricule($inviteObject)
     {
         $invites = json_decode($this->internal_invites, true);
         $found = false;
 
-        foreach ($invites as &$inviteData) {
-            if ($inviteData['matricule'] == $matricule) {
-                $inviteData = array_merge($inviteData, $updatedInviteData);
+        foreach ($invites as $key=>&$inviteData) {
+            if ($inviteData['matricule'] == $inviteObject->matricule) {
+                $invites[$key] = $inviteObject;
                 $found = true;
                 break;
             }
@@ -110,8 +110,9 @@ class Invitation extends Model
         if ($found) {
             $this->internal_invites = json_encode($invites);
             $this->save();
+            return $this;
         } else {
-            throw new \Exception("Invite with matricule $matricule not found.");
+            return null;
         }
     }
 

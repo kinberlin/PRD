@@ -29,6 +29,7 @@
                                 <th>Emmeteur</th>
                                 <th>Date</th>
                                 <th>Heure de Début<br>& de Fin </th>
+                                <th>Ma Décision</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                     @php
                                         $invite = $d->findInviteByMatricule('PZN0131'); // Replace 'SAE0186' with the matricule you want to search waiting for auth
                                     @endphp
+                                    <td>{{$invite->decision}}</td>
                                     <td>
                                         @if ($invite)
                                             @if ($invite->decision == 'En attente de Validation')
@@ -72,6 +74,7 @@
                                                     <div class="modal-dialog">
                                                         <form class="modal-content" method="POST"
                                                             action="{{ route('invitation.invite.confirmation') }}">
+                                                            @csrf
                                                             <input type="hidden" name="invitation"
                                                                 value="{{ $d->id }}" />
                                                             <input type="hidden" name="matricule"
@@ -107,6 +110,7 @@
                                                     <div class="modal-dialog">
                                                         <form class="modal-content" method="POST"
                                                             action="{{ route('invitation.invite.confirmation') }}">
+                                                            @csrf
                                                             <input type="hidden" name="invitation"
                                                                 value="{{ $d->id }}" />
                                                             <input type="hidden" name="matricule"
@@ -139,7 +143,7 @@
                                                 </div>
                                     </td>
                                 @else
-                                    {{ $invite->decision }}
+                                    Aucune action requise
                             @endif
                             @endif
                             </td>
