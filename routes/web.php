@@ -70,6 +70,8 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
 
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
+
+    Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');

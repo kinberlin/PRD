@@ -13,17 +13,6 @@
                 <h5 class="card-header">Pilotes</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter un Pilote</button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
-                            aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
-                            <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de Pilote</h5>
-                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                            </div>
-                            @livewire('addplt-employee-form')
-                        </div>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
                     </div>
@@ -43,7 +32,6 @@
                                 <th>#</th>
                                 <th>Infos sur <br> le Pilote</th>
                                 <th>Processus d'<br>Action & Role</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,37 +53,6 @@
                                             Principale
                                         @endif
                                     </td>
-                                    <td><button type="button" class="btn btn-danger fs-5 fw-bold" data-bs-toggle="modal"
-                                            data-bs-target="#delauthRQ{{ $d->id }}">
-                                            Retirer l'authorisation
-                                        </button>
-                                        <div class="modal modal-top fade" id="delauthRQ{{ $d->id }}"
-                                            tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <form class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                            supression!</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                En continuant, vous allez supprimer l'authorisation RQ possèdé par cet utilisateur. Voulez vous Continuer ?
-                                                                <b>Noter que cette action est irréversible!</b>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.authplt.destroy', ['id'=>$d->id]) }}"
-                                                            class="btn btn-danger">Continuer</a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div></td>
                                 </tr>
                             @endforeach
                         </tbody>
