@@ -30,7 +30,7 @@
     <ul class="menu-inner py-1 overflow-auto">
         <!-- Dashboards -->
         <li class="menu-item @if (request()->route()->getName() == 'admin.index') active @endif">
-            <a href="{!! route('admin.index')!!}" class="menu-link">
+            <a href="{!! route('admin.index') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div class="text-truncate" data-i18n="Accueil">Accueil</div>
             </a>
@@ -72,8 +72,7 @@
                 </li>
             </ul>
         </li>
-        <li 
-        class="menu-header small text-uppercase">
+        <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Dysfonctionnements">Dysfonctionnements</span>
         </li>
         <li class="menu-item @if (request()->route()->getName() == 'admin.processes' ||
@@ -111,8 +110,33 @@
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.pltemployee') active @endif">
-                    <a href="{{ route('admin.pltemployee')}}" class="menu-link">
+                    <a href="{{ route('admin.pltemployee') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Pilotes">Pilotes</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item @if (
+                request()->route()->getName() == 'admin.signalement' ||
+                request()->route()->getName() == 'admin.invitation' ) active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div class="text-truncate" data-i18n="Personnelle">Personnel</div>
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.signalement') active @endif">
+                    <a href="{!! route('admin.signalement') !!}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-list-check"></i>
+                        <div class="text-truncate">Mes Signalements</div>
+                    </a>
+                </li>
+
+                <li class="menu-item @if (request()->route()->getName() == 'admin.invitation') active @endif">
+                    <a href="{!! route('admin.invitation') !!}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-envelope"></i>
+                        <div class="text-truncate">Mes Invitations</div>
                     </a>
                 </li>
             </ul>

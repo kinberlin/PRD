@@ -10,6 +10,7 @@ use App\Models\Enterprise;
 use App\Models\Gravity;
 use App\Models\Holliday;
 use App\Models\HollidaySubstitution;
+use App\Models\Invitation;
 use App\Models\Pme;
 use App\Models\Pne;
 use App\Models\Processes;
@@ -121,6 +122,21 @@ class AdminController extends Controller
         $data = AuthorisationPilote::all();
         $users = Users::whereIn('id', $data->pluck('user'))->get();
         return view('admin/pltemployee', compact('ents', 'processes', 'deps', 'data', 'users'));
+    }
+
+    public function invitation()
+    {
+        // Query to get all invitations where internal_invites contains an invite with the user's email
+        $matricule = 'PZN0131';
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . $matricule . '"}\', \'$\')')->get();//Waiting for auth
+        $dys = Dysfunction::whereIn('id',$data->pluck('dysfunction'))->get();
+        return view('admin/invitation', compact('data', 'dys'));
+    }
+    public function listeSignalement()
+    {
+        $data = Dysfunction::all();
+        $status = Status::all();
+        return view('admin/listesignalement', compact('data', 'status'));
     }
     /**
      * Show the form for creating a new resource.

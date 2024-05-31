@@ -77,6 +77,9 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
 
+    Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
+    Route::get('/admin/invitations', 'AdminController@invitation')->name('admin.invitation');
+
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
