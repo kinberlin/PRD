@@ -83,6 +83,38 @@ class Invitation extends Model
     // Scopes...
 
     // Functions ...
+    // Function to get the JSON array into a Laravel array of Invites
+    public function getInternalInvites()
+    {
+        $invites = json_decode($this->internal_invites, true);
+        $inviteObjects = [];
 
+        foreach ($invites as $inviteData) {
+            $inviteObjects[] = new Invites($inviteData);
+        }
+
+        return $inviteObjects;
+    }
+    // Function to update an item of type Invite in the JSON array and save it
+    public function updateInviteByMatricule($matricule, $updatedInviteData)
+    {
+        $invites = json_decode($this->internal_invites, true);
+        $found = false;
+
+        foreach ($invites as &$inviteData) {
+            if ($inviteData['matricule'] == $matricule) {
+                $inviteData = array_merge($inviteData, $updatedInviteData);
+                $found = true;
+                break;
+            }
+        }
+
+        if ($found) {
+            $this->internal_invites = json_encode($invites);
+            $this->save();
+        } else {
+            throw new \Exception("Invite with matricule $matricule not found.");
+        }
+    }
     // Relations ...
 }

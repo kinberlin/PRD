@@ -43,11 +43,22 @@
                                             Ce dysfonctionnement n'existe plus.
                                         @endif
                                     </td>
-                                        <td>Objet : <b>{{$d->objet}}</b><br>Motif : <b>{{$d->motif}}</b></td>
-                                    <td>{{ $d->firstname }} {{ $d->lastname }}</td>
-                                    <td>{{ $d->email }}</td>
-                                    <td>{{ $d->phone }}</td>
-                                    <td>{{ $d->matricule }}</td>
+                                    <td>Objet : <b>{{ $d->objet }}</b><br>Motif : <b>{{ $d->motif }}</b></td>
+                                    <td>Lieu : <b>{{ blank($d->place) ? 'Aucun Lieu indiqué' : $d->place }}</b><br>Lien :
+                                        <b>{{ blank($d->link) ? 'Aucun Lien indiqué' : $d->link }}</b></td>
+                                    <td>{{ $d->rq }}</td>
+                                    <td>{{ $d->dates }}</td>
+                                    <td>Début : {{ $d->begin }}<br>Fin : {{ $d->end }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#majentreprise{{ $d->id }}">
+                                            Confirmer
+                                        </button><br>
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#majentreprise{{ $d->id }}">
+                                            Désister
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

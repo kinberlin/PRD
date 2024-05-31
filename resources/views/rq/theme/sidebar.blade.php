@@ -107,7 +107,7 @@
 
                 <li class="menu-item @if (request()->route()->getName() == 'rq.invitation') active @endif">
                     <a href="{!! route('rq.invitation') !!}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-list-check"></i>
+                        <i class="menu-icon tf-icons bx bx-envelope"></i>
                         <div class="text-truncate">Mes Invitations</div>
                     </a>
                 </li>

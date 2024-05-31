@@ -98,7 +98,8 @@ class RQController extends Controller
     public function invitation()
     {
         // Query to get all invitations where internal_invites contains an invite with the user's email
-        $data = Invitation::whereJsonContains('internal_invites->email', 'paulnintcheu6@gmail.fr')->get();//Waiting for auth
+        $matricule = 'PZN0131';
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . $matricule . '"}\', \'$\')')->get();//Waiting for auth
         $dys = Dysfunction::whereIn('id',$data->pluck('dysfunction'))->get();
         return view('rq/invitation', compact('data', 'dys'));
     }
