@@ -40,6 +40,7 @@ Route::group(['middleware' => ['web'], 'namespace' => 'App\Http\Controllers'], f
 
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
     Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employees.signalement');
+    Route::get('/employee/mestaches', 'EmployeeController@mytasks')->name('employees.mytask');
 
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');

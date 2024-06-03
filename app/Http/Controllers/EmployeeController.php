@@ -28,6 +28,12 @@ class EmployeeController extends Controller
         $status = Status::all();
         return view('employees/listesignalement', compact('data', 'status'));
     }
+    public function mytasks()
+    {
+        $data = Dysfunction::all();
+        $status = Status::all();
+        return view('employees/mytasks', compact('data', 'status'));
+    }
     public function onestore(Request $request)
     {
         //try {
