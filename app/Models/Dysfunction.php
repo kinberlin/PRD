@@ -30,7 +30,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $rej_reason
  */
 class Dysfunction extends Model
-{use SoftDeletes;
+{
+    use SoftDeletes;
     /**
      * The table associated with the model.
      *
@@ -46,6 +47,12 @@ class Dysfunction extends Model
     /**
      * @var array
      */
-    
+
     protected $fillable = ['enterprise', 'site', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons'];
-    public $timestamps = false;}
+    public $timestamps = false;
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'dysfunction', 'id');
+    }
+}

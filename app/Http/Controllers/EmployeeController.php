@@ -7,6 +7,7 @@ use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Site;
 use App\Models\Status;
+use App\Models\Task;
 use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,9 +31,9 @@ class EmployeeController extends Controller
     }
     public function mytasks()
     {
-        $data = Dysfunction::all();
-        $status = Status::all();
-        return view('employees/mytasks', compact('data', 'status'));
+        $dys = Dysfunction::whereIn('status', [2, 4, 5])->whereHas('tasks')->get();
+        $data = Task::whereIn('dysfunction', $dys->pluck('id'))->get();
+        return view('employees/mytasks', compact('data', 'dys'));
     }
     public function onestore(Request $request)
     {
