@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     {
         $ents = Enterprise::all();
         $site = Site::all();
-        return view('employees/dysfunction', compact('ents', 'site'));
+        return view('employees/dysfonction', compact('ents', 'site'));
     }
     public function listeSignalement()
     {

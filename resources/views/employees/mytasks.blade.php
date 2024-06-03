@@ -19,39 +19,47 @@
                         <div class="card-body">
                             <ul class="timeline">
                                 @foreach ($data->where('dysfunction', $_d->id) as $d)
-                                    <li id="accordionPopoutTask{{$d->id}}" class="timeline-item timeline-item-transparent">
+                                    <li id="accordionPopoutTask{{ $d->id }}"
+                                        class="timeline-item timeline-item-transparent">
                                         <span class="timeline-point-wrapper"><span
                                                 class="timeline-point timeline-point-warning"></span></span>
                                         <div class="card accordion-item">
-                                            <div class=" accordion-header" id="headingPopoutThree">
+                                            <div class=" accordion-header" id="headingTask{{$d->id}}">
                                                 <div class="timeline-header">
-                                                    <h6 class="mb-0">Interview Schedule</h6>
-                                                    <span class="text-muted">6th October</span>
+                                                    <h6 class="mb-0">{{$d->text}}</h6>
+                                                    <span class="text-muted">{{$d->start_date}}</span>
                                                 </div>
                                                 <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse" data-bs-target="#accordionPopoutThree"
-                                                    aria-expanded="false" aria-controls="accordionPopoutThree">
+                                                    data-bs-toggle="collapse" data-bs-target="#accordionTask{{$d->id}}"
+                                                    aria-expanded="false" aria-controls="accordionTask{{$d->id}}">
                                                     Voir Plus
                                                 </button>
                                                 <p>
-                                                    Lorem ipsum, dolor sit amet consectetur
-                                                    adipisicing elit. Possimus quos, voluptates
-                                                    voluptas rem veniam expedita.
+                                                    Progression de la tâche : <br>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
+                                                        style="width: {{ $d->progress * 100 }}%;"
+                                                        aria-valuenow="{{ $d->progress * 100 }}" aria-valuemin="0"
+                                                        aria-valuemax="100">{{ $d->progress * 100 }}%</div>
+                                                </div>
                                                 </p>
                                                 <hr />
                                             </div>
-                                            <div id="accordionPopoutThree" class="accordion-collapse collapse"
-                                                aria-labelledby="headingPopoutThree" data-bs-parent="#accordionPopoutTask{{$d->id}}">
+                                            <div id="accordionTask{{$d->id}}" class="accordion-collapse collapse"
+                                                aria-labelledby="headingTask{{$d->id}}"
+                                                data-bs-parent="#accordionPopoutTask{{ $d->id }}">
                                                 <div class="accordion-body">
-                                                    Oat cake toffee chocolate bar jujubes. Marshmallow brownie lemon drops
-                                                    cheesecake. Bonbon gingerbread
-                                                    marshmallow sweet jelly beans muffin. Sweet roll bear claw candy canes
-                                                    oat cake dragée caramels.
+                                                    {{ $d->description }}<br>Assigner par : {{$d->created_by}}
                                                 </div>
-                                                <a href="javascript:void(0)">
-                                                    <i class="bx bx-link"></i>
-                                                    bookingCard.pdf
-                                                </a>
+                                                @if ($d->proof != null)
+                                                    <a href="{{$d->proof}}">
+                                                        <i class="bx bx-link"></i>
+                                                        Voir la preuve de complétude de la tâche.
+                                                    </a>
+                                                @else
+                                                    <h6>Aucune preuve de complétude de tâche n'a été ajoutée</h6>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </li>
@@ -66,57 +74,6 @@
                 </div>
             @endforeach
             <!-- /Timeline Basic -->
-            <!-- Timeline Basic-->
-            <div class="col-xl-6 mb-4 mb-xl-0">
-                <div class="card">
-                    <h5 class="card-header">Basic</h5>
-                    <div class="card-body">
-                        <ul class="timeline">
-                            <li id="accordionPopoutTask{{$d->id}}" class="timeline-item timeline-item-transparent">
-                                <span class="timeline-point-wrapper"><span
-                                        class="timeline-point timeline-point-warning"></span></span>
-                                <div class="card accordion-item">
-                                    <div class=" accordion-header" id="headingPopoutThree">
-                                        <div class="timeline-header">
-                                            <h6 class="mb-0">Interview Schedule</h6>
-                                            <span class="text-muted">6th October</span>
-                                        </div>
-                                        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
-                                            data-bs-target="#accordionPopoutThree" aria-expanded="false"
-                                            aria-controls="accordionPopoutThree">
-                                            Voir Plus
-                                        </button>
-                                        <p>
-                                            Lorem ipsum, dolor sit amet consectetur
-                                            adipisicing elit. Possimus quos, voluptates
-                                            voluptas rem veniam expedita.
-                                        </p>
-                                        <hr />
-                                    </div>
-                                    <div id="accordionPopoutThree" class="accordion-collapse collapse"
-                                        aria-labelledby="headingPopoutThree" data-bs-parent="#accordionPopoutTask{{$d->id}}">
-                                        <div class="accordion-body">
-                                            Oat cake toffee chocolate bar jujubes. Marshmallow brownie lemon drops
-                                            cheesecake. Bonbon gingerbread
-                                            marshmallow sweet jelly beans muffin. Sweet roll bear claw candy canes oat cake
-                                            dragée caramels.
-                                        </div>
-                                        <a href="javascript:void(0)">
-                                            <i class="bx bx-link"></i>
-                                            bookingCard.pdf
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-end-indicator">
-                                <i class="bx bx-check-circle"></i>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /Timeline Basic -->
-
         </div>
     </div>
 @endsection

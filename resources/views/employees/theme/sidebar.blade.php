@@ -41,6 +41,13 @@
             </a>
         </li>
 
+        <li class="menu-item @if (request()->route()->getName() == 'employees.mytask') active @endif">
+            <a href="{!! route('employees.mytask') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-task-x"></i>
+                <div class="text-truncate">Mes Tâches</div>
+            </a>
+        </li>
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Autres">Autres</span>
         </li>

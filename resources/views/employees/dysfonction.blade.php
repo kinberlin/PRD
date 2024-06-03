@@ -1,4 +1,4 @@
-@extends('admin.theme.main')
+@extends('employees.theme.main')
 @section('title')
     Signaler un Dysfonctionnement
 @endsection
