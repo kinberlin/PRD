@@ -35,7 +35,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.post');
 
-Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
+Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
@@ -78,6 +78,17 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
 
+    /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
+    Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
+    Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
+    Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
+     */
+    Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
+});
+Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
+    //admins
+
+    Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
     Route::get('/admin/invitations', 'AdminController@invitation')->name('admin.invitation');
     Route::get('/admin/dysfonctionnement', 'AdminController@dysfonction')->name('admin.dysfonction');
@@ -129,32 +140,6 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::delete('/admin/employee/{id}', 'EmployeeController@destroy')->name('admin.employee.destroy');
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     Route::post('/admin/oneemployee/store', 'EmployeeController@onestore')->name('admin.employee.onestore');
-
-
-
-    /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
-    Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
-    Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
-    Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
-     */
-    Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
-});
-Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
-    //Admins
-
-    Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
-    Route::get('/admin/dashboard/ep1', 'AdminController@indexEndPoint')->name('admin.indexep1');
-    Route::get('/admin/dashboard/ep2', 'AdminController@indexEndPoint2')->name('admin.indexep2');
-    /*
-Route::get('/admin/service', 'AdminController@service')->name('admin.service');
-Route::get('/admin/service/{id}', 'ServiceController@destroy')->name('admin.service.destroy');
-Route::post('/admin/service', 'ServiceController@store')->name('admin.service.store');
-Route::post('/admin/service/{id}', 'ServiceController@update')->name('admin.service.update');
- */
-
-    Route::get('/admin/pme', 'AdminController@pme')->name('admin.pme');
-    Route::get('/admin/pne', 'AdminController@pne')->name('admin.pne');
-    Route::get('/admin/holliday', 'AdminController@holliday')->name('admin.holliday');
 });
 Route::any('{any}', function () {
     return redirect('/notfound');

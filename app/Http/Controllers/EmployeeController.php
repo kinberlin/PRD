@@ -12,7 +12,9 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class EmployeeController extends Controller
@@ -37,7 +39,8 @@ class EmployeeController extends Controller
     }
     public function onestore(Request $request)
     {
-        //try {
+        Gate::authorize('isAdmin', Auth::user());
+        try {
         DB::beginTransaction();
         $employee = new Users();
         $employee->enterprise = $request->input('enterprise');
@@ -73,9 +76,9 @@ class EmployeeController extends Controller
         $employee->save();
         DB::commit();
         return redirect()->back()->with('error', "Insertions terminées avec succes");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
     return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-    }*/
+    }
     }
     public function store(Request $request)
     {

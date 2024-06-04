@@ -8,22 +8,17 @@ use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Gravity;
-use App\Models\Holliday;
-use App\Models\HollidaySubstitution;
 use App\Models\Invitation;
-use App\Models\Pme;
-use App\Models\Pne;
 use App\Models\Processes;
-use App\Models\PublicHolliday;
-use App\Models\Service;
 use App\Models\Site;
 use App\Models\Status;
-use App\Models\TypePme;
-use App\Models\TypePne;
 use App\Models\Users;
+use App\Policies\UserPolicy;
 use Exception;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class AdminController extends Controller
@@ -33,6 +28,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+
         return view('admin/adashboard');
     }
 
