@@ -1,6 +1,6 @@
 @extends('employees.theme.main')
 @section('title')
-    Page vide pour simulation
+    Consulter mes assignations de tâches
 @endsection
 @section('manualstyle')
 @endsection

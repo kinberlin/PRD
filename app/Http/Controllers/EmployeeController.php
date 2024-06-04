@@ -57,7 +57,7 @@ class EmployeeController extends Controller
         }
         if (Department::where('id', $request->input('department'))->where('enterprise', $request->input('enterprise')) == null) {
             throw new Exception("Nous ne parvenons pas a trouver le Département dont l'ID est égal
-                a : " . $request->input('department') . ' dans notre systeme. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $row[1] . ' et entrer un Identifiant valide.', 404);
+                a : " . $request->input('department') . ' dans notre systeme. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $request->input('enterprise') . ' et entrer un Identifiant valide.', 404);
         }
         if (strtolower($request->input('phone')) == "null") {
             $employee->phone = null;
