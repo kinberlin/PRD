@@ -117,7 +117,7 @@ class DepartmentController extends Controller
 
         //try {
             $d = Department::find($id);
-            if (Gate::allows('isEnterpriseRQ', [ Enterprise::find($d->enterprise), Auth::user()]) || Gate::allows('isAdmin', Auth::user()) ) {
+            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($d->enterprise), Auth::user()]) || Gate::allows('isAdmin', Auth::user()) ) {
                 DB::beginTransaction();
 
                 $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
