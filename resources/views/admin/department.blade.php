@@ -52,18 +52,8 @@
                                 </form>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
                             Excel</button>
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-
-                        <form action="/admin/department" method="POST">
-                            @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
-                        </form>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -88,7 +78,8 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{$ents->where('id', $d->enterprise)->first()->name}} (ID : {{ $d->enterprise }})</td>
+                                    <td>{{ $ents->where('id', $d->enterprise)->first()->name }} (ID : {{ $d->enterprise }})
+                                    </td>
                                     <td>{{ $d->name }}</td>
                                     <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">

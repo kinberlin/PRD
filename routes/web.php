@@ -22,7 +22,7 @@ Route::get('/admin', function () {
     return redirect('/admin/dashboard');
 });
 Route::get('/rq', function () {
-    return redirect('/rq/dashboard');
+    return redirect('/rq/dysfonctionnement');
 });
 Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');

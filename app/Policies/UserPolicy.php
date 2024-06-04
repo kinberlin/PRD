@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
+use App\Models\Enterprise;
+use App\Models\Processes;
 use App\Models\Users;
 use Illuminate\Auth\Access\Response;
 
@@ -32,6 +34,24 @@ class UserPolicy
     {
         $pltU = AuthorisationPilote::where('interim', 0)->get();
         $users = Users::whereIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
+        return $users->where('id', $user->id)->first() !== null ? true : false;
+    }
+        /**
+     * Determine whether the user is Pilote or not.
+     */
+    public function isProcessusPilote(Users $user, Processes $proc): bool
+    {
+        $pltU = AuthorisationPilote::where('interim', 0)->where('process', $proc->id)->get();
+        $users = Users::whereIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
+        return $users->where('id', $user->id)->first() !== null ? true : false;
+    }
+            /**
+     * Determine whether the user is Pilote or not.
+     */
+    public function isEnterpriseRQ(Users $user, Enterprise $ents): bool
+    {
+        $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
+        $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
         return $users->where('id', $user->id)->first() !== null ? true : false;
     }
     /**

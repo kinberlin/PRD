@@ -9,7 +9,9 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class DepartmentController extends Controller
@@ -36,22 +38,26 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         try {
+
             DB::beginTransaction();
             $data = $request->input('data');
             if (!is_array($data)) {
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-
-                $name = $row[2];
-                $enterprise = $row[1];
-                if(Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null){
-                    throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : ".$name ." dans l'entreprise dont l'ID est : ".$enterprise, 1);    
+                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', Auth::user(), Enterprise::find($row[1]))) {
+                    $name = $row[2];
+                    $enterprise = $row[1];
+                    if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
+                        throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : " . $name . " dans l'entreprise dont l'ID est : " . $enterprise, 1);
+                    }
+                    $department = new Department();
+                    $department->name = $name;
+                    $department->enterprise = $enterprise;
+                    $department->save();
+                } else {
+                    throw new Exception("Arrêt inattendu du processus d'insertion suite a une tentative d'insertion/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
                 }
-                $department = new Department();
-                $department->name = $name;
-                $department->enterprise = $enterprise;
-                $department->save();
             }
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
@@ -72,8 +78,8 @@ class DepartmentController extends Controller
 
                 $name = $row[2];
                 $enterprise = $row[1];
-                if(Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null){
-                    throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : ".$name ." dans l'entreprise dont l'ID est : ".$enterprise, 1);    
+                if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
+                    throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : " . $name . " dans l'entreprise dont l'ID est : " . $enterprise, 1);
                 }
                 $department = new Department();
                 $department->name = $name;
@@ -109,19 +115,23 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
-            $d = Department::find($id);
-            $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            if($d->enterprise != $request->input('enterprise')){
-                $number = count(Users::where('department', $d->id)->get());
-            if($number > 0){
-                throw new Exception("Il n'est pas possible de changer l'entreprise au quel appartient ce département. Car, nous avons trouvés ".$number ." 
+            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', Auth::user(), Enterprise::find($request->input('enterprise')))) {
+                DB::beginTransaction();
+                $d = Department::find($id);
+                $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
+                if ($d->enterprise != $request->input('enterprise')) {
+                    $number = count(Users::where('department', $d->id)->get());
+                    if ($number > 0) {
+                        throw new Exception("Il n'est pas possible de changer l'entreprise au quel appartient ce département. Car, nous avons trouvés " . $number . " 
                 employé(s). Pour pouvoir modifier ce département, affecter ou vider les employés de ce département.", 1);
-                
-            }}
-            $d->enterprise =  $request->input('enterprise');
-            $d->save();
-            DB::commit();
+                    }
+                }
+                $d->enterprise =  $request->input('enterprise');
+                $d->save();
+                DB::commit();
+            } else {
+                throw new Exception("Arrêt inattendu du processus d'insertion suite a une tentative de mise a jour/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+            }
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -140,7 +150,7 @@ class DepartmentController extends Controller
             DB::commit();
             return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
         } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : ".$th->getMessage());
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
 }

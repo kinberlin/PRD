@@ -6,6 +6,7 @@ use App\Models\Enterprise;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Throwable;
 
@@ -21,7 +22,16 @@ class AuthController extends Controller
                 if (Auth::user()->role == 1) {
                     return redirect()->intended('/admin');
                 } else {
-                    return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                    if (Gate::allows('isRq', Auth::user())) {
+                        return redirect()->intended('/rq')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                    }
+                    elseif (Gate::allows('isPilote', Auth::user())) {
+                        return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                    }
+                    else{
+                        return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                    }
+                    
                 }
             } else {
                 $credentials = [
