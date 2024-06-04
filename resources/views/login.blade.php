@@ -83,7 +83,11 @@
                                 <input type="text" class="form-control" id="email" name="matricule"
                                     placeholder="Entrez votre matricule / adresse mail" autofocus>
                             </div>
-
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Entrez votre mot de passe" >
+                            </div>
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Se Connecter</button>
                             </div>

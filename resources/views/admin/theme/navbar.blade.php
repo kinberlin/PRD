@@ -104,7 +104,7 @@
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
                                         <span
-                                            class="avatar-initial rounded-circle bg-success">...</span>
+                                            class="avatar-initial rounded-circle bg-success">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -114,14 +114,14 @@
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
                                                         <span
-                                                            class="avatar-initial rounded-circle bg-success">...</span>
+                                                            class="avatar-initial rounded-circle bg-success">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block">...
-                                                        <br>...</span>
+                                                    <span class="fw-medium d-block">{{Auth::user()->firstname}}
+                                                        <br>{{Auth::user()->lastname}}</span>
                                                     <small class="text-muted">
-                                                        ...
+                                                        {{Auth::user()->poste}}
                                                     </small>
                                                 </div>
                                             </div>
