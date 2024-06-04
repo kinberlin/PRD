@@ -85,6 +85,16 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
      */
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
+Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
+    //admins && RQ
+    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
+    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
+    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
+
+    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
+    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
+    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
+});
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
 
@@ -117,14 +127,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/signal/{id}', 'SignalController@update')->name('admin.signal.update');
 
     Route::get('/admin/department', 'AdminController@department')->name('admin.department');
-    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
-    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
-    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
 
     Route::get('/admin/site', 'AdminController@site')->name('admin.site');
-    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
-    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
-    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
     Route::get('/admin/authorisation/rq', 'AdminController@rqemployee')->name('admin.rqemployee');
     Route::get('/admin/authorisation/rq/{id}', 'AuthorisationRqController@destroy')->name('admin.authrq.destroy');

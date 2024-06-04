@@ -37,7 +37,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        //try {
 
             DB::beginTransaction();
             $data = $request->input('data');
@@ -45,7 +45,7 @@ class DepartmentController extends Controller
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', Auth::user(), Enterprise::find($row[1]))) {
+                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($row[1]), Auth::user()])) {
                     $name = $row[2];
                     $enterprise = $row[1];
                     if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
@@ -56,14 +56,14 @@ class DepartmentController extends Controller
                     $department->enterprise = $enterprise;
                     $department->save();
                 } else {
-                    throw new Exception("Arrêt inattendu du processus d'insertion suite a une tentative d'insertion/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                    throw new Exception("Arrêt inattendu du processus suite a une tentative d'insertion/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
                 }
             }
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
 
     public function rqstore(Request $request)
@@ -114,10 +114,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', Auth::user(), Enterprise::find($request->input('enterprise')))) {
+
+        //try {
+            $d = Department::find($id);
+            if (Gate::allows('isEnterpriseRQ', [ Enterprise::find($d->enterprise), Auth::user()]) || Gate::allows('isAdmin', Auth::user()) ) {
                 DB::beginTransaction();
-                $d = Department::find($id);
+
                 $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
                 if ($d->enterprise != $request->input('enterprise')) {
                     $number = count(Users::where('department', $d->id)->get());
@@ -130,12 +132,12 @@ class DepartmentController extends Controller
                 $d->save();
                 DB::commit();
             } else {
-                throw new Exception("Arrêt inattendu du processus d'insertion suite a une tentative de mise a jour/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                throw new Exception("Arrêt inattendu du processus suite a une tentative de mise a jour/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
             }
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes.");
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
 
     /**
@@ -144,11 +146,15 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         try {
-            DB::beginTransaction();
             $rec = Department::find($id);
-            $rec->delete();
-            DB::commit();
-            return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
+            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise),Auth::user(),])) {
+                DB::beginTransaction();
+                $rec->delete();
+                DB::commit();
+                return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
+            } else {
+                throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
