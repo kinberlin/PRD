@@ -37,7 +37,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //try {
+        try {
 
             DB::beginTransaction();
             $data = $request->input('data');
@@ -45,7 +45,7 @@ class DepartmentController extends Controller
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($row[1]), Auth::user()])) {
+                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($row[1])]) ) {
                     $name = $row[2];
                     $enterprise = $row[1];
                     if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
@@ -61,9 +61,9 @@ class DepartmentController extends Controller
             }
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
 
     public function rqstore(Request $request)
@@ -117,7 +117,7 @@ class DepartmentController extends Controller
 
         //try {
             $d = Department::find($id);
-            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($d->enterprise), Auth::user()]) || Gate::allows('isAdmin', Auth::user()) ) {
+            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($d->enterprise)]) || Gate::allows('isAdmin', Auth::user()) ) {
                 DB::beginTransaction();
 
                 $d->name = empty($request->input('name')) ? $d->name : $request->input('name');

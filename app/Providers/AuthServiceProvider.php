@@ -10,6 +10,7 @@ use App\Models\Enterprise;
 use App\Models\Users;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -29,7 +30,15 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        
+            /**
+     * Determine whether the user is RQ or not.
+     */
+    Gate::define('isEnterpriseRQ', function( Users $user, Enterprise $ents): bool
+    {
+        $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
+        $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
+        return $users->where('id', $user->id)->first() != null ? true : false;
+    });
         //
     }
 }

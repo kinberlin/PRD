@@ -8,6 +8,7 @@ use App\Models\Enterprise;
 use App\Models\Processes;
 use App\Models\Users;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
@@ -48,11 +49,11 @@ class UserPolicy
     /**
      * Determine whether the user is RQ or not.
      */
-    public function isEnterpriseRQ($ents, $user): bool
+    public function isEnterpriseRQs(Enterprise $ents): bool
     {
         $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
         $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-        return $users->where('id', $user->id)->first() != null ? true : false;
+        return $users->where('id', Auth::user()->id)->first() != null ? true : false;
     }
 
 }
