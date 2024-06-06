@@ -46,14 +46,7 @@ class UserPolicy
         $users = Users::whereIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
         return $users->where('id', $user->id)->first() !== null ? true : false;
     }
-    /**
-     * Determine whether the user is RQ or not.
-     */
-    public function isEnterpriseRQs(Enterprise $ents): bool
-    {
-        $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
-        $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-        return $users->where('id', Auth::user()->id)->first() != null ? true : false;
-    }
+
+
 
 }

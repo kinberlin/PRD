@@ -115,9 +115,9 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
 
-        //try {
+        try {
             $d = Department::find($id);
-            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($d->enterprise)]) || Gate::allows('isAdmin', Auth::user()) ) {
+            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($request->input('enterprise'))]) || Gate::allows('isAdmin', Auth::user()) ) {
                 DB::beginTransaction();
 
                 $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
@@ -135,9 +135,9 @@ class DepartmentController extends Controller
                 throw new Exception("Arrêt inattendu du processus suite a une tentative de mise a jour/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
             }
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes.");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
 
     /**
@@ -147,7 +147,7 @@ class DepartmentController extends Controller
     {
         try {
             $rec = Department::find($id);
-            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise),Auth::user(),])) {
+            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise)])) {
                 DB::beginTransaction();
                 $rec->delete();
                 DB::commit();
