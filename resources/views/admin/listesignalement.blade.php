@@ -32,6 +32,7 @@
                                 <th>Date de soumission</th>
                                 <th>Date de Constat</th>
                                 <th>Description</th>
+                                <th>Lieu</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
@@ -43,6 +44,7 @@
                                     <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y H:i:s') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
                                     <td>{{ $d->description }}</td>
+                                    <td>{{$d->enterprise. ' ('.$d->site.')'}}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
                                     <td><a href="/rq/detail/dysfonctionnement/{{$d->id}}" target="_blank" class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>

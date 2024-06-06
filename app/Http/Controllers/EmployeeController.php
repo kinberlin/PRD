@@ -27,7 +27,7 @@ class EmployeeController extends Controller
     }
     public function listeSignalement()
     {
-        $data = Dysfunction::all();
+        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get();
         $status = Status::all();
         return view('employees/listesignalement', compact('data', 'status'));
     }

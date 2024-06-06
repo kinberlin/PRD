@@ -129,7 +129,7 @@ class AdminController extends Controller
     }
     public function listeSignalement()
     {
-        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule);
+        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get();
         $status = Status::all();
         return view('admin/listesignalement', compact('data', 'status'));
     }
