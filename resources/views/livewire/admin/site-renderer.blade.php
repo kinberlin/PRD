@@ -1,13 +1,13 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     @if (session('errors'))
-    <div class="card col-6">
-        <div class="card-body">
-          <h5 class="card-title">Notification</h5>
-          <p class="card-text text-danger">
-            {{session('errors')}}
-          </p>
+        <div class="card col-6">
+            <div class="card-body">
+                <h5 class="card-title">Notification</h5>
+                <p class="card-text text-danger">
+                    {{ session('errors') }}
+                </p>
+            </div>
         </div>
-      </div>
     @endif
     <div class="col-12">
         <div class="card mb-4">

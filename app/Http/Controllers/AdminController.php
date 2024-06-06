@@ -123,14 +123,13 @@ class AdminController extends Controller
     public function invitation()
     {
         // Query to get all invitations where internal_invites contains an invite with the user's email
-        $matricule = 'PZN0131';
-        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . $matricule . '"}\', \'$\')')->get();//Waiting for auth
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();//Waiting for auth
         $dys = Dysfunction::whereIn('id',$data->pluck('dysfunction'))->get();
         return view('admin/invitation', compact('data', 'dys'));
     }
     public function listeSignalement()
     {
-        $data = Dysfunction::all();
+        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule);
         $status = Status::all();
         return view('admin/listesignalement', compact('data', 'status'));
     }
