@@ -89,6 +89,7 @@
                                 <th>Lieu</th>
                                 <th>Date d'Ajout<br>sur PRD</th>
                                 <th>Date de Constat</th>
+                                <th>Lieu</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -100,6 +101,7 @@
                                     <td>{{$d->enterprise}} ( {{$d->site}} )</td>
                                     <td>{{$d->created_at}}</td>
                                     <td>{{$d->occur_date}}</td>
+                                    <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
                                     <td>{{\App\Models\Status::find($d->status)->name}}</td>
                                     <td><a href="{!! route('admin.dysfunction.show', ['id'=>$d->id]) !!}" target="_blank" class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>

@@ -44,9 +44,16 @@
                                     <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
-                                    <td><a href="/rq/detail/dysfonctionnement/{{$d->id}}" target="_blank" class="btn rounded-pill btn-icon btn-info">
-                                            <span class="tf-icons bx bx-info-circle"></span>
-                                        </a></td>
+                                    <td>
+                                        @canany(['isEnterpriseRQ', 'isAdmin'], [\App\Models\Enterprise::where('name', $d->enterprise)->get()->first(), Auth::user()])
+                                            <a href="/rq/detail/dysfonctionnement/{{ $d->id }}" target="_blank"
+                                                class="btn rounded-pill btn-icon btn-info">
+                                                <span class="tf-icons bx bx-info-circle"></span>
+                                            </a>
+                                        @else
+                                        Aucune action possible.
+                                        @endcanany
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

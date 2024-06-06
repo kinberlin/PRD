@@ -30,15 +30,17 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-            /**
-     * Determine whether the user is RQ or not.
-     */
-    Gate::define('isEnterpriseRQ', function( Users $user, Enterprise $ents): bool
-    {
-        $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
-        $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-        return $users->where('id', $user->id)->first() != null ? true : false;
-    });
-        //
+        /**
+         * Determine whether the user is RQ or not.
+         */
+        Gate::define('isEnterpriseRQ', function (Users $user, Enterprise $ents): bool {
+            if ($ents != null) {
+                $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
+                $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
+                return $users->where('id', $user->id)->first() != null ? true : false;
+            } else {
+                return false;
+            }
+        });
     }
 }

@@ -44,11 +44,14 @@
                                     <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y H:i:s') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
                                     <td>{{ $d->description }}</td>
-                                    <td>{{$d->enterprise. ' ('.$d->site.')'}}</td>
+                                    <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
-                                    <td><a href="/rq/detail/dysfonctionnement/{{$d->id}}" target="_blank" class="btn rounded-pill btn-icon btn-info">
+                                    <td>
+                                        <a href="/rq/detail/dysfonctionnement/{{ $d->id }}" target="_blank"
+                                            class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>
-                                        </a></td>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -70,20 +73,20 @@
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
     <script>
         /* document.addEventListener("DOMContentLoaded", function() {
-                // Datatables Orders
-                $("#datatables-order").DataTable({
-                    "paging": true,
-                    "pageLength": 10,
-                    "dom": 'Bfrtip', // Show buttons (B) for export
-                    "buttons": [
-                        'excel' // Add export button for Excel
-                    ],
-                    responsive: true,
-                    aoColumnDefs: [{
-                        bSortable: false,
-                        aTargets: [-1]
-                    }]
-                });
-            });*/
+                    // Datatables Orders
+                    $("#datatables-order").DataTable({
+                        "paging": true,
+                        "pageLength": 10,
+                        "dom": 'Bfrtip', // Show buttons (B) for export
+                        "buttons": [
+                            'excel' // Add export button for Excel
+                        ],
+                        responsive: true,
+                        aoColumnDefs: [{
+                            bSortable: false,
+                            aTargets: [-1]
+                        }]
+                    });
+                });*/
     </script>
 @endsection

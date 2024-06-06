@@ -12,7 +12,9 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class DysfunctionController extends Controller
@@ -46,9 +48,9 @@ class DysfunctionController extends Controller
             $dys->enterprise = $request->input('enterprise');
             $dys->site = $request->input('site');
             $dys->description = $request->input('description');
-            $dys->emp_signaling = 'Test First'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
-            $dys->emp_matricule = 'YU14AS'; //Auth::user()->matricule;
-            $dys->emp_email = 't@t.t'; //Auth::user()->email;
+            $dys->emp_signaling = Auth::user()->firstname . ' ' . Auth::user()->lastname;
+            $dys->emp_matricule = Auth::user()->matricule;
+            $dys->emp_email = Auth::user()->email;
             $urls = [];
             if ($request->hasFile('group-a')) {
                 foreach ($request->file('group-a') as $key => $fileData) {
@@ -114,10 +116,10 @@ class DysfunctionController extends Controller
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
             if ($dys == null) {
-                throw new Exception("La ressource spécifié est introuvable.", 1);
+                throw new Exception("La ressource spécifié est introuvable.", 404);
             }
             if ($dys->status == 3) {
-                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 1);
+                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
             }
             $dys->status = 3;
 
@@ -131,33 +133,41 @@ class DysfunctionController extends Controller
     }
     public function action(Request $request, $id)
     {
-        // try {
-        DB::beginTransaction();
+     try {
         $dys = Dysfunction::find($id);
-        if ($dys == null) {
-            throw new Exception("Impossible de trouver la ressource demandée.", 404);
+        $ents = Enterprise::where('name', $dys->enterprise);
+        if (Gate::allows('isEnterpriseRQ', [$ents != null ? Enterprise::find($ents->id) : null]) || Gate::allows('isAdmin', Auth::user()) ) {
+            DB::beginTransaction();
+
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("Impossible de trouver la ressource demandée.", 404);
+            }
+            $corrections = [];
+            for ($i = 0; $i < count($request->user); $i++) {
+                // Create a new Person object for each row and add it to the array
+                $corrections[] = new Correction(
+                    $request->action[$i],
+                    $request->department[$i],
+                    $request->user[$i],
+                    $request->delay[$i],
+                    'Test User'
+                );
+            }
+            $corrective_acts = json_encode($corrections);
+            $dys->corrective_acts = $corrective_acts;
+            //dd($corrective_acts);
+            if ($dys->status == 1) {$dys->status = 2;}
+            $dys->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        } else {
+            throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
         }
-        $corrections = [];
-        for ($i = 0; $i < count($request->user); $i++) {
-            // Create a new Person object for each row and add it to the array
-            $corrections[] = new Correction(
-                $request->action[$i],
-                $request->department[$i],
-                $request->user[$i],
-                $request->delay[$i],
-                'Test User'
-            );
-        }
-        $corrective_acts = json_encode($corrections);
-        $dys->corrective_acts = $corrective_acts;
-        //dd($corrective_acts);
-        if ($dys->status == 1) {$dys->status = 2;}
-        $dys->save();
-        DB::commit();
-        return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-        /* } catch (Throwable $th) {
+
+    } catch (Throwable $th) {
     return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-    }*/
+    }
     }
     /**
      * Display the specified resource.

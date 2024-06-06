@@ -17,6 +17,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class RQController extends Controller
@@ -129,6 +130,8 @@ class RQController extends Controller
             if ($dys == null) {
                 throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
             }
+            $ents = Enterprise::where('name', $dys->enterprise);
+        if (Gate::allows('isEnterpriseRQ', [$ents != null ? Enterprise::find($ents->id) : null]) || Gate::allows('isAdmin', Auth::user()) ) {
             $status = Status::all();
             $processes = Processes::all();
             $ents = Enterprise::all();
@@ -141,6 +144,9 @@ class RQController extends Controller
                 'ents',
                 'site',
                 'gravity'));
+            } else {
+                throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
