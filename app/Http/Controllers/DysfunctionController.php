@@ -135,8 +135,8 @@ class DysfunctionController extends Controller
     {
      try {
         $dys = Dysfunction::find($id);
-        $ents = Enterprise::where('name', $dys->enterprise);
-        if (Gate::allows('isEnterpriseRQ', [$ents != null ? Enterprise::find($ents->id) : null]) || Gate::allows('isAdmin', Auth::user()) ) {
+        $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+        if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user()) ) {
             DB::beginTransaction();
 
             $dys = Dysfunction::find($id);

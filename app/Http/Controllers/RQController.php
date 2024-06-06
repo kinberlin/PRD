@@ -130,8 +130,8 @@ class RQController extends Controller
             if ($dys == null) {
                 throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
             }
-            $ents = Enterprise::where('name', $dys->enterprise);
-        if (Gate::allows('isEnterpriseRQ', [$ents != null ? Enterprise::find($ents->id) : null]) || Gate::allows('isAdmin', Auth::user()) ) {
+            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+        if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user()) ) {
             $status = Status::all();
             $processes = Processes::all();
             $ents = Enterprise::all();
