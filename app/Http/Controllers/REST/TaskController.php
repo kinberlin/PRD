@@ -61,7 +61,9 @@ class TaskController extends RoutingController
 
             $task->save();
 
-            if ($request->has("target")) {$this->updateOrder($id, $request->target);}
+            if ($request->has("target")) {
+                $this->updateOrder($id, $request->target);
+            }
 
             return response()->json([
                 "action" => "updated",
@@ -179,7 +181,7 @@ class TaskController extends RoutingController
             return response()->json(['message' => 'File not found.'], 404);
         }
     }
-    public function view_by(Request $request)
+    public function viewBy_store(Request $request)
     {
         try {
             DB::beginTransaction();
@@ -188,62 +190,16 @@ class TaskController extends RoutingController
             if ($task == null) {
                 throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
             }
-            $data->internal_invites = json_encode($internal_invites);
-            $ext_u = [];
-            if ($request->has('extuser') && !empty($request->extuser)) {
-                for ($i = 0; $i < count($request->extuser); $i++) {
-                    // Create a new Person object for each row and add it to the array
-                    $ext_u[] = $request->extuser[$i];
-                }
+            if ($data->findViewByMatricule($task, $request->input('matricule')) == null) {
+                $views = $data->getViews($task);
+                $views = $data;
+                $task->view_by = json_encode($views);
+                $task->save();
             }
-            $data->external_invites = json_encode($ext_u);
-            $data->save();
             DB::commit();
             return redirect()->back()->with('error', "La réunion a été créer avec succes.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
-    }
-    public function getViews(Task $task) : array
-    {
-        if($task->view_by != null)
-        {return json_decode($task->view_by, true);}
-        else { return [];}
-    }
-    // Function to update an item of type Invite in the JSON array and save it
-    public function updateInviteByMatricule(Task $task,$viewObject)
-    {
-        $views = json_decode($task->view_by, true);
-        $found = false;
-
-        foreach ($views as $key=>&$viewData) {
-            if ($viewData['matricule'] == $viewObject->matricule) {
-                $views[$key] = $viewObject;
-                $found = true;
-                break;
-            }
-        }
-
-        if ($found) {
-            $this->internal_invites = json_encode($views);
-            $this->save();
-            return $this;
-        } else {
-            return null;
-        }
-    }
-
-    // Function to find an invite by matricule
-    public function findInviteByMatricule($matricule)
-    {
-        $invites = $this->getInternalInvites();
-
-        foreach ($invites as $invite) {
-            if ($invite->matricule == $matricule) {
-                return $invite;
-            }
-        }
-
-    return null;
     }
 }
