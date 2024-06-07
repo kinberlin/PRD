@@ -76,8 +76,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
-    Route::get('/employee/profile', 'RQController@profile')->name('rq.profile');
-    Route::get('/rq/profile', 'EmployeeController@profile')->name('emp.profile');
+    Route::get('/rq/profile', 'RQController@profile')->name('rq.profile');
+    Route::get('/employee/profile', 'EmployeeController@profile')->name('emp.profile');
 
     /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
     Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');

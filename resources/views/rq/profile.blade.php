@@ -87,11 +87,7 @@
                                 <i class="bx bx-star"></i>
                                 <span class="fw-medium mx-2">Authentifié en tant que :</span>
                                 <span>
-                                    @if (Auth::user()->role == 2)
-                                        Utilisateur (Normal)
-                                    @else
-                                        Utilisateur (Privilégié)
-                                    @endif
+                                    Responsable Qualité
                                 </span>
                             </li>
                             <li class="d-flex align-items-center mb-3">

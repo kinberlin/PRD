@@ -131,7 +131,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/employee/profile">
+                                        <a class="dropdown-item" href="{{route('admin.profile')}}">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">Mon Profile</span>
                                         </a>
@@ -149,7 +149,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/logout">
+                                        <a class="dropdown-item" href="{{route('logout')}}">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Déconnexion</span>
                                         </a>
