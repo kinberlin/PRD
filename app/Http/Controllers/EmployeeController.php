@@ -6,6 +6,7 @@ use App\Models\AuthorisationPilote;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Invitation;
 use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
@@ -138,5 +139,12 @@ class EmployeeController extends Controller
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
+    }
+    public function invitation()
+    {
+        // Query to get all invitations where internal_invites contains an invite with the user's email
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction'))->get();
+        return view('employees/invitation', compact('data', 'dys'));
     }
 }

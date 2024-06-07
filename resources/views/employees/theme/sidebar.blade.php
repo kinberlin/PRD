@@ -40,6 +40,12 @@
                 <div class="text-truncate">Mes Signalements</div>
             </a>
         </li>
+        <li class="menu-item @if (request()->route()->getName() == 'emp.invitation') active @endif">
+            <a href="{!! route('emp.invitation') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-envelope"></i>
+                <div class="text-truncate">Mes Invitations</div>
+            </a>
+        </li>
         @can('isPilote', Auth::user())
             <li class="menu-item @if (request()->route()->getName() == 'employees.mytask') active @endif">
                 <a href="{!! route('employees.mytask') !!}" class="menu-link">

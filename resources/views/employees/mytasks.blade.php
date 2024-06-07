@@ -53,7 +53,7 @@
                                                     aria-labelledby="headingTask{{ $d->id }}"
                                                     data-bs-parent="#accordionPopoutTask{{ $d->id }}">
                                                     <div class="accordion-body">
-                                                        {{ $d->description }}<br>Assigner par : {{ $d->created_by }}
+                                                        {{ $d->description }}<br>Assigner par : {{ $d->created_by }}<br>Durée : {{$d->duration}} Jours
                                                     </div>
                                                     @if ($d->proof != null)
                                                         <a href="{{ $d->proof }}">

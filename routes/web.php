@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
     Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employees.signalement');
     Route::get('/employee/mestaches', 'EmployeeController@mytasks')->name('employees.mytask');
+    Route::get('/employee/invitations', 'EmployeeController@invitation')->name('emp.invitation');
 
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
@@ -52,8 +53,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/signalements', 'RQController@allSignalement')->name('rq.allsignalement');
     Route::get('/rq/plans', 'RQController@planif')->name('rq.planif');
     Route::get('/rq/invitations', 'RQController@invitation')->name('rq.invitation');
-    Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
-    Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
 
     Route::get('/rq/department', 'RQController@department')->name('rq.department');
     Route::get('/rq/department/{id}', 'DepartmentController@destroy')->name('rq.department.destroy');
@@ -69,10 +68,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/responsable', 'RQController@rqemployee')->name('rq.responsables');
     Route::get('/rq/pilote', 'RQController@pltemployee')->name('rq.pilotes');
 
-    Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
-    Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
-
-    Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
     Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
@@ -87,7 +82,15 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
-    //admins && RQ
+    //users
+
+    Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
+    Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
+    Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
+    Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
+    Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
+    
+
     Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
     Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
     Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');

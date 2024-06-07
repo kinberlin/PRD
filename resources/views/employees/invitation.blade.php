@@ -1,4 +1,4 @@
-@extends('admin.theme.main')
+@extends('employees.theme.main')
 @section('title')
     Mes Invitations aux Réunions
 @endsection
@@ -52,7 +52,7 @@
                                     <td>{{ $d->dates }}</td>
                                     <td>Début : {{ $d->begin }}<br>Fin : {{ $d->end }}</td>
                                     @php
-                                        $invite = $d->findInviteByMatricule('PZN0131'); // Replace 'SAE0186' with the matricule you want to search waiting for auth
+                                        $invite = $d->findInviteByMatricule(Auth::user()->matricule); // Replace 'SAE0186' with the matricule you want to search waiting for auth
                                     @endphp
                                     <td>{{$invite->decision}}</td>
                                     <td>

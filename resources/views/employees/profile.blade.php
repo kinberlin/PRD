@@ -1,4 +1,4 @@
-@extends('rq.theme.main')
+@extends('employees.theme.main')
 @section('title')
     Mon Profile
 @endsection
