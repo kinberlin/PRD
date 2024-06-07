@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthorisationPilote;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
@@ -34,8 +35,9 @@ class EmployeeController extends Controller
     public function mytasks()
     {
         Gate::authorize('isPilote', Auth::user());
+        $pltU = AuthorisationPilote::where('user', Auth::user()->id)->get();
         $dys = Dysfunction::whereIn('status', [2, 4, 5])->whereHas('tasks')->get();
-        $data = Task::whereIn('dysfunction', $dys->pluck('id'))->get();
+        $data = Task::whereIn('process', $pltU->pluck('process'))->whereIn('dysfunction', $dys->pluck('id'))->get();
         return view('employees/mytasks', compact('data', 'dys'));
     }
     public function profile()

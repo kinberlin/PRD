@@ -6,13 +6,11 @@ use Carbon\Carbon;
 class Viewby
 {
     public $user;
-    public $department;
     public $view_at = null;
 
-    public function __construct( $user, $department)
+    public function __construct($matricule)
     {
-        $this->department = $department;
-        $this->user = $user;
+        $this->user = $matricule;
         $this->view_at = Carbon::now();
     }
 }
