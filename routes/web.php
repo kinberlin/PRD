@@ -99,6 +99,9 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
 
+    Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
+
+
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
     Route::get('/admin/invitations', 'AdminController@invitation')->name('admin.invitation');

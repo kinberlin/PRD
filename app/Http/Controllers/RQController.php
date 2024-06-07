@@ -85,7 +85,7 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         $ents = Enterprise::all();
         $deps = Department::all();
-        return view('employees/profile', compact('ents', 'deps'));
+        return view('rq/profile', compact('ents', 'deps'));
     }
     public function employee()
     {
