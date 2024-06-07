@@ -118,8 +118,7 @@ class RQController extends Controller
     {
         Gate::authorize('isRq', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
-        $matricule = 'PZN0131';
-        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . $matricule . '"}\', \'$\')')->get(); //Waiting for auth
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction'))->get();
         return view('rq/invitation', compact('data', 'dys'));
     }
