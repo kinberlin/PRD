@@ -37,6 +37,12 @@ class EmployeeController extends Controller
         $data = Task::whereIn('dysfunction', $dys->pluck('id'))->get();
         return view('employees/mytasks', compact('data', 'dys'));
     }
+    public function profile()
+    {
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        return view('employees/profile', compact('ents', 'deps'));
+    }
     public function onestore(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());
