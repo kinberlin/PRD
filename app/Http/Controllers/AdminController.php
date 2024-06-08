@@ -85,7 +85,7 @@ class AdminController extends Controller
             $site = Site::all();
             $gravity = Gravity::all();
             $data = $dys;
-            return view('rq/infos', compact(
+            return view('admin/infos', compact(
                 'data',
                 'status',
                 'processes',

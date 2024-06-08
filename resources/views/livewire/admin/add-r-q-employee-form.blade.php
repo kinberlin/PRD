@@ -3,7 +3,7 @@
         @csrf
         @if ($message != null)
         <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" style="color : yellow">{{$message}}</label>
+            <label class="form-label text-warning" >{{$message}}</label>
         </div>
         @endif
         <div class="mb-3 fv-plugins-icon-container">
@@ -46,7 +46,7 @@
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Annuler</button>
 
         <div wire:loading class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" style="color : yellow">Verification ...</label>
+            <label class="form-label text-info">Verification ...</label>
         </div>
     </form>
 </div>

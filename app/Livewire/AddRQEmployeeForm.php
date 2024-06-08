@@ -51,6 +51,7 @@ class AddRQEmployeeForm extends Component
     public function checkUserInProcess()
     {
         // Assuming a method to check if user belongs to enterprise
+        $this->message == null;
         $user = Users::find($this->selectedUser);
 
         if ($user != null) {
@@ -68,7 +69,7 @@ class AddRQEmployeeForm extends Component
                     $this->message = 'M/Mme ' . $user->firstname . ' est présentement Responsable Qualité par intérim à ' . $this->enterprises->where('id', $this->selectedEnterprise)->first()->name;
                     $this->isInterim = 0;
                 }
-            }else{
+            } else {
                 $this->disableNoRadio = false;
                 $this->disableYesRadio = false;
             }

@@ -18,7 +18,7 @@
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
-                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de RQ/h5>
+                                <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de RQ</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
@@ -118,4 +118,6 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/form-layouts.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
+
+
 @endsection

@@ -7,7 +7,7 @@
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">Vue Complémentaire sur le signalement </span> No. {{ $data->id }}
+            <span class="text-muted fw-light">Vue Complémentaire sur le signalement </span> No. {{ $data->code }}
         </h4>
         <!-- Basic Layout -->
         <div class="row">
@@ -100,10 +100,10 @@
         </div>
         <!-- Multi Column with Form Separator -->
         <div class="card mb-4">
-            <h5 class="card-header">Informations complementaires</h5>
+            <h5 class="card-header">Informations complémentaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                            <h6> Info Supplementaires</h6>-->
+                                                                <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -119,20 +119,19 @@
                             <option value="" style="display: none;"></option>
                             @foreach ($processes as $p)
                                 <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}"
-                                    @if (in_array($p->name, json_decode($data->concern_processes, true))) selected @endif>
-                                    {{ $p->name }}</option>
+                                    @if ($data->concern_processes != null && in_array($p->name, json_decode($data->concern_processes, true))) selected @endif>
+                                    {{ $p->name }} ({{ $p->surfix }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 select2-primary">
                         <label class="form-label" for="multicol-language2">Processus Impactés (<span
                                 style="color: red">*</span>)</label>
-                        <select id="multicol-language2" name="impact_processes[]" class="select2 form-select" multiple
-                            required>
+                        <select name="impact_processes[]" class="select2 form-select" multiple required>
                             @foreach ($processes as $p)
                                 <option value="{{ $p->name }}" data-extra-info="{{ $p->id }}"
-                                    @if (in_array($p->name, json_decode($data->impact_processes, true))) selected @endif>
-                                    {{ $p->name }}
+                                    @if ($data->concern_processes != null && in_array($p->name, json_decode($data->impact_processes, true))) selected @endif>
+                                    {{ $p->name }} ({{ $p->surfix }})
                                 </option>
                             @endforeach
                         </select>
@@ -142,7 +141,7 @@
                         <select class="form-control" name="gravity" data-allow-clear="true" required>
                             @foreach ($gravity as $g)
                                 <option value="{{ $g->name }}" @if ($g->name == $data->gravity) selected @endif>
-                                    {{ $g->name }}</option>
+                                    {{ $g->name }} (Note : {{ $g->note }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -163,12 +162,17 @@
                 </div>
                 <div class="pt-4">
                     @if ($data->status != 3)
-                        <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre a Jour</button>
-                        <button type="reset" class="btn btn-secondary">Annuler Modifications</button>
-                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Annuler ce Signalement</a>
-                    @endif
-
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre a Jour</button>
+                            </div>
+                            <div class="col-md-8 text-end">
+                                <button type="reset" class="btn btn-secondary">Annuler Modifications</button>
+                                <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeté ce Signalement</a>
+                            </div>
+                        </div>
                 </div>
+                @endif
             </form>
         </div>
         <!-- Collapsible Section -->
@@ -326,7 +330,7 @@
                             <div id="accordionPlanner" class="accordion-collapse collapse show"
                                 data-bs-parent="#collapsibleSection2">
                                 <div class="accordion-body">
-                                    <form class="row g-3" action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
+                                    <form class="row g-3" action="{!! route('admin.planner', ['id' => $data->id]) !!}" method="GET">
                                         <div class="pt-4">
                                             <button type="submit" id="saveActionsBtn"
                                                 class="btn btn-success me-sm-3 me-1">Aller a la Page de
@@ -340,7 +344,6 @@
                 </div>
             </div>
         @endif
-    </div>
     </div>
 @endsection
 @section('scriptContent')
