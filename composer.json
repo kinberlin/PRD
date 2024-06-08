@@ -9,7 +9,7 @@
         "algolia/algoliasearch-client-php": "^3.4",
         "barryvdh/laravel-debugbar": "^3.13",
         "fedeisas/laravel-mail-css-inliner": "^5.2",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/scout": "^10.8",

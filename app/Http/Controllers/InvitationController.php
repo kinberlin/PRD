@@ -109,7 +109,7 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //try {
+        try {
         DB::beginTransaction();
         $data = Invitation::find($id);
         if ($data == null) {
@@ -147,13 +147,13 @@ class InvitationController extends Controller
         $data->save();
         DB::commit();
         return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
     public function inviteConfirmation(Request $request)
     {
-        //try {
+        try {
         DB::beginTransaction();
         $data = Invitation::find($request->input('invitation'));
         if ($data == null) {
@@ -175,9 +175,9 @@ class InvitationController extends Controller
         }
         DB::commit();
         return redirect()->back()->with('error', 'Mise a jour de la disponibilité terminé.');
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
     /**
      * Remove the specified resource from storage.
