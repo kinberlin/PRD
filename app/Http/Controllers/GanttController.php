@@ -25,7 +25,7 @@ class GanttController extends Controller
         ]);
     }
 
-    public function planner($id){
+    public function rqplanner($id){
         try {
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
@@ -36,6 +36,22 @@ class GanttController extends Controller
                 throw new Exception("Erreur de traitement. Ce dysfonctionnement est déja annulé. Il ne peut donc plus être traiter.", 1);
             }
             return view('rq/planner', compact('id'));
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+        
+    }
+    public function adminplanner($id){
+        try {
+            DB::beginTransaction();
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("La ressource spécifié est introuvable.", 1);
+            }
+            if ($dys->status  == 3) {
+                throw new Exception("Erreur de traitement. Ce dysfonctionnement est déja annulé. Il ne peut donc plus être traiter.", 1);
+            }
+            return view('admin/planner', compact('id'));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

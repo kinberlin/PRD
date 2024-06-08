@@ -68,7 +68,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/responsable', 'RQController@rqemployee')->name('rq.responsables');
     Route::get('/rq/pilote', 'RQController@pltemployee')->name('rq.pilotes');
 
-    Route::get('/planner/{id}', 'GanttController@planner')->name('rq.planner');
+    Route::get('rq/planner/{id}', 'GanttController@rqplanner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
     Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/rq/profile', 'RQController@profile')->name('rq.profile');
@@ -103,7 +103,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     //admins
 
     Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
-
+    Route::get('/admin/planner/{id}', 'GanttController@adminplanner')->name('admin.planner');
 
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
@@ -129,9 +129,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/processes/{id}', 'ProcessesController@update')->name('admin.processes.update');
 
     Route::get('/admin/signal', 'AdminController@signals')->name('admin.signals'); /*to be done */
-    Route::get('/admin/signal/{id}', 'SignalController@destroy')->name('admin.signal.destroy');
+    /*Route::get('/admin/signal/{id}', 'SignalController@destroy')->name('admin.signal.destroy');
     Route::post('/admin/signal', 'SignalController@store')->name('admin.signal.store');
-    Route::post('/admin/signal/{id}', 'SignalController@update')->name('admin.signal.update');
+    Route::post('/admin/signal/{id}', 'SignalController@update')->name('admin.signal.update');*/
 
     Route::get('/admin/department', 'AdminController@department')->name('admin.department');
 
