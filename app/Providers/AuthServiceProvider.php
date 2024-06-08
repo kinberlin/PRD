@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
          */
         Gate::define('isEnterpriseRQ', function (Users $user, Enterprise $ents): bool {
             if ($ents != null) {
-                $rqU = AuthorisationRq::where('interim', 0)->where('enterprise', $ents->id)->get();
+                $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
                 $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
                 return $users->where('id', $user->id)->first() != null ? true : false;
             } else {

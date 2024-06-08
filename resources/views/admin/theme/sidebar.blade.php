@@ -79,8 +79,7 @@
                 request()->route()->getName() == 'admin.signals' ||
                 request()->route()->getName() == 'admin.planif' ||
                 request()->route()->getName() == 'admin.rqemployee' ||
-                request()->route()->getName() == 'admin.pltemployee' ||
-                request()->route()->getName() == 'admin.employee') active open @endif">
+                request()->route()->getName() == 'admin.pltemployee') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div class="text-truncate" data-i18n="Signalements">Signalements</div>
