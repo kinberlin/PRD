@@ -26,7 +26,7 @@ class CheckRoleMiddleware
     public function handle($request, Closure $next, ...$roles)
     {
         
-        if (Auth::check() && in_array(Auth::user()->role, $roles)) {
+        if (Auth::check() && Auth::user()->access ==1 && in_array(Auth::user()->role, $roles)) {
             if (Auth::user()->role == 2) {
                     return $next($request);
             } else {

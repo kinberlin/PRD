@@ -25,11 +25,11 @@
               compare: function () {
                 return form.querySelector('[name="newPassword"]').value;
               },
-              message: "The password and its confirm are not the same",
+              message: "Le mot de passe et sa confirmation ne sont pas identiques.",
             },
             stringLength: {
               min: 8,
-              message: "Password must be more than 8 characters",
+              message: "Le mot de passe doit contenir au moins 8 caractères.",
             },
           },
         },

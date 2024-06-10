@@ -142,7 +142,7 @@
                                             data-bs-target="#majemp{{ $d->id }}">
                                             M.A.J
                                         </button><br>
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majsecureemp{{ $d->id }}">
                                             Accessibilité
                                         </button>
@@ -153,7 +153,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modalCenterTitle">Paramètre
-                                                            d'Accessibilité</h5>
+                                                            d'Accessibilité ({{$d->firstname}})</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -161,15 +161,16 @@
                                                         <form class="formChangePassword" method="GET"
                                                             data-number="30{{ $d->id }}">
                                                             <div class="alert alert-warning" role="alert">
-                                                                <h6 class="alert-heading mb-1">Ensure that these
-                                                                    requirements are met</h6>
-                                                                <span>Minimum 8 characters long, uppercase & symbol</span>
+                                                                <h6 class="alert-heading mb-1">Assurez-vous que ces
+                                                                    exigences sont respectées : </h6>
+                                                                <span>au moins 8 caractères, une lettre majuscule et un
+                                                                    symbole.</span>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="mb-3 col-12 col-sm-6 form-password-toggle">
                                                                     <label class="form-label"
-                                                                        for="newPassword30{{ $d->id }}">New
-                                                                        Password</label>
+                                                                        for="newPassword30{{ $d->id }}">Nouveau Mot
+                                                                        de Passe</label>
                                                                     <div class="input-group input-group-merge">
                                                                         <input class="form-control" type="password"
                                                                             id="newPassword30{{ $d->id }}"
@@ -182,8 +183,8 @@
 
                                                                 <div class="mb-3 col-12 col-sm-6 form-password-toggle">
                                                                     <label class="form-label"
-                                                                        for="confirmPassword30{{ $d->id }}">Confirm
-                                                                        New Password</label>
+                                                                        for="confirmPassword30{{ $d->id }}">Confirmer
+                                                                        le Mot de Passe</label>
                                                                     <div class="input-group input-group-merge">
                                                                         <input class="form-control" type="password"
                                                                             name="confirmPassword"
@@ -193,19 +194,27 @@
                                                                                 class="bx bx-hide"></i></span>
                                                                     </div>
                                                                 </div>
-                                                                <div>
+                                                                <div><label class="switch switch-lg">
+                                                                    <input type="checkbox" name="access" class="switch-input">
+                                                                    <span class="switch-toggle-slider">
+                                                                      <span class="switch-on">
+                                                                        <i class="bx bx-check"></i>
+                                                                      </span>
+                                                                      <span class="switch-off">
+                                                                        <i class="bx bx-x"></i>
+                                                                      </span>
+                                                                    </span>
+                                                                    <span class="switch-label"> Accès à la Plateforme</span>
+                                                                  </label>
                                                                     <button type="submit"
-                                                                        class="btn btn-primary me-2">Change
-                                                                        Password</button>
+                                                                        class="btn btn-primary me-2">Enregistrer les paramètres</button>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save
-                                                            changes</button>
+                                                            data-bs-dismiss="modal">Fermer</button>
                                                     </div>
                                                 </div>
                                             </div>

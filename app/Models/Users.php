@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @property int    $id
+ * @property int    $access
  * @property int    $created_at
  * @property int    $deleted_at
  * @property int    $department
@@ -49,7 +50,7 @@ class Users extends  Authenticatable
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'department', 'email', 'email_verified_at', 'enterprise', 'firstname', 'holiday', 'image', 'lastname', 'matricule', 'password', 'phone', 'poste', 'remember_token', 'role'
+        'access', 'created_at', 'deleted_at', 'department', 'email', 'email_verified_at', 'enterprise', 'firstname', 'holiday', 'image', 'lastname', 'matricule', 'password', 'phone', 'poste', 'remember_token', 'role'
     ];
 
     /**
@@ -67,7 +68,7 @@ class Users extends  Authenticatable
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'department' => 'int', 'email' => 'string', 'email_verified_at' => 'timestamp', 'enterprise' => 'int', 'firstname' => 'string', 'holiday' => 'int', 'image' => 'string', 'lastname' => 'string', 'matricule' => 'string', 'password' => 'string', 'phone' => 'string', 'poste' => 'string', 'remember_token' => 'string', 'role' => 'int'
+        'id' => 'int', 'access' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'department' => 'int', 'email' => 'string', 'email_verified_at' => 'timestamp', 'enterprise' => 'int', 'firstname' => 'string', 'holiday' => 'int', 'image' => 'string', 'lastname' => 'string', 'matricule' => 'string', 'password' => 'string', 'phone' => 'string', 'poste' => 'string', 'remember_token' => 'string', 'role' => 'int'
     ];
 
     /**
