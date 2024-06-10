@@ -71,7 +71,7 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <div  style="background-image: url('{!! url('assets/img/pages/planet-earth-svgrepo-com.svg') !!}') ; background-position: center;   background-repeat: no-repeat;  background-size: contain;">
+                        <div  style="background-image: url('{!! url('assets/img/pages/planet-earth-svgrepo-com.svg') !!}') ; background-position: center;   background-repeat: no-repeat;  background-size: contain">
                         <h4 class="mb-2">Bienvenue à vous! 👋</h4>
                         <p class="mb-4">Entrez vos informations pour continuer...</p>
 
