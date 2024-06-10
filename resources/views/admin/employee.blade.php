@@ -340,7 +340,7 @@
                                                                     <div class="col-sm-3">
                                                                         <div class="avatar avatar-xl">
                                                                             <img id="pvwProfile{{ $d->id }}"
-                                                                                src="{{ Auth::user()->image }}"
+                                                                                src="{{ asset('storage/' . $d->image ) }}"
                                                                                 alt="Avatar-{{ $d->firstname }}"
                                                                                 class="rounded">
                                                                         </div>

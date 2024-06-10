@@ -103,8 +103,13 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <span
-                                            class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
+                                        @if (Auth::user()->image == null)
+                                            <span
+                                                class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
+                                        @else
+                                            <img src="{{ asset('storage/' . Auth::user()->image) }}" alt=""
+                                                class="w-px-40 h-auto rounded-circle">
+                                        @endif
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -118,7 +123,8 @@
                                                                 <span
                                                                     class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
                                                             @else
-                                                                <img src="{{ Auth::user()->image }}" alt=""
+                                                                <img src="{{ url('storage/' . Auth::user()->image) }}"
+                                                                    alt=""
                                                                     class="w-px-40 h-auto rounded-circle">
                                                             @endif
                                                         </div>
