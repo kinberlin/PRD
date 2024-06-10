@@ -141,7 +141,75 @@
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemp{{ $d->id }}">
                                             M.A.J
+                                        </button><br>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#majsecureemp{{ $d->id }}">
+                                            Accessibilité
                                         </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalCenterTitle">Paramètre
+                                                            d'Accessibilité</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="formChangePassword" method="GET"
+                                                            data-number="30{{ $d->id }}">
+                                                            <div class="alert alert-warning" role="alert">
+                                                                <h6 class="alert-heading mb-1">Ensure that these
+                                                                    requirements are met</h6>
+                                                                <span>Minimum 8 characters long, uppercase & symbol</span>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="mb-3 col-12 col-sm-6 form-password-toggle">
+                                                                    <label class="form-label"
+                                                                        for="newPassword30{{ $d->id }}">New
+                                                                        Password</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <input class="form-control" type="password"
+                                                                            id="newPassword30{{ $d->id }}"
+                                                                            name="newPassword"
+                                                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                                        <span class="input-group-text cursor-pointer"><i
+                                                                                class="bx bx-hide"></i></span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="mb-3 col-12 col-sm-6 form-password-toggle">
+                                                                    <label class="form-label"
+                                                                        for="confirmPassword30{{ $d->id }}">Confirm
+                                                                        New Password</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <input class="form-control" type="password"
+                                                                            name="confirmPassword"
+                                                                            id="confirmPassword30{{ $d->id }}"
+                                                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                                                                        <span class="input-group-text cursor-pointer"><i
+                                                                                class="bx bx-hide"></i></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary me-2">Change
+                                                                        Password</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save
+                                                            changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="modal-onboarding modal fade animate__animated"
                                             id="majemp{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -252,17 +320,11 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-3">
                                                                         <div class="avatar avatar-xl">
-                                                                        @if (Auth::user()->image == null)
-                                                                            <span class="avatar-initial rounded-circle bg-info">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
-                                                                          </div>
-                                                                        @else
                                                                             <img id="pvwProfile{{ $d->id }}"
-                                                                                src="{{Auth::user()->image}}"
+                                                                                src="{{ Auth::user()->image }}"
                                                                                 alt="Avatar-{{ $d->firstname }}"
                                                                                 class="rounded">
-                                                                        
-                                                                        @endif
-                                                                    </div>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="col-sm-9">
                                                                         <div class="mb-3">
@@ -274,31 +336,6 @@
                                                                                 id="profileImg{{ $d->id }}"
                                                                                 data-img="pvwProfile{{ $d->id }}"
                                                                                 tabindex="0">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="row">
-                                                                    <div class="col-sm-6">
-                                                                        <div class="mb-3">
-                                                                            <label for="nameEx3" class="form-label">Your
-                                                                                Full Name</label>
-                                                                            <input class="form-control"
-                                                                                placeholder="Enter your full name..."
-                                                                                type="text" value=""
-                                                                                tabindex="0" id="nameEx3">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="mb-3">
-                                                                            <label for="roleEx3" class="form-label">Your
-                                                                                Role</label>
-                                                                            <select class="form-select" tabindex="0"
-                                                                                id="roleEx3">
-                                                                                <option>Web Developer</option>
-                                                                                <option>Business Owner</option>
-                                                                                <option>Other</option>
-                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -333,6 +370,7 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
 
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
+    <script src="{!! url('assets/js/js/app-user-view-security.js') !!}"></script>
     <script>
         $(document).ready(function() {
             $('#selents').change(function() {
