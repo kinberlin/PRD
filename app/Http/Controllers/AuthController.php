@@ -35,6 +35,7 @@ class AuthController extends Controller
                     }
                     
                 }}else{
+                    Auth::logout();
                     throw new Exception("Il se peut que l'accès à votre compte ait été révoqué.", 400);  
                 }
             } else {

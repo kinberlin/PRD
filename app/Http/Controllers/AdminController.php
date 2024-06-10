@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class AdminController extends Controller
@@ -97,6 +98,42 @@ class AdminController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+
+    public function updatePassword(Request $request, $id)
+    {
+        try {
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'newPassword' => 'required|string|min:8',
+                'confirmPassword' => 'required|string|same:newPassword',
+            ], [
+                'newPassword.required' => 'Please enter a new password.',
+                'newPassword.min' => 'Password must be more than 8 characters.',
+                'confirmPassword.required' => 'Please confirm your new password.',
+                'confirmPassword.same' => 'The password and its confirm are not the same.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Find the user by ID
+            $user = Users::findOrFail($id);
+
+            // Update the user's password
+            $user->password = bcrypt($request->newPassword);
+            // Update the access field
+            $user->access = $request->has('access') ? 1 : 0;
+            $user->save();
+
+            return redirect()->back()->with('error', "Mot de Passe mis a jour avec succes");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+
     public function planif()
     {
         Gate::authorize('isAdmin', Auth::user());
