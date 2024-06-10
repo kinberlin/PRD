@@ -158,8 +158,9 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form class="formChangePassword" method="GET"
+                                                        <form class="formChangePassword" method="POST" action="{{ route('admin.user.updatePassword', $d->id) }}"
                                                             data-number="30{{ $d->id }}">
+                                                            @csrf
                                                             <div class="alert alert-warning" role="alert">
                                                                 <h6 class="alert-heading mb-1">Assurez-vous que ces
                                                                     exigences sont respectées : </h6>
@@ -195,7 +196,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div><label class="switch switch-lg">
-                                                                    <input type="checkbox" name="access" class="switch-input">
+                                                                    <input type="checkbox" name="access" class="switch-input" @if ($d->access ==1) checked @endif>
                                                                     <span class="switch-toggle-slider">
                                                                       <span class="switch-on">
                                                                         <i class="bx bx-check"></i>

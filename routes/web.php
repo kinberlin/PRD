@@ -151,6 +151,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::delete('/admin/employee/{id}', 'EmployeeController@destroy')->name('admin.employee.destroy');
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     Route::post('/admin/oneemployee/store', 'EmployeeController@onestore')->name('admin.employee.onestore');
+
+    Route::put('/user/{id}/update-password', 'AdminController@userPassword')->name('user.updatePassword');
 });
 Route::any('{any}', function () {
     return redirect('/notfound');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enterprise;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ class AuthController extends Controller
             $credentials = $request->only('matricule', 'password');
 
             if (Auth::attempt($credentials)) {
+                if(Auth::user()->access == 1){
                 if (Auth::user()->role == 1) {
                     return redirect()->intended('/admin');
                 } else {
@@ -32,6 +34,8 @@ class AuthController extends Controller
                         return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
                     }
                     
+                }}else{
+                    throw new Exception("Il se peut que l'accès à votre compte ait été révoqué.", 400);  
                 }
             } else {
                 $credentials = [
