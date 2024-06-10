@@ -38,47 +38,46 @@
                                         <label class="form-label" for="seldep">Département</label>
                                         <select id="seldep" name="department" class="form-select" required>
                                             @foreach ($deps as $d)
-                                                <option value="{{ $d->id }}"
-                                                    data-extra-info="{{ $d->enterprise }}">
+                                                <option value="{{ $d->id }}" data-extra-info="{{ $d->enterprise }}">
                                                     {{ $d->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="firstname">Nom</label>
-                                        <input type="text" class="form-control" id="firstname" placeholder="Nom de l'employé..."
-                                            name="firstname" aria-label="Cadyst">
+                                        <input type="text" class="form-control" id="firstname"
+                                            placeholder="Nom de l'employé..." name="firstname" aria-label="Cadyst">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="lastname">Prenom</label>
-                                        <input type="text" class="form-control" id="lastname" placeholder="Prenom de l'employé..."
-                                            name="lastname" aria-label="Cadyst">
+                                        <input type="text" class="form-control" id="lastname"
+                                            placeholder="Prenom de l'employé..." name="lastname" aria-label="Cadyst">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="idmat">Matricule</label>
-                                        <input type="text" class="form-control" id="idmat" placeholder="Matricule de l'employé..."
-                                            name="matricule" aria-label="Cadyst">
+                                        <input type="text" class="form-control" id="idmat"
+                                            placeholder="Matricule de l'employé..." name="matricule" aria-label="Cadyst">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="idemail">Email</label>
-                                        <input type="email" class="form-control" id="idemail" placeholder="Email de l'employé..."
-                                            name="email" aria-label="Cadyst">
+                                        <input type="email" class="form-control" id="idemail"
+                                            placeholder="Email de l'employé..." name="email" aria-label="Cadyst">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="idphone">Telephone</label>
-                                        <input type="tel" class="form-control" id="idphone" placeholder="Tel. de l'employé..."
-                                            name="phone" aria-label="Cadyst">
+                                        <input type="tel" class="form-control" id="idphone"
+                                            placeholder="Tel. de l'employé..." name="phone" aria-label="Cadyst">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="idposte">Poste Occupé</label>
-                                        <input type="text" class="form-control" id="idposte" placeholder="Poste de l'employé..."
-                                            name="poste" aria-label="Cadyst">
+                                        <input type="text" class="form-control" id="idposte"
+                                            placeholder="Poste de l'employé..." name="poste" aria-label="Cadyst">
                                     </div>
                                     <button type="submit"
                                         class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
@@ -140,9 +139,181 @@
                                     <td>{{ $d->phone }}</td>
                                     <td>{{ $d->matricule }}</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majemployeerr{{ $d->id }}">
+                                            data-bs-target="#majemp{{ $d->id }}">
                                             M.A.J
-                                        </button></td>
+                                        </button>
+                                        <div class="modal-onboarding modal fade animate__animated"
+                                            id="majemp{{ $d->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content text-center">
+                                                    <div class="modal-header border-0">
+                                                        <a class="text-muted close-label" href="javascript:void(0);"
+                                                            data-bs-dismiss="modal">Skip Intro</a>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body p-0">
+                                                        <div class="onboarding-media">
+                                                            <div class="mx-2">
+                                                                <img src="../../assets/img/illustrations/pencil-rocket.png"
+                                                                    alt="girl-unlock-password-light" class="img-fluid"
+                                                                    style="width: 136px; height:140px"
+                                                                    data-app-dark-img="illustrations/pencil-rocket.png"
+                                                                    data-app-light-img="illustrations/pencil-rocket.png">
+                                                            </div>
+                                                        </div>
+                                                        <div class="onboarding-content mb-0">
+                                                            <h4 class="onboarding-title text-body">Mettre a Jour le Profil
+                                                                de {{ $d->firstname }}</h4>
+                                                            <div class="onboarding-info">Veuillez a renseigner tout les
+                                                                champs obligatoires.</div>
+                                                            <form>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="firstnamemaj{{ $d->id }}"
+                                                                                class="form-label">Nom</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="Entrez le Nom"
+                                                                                name="firstname" type="text"
+                                                                                value="{{ $d->firstname }}"
+                                                                                maxlength="20" tabindex="0"
+                                                                                id="firstnamemaj{{ $d->id }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="lastnamemaj{{ $d->id }}"
+                                                                                class="form-label">Prenom</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="Entrez le Prenom"
+                                                                                name="lastname" type="text"
+                                                                                value="{{ $d->lastname }}"
+                                                                                tabindex="0" maxlength="20"
+                                                                                id="lastnamemaj{{ $d->id }}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="phonemaj{{ $d->id }}"
+                                                                                class="form-label">Telephone</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="No. Tel" type="text"
+                                                                                value="{{ $d->phone }}"
+                                                                                maxlength="10" tabindex="0"
+                                                                                name="phone"
+                                                                                id="phonemaj{{ $d->id }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="postemaj{{ $d->id }}"
+                                                                                class="form-label">Intitulé de
+                                                                                Poste</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="Poste actuel" type="text"
+                                                                                value="{{ $d->poste }}"
+                                                                                maxlength="30" tabindex="0"
+                                                                                name="phone"
+                                                                                id="postemaj{{ $d->id }}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="emailmaj{{ $d->id }}"
+                                                                                class="form-label">Adresse Mail</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="Email" type="email"
+                                                                                value="{{ $d->email }}"
+                                                                                tabindex="0"
+                                                                                id="emailmaj{{ $d->id }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="departmentmaj{{ $d->id }}"
+                                                                                class="form-label">Département</label>
+                                                                            <select class="form-select" tabindex="0"
+                                                                                id="departmentmaj{{ $d->id }}">
+                                                                                @foreach ($deps->where('enterprise', $d->enterprise) as $_d)
+                                                                                    <option value="{{ $_d->id }}"
+                                                                                        @if ($_d->id == $d->department) selected @endif>
+                                                                                        {{ $_d->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <div class="avatar avatar-xl">
+                                                                        @if (Auth::user()->image == null)
+                                                                            <span class="avatar-initial rounded-circle bg-info">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
+                                                                          </div>
+                                                                        @else
+                                                                            <img id="pvwProfile{{ $d->id }}"
+                                                                                src="{{Auth::user()->image}}"
+                                                                                alt="Avatar-{{ $d->firstname }}"
+                                                                                class="rounded">
+                                                                        
+                                                                        @endif
+                                                                    </div>
+                                                                    </div>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="mb-3">
+                                                                            <label for="profileImg{{ $d->id }}"
+                                                                                class="form-label">Choisir une photo de
+                                                                                Profil</label>
+                                                                            <input type="file"
+                                                                                class="form-control-file fileInput"
+                                                                                id="profileImg{{ $d->id }}"
+                                                                                data-img="pvwProfile{{ $d->id }}"
+                                                                                tabindex="0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="nameEx3" class="form-label">Your
+                                                                                Full Name</label>
+                                                                            <input class="form-control"
+                                                                                placeholder="Enter your full name..."
+                                                                                type="text" value=""
+                                                                                tabindex="0" id="nameEx3">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="roleEx3" class="form-label">Your
+                                                                                Role</label>
+                                                                            <select class="form-select" tabindex="0"
+                                                                                id="roleEx3">
+                                                                                <option>Web Developer</option>
+                                                                                <option>Business Owner</option>
+                                                                                <option>Other</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer border-0">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -170,6 +341,33 @@
                 $('#seldep option').hide();
                 $('#seldep option[data-extra-info="' + selectedValue + '"]').show();
                 $('#seldep').val($('#selsite option:visible:first').val());
+            });
+            $('.fileInput').on('change', function(event) {
+                var file = event.target.files[0];
+                var imgId = $(this).data('img');
+                var $img = $('#' + imgId);
+
+                // Check if file is an image
+                if (file && file.type.startsWith('image/')) {
+                    // Check if file size is less than 2MB (2 * 1024 * 1024 bytes)
+                    if (file.size <= 2 * 1024 * 1024) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            $img.attr('src', e.target.result).show();
+                        }
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('The file size exceeds 2MB. Please choose a smaller file.');
+                        $(this).val(''); // Clear the input value
+                        $img.hide(); // Hide the image if the file is too large
+                    }
+                } else {
+                    alert('Please select a valid image file.');
+                    $(this).val(''); // Clear the input value
+                    $img.hide(); // Hide the image if it's not a valid image file
+                }
             });
         });
     </script>

@@ -104,7 +104,7 @@
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
                                         <span
-                                            class="avatar-initial rounded-circle bg-success">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
+                                            class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -113,15 +113,22 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <span
-                                                            class="avatar-initial rounded-circle bg-success">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
+                                                        <div class="avatar avatar-online">
+                                                            @if (Auth::user()->image == null)
+                                                                <span
+                                                                    class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
+                                                            @else
+                                                                <img src="{{ Auth::user()->image }}" alt=""
+                                                                    class="w-px-40 h-auto rounded-circle">
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block">{{Auth::user()->firstname}}
-                                                        <br>{{Auth::user()->lastname}}</span>
+                                                    <span class="fw-medium d-block">{{ Auth::user()->firstname }}
+                                                        <br>{{ Auth::user()->lastname }}</span>
                                                     <small class="text-muted">
-                                                        {{Auth::user()->poste}}
+                                                        {{ Auth::user()->poste }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -131,7 +138,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{route('rq.profile')}}">
+                                        <a class="dropdown-item" href="{{ route('rq.profile') }}">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">Mon Profile</span>
                                         </a>
@@ -149,7 +156,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{route('logout')}}">
+                                        <a class="dropdown-item" href="{{ route('logout') }}">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Déconnexion</span>
                                         </a>

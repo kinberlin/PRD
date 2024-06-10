@@ -113,8 +113,15 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <span
-                                                            class="avatar-initial rounded-circle bg-success">{{Str::substr(Auth::user()->firstname, 0, 1).Str::substr(Auth::user()->lastname, 0, 1)}}</span>
+                                                        <div class="avatar avatar-online">
+                                                            @if (Auth::user()->image == null)
+                                                                <span
+                                                                    class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
+                                                            @else
+                                                                <img src="{{ Auth::user()->image }}" alt=""
+                                                                    class="w-px-40 h-auto rounded-circle">
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
