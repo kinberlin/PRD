@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -99,41 +100,6 @@ class AdminController extends Controller
         }
     }
 
-    public function updatePassword(Request $request, $id)
-    {
-        try {
-            // Validate the request
-            $validator = Validator::make($request->all(), [
-                'newPassword' => 'required|string|min:8',
-                'confirmPassword' => 'required|string|same:newPassword',
-            ], [
-                'newPassword.required' => 'Please enter a new password.',
-                'newPassword.min' => 'Password must be more than 8 characters.',
-                'confirmPassword.required' => 'Please confirm your new password.',
-                'confirmPassword.same' => 'The password and its confirm are not the same.',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            // Find the user by ID
-            $user = Users::findOrFail($id);
-
-            // Update the user's password
-            $user->password = bcrypt($request->newPassword);
-            // Update the access field
-            $user->access = $request->has('access') ? 1 : 0;
-            $user->save();
-
-            return redirect()->back()->with('error', "Mot de Passe mis a jour avec succes");
-        } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
-    }
-
     public function planif()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -197,6 +163,87 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         $deps = Department::all();
         return view('admin/profile', compact('ents', 'deps'));
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        // Validate the form input
+        $request->validate([
+            'firstname' => 'required|string|max:20',
+            'lastname' => 'required|string|max:20',
+            'phone' => 'required|string|max:10',
+            'poste' => 'required|string|max:30',
+            'email' => 'required|string|email|max:255',
+            'department' => 'required|exists:department,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Find the user by ID
+        $user = Users::findOrFail($id);
+
+        // Update user's basic info
+        $user->firstname = $request->input('firstname');
+        $user->lastname = $request->input('lastname');
+        $user->phone = $request->input('phone');
+        $user->poste = $request->input('poste');
+        $user->email = $request->input('email');
+        $user->department = $request->input('department');
+
+        // Check if an image file is provided
+        if ($request->hasFile('image')) {
+            // Handle the new image upload
+            $image = $request->file('image');
+            $imagePath = $image->store('profile_images', 'public'); // Save image to 'storage/app/public/profile_images'
+
+            // Delete the old image if it exists
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+
+            // Update the user's image path
+            $user->image = $imagePath;
+        }
+
+        // Save the updated user
+        $user->save();
+
+        // Redirect or return a response
+        return redirect()->back()->with('error', "Mis a jour de profil réussie");
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        try {
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'newPassword' => 'required|string|min:8',
+                'confirmPassword' => 'required|string|same:newPassword',
+            ], [
+                'newPassword.required' => 'Please enter a new password.',
+                'newPassword.min' => 'Password must be more than 8 characters.',
+                'confirmPassword.required' => 'Please confirm your new password.',
+                'confirmPassword.same' => 'The password and its confirm are not the same.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Find the user by ID
+            $user = Users::findOrFail($id);
+
+            // Update the user's password
+            $user->password = bcrypt($request->newPassword);
+            // Update the access field
+            $user->access = $request->has('access') ? 1 : 0;
+            $user->save();
+
+            return redirect()->back()->with('error', "Mot de Passe mis a jour avec succes");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     /**
      * Show the form for creating a new resource.

@@ -153,6 +153,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/oneemployee/store', 'EmployeeController@onestore')->name('admin.employee.onestore');
 
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
+    Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');
 });
 Route::any('{any}', function () {
     return redirect('/notfound');

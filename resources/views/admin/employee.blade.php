@@ -153,12 +153,13 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modalCenterTitle">Paramètre
-                                                            d'Accessibilité ({{$d->firstname}})</h5>
+                                                            d'Accessibilité ({{ $d->firstname }})</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form class="formChangePassword" method="POST" action="{{ route('admin.user.updatePassword', $d->id) }}"
+                                                        <form class="formChangePassword" method="POST"
+                                                            action="{{ route('admin.user.updatePassword', $d->id) }}"
                                                             data-number="30{{ $d->id }}">
                                                             @csrf
                                                             <div class="alert alert-warning" role="alert">
@@ -196,19 +197,23 @@
                                                                     </div>
                                                                 </div>
                                                                 <div><label class="switch switch-lg">
-                                                                    <input type="checkbox" name="access" class="switch-input" @if ($d->access ==1) checked @endif>
-                                                                    <span class="switch-toggle-slider">
-                                                                      <span class="switch-on">
-                                                                        <i class="bx bx-check"></i>
-                                                                      </span>
-                                                                      <span class="switch-off">
-                                                                        <i class="bx bx-x"></i>
-                                                                      </span>
-                                                                    </span>
-                                                                    <span class="switch-label"> Accès à la Plateforme</span>
-                                                                  </label>
+                                                                        <input type="checkbox" name="access"
+                                                                            class="switch-input"
+                                                                            @if ($d->access == 1) checked @endif>
+                                                                        <span class="switch-toggle-slider">
+                                                                            <span class="switch-on">
+                                                                                <i class="bx bx-check"></i>
+                                                                            </span>
+                                                                            <span class="switch-off">
+                                                                                <i class="bx bx-x"></i>
+                                                                            </span>
+                                                                        </span>
+                                                                        <span class="switch-label"> Accès à la
+                                                                            Plateforme</span>
+                                                                    </label>
                                                                     <button type="submit"
-                                                                        class="btn btn-primary me-2">Enregistrer les paramètres</button>
+                                                                        class="btn btn-primary me-2">Enregistrer les
+                                                                        paramètres</button>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -223,7 +228,8 @@
                                         <div class="modal-onboarding modal fade animate__animated"
                                             id="majemp{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <div class="modal-content text-center">
+                                                <form class="modal-content text-center" method="POST" enctype="multipart/form-data"
+                                                    action="{{ route('admin.user.updateProfile', $d->id) }}">
                                                     <div class="modal-header border-0">
                                                         <a class="text-muted close-label" href="javascript:void(0);"
                                                             data-bs-dismiss="modal">Skip Intro</a>
@@ -246,7 +252,8 @@
                                                                 de {{ $d->firstname }}</h4>
                                                             <div class="onboarding-info">Veuillez a renseigner tout les
                                                                 champs obligatoires.</div>
-                                                            <form>
+                                                            <div>
+                                                                @csrf
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
                                                                         <div class="mb-3">
@@ -295,7 +302,7 @@
                                                                                 placeholder="Poste actuel" type="text"
                                                                                 value="{{ $d->poste }}"
                                                                                 maxlength="30" tabindex="0"
-                                                                                name="phone"
+                                                                                name="poste"
                                                                                 id="postemaj{{ $d->id }}">
                                                                         </div>
                                                                     </div>
@@ -306,7 +313,8 @@
                                                                             <label for="emailmaj{{ $d->id }}"
                                                                                 class="form-label">Adresse Mail</label>
                                                                             <input class="form-control"
-                                                                                placeholder="Email" type="email"
+                                                                                placeholder="Email" name="email"
+                                                                                type="email"
                                                                                 value="{{ $d->email }}"
                                                                                 tabindex="0"
                                                                                 id="emailmaj{{ $d->id }}">
@@ -317,6 +325,7 @@
                                                                             <label for="departmentmaj{{ $d->id }}"
                                                                                 class="form-label">Département</label>
                                                                             <select class="form-select" tabindex="0"
+                                                                                name="department"
                                                                                 id="departmentmaj{{ $d->id }}">
                                                                                 @foreach ($deps->where('enterprise', $d->enterprise) as $_d)
                                                                                     <option value="{{ $_d->id }}"
@@ -341,7 +350,7 @@
                                                                             <label for="profileImg{{ $d->id }}"
                                                                                 class="form-label">Choisir une photo de
                                                                                 Profil</label>
-                                                                            <input type="file"
+                                                                            <input type="file" name="image"
                                                                                 class="form-control-file fileInput"
                                                                                 id="profileImg{{ $d->id }}"
                                                                                 data-img="pvwProfile{{ $d->id }}"
@@ -349,15 +358,15 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer border-0">
                                                         <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Submit</button>
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-primary">MAJ</button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>
