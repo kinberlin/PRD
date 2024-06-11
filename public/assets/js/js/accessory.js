@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "buttons": [
             {
                 extend: 'excelHtml5',
-                text: 'Exporter sur Excel',
+                text: 'Exporter vers Excel',
                 className: 'btn btn-success'
             },
             {
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             {
                 extend: 'colvis',
-                text: 'Column Visibility',
+                text: 'Visibiité des colonnes',
                 className: 'btn btn-warning'
             }
         ],

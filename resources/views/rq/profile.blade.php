@@ -21,7 +21,7 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                            @if (Auth::user()->image == null)
+                            @if (empty(Auth::user()->image))
                                 <img src="{!! url('assets/img/icons/unicons/briefcase-round.png') !!}" alt="user image"
                                     class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img">
                             @else

@@ -103,7 +103,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        @if (Auth::user()->image == null)
+                                        @if (empty(Auth::user()->image))
                                             <span
                                                 class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
                                         @else
@@ -118,7 +118,7 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        @if (Auth::user()->image == null)
+                                                        @if (empty(Auth::user()->image))
                                                             <span
                                                                 class="avatar-initial rounded-circle bg-success">{{ Str::substr(Auth::user()->firstname, 0, 1) . Str::substr(Auth::user()->lastname, 0, 1) }}</span>
                                                         @else
