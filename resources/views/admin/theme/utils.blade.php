@@ -21,7 +21,9 @@
 <script src="{!! url('assets/js/js/main.js') !!}"></script>
 
 <!-- Page JS -->
-<script src="{!! url('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') !!}"></script>
+<script src="{!! url('assets/js/datatable/datatables.js') !!}"></script>
+<script src="{!! url('assets/js/datatable/datatables.min.js') !!}"></script>
+<!--<script src="{!! url('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') !!}"></script>-->
 <script src="{!! url('assets/js/js/xlsx.full.min.js') !!}"></script>
 <script src="{!! url('assets/js/js/jszip.js') !!}"></script>
 <script src="{!! url('assets/js/js/FileSaver.min.js') !!}"></script>

@@ -88,8 +88,6 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
-                            Excel</button>
                         <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
                         <input type="file" style="visibility: hidden" id="excelFileInput">
 
@@ -232,7 +230,7 @@
                                                     action="{{ route('admin.user.updateProfile', $d->id) }}">
                                                     <div class="modal-header border-0">
                                                         <a class="text-muted close-label" href="javascript:void(0);"
-                                                            data-bs-dismiss="modal">Skip Intro</a>
+                                                            data-bs-dismiss="modal">close</a>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close">
                                                         </button>
