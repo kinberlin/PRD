@@ -90,7 +90,6 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-
                         <form action="{!! route('admin.employee.store') !!}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">

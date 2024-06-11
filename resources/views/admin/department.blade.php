@@ -52,8 +52,7 @@
                                 </form>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
-                            Excel</button>
+                        
                     </div>
                 </div>
                 <hr class="m-0">

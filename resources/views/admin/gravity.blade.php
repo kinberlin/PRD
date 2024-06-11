@@ -42,8 +42,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
-                            Excel</button>
+                        
                         <input type="file" style="visibility: hidden" id="excelFileInput">
                         <form action="/admin/gravity" method="POST">
                             @csrf

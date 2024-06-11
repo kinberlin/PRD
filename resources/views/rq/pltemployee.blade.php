@@ -13,8 +13,7 @@
                 <h5 class="card-header">Pilotes</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        <button type="button" class="btn btn-success" id="exportXlsxBtn">Exporter le tableau vers
-                            Excel</button>
+                        
                     </div>
                 </div>
                 <hr class="m-0">
