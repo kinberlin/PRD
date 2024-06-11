@@ -152,6 +152,10 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/employee', 'EmployeeController@store')->name('admin.employee.store');
     Route::post('/admin/oneemployee/store', 'EmployeeController@onestore')->name('admin.employee.onestore');
 
+    Route::get('/admin/meetings/inprocess', 'AdminController@meetingProcess')->name('admin.meeting.inprocess');
+    Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
+
+
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');
 });

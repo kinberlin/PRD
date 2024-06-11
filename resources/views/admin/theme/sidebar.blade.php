@@ -49,59 +49,45 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise') active @endif">
-                    <a href="/admin/enterprise" class="menu-link">
+                    <a href="{{ route('admin.enterprise')}}" class="menu-link">
                         <div class="text-truncate" data-i18n="Entreprises">Entreprises</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
-                    <a href="/admin/department" class="menu-link">
+                    <a href="{{route('admin.department')}}" class="menu-link">
                         <div class="text-truncate" data-i18n="Départements">Départements</div>
                     </a>
                 </li>
 
                 <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
-                    <a href="/admin/site" class="menu-link">
+                    <a href="{{route('admin.site')}}" class="menu-link">
                         <div class="text-truncate" data-i18n="Sites">Sites</div>
                     </a>
                 </li>
 
                 <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
-                    <a href="/admin/employee" class="menu-link">
+                    <a href="{{route('admin.employee')}}" class="menu-link">
                         <div class="text-truncate" data-i18n="Employés">Employés</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise' ||
-                request()->route()->getName() == 'admin.department' ||
-                request()->route()->getName() == 'admin.site' ||
-                request()->route()->getName() == 'admin.employee') active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.inprocess' ||
+                request()->route()->getName() == 'admin.meeting.closed') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-color"></i>
                 <div class="text-truncate" data-i18n="Réunions">Réunions</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise') active @endif">
-                    <a href="/admin/enterprise" class="menu-link">
-                        <div class="text-truncate" data-i18n="Entreprises">Entreprises</div>
+                <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.inprocess') active @endif">
+                    <a href="{{route('admin.meeting.inprocess')}}" class="menu-link">
+                        <div class="text-truncate" data-i18n="En Cours">En Cours</div>
                     </a>
                 </li>
-                <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
-                    <a href="/admin/department" class="menu-link">
-                        <div class="text-truncate" data-i18n="Départements">Départements</div>
-                    </a>
-                </li>
-
-                <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
-                    <a href="/admin/site" class="menu-link">
-                        <div class="text-truncate" data-i18n="Sites">Sites</div>
-                    </a>
-                </li>
-
-                <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
-                    <a href="/admin/employee" class="menu-link">
-                        <div class="text-truncate" data-i18n="Employés">Employés</div>
+                <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.closed') active @endif">
+                    <a href="{{route('admin.meeting.closed')}}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Terminé">Terminé</div>
                     </a>
                 </li>
             </ul>

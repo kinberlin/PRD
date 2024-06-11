@@ -245,6 +245,22 @@ class AdminController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    public function meetingProcess()
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        $data = Users::where('role', 2)->get();
+        return view('admin/employee', compact('ents', 'deps', 'data'));
+    }
+    public function meetingClosed()
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $ents = Enterprise::all();
+        $deps = Department::all();
+        $data = Users::where('role', 2)->get();
+        return view('admin/employee', compact('ents', 'deps', 'data'));
+    }
     /**
      * Show the form for creating a new resource.
      */
