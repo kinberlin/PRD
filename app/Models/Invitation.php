@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $rq
  * @property mixed  $internal_invites
  * @property mixed  $external_invites
+ * @property mixed  $participation
  */
 class Invitation extends Model
 {
@@ -43,7 +44,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites'
+        'begin', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'participation'
     ];
 
     /**
@@ -59,7 +60,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'participation' => ReceiptsCast::class,
     ];
 
     /**

@@ -248,10 +248,11 @@ class AdminController extends Controller
     public function meetingProcess()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $ents = Enterprise::all();
         $deps = Department::all();
+        $dys = Enterprise::all();
+
         $data = Users::where('role', 2)->get();
-        return view('admin/employee', compact('ents', 'deps', 'data'));
+        return view('admin/meetingProcess', compact('ents', 'deps', 'data'));
     }
     public function meetingClosed()
     {
@@ -259,7 +260,7 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         $deps = Department::all();
         $data = Users::where('role', 2)->get();
-        return view('admin/employee', compact('ents', 'deps', 'data'));
+        return view('admin/meetingClosed', compact('ents', 'deps', 'data'));
     }
     /**
      * Show the form for creating a new resource.
