@@ -36,57 +36,73 @@
                             @foreach ($data as $d)
                                 <tr>
                                     @php
-                                    $_dys = $dys->where('id',$d->dysfonction)->first();
-                                @endphp
-                                    <td>{{$d->id}}</td>
-                                    <td>ID : {{$d->dysfonction}} {{$_dys->enterprise .' ('.$_dys->site.') '.' '.$_dys->gravity  }} </td>
-                                    <td>{{ $d->object }}<br>{{$d->motif}}</td>
-                                    <td>Date : {{$d->dates}}<br>Début : {{$d->begin}}<br>Fin : {{$d->end}}</td>
+                                        $_dys = $dys->where('id', $d->dysfonction)->first();
+                                    @endphp
+                                    <td>{{ $d->id }}</td>
+                                    <td>ID : {{ $d->dysfonction }}
+                                        {{ $_dys->enterprise . ' (' . $_dys->site . ') ' . ' ' . $_dys->gravity }} </td>
+                                    <td>{{ $d->object }}<br>{{ $d->motif }}</td>
+                                    <td>Date : {{ $d->dates }}<br>Début : {{ $d->begin }}<br>Fin :
+                                        {{ $d->end }}</td>
                                     <td>{{ $d->place }}
-                                    <br>@if($d->link) <a href="{{$d->link}}" target="_blank" >Lien</a> @else Aucun lien n'a été enregistré.@endif</br>
-                                    <td>{{ $d->rq }}</td>{{$af}}
-                                    <td>{{$d->closed_at != null ? 'Terminée le : '.$d->closed_at .'.': 'En traitement.'}}</td>
+                                        <br>
+                                        @if ($d->link)
+                                            <a href="{{ $d->link }}" target="_blank">Lien</a>
+                                        @else
+                                            Aucun lien n'a été enregistré.
+                                        @endif
+                                        </br>
+                                    <td>{{ $d->rq }}</td>
+                                    <td>{{ $d->closed_at != null ? 'Terminée le : ' . $d->closed_at . '.' : 'En traitement.' }}
+                                    </td>
                                     <td>
-                                        <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#closemeeting{{ $d->id }}">Terminer</button>
+                                        @if ($d->closed_at == null)
+                                            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#closemeeting{{ $d->id }}">Terminer</button>
+                                        @endif
                                         <br>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majsecureemp{{ $d->id }}">
                                             Participants
                                         </button>
                                         <!-- Modal -->
-                                        <div class="modal modal-top fade" id="closemeeting{{ $d->id }}"
-                                            tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <form class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Clôturer la Réunion No. #{{$d->id}} !</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                Souhaitez vous vraiment clôturer cette Réunion ?
-                                                                <b>Noter qu'une fois terminer, les RQs  ayant acces a cette ressource ne pourront plus la modifier.</b>
-                                                            </p>
+                                        @if ($d->closed_at == null)
+                                            <div class="modal modal-top fade" id="closemeeting{{ $d->id }}"
+                                                tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <form class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalTopTitle">Clôturer la Réunion
+                                                                No. #{{ $d->id }} !</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{route('admin.invitation.close',['id'=>$d->id])}}"
-                                                            class="btn btn-danger">Continuer</a>
-                                                    </div>
-                                                </form>
+                                                        <div class="modal-body">
+                                                            <div class="card-body">
+                                                                <p class="card-text">
+                                                                    Souhaitez vous vraiment clôturer cette Réunion ?
+                                                                    <b>Noter qu'une fois terminer, les RQs ayant acces a
+                                                                        cette ressource ne pourront plus la modifier.</b>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-label-secondary"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <a href="{{ route('admin.invitation.close', ['id' => $d->id]) }}"
+                                                                class="btn btn-warning">Continuer</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion : No. #{{ $d->id }}</h5>
+                                                        <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
+                                                            No. #{{ $d->id }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -97,61 +113,85 @@
                                                             @csrf
                                                             <div class="table-responsive">
                                                                 <table class="table border-top table-striped">
-                                                                  <thead>
-                                                                    <tr>
-                                                                      <th class="text-nowrap">Invités</th>
-                                                                      <th class="text-nowrap text-center">✅ Accepté</th>
-                                                                      <th class="text-nowrap text-center">❌ Rejeté</th>
-                                                                      <th class="text-nowrap text-center">👩🏻‍💻 Présent</th>
-                                                                    </tr>
-                                                                  </thead>
-                                                                  <tbody>
-                                                                    @foreach ($d->getInternalInvites() as $i)
-                                                                    @php
-                                                                        $u = $users->where('matricule', $i->matricule)->first();
-                                                                    @endphp
-                                                                    <tr>
-                                                                      <td class="text-nowrap">{{$u != null ? $u->firstname. ' ('.$u->matricule.')' : 'Utilisateur Introuvable.'}}</td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox" @if ($i->decision == "Confirmer")checked @endif disabled />
-                                                                        </div>
-                                                                      </td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox" @if ($i->decision == "Rejeté")checked @endif disabled/>
-                                                                        </div>
-                                                                      </td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox"/>
-                                                                        </div>
-                                                                      </td>
-                                                                    </tr>
-                                                                    @endforeach
-                                                                    @foreach (json_decode($d->external_invites, true) as $e)
-                                                                    <tr>
-                                                                      <td class="text-nowrap">{{$e}}</td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox" disabled/>
-                                                                        </div>
-                                                                      </td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox" disabled/>
-                                                                        </div>
-                                                                      </td>
-                                                                      <td>
-                                                                        <div class="form-check d-flex justify-content-center">
-                                                                          <input class="form-check-input" type="checkbox"/>
-                                                                        </div>
-                                                                      </td>
-                                                                    </tr>
-                                                                    @endforeach
-                                                                  </tbody>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-nowrap">Invités</th>
+                                                                            <th class="text-nowrap text-center">✅ Accepté
+                                                                            </th>
+                                                                            <th class="text-nowrap text-center">❌ Rejeté
+                                                                            </th>
+                                                                            <th class="text-nowrap text-center">👩🏻‍💻
+                                                                                Présent</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($d->getInternalInvites() as $i)
+                                                                            @php
+                                                                                $u = $users
+                                                                                    ->where('matricule', $i->matricule)
+                                                                                    ->first();
+                                                                            @endphp
+                                                                            <tr>
+                                                                                <td class="text-nowrap">
+                                                                                    {{ $u != null ? $u->firstname . ' (' . $u->matricule . ')' : 'Utilisateur Introuvable.' }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox"
+                                                                                            @if ($i->decision == 'Confirmer') checked @endif
+                                                                                            disabled />
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox"
+                                                                                            @if ($i->decision == 'Rejeté') checked @endif
+                                                                                            disabled />
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox" />
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                        @foreach (json_decode($d->external_invites, true) as $e)
+                                                                            <tr>
+                                                                                <td class="text-nowrap">{{ $e }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox" disabled />
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox" disabled />
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="form-check d-flex justify-content-center">
+                                                                                        <input class="form-check-input"
+                                                                                            type="checkbox" />
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
                                                                 </table>
-                                                              </div>
+                                                            </div>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">

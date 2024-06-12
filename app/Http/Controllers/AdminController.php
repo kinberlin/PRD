@@ -248,7 +248,8 @@ class AdminController extends Controller
     public function meetingProcess()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $data = Invitation::whereNUll('closed_at')->get();
+        //$data = Invitation::whereNUll('closed_at')->get();
+        $data = Invitation::all();
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites

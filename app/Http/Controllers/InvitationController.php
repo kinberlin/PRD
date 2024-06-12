@@ -183,13 +183,14 @@ class InvitationController extends Controller
     public function close($id)
     {
         try {
-        DB::beginTransaction();
+        //DB::beginTransaction();
         $data = Invitation::find($id);
         if ($data == null) {
             throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
         }
         $data->closed_at = Carbon::now();
-        DB::commit();
+        $data->save();
+        //DB::commit();
         return redirect()->back()->with('error', 'Réunion No. #'.$data->id.' a été clôturer.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
