@@ -249,9 +249,22 @@ class AdminController extends Controller
     {
         Gate::authorize('isAdmin', Auth::user());
         $data = Invitation::whereNUll('closed_at')->get();
+        // Initialize an empty collection to store user matricules
+        $matricules = collect();
+        // Iterate over each invitation and their invites
+        foreach ($data as $d) {
+            if ($d->internal_invites) {
+                foreach ($d->getInternalInvites() as $i) {
+                    $matricules->push($i->matricule);
+                }
+            }
+        }
+        // Get unique user matricules
+        $distinctMatricules = $matricules->unique();
+        $users = Users::whereIn('matricule', $distinctMatricules)->get();
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction'))->get();
 
-        return view('admin/meetingProcess', compact('data', 'dys'));
+        return view('admin/meetingProcess', compact('data', 'dys', 'users'));
     }
     public function meetingClosed()
     {

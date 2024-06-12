@@ -10,6 +10,7 @@ use Exception;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -43,7 +44,7 @@ class InvitationController extends Controller
         try {
             DB::beginTransaction();
             $data = new Invitation();
-            $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
+            $data->rq = Auth::user()->firstname .' '.Auth::user()->lastname. '(Matricule : '.Auth::user()->matricule.')';
             $data->object = $request->input('object');
             $data->dysfonction = $request->input('dysfunction');
             $data->motif = $request->input('motif');
@@ -118,7 +119,7 @@ class InvitationController extends Controller
         if (Carbon::now() > $data->dates) {
             throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);
         }
-        $data->rq = 'Test RQ Matricule 35258'; //waiting Auth
+        $data->rq = Auth::user()->firstname .' '.Auth::user()->lastname. '(Matricule : '.Auth::user()->matricule.')';
         $data->object = $request->has('object') ? $request->input('object') : $data->object;
         $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
         $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;

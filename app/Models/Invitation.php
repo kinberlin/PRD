@@ -46,7 +46,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'participation'
+        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'participation'
     ];
 
     /**
