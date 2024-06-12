@@ -37,16 +37,16 @@
                         <tbody>
                             @foreach ($data as $d)
                                 <tr>
-                                    <td>{{ $d->id }}</td>
-                                    <td>{{ $ents->where('id', $d->enterprise)->first()->name }}</td>
-                                    @if ($deps->where('id', $d->department)->first() != null)
-                                        <td>{{ $deps->where('id', $d->department)->first()->name }}</td>
-                                    @else
-                                        <td>Aucun département renseigner.</td>
-                                    @endif
-                                    <td>{{ $d->firstname }} {{ $d->lastname }}</td>
-                                    <td>{{ $d->email }}</td>
-                                    <td>{{ $d->phone }}</td>
+                                    @php
+                                    $_dys = $dys->where('id',$d->dysfonction)->id
+                                @endphp
+                                    <td>{{$d->id}}</td>
+                                    <td>{{$_dys->enterprise .' ('.$_dys->site.') '.' '.$_dys->gravity  }} ID : {{$d->dysfonction}}</td>
+                                    <td>{{ $d->object }}<br>{{$d->motif}}</td>
+                                    <td>Date : {{$d->dates}}<br>Heure de Début : {{$d->begin}}<br>Heure de Fin : {{$d->end}}</td>
+                                    <td>{{ $d->place }}</td>
+                                    <td>{{ $d->link != null ? $d->link : "Aucun lien n'a été enregistré."  }}</td>
+                                    <td>{{ $d->rq }}</td>
                                     <td>{{ $d->matricule }}</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemp{{ $d->id }}">

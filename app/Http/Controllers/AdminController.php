@@ -248,11 +248,10 @@ class AdminController extends Controller
     public function meetingProcess()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $deps = Department::all();
-        $dys = Enterprise::all();
+        $data = Invitation::whereNUll('closed_at')->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction'))->get();
 
-        $data = Users::where('role', 2)->get();
-        return view('admin/meetingProcess', compact('ents', 'deps', 'data'));
+        return view('admin/meetingProcess', compact('data', 'dys'));
     }
     public function meetingClosed()
     {

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Casts\ParticipationCast;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int    $id
  * @property int    $created_at
+ * @property int    $closed_at
  * @property int    $dates
  * @property int    $deleted_at
  * @property int    $dysfonction
@@ -44,7 +46,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'participation'
+        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'external_invites', 'participation'
     ];
 
     /**
@@ -60,7 +62,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'participation' => ReceiptsCast::class,
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'participation' => ParticipationCast::class,
     ];
 
     /**
@@ -69,7 +71,7 @@ class Invitation extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'dates', 'deleted_at',
+        'created_at', 'closed_at', 'dates', 'deleted_at',
     ];
 
     /**
