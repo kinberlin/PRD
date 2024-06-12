@@ -121,7 +121,7 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         $deps = Department::all();
         $data = AuthorisationRq::all();
-        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users'));
     }
     public function pltemployee()
@@ -131,7 +131,7 @@ class AdminController extends Controller
         $processes = Processes::all();
         $deps = Department::all();
         $data = AuthorisationPilote::all();
-        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('admin/pltemployee', compact('ents', 'processes', 'deps', 'data', 'users'));
     }
 
@@ -140,7 +140,7 @@ class AdminController extends Controller
         Gate::authorize('isAdmin', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction'))->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
         return view('admin/invitation', compact('data', 'dys'));
     }
     public function listeSignalement()
@@ -262,7 +262,7 @@ class AdminController extends Controller
         // Get unique user matricules
         $distinctMatricules = $matricules->unique();
         $users = Users::whereIn('matricule', $distinctMatricules)->get();
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction'))->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
 
         return view('admin/meetingProcess', compact('data', 'dys', 'users'));
     }

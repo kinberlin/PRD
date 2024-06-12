@@ -44,17 +44,43 @@
                                     <td>Date : {{$d->dates}}<br>Début : {{$d->begin}}<br>Fin : {{$d->end}}</td>
                                     <td>{{ $d->place }}
                                     <br>@if($d->link) <a href="{{$d->link}}" target="_blank" >Lien</a> @else Aucun lien n'a été enregistré.@endif</br>
-                                    <td>{{ $d->rq }}</td>
+                                    <td>{{ $d->rq }}</td>{{$af}}
                                     <td>{{$d->closed_at != null ? 'Terminée le : '.$d->closed_at .'.': 'En traitement.'}}</td>
-                                    <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majemp{{ $d->id }}">
-                                            Participation
-                                        </button><br>
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    <td>
+                                        <button class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#closemeeting{{ $d->id }}">Terminer</button>
+                                        <br>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majsecureemp{{ $d->id }}">
-                                            Accessibilité
+                                            Participants
                                         </button>
                                         <!-- Modal -->
+                                        <div class="modal modal-top fade" id="closemeeting{{ $d->id }}"
+                                            tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <form class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalTopTitle">Clôturer la Réunion No. #{{$d->id}} !</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                                Souhaitez vous vraiment clôturer cette Réunion ?
+                                                                <b>Noter qu'une fois terminer, les RQs  ayant acces a cette ressource ne pourront plus la modifier.</b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <a href="{{route('admin.invitation.close',['id'=>$d->id])}}"
+                                                            class="btn btn-danger">Continuer</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                         <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">

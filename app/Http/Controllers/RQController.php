@@ -101,7 +101,7 @@ class RQController extends Controller
         $ents = Enterprise::all();
         $deps = Department::all();
         $data = AuthorisationRq::all();
-        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('rq/rqemployee', compact('ents', 'deps', 'data', 'users'));
     }
     public function pltemployee()
@@ -111,7 +111,7 @@ class RQController extends Controller
         $processes = Processes::all();
         $deps = Department::all();
         $data = AuthorisationPilote::all();
-        $users = Users::whereIn('id', $data->pluck('user'))->get();
+        $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('rq/pltemployee', compact('ents', 'processes', 'deps', 'data'));
     }
     public function invitation()
@@ -119,7 +119,7 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction'))->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
         return view('rq/invitation', compact('data', 'dys'));
     }
     /**

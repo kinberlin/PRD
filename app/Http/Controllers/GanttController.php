@@ -16,7 +16,7 @@ class GanttController extends Controller
 {
     public function get($id){
         $data = Task::where('dysfunction', $id)->orderBy('sortorder')->get();
-        $links = Link::whereIn('source', $data->pluck('id'))->orWhereIn('target', $data->pluck('id'))->get();
+        $links = Link::whereIn('source', $data->pluck('id')->unique())->orWhereIn('target', $data->pluck('id')->unique())->get();
         return response()->json([
             "data" => $data,
             "links" => $links,

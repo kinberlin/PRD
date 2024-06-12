@@ -154,6 +154,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
 
     Route::get('/admin/meetings/inprocess', 'AdminController@meetingProcess')->name('admin.meeting.inprocess');
     Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
+    Route::get('/admin/meeting/{id}/close', 'InvitationController@close')->name('admin.invitation.close');
 
 
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');

@@ -144,7 +144,7 @@ class EmployeeController extends Controller
     {
         // Query to get all invitations where internal_invites contains an invite with the user's email
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction'))->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
         return view('employees/invitation', compact('data', 'dys'));
     }
 }
