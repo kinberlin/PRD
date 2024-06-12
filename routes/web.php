@@ -156,7 +156,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
     Route::get('/admin/meeting/{id}/close', 'InvitationController@close')->name('admin.invitation.close');
 
-    Route::get('/admin/meeting/{id}/participation', 'InvitationController@participation')->name('admin.invitation.participation');
+    Route::post('/admin/meeting/{id}/participation', 'InvitationController@participation')->name('admin.invitation.participation');
 
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');

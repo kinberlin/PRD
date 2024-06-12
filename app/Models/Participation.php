@@ -9,7 +9,6 @@ class Participation implements Arrayable
 {
     public $matricule;
     public $names;
-    public $arrival;
     public $marked_by;
     public $marked_matricule;
     public $created_at;
@@ -18,7 +17,6 @@ class Participation implements Arrayable
     {
         $this->matricule = $attributes['matricule'] ?? null;
         $this->names = $attributes['names'] ?? null;
-        $this->arrival = $attributes['arrival'] ?? null;
         $this->marked_by = $attributes['marked_by'] ?? null;
         $this->marked_matricule = $attributes['marked_matricule'] ?? null;
         $this->created_at = $attributes['created_at'] ?? Carbon::now();
@@ -29,7 +27,6 @@ class Participation implements Arrayable
         return [
             'matricule' => $this->matricule,
             'names' => $this->names,
-            'arrival' => $this->arrival,
             'marked_by' => $this->marked_by,
             'marked_matricule' => $this->marked_matricule,
             'created_at' => $this->created_at,

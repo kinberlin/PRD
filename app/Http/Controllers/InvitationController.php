@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invitation;
 use App\Models\Invites;
+use App\Models\Participation;
 use App\Models\Users;
 use Carbon\Carbon;
 use Exception;
@@ -44,7 +45,7 @@ class InvitationController extends Controller
         try {
             DB::beginTransaction();
             $data = new Invitation();
-            $data->rq = Auth::user()->firstname .' '.Auth::user()->lastname. '(Matricule : '.Auth::user()->matricule.')';
+            $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
             $data->object = $request->input('object');
             $data->dysfonction = $request->input('dysfunction');
             $data->motif = $request->input('motif');
@@ -111,43 +112,43 @@ class InvitationController extends Controller
     public function update(Request $request, $id)
     {
         try {
-        DB::beginTransaction();
-        $data = Invitation::find($id);
-        if ($data == null) {
-            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
-        }
-        if (Carbon::now() > $data->dates) {
-            throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);
-        }
-        $data->rq = Auth::user()->firstname .' '.Auth::user()->lastname. '(Matricule : '.Auth::user()->matricule.')';
-        $data->object = $request->has('object') ? $request->input('object') : $data->object;
-        $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
-        $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-        $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
-        $data->place = $request->has('place') ? $request->input('place') : $data->place;
-        $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
-        $data->description = $request->has('description') ? $request->input('description') : $data->description;
-        $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
-        $data->end = $request->has('end') ? $request->input('end') : $data->end;
-        $i_v = $request->input('internal_invites', []);
-        $internal_invites = [];
-        if (!empty($i_v)) {
-            foreach ($i_v as $option) {
-                $internal_invites[] = new Invites(Users::find($option));
+            DB::beginTransaction();
+            $data = Invitation::find($id);
+            if ($data == null) {
+                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
             }
-        }
-        $data->internal_invites = json_encode($internal_invites);
-        $ext_u = [];
-        if ($request->has('extuser') && !empty($request->extuser)) {
-            for ($i = 0; $i < count($request->extuser); $i++) {
-                // Create a new Person object for each row and add it to the array
-                $ext_u[] = $request->extuser[$i];
+            if (Carbon::now() > $data->dates) {
+                throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);
             }
-        }
-        $data->external_invites = json_encode($ext_u);
-        $data->save();
-        DB::commit();
-        return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
+            $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
+            $data->object = $request->has('object') ? $request->input('object') : $data->object;
+            $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
+            $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
+            $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
+            $data->place = $request->has('place') ? $request->input('place') : $data->place;
+            $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
+            $data->description = $request->has('description') ? $request->input('description') : $data->description;
+            $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
+            $data->end = $request->has('end') ? $request->input('end') : $data->end;
+            $i_v = $request->input('internal_invites', []);
+            $internal_invites = [];
+            if (!empty($i_v)) {
+                foreach ($i_v as $option) {
+                    $internal_invites[] = new Invites(Users::find($option));
+                }
+            }
+            $data->internal_invites = json_encode($internal_invites);
+            $ext_u = [];
+            if ($request->has('extuser') && !empty($request->extuser)) {
+                for ($i = 0; $i < count($request->extuser); $i++) {
+                    // Create a new Person object for each row and add it to the array
+                    $ext_u[] = $request->extuser[$i];
+                }
+            }
+            $data->external_invites = json_encode($ext_u);
+            $data->save();
+            DB::commit();
+            return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -155,27 +156,27 @@ class InvitationController extends Controller
     public function inviteConfirmation(Request $request)
     {
         try {
-        DB::beginTransaction();
-        $data = Invitation::find($request->input('invitation'));
-        if ($data == null) {
-            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
-        }
-        $invites = $data->findInviteByMatricule('PZN0131'); // waiting for auth
-        if ($invites) {
-            if ($request->input('decision') == 'Accept') {
-                $invites = $invites->confirm();
-                $data->updateInviteByMatricule($invites);
-                //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
-                $data->save();
-            } elseif ($request->input('decision') == 'Reject') {
-                $invites = $invites->cancel();
-                $data->updateInviteByMatricule($invites);
-                //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
-                $data->save();
+            DB::beginTransaction();
+            $data = Invitation::find($request->input('invitation'));
+            if ($data == null) {
+                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
             }
-        }
-        DB::commit();
-        return redirect()->back()->with('error', 'Mise a jour de la disponibilité terminé.');
+            $invites = $data->findInviteByMatricule('PZN0131'); // waiting for auth
+            if ($invites) {
+                if ($request->input('decision') == 'Accept') {
+                    $invites = $invites->confirm();
+                    $data->updateInviteByMatricule($invites);
+                    //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                    $data->save();
+                } elseif ($request->input('decision') == 'Reject') {
+                    $invites = $invites->cancel();
+                    $data->updateInviteByMatricule($invites);
+                    //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                    $data->save();
+                }
+            }
+            DB::commit();
+            return redirect()->back()->with('error', 'Mise a jour de la disponibilité terminé.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -183,15 +184,46 @@ class InvitationController extends Controller
     public function close($id)
     {
         try {
-        //DB::beginTransaction();
-        $data = Invitation::find($id);
-        if ($data == null) {
-            throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+            //DB::beginTransaction();
+            $data = Invitation::find($id);
+            if ($data == null) {
+                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+            }
+            $data->closed_at = Carbon::now();
+            $data->save();
+            //DB::commit();
+            return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturer.');
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
-        $data->closed_at = Carbon::now();
-        $data->save();
-        //DB::commit();
-        return redirect()->back()->with('error', 'Réunion No. #'.$data->id.' a été clôturer.');
+    }
+
+    public function participation(Request $request, $id)
+    {
+        try {
+            //DB::beginTransaction();
+            $data = Invitation::find($id);
+            if ($data == null) {
+                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+            }
+            $participant = $request->input('participant', []);
+            if (!empty($participant)) {
+                $data->participation = [];
+            }
+            foreach ($participant as $p) {
+                    $p = new Participation([
+                        'matricule' => $p,
+                        'names' => Users::where('matricule', $p)->get()->first()->firstname,
+                        'marked_by' => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                        'marked_matricule' => Auth::user()->matricule,
+                    ]);
+
+                $data->participation->push($p);
+                $data->save();
+            }
+            $data->save();
+            //DB::commit();
+            return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturer.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

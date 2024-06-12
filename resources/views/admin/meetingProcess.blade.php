@@ -107,9 +107,8 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form class="formChangePassword" method="POST"
-                                                            action="{{ route('admin.user.updatePassword', $d->id) }}"
-                                                            data-number="30{{ $d->id }}">
+                                                        <form method="POST"
+                                                            action="{{ route('admin.invitation.participation', $d->id) }}">
                                                             @csrf
                                                             <div class="table-responsive">
                                                                 <table class="table border-top table-striped">
@@ -157,7 +156,7 @@
                                                                                     <div
                                                                                         class="form-check d-flex justify-content-center">
                                                                                         <input class="form-check-input"
-                                                                                            type="checkbox" />
+                                                                                            type="checkbox" name="participant[]" value="{{$i->matricule}}" />
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
@@ -221,43 +220,4 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
 
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
-    <script src="{!! url('assets/js/js/app-user-view-security.js') !!}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#selents').change(function() {
-                var selectedOption = $(this).find(':selected');
-                var selectedValue = selectedOption.attr('data-extra-info');
-                $('#seldep option').hide();
-                $('#seldep option[data-extra-info="' + selectedValue + '"]').show();
-                $('#seldep').val($('#selsite option:visible:first').val());
-            });
-            $('.fileInput').on('change', function(event) {
-                var file = event.target.files[0];
-                var imgId = $(this).data('img');
-                var $img = $('#' + imgId);
-
-                // Check if file is an image
-                if (file && file.type.startsWith('image/')) {
-                    // Check if file size is less than 2MB (2 * 1024 * 1024 bytes)
-                    if (file.size <= 2 * 1024 * 1024) {
-                        var reader = new FileReader();
-
-                        reader.onload = function(e) {
-                            $img.attr('src', e.target.result).show();
-                        }
-
-                        reader.readAsDataURL(file);
-                    } else {
-                        alert('The file size exceeds 2MB. Please choose a smaller file.');
-                        $(this).val(''); // Clear the input value
-                        $img.hide(); // Hide the image if the file is too large
-                    }
-                } else {
-                    alert('Please select a valid image file.');
-                    $(this).val(''); // Clear the input value
-                    $img.hide(); // Hide the image if it's not a valid image file
-                }
-            });
-        });
-    </script>
 @endsection
