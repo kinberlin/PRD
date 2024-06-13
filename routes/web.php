@@ -74,11 +74,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/profile', 'RQController@profile')->name('rq.profile');
     Route::get('/employee/profile', 'EmployeeController@profile')->name('emp.profile');
 
-    /*   Route::get('/admin/plans', 'AdminController@plans')->name('admin.service');
-    Route::get('/admin/plans/{id}', 'PlanController@destroy')->name('admin.service.destroy');
-    Route::post('/admin/plans', 'PlanController@store')->name('admin.service.store');
-    Route::post('/admin/plans/{id}', 'PlanController@update')->name('admin.service.update');
-     */
+    Route::get('/rq/meetings/inprocess', 'RQController@meetingProcess')->name('rq.meeting.inprocess');
+    Route::get('/rq/meetings/closed', 'RQController@meetingClosed')->name('rq.meeting.closed');
+
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
@@ -98,6 +96,9 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
     Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
     Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
+
+    Route::get('/meeting/{id}/close', 'InvitationController@close')->name('invitation.close');
+    Route::post('/meeting/{id}/participation', 'InvitationController@participation')->name('invitation.participation');
 });
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
@@ -154,9 +155,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
 
     Route::get('/admin/meetings/inprocess', 'AdminController@meetingProcess')->name('admin.meeting.inprocess');
     Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
-    Route::get('/admin/meeting/{id}/close', 'InvitationController@close')->name('admin.invitation.close');
+    
 
-    Route::post('/admin/meeting/{id}/participation', 'InvitationController@participation')->name('admin.invitation.participation');
+
 
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');

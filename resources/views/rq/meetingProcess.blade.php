@@ -89,7 +89,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-label-secondary"
                                                                 data-bs-dismiss="modal">Fermer</button>
-                                                            <a href="{{ route('admin.invitation.close', ['id' => $d->id]) }}"
+                                                            <a href="{{ route('invitation.close', ['id' => $d->id]) }}"
                                                                 class="btn btn-warning">Continuer</a>
                                                         </div>
                                                     </form>
@@ -99,7 +99,7 @@
                                                 aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <form method="POST" class="modal-content"
-                                                        action="{{ route('admin.invitation.participation', $d->id) }}">
+                                                        action="{{ route('invitation.participation', $d->id) }}">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="modalCenterTitle">Invitations
                                                                 Reunion :
