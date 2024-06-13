@@ -205,25 +205,28 @@ function executeAfterAjax() {
         },
         dateClick: function (e) {
             e = moment(e.date).format("YYYY-MM-DD");
-            u(),
-                C.show(),
-                b && (b.innerHTML = "Ajouter un Evenement"),
-                (y.innerHTML = "Ajouter"),
-                y.classList.remove("btn-update-event"),
-                y.classList.add("btn-add-event"),
-                S.classList.add("d-none"),
-                $("#eventTitle").val(""),
-                $("#dysfunctionList").val("1"),
-                $("#eventLabel").val(""),
-                $("#eventStartDate").val(""),
-                $("#flatpickr-begintime").val(""),
-                $("#flatpickr-endtime").val(""),
-                $("#eventLocation").val(""),
-                $("#eventURL").val(""),
-                $("#eventDescription").val(""),
-                $(".ext_invites").html(""),
-                $("#regInvitation").show()
-                (k.value = e);
+
+            // Compare the clickedzz date with the current date
+            if (moment(e).isSameOrAfter(moment().format("YYYY-MM-DD"))) {
+                u(),
+                    C.show(),
+                    b && (b.innerHTML = "Ajouter un Evenement"),
+                    (y.innerHTML = "Ajouter"),
+                    y.classList.remove("btn-update-event"),
+                    y.classList.add("btn-add-event"),
+                    S.classList.add("d-none"),
+                    $("#eventTitle").val(""),
+                    $("#dysfunctionList").val("1"),
+                    $("#eventLabel").val(""),
+                    $("#eventStartDate").val(""),
+                    $("#flatpickr-begintime").val(""),
+                    $("#flatpickr-endtime").val(""),
+                    $("#eventLocation").val(""),
+                    $("#eventURL").val(""),
+                    $("#eventDescription").val(""),
+                    $(".ext_invites").html(""),
+                    $("#regInvitation").show()((k.value = e));
+            }
             //(w.value = e);
         },
         eventClick: function (e) {
@@ -259,10 +262,10 @@ function executeAfterAjax() {
                     var eventsArray = JSON.parse(response.data);
                     $.each(eventsArray, function (index, eventData) {
                         // Populate the form fields with the event data
-                        if(!isNullOrEmpty(eventData.closed_at)){
+                        if (!isNullOrEmpty(eventData.closed_at)) {
                             $("#regInvitation").hide();
-                        }else{
-                            $("#regInvitation").show()
+                        } else {
+                            $("#regInvitation").show();
                         }
                         $("#eventTitle").val(eventData.object);
                         $("#dysfunctionList").val(eventData.dysfonction);
@@ -478,8 +481,8 @@ function executeAfterAjax() {
         h.addEventListener("click", (e) => {
             b && (b.innerHTML = "Ajouter un Evenement"),
                 (y.innerHTML = "Ajouter"),
-                $("#regInvitation").show()
-                y.classList.remove("btn-update-event"),
+                $("#regInvitation").show();
+            y.classList.remove("btn-update-event"),
                 y.classList.add("btn-add-event"),
                 S.classList.add("d-none"),
                 m.classList.remove("show"),
