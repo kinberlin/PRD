@@ -57,15 +57,14 @@
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majsecureemp{{ $d->id }}">
-                                            Participants
+                                            data-bs-target="#viewparticipation{{ $d->id }}">
+                                            Voir les Participants
                                         </button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
+                                        <div class="modal fade" id="viewparticipation{{ $d->id }}" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <form method="POST" class="modal-content"
-                                                    action="{{ route('admin.invitation.participation', $d->id) }}">
+                                                <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
                                                             No. #{{ $d->id }}</h5>
@@ -125,7 +124,8 @@
                                                                                     <input class="form-check-input"
                                                                                         type="checkbox" name="participant[]"
                                                                                         value="{{ $i->matricule }}"
-                                                                                        @if ($p != null) checked @endif />
+                                                                                        @if ($p != null) checked @endif
+                                                                                        disabled />
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -158,7 +158,8 @@
                                                                                         type="checkbox"
                                                                                         name="participantext[]"
                                                                                         value="{{ $e }}"
-                                                                                        @if ($p != null) checked @endif />
+                                                                                        @if ($p != null) checked @endif
+                                                                                        disabled />
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -170,10 +171,8 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary"
-                                                            data-bs-dismiss="modal">Soumettre</button>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>

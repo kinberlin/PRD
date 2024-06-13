@@ -171,7 +171,48 @@ class RQController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    public function meetingProcess()
+    {
+        Gate::authorize('isRq', Auth::user());
+        $data = Invitation::whereNUll('closed_at')->get();
+        // Initialize an empty collection to store user matricules
+        $matricules = collect();
+        // Iterate over each invitation and their invites
+        foreach ($data as $d) {
+            if ($d->internal_invites) {
+                foreach ($d->getInternalInvites() as $i) {
+                    $matricules->push($i->matricule);
+                }
+            }
+        }
+        // Get unique user matricules
+        $distinctMatricules = $matricules->unique();
+        $users = Users::whereIn('matricule', $distinctMatricules)->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
 
+        return view('rq/meetingProcess', compact('data', 'dys', 'users'));
+    }
+    public function meetingClosed()
+    {
+        Gate::authorize('isRq', Auth::user());
+        $data = Invitation::whereNotNUll('closed_at')->get();
+        // Initialize an empty collection to store user matricules
+        $matricules = collect();
+        // Iterate over each invitation and their invites
+        foreach ($data as $d) {
+            if ($d->internal_invites) {
+                foreach ($d->getInternalInvites() as $i) {
+                    $matricules->push($i->matricule);
+                }
+            }
+        }
+        // Get unique user matricules
+        $distinctMatricules = $matricules->unique();
+        $users = Users::whereIn('matricule', $distinctMatricules)->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
+
+        return view('rq/meetingClosed', compact('data', 'dys', 'users'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
