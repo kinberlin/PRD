@@ -19,6 +19,9 @@ class ParticipationCast implements CastsAttributes
 
     public function set($model, $key, $value, $attributes)
     {
+        if (is_null($value)) {
+            return null;
+        }
         return json_encode($value->toArray());
     }
 }

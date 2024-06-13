@@ -99,7 +99,8 @@
                                         <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
+                                                <form method="POST" class="modal-content"
+                                                            action="{{ route('admin.invitation.participation', $d->id) }}">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
                                                             No. #{{ $d->id }}</h5>
@@ -107,8 +108,6 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form method="POST"
-                                                            action="{{ route('admin.invitation.participation', $d->id) }}">
                                                             @csrf
                                                             <div class="table-responsive">
                                                                 <table class="table border-top table-striped">
@@ -183,7 +182,7 @@
                                                                                     <div
                                                                                         class="form-check d-flex justify-content-center">
                                                                                         <input class="form-check-input"
-                                                                                            type="checkbox" />
+                                                                                            type="checkbox" name="participantext[]" value="{{$e}}"/>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
@@ -191,13 +190,14 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                        </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                            data-bs-dismiss="modal">Soumettre</button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>

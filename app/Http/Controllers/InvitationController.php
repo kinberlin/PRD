@@ -201,28 +201,40 @@ class InvitationController extends Controller
     public function participation(Request $request, $id)
     {
         try {
-            //DB::beginTransaction();
+            DB::beginTransaction();
             $data = Invitation::find($id);
             if ($data == null) {
                 throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
             }
+            $_p = [];
             $participant = $request->input('participant', []);
+            $participantext = $request->input('participantext', []);
             if (!empty($participant)) {
                 $data->participation = [];
             }
-            foreach ($participant as $p) {
-                    $p = new Participation([
-                        'matricule' => $p,
-                        'names' => Users::where('matricule', $p)->get()->first()->firstname,
-                        'marked_by' => Auth::user()->firstname . ' ' . Auth::user()->lastname,
-                        'marked_matricule' => Auth::user()->matricule,
-                    ]);
+            foreach ($participantext as $p) {
+                $p = new Participation([
+                    'matricule' => '$p',
+                    'names' => 'Invites externe.',
+                    'marked_by' => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                    'marked_matricule' => Auth::user()->matricule,
+                ]);
 
-                $data->participation->push($p);
-                $data->save();
+                $_p[] = $p;
             }
+            foreach ($participant as $p) {
+                $p = new Participation([
+                    'matricule' => $p,
+                    'names' => Users::where('matricule', $p)->get()->first()->firstname,
+                    'marked_by' => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                    'marked_matricule' => Auth::user()->matricule,
+                ]);
+
+                $_p[] = $p;
+            }
+            $data->participation = json_encode($_p);
             $data->save();
-            //DB::commit();
+            DB::commit();
             return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturer.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

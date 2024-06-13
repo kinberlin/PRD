@@ -46,7 +46,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'internal_invites', 'participation'
+        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'participation'
     ];
 
     /**
@@ -62,7 +62,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string', 'participation' => ParticipationCast::class,
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
     ];
 
     /**
@@ -91,10 +91,28 @@ class Invitation extends Model
         $inviteObjects = [];
 
         foreach ($invites as $inviteData) {
-            $inviteObjects[] = new Invites(null,$inviteData);
+            $inviteObjects[] = new Invites(null, $inviteData);
         }
 
         return $inviteObjects;
+    }
+    // Function to get the JSON array into a Laravel array of Participants
+    public function getParticipants()
+    {
+        $participants = json_decode($this->participation, true);
+        $participantObjects = [];
+
+        foreach ($participants as $participantData) {
+            $participantObjects[] = new Participation([
+                'matricule' => $participantData->matricule,
+                'names' => $participantData->names,
+                'marked_by' => $participantData->marked_by,
+                'marked_matricule' => $participantData->marked_matricule,
+                'created_at' => $participantData->created_at,
+            ]);
+        }
+
+        return $participantObjects;
     }
     // Function to update an item of type Invite in the JSON array and save it
     public function updateInviteByMatricule($inviteObject)
@@ -102,7 +120,7 @@ class Invitation extends Model
         $invites = json_decode($this->internal_invites, true);
         $found = false;
 
-        foreach ($invites as $key=>&$inviteData) {
+        foreach ($invites as $key => &$inviteData) {
             if ($inviteData['matricule'] == $inviteObject->matricule) {
                 $invites[$key] = $inviteObject;
                 $found = true;
@@ -130,7 +148,21 @@ class Invitation extends Model
             }
         }
 
-    return null;
+        return null;
+    }
+
+    // Function to find a participant by matricule
+    public function findParticipantByMatricule($matricule)
+    {
+        $participants = $this->getParticipants();
+
+        foreach ($participants as $participant) {
+            if ($participant->matricule == $matricule) {
+                return $participant;
+            }
+        }
+
+        return null;
     }
     // Relations ...
 }
