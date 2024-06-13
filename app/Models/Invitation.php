@@ -87,7 +87,7 @@ class Invitation extends Model
     // Function to get the JSON array into a Laravel array of Invites
     public function getInternalInvites()
     {
-        $invites = json_decode($this->internal_invites, true);
+        $invites = $this->internal_invites == null ? [] : json_decode($this->internal_invites, true);
         $inviteObjects = [];
 
         foreach ($invites as $inviteData) {
@@ -99,16 +99,16 @@ class Invitation extends Model
     // Function to get the JSON array into a Laravel array of Participants
     public function getParticipants()
     {
-        $participants = json_decode($this->participation, true);
+        $participants = $this->participation == null ? [] : json_decode($this->participation, true);
         $participantObjects = [];
 
         foreach ($participants as $participantData) {
             $participantObjects[] = new Participation([
-                'matricule' => $participantData->matricule,
-                'names' => $participantData->names,
-                'marked_by' => $participantData->marked_by,
-                'marked_matricule' => $participantData->marked_matricule,
-                'created_at' => $participantData->created_at,
+                'matricule' => $participantData['matricule'],
+                'names' => $participantData['names'],
+                'marked_by' => $participantData['marked_by'],
+                'marked_matricule' => $participantData['marked_matricule'],
+                'created_at' => $participantData['created_at'],
             ]);
         }
 

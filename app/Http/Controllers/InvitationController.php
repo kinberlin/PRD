@@ -214,7 +214,7 @@ class InvitationController extends Controller
             }
             foreach ($participantext as $p) {
                 $p = new Participation([
-                    'matricule' => '$p',
+                    'matricule' => $p,
                     'names' => 'Invites externe.',
                     'marked_by' => Auth::user()->firstname . ' ' . Auth::user()->lastname,
                     'marked_matricule' => Auth::user()->matricule,
@@ -235,7 +235,7 @@ class InvitationController extends Controller
             $data->participation = json_encode($_p);
             $data->save();
             DB::commit();
-            return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturer.');
+            return redirect()->back()->with('error', 'Participation pour la Réunion No. #' . $data->id . ' a été mis a jour.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
