@@ -11,23 +11,21 @@
 
 <!-- Vendors JS -->
 <script src="{!! url('assets/vendor/libs/moment/moment.js') !!}"></script>
-<script src="{!! url('assets/js/js//dataTables.js') !!}"></script>
+<!--<script src="{!! url('assets/js/js/dataTables.js') !!}"></script>-->
 <script src="{!! url('assets/vendor/libs/apex-charts/apexcharts.js') !!}"></script>
 <script src="{!! url('assets/vendor/libs/sweetalert2/sweetalert2.js') !!}"></script>
 <script src="{!! url('assets/vendor/libs/flatpickr/flatpickr.js') !!}"></script>
-<script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
-
 <!-- Main JS -->
 <script src="{!! url('assets/js/js/main.js') !!}"></script>
 
 <!-- Page JS -->
 <script src="{!! url('assets/js/datatable/datatables.js') !!}"></script>
 <script src="{!! url('assets/js/datatable/datatables.min.js') !!}"></script>
-<!--<script src="{!! url('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') !!}"></script>-->
 <script src="{!! url('assets/js/js/xlsx.full.min.js') !!}"></script>
 <script src="{!! url('assets/js/js/jszip.js') !!}"></script>
 <script src="{!! url('assets/js/js/FileSaver.min.js') !!}"></script>
 <script src="{!! url('assets/vendor/libs/sweetalert2/sweetalert2.js') !!}"></script>
+<script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('myModal');

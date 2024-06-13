@@ -36,6 +36,10 @@ function executeAfterAjax() {
         e;
     const C = new bootstrap.Offcanvas(p);
 
+    function isNullOrEmpty(value) {
+        return value === null || value === undefined || value === "";
+    }
+
     $(".btn-toggle-sidebar").click(function (event) {
         console.log("test toggle");
         L.classList.remove("d-none");
@@ -58,6 +62,7 @@ function executeAfterAjax() {
         $(".ext_invites").html("");
         D.prop("selected", false);
         D.val(null).trigger("change");
+        $("#regInvitation").show();
     });
     function t(e) {
         return e.id
@@ -203,7 +208,7 @@ function executeAfterAjax() {
             u(),
                 C.show(),
                 b && (b.innerHTML = "Ajouter un Evenement"),
-                (y.innerHTML = "Add"),
+                (y.innerHTML = "Ajouter"),
                 y.classList.remove("btn-update-event"),
                 y.classList.add("btn-add-event"),
                 S.classList.add("d-none"),
@@ -217,6 +222,7 @@ function executeAfterAjax() {
                 $("#eventURL").val(""),
                 $("#eventDescription").val(""),
                 $(".ext_invites").html(""),
+                $("#regInvitation").show()
                 (k.value = e);
             //(w.value = e);
         },
@@ -253,6 +259,11 @@ function executeAfterAjax() {
                     var eventsArray = JSON.parse(response.data);
                     $.each(eventsArray, function (index, eventData) {
                         // Populate the form fields with the event data
+                        if(!isNullOrEmpty(eventData.closed_at)){
+                            $("#regInvitation").hide();
+                        }else{
+                            $("#regInvitation").show()
+                        }
                         $("#eventTitle").val(eventData.object);
                         $("#dysfunctionList").val(eventData.dysfonction);
                         $("#eventLabel").val(eventData.motif);
@@ -467,6 +478,7 @@ function executeAfterAjax() {
         h.addEventListener("click", (e) => {
             b && (b.innerHTML = "Ajouter un Evenement"),
                 (y.innerHTML = "Ajouter"),
+                $("#regInvitation").show()
                 y.classList.remove("btn-update-event"),
                 y.classList.add("btn-add-event"),
                 S.classList.add("d-none"),
