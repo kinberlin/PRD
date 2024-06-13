@@ -47,6 +47,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
     Route::get('/dysfunction/cancel/{id}', 'DysfunctionController@cancel')->name('dysfunction.cancel');
+    Route::get('/dysfunction/evaluation/launch/{id}', 'DysfunctionController@launchEvaluation')->name('dysfunction.evaluation.launch');
+    Route::get('/dysfunction/evaluation/cancel/{id}', 'DysfunctionController@cancelEvaluation')->name('dysfunction.evaluation.cancel');
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
     Route::get('/rq/messignalements', 'RQController@listeSignalement')->name('rq.signalement');

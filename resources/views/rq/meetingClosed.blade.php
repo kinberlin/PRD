@@ -1,4 +1,4 @@
-@extends('admin.theme.main')
+@extends('rq.theme.main')
 @section('title')
     Gestion des Réunions clôturés
 @endsection

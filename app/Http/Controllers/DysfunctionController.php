@@ -131,6 +131,48 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    public function launchEvaluation($id)
+    {
+        try {
+            DB::beginTransaction();
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("La ressource spécifié est introuvable.", 404);
+            }
+            if ($dys->status == 3) {
+                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
+            }
+            $dys->status = 5;
+
+            if ($dys->status == 1) {$dys->status = 2;}
+            $dys->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+    public function cancelEvaluation($id)
+    {
+        try {
+            DB::beginTransaction();
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("La ressource spécifié est introuvable.", 404);
+            }
+            if ($dys->status == 3) {
+                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
+            }
+            $dys->status = 4;
+
+            if ($dys->status == 1) {$dys->status = 2;}
+            $dys->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
     public function action(Request $request, $id)
     {
      try {

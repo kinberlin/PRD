@@ -103,7 +103,7 @@
             <h5 class="card-header">Informations complémentaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                                    <h6> Info Supplementaires</h6>-->
+                                                                            <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -171,8 +171,9 @@
                                 <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeté ce Signalement</a>
                             </div>
                         </div>
+                    @endif
                 </div>
-                @endif
+
             </form>
         </div>
         <!-- Collapsible Section -->
@@ -330,13 +331,31 @@
                             <div id="accordionPlanner" class="accordion-collapse collapse show"
                                 data-bs-parent="#collapsibleSection2">
                                 <div class="accordion-body">
-                                    <form class="row g-3" action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
-                                        <div class="pt-4">
-                                            <button type="submit" id="saveActionsBtn"
-                                                class="btn btn-success me-sm-3 me-1">Aller a la Page de
-                                                Planification</button>
-                                        </div>
-                                    </form>
+                                    <div class="pt-4">
+                                        @if ($data->status != 3)
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <form action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
+                                                        <div>
+                                                            <button type="submit" id="saveActionsBtn"
+                                                                class="btn btn-success me-sm-3 me-1">Aller a la Page de
+                                                                Planification</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                @if($data->status != 5)
+                                                <div class="col-md-8 text-end">
+                                                    <a href="{!! route('dysfunction.evaluation.launch', ['id' => $data->id]) !!}" class="btn btn-success">Débuter l'évaluation</a>
+                                                </div>
+                                                @else
+                                                <div class="col-md-8 text-end">
+                                                    <a href="{!! route('dysfunction.evaluation.cancel', ['id' => $data->id]) !!}" class="btn btn-success">Arrêter l'évaluation</a>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
