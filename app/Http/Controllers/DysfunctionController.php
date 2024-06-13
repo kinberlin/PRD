@@ -66,7 +66,7 @@ class DysfunctionController extends Controller
             $dys->pj = json_encode($urls);
             $dys->save();
             DB::commit();
-            $dys->code = 'D'. Carbon::now()->year. Carbon::now()->month. Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix.$dys->id ;
+            $dys->code = 'D' . Carbon::now()->year . Carbon::now()->month . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
             $dys->save();
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");
         } catch (Throwable $th) {
@@ -123,13 +123,20 @@ class DysfunctionController extends Controller
             }
             $dys->status = 3;
 
-            if ($dys->status == 1) {$dys->status = 2;}
+            if ($dys->status == 1) {
+                $dys->status = 2;
+            }
             $dys->save();
             DB::commit();
             return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
+    }
+    public function report()
+    {
+
+        return view('admin/dys_report');
     }
     public function launchEvaluation($id)
     {
@@ -144,10 +151,12 @@ class DysfunctionController extends Controller
             }
             $dys->status = 5;
 
-            if ($dys->status == 1) {$dys->status = 2;}
+            if ($dys->status == 1) {
+                $dys->status = 2;
+            }
             $dys->save();
             DB::commit();
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            return redirect()->back()->with('error', "Lancement de l'Evaluation.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -165,51 +174,54 @@ class DysfunctionController extends Controller
             }
             $dys->status = 4;
 
-            if ($dys->status == 1) {$dys->status = 2;}
+            if ($dys->status == 1) {
+                $dys->status = 2;
+            }
             $dys->save();
             DB::commit();
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            return redirect()->back()->with('error', "Evaluation terminée.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
     public function action(Request $request, $id)
     {
-     try {
-        $dys = Dysfunction::find($id);
-        $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
-        if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user()) ) {
-            DB::beginTransaction();
-
+        try {
             $dys = Dysfunction::find($id);
-            if ($dys == null) {
-                throw new Exception("Impossible de trouver la ressource demandée.", 404);
-            }
-            $corrections = [];
-            for ($i = 0; $i < count($request->user); $i++) {
-                // Create a new Person object for each row and add it to the array
-                $corrections[] = new Correction(
-                    $request->action[$i],
-                    $request->department[$i],
-                    $request->user[$i],
-                    $request->delay[$i],
-                    'Test User'
-                );
-            }
-            $corrective_acts = json_encode($corrections);
-            $dys->corrective_acts = $corrective_acts;
-            //dd($corrective_acts);
-            if ($dys->status == 1) {$dys->status = 2;}
-            $dys->save();
-            DB::commit();
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-        } else {
-            throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
-        }
+            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
+                DB::beginTransaction();
 
-    } catch (Throwable $th) {
-    return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-    }
+                $dys = Dysfunction::find($id);
+                if ($dys == null) {
+                    throw new Exception("Impossible de trouver la ressource demandée.", 404);
+                }
+                $corrections = [];
+                for ($i = 0; $i < count($request->user); $i++) {
+                    // Create a new Person object for each row and add it to the array
+                    $corrections[] = new Correction(
+                        $request->action[$i],
+                        $request->department[$i],
+                        $request->user[$i],
+                        $request->delay[$i],
+                        'Test User'
+                    );
+                }
+                $corrective_acts = json_encode($corrections);
+                $dys->corrective_acts = $corrective_acts;
+                //dd($corrective_acts);
+                if ($dys->status == 1) {
+                    $dys->status = 2;
+                }
+                $dys->save();
+                DB::commit();
+                return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            } else {
+                throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
+            }
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     /**
      * Display the specified resource.
