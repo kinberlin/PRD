@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Correction;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Evaluation;
 use App\Models\Processes;
 use App\Models\Status;
 use App\Models\Task;
@@ -216,6 +217,36 @@ class DysfunctionController extends Controller
                 $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            } else {
+                throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
+            }
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+    public function evaluation(Request $request, $id)
+    {
+        try {
+            $dys = Dysfunction::find($id);
+            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
+                $ids = $request->input('id');
+                $satisfactions = $request->input('satisfaction');
+                $criterias = $request->input('criteria');
+                $completions = $request->input('completion');
+               
+                DB::beginTransaction();
+                Evaluation::whereIn('task', $ids)->delete();
+                foreach ($ids as $index => $id) {
+                    Evaluation::create([
+                        'task' => $id,
+                        'completion' => $completions[$index],
+                        'satisfaction' => $satisfactions[$index],
+                        'evaluation_criteria' => $criterias[$index],
+                    ]);
+                }
+                DB::commit();
+                return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
             } else {
                 throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
             }

@@ -7,11 +7,13 @@ use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Evaluation;
 use App\Models\Gravity;
 use App\Models\Invitation;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
+use App\Models\Task;
 use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
@@ -143,33 +145,42 @@ class RQController extends Controller
     public function show($id)
     {
         Gate::authorize('isRq', Auth::user());
-        try {
-            $dys = Dysfunction::find($id);
-            if ($dys == null) {
-                throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
-            }
-            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
-            if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
-                $status = Status::all();
-                $processes = Processes::all();
-                $ents = Enterprise::all();
-                $site = Site::all();
-                $gravity = Gravity::all();
-                $data = $dys;
-                return view('rq/infos', compact(
-                    'data',
-                    'status',
-                    'processes',
-                    'ents',
-                    'site',
-                    'gravity'
-                ));
-            } else {
-                throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);
-            }
-        } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        //try {
+        $dys = Dysfunction::find($id);
+        if ($dys == null) {
+            throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
         }
+        $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+        if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
+            $status = Status::all();
+            $processes = Processes::all();
+            $ents = Enterprise::all();
+            $site = Site::all();
+            $gravity = Gravity::all();
+            $data = $dys;
+            $parentTasks = Task::select('tasks.id', 'tasks.text')
+                ->distinct()
+                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                ->where('t2.dysfunction', $id)
+                ->get();
+            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+            $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
+            return view('rq/infos', compact(
+                'data',
+                'status',
+                'processes',
+                'ents',
+                'site',
+                'gravity',
+                'corrections',
+                'evaluations'
+            ));
+        } else {
+            throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);
+        }
+        /*} catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }*/
     }
     public function meetingProcess()
     {

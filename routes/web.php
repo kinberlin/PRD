@@ -46,6 +46,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
+    Route::post('/dysfunction/evaluate/{id}', 'DysfunctionController@evaluation')->name('dysfunction.evaluation');
     Route::get('/dysfunction/cancel/{id}', 'DysfunctionController@cancel')->name('dysfunction.cancel');
     Route::get('/dysfunction/evaluation/launch/{id}', 'DysfunctionController@launchEvaluation')->name('dysfunction.evaluation.launch');
     Route::get('/dysfunction/evaluation/cancel/{id}', 'DysfunctionController@cancelEvaluation')->name('dysfunction.evaluation.cancel');
