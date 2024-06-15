@@ -254,6 +254,9 @@ class DysfunctionController extends Controller
                         'evaluation_criteria' => $criterias[$index],
                     ]);
                 }
+                if(count(Evaluation::whereIn('task', $ids)->get()) != count($completions)){
+                    throw new Exception("Certaines actions de ce dysfonctionnement n'ont pas été évaluer.", 401);  
+                }
                 $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
@@ -261,6 +264,7 @@ class DysfunctionController extends Controller
                 throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
             }
         } catch (Throwable $th) {
+            DB::rollBack();
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
