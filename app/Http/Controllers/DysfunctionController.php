@@ -77,36 +77,40 @@ class DysfunctionController extends Controller
     public function store(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
             $dys = Dysfunction::find($id);
-            if ($dys == null) {
-                throw new Exception("Impossible de trouver la ressource demandée.", 404);
-            }
-            $dys->impact_processes = json_encode($request->input('impact_processes'));
-            $dys->concern_processes = json_encode($request->input('concern_processes'));
-            $dys->gravity = $request->input('gravity');
-            $dys->probability = $request->input('probability');
-            $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
+            if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
+                DB::beginTransaction();
+                if ($dys == null) {
+                    throw new Exception("Impossible de trouver la ressource demandée.", 404);
+                }
+                $dys->impact_processes = json_encode($request->input('impact_processes'));
+                $dys->concern_processes = json_encode($request->input('concern_processes'));
+                $dys->gravity = $request->input('gravity');
+                $dys->probability = $request->input('probability');
+                $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
 
-            $dys->save();
-            DB::commit();
-            if ($dys->status == 1) {
-                $dys->status = 2;
-                $task = new Task();
-                $task->dysfunction = $dys->id;
-                $task->text = 'Dysfonctionnement ' . $dys->code;
-                $task->duration = 1;
-                $task->progress = 0.01;
-                $task->start_date = Carbon::now();
-                $task->parent = 0;
-                $task->unscheduled = 0;
-                $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
-                $task->created_by = 'Demo User';
                 $dys->save();
-                $task->save();
-            }
+                DB::commit();
+                if ($dys->status == 1) {
+                    $dys->status = 2;
+                    $task = new Task();
+                    $task->dysfunction = $dys->id;
+                    $task->text = 'Dysfonctionnement ' . $dys->code;
+                    $task->duration = 1;
+                    $task->progress = 0.01;
+                    $task->start_date = Carbon::now();
+                    $task->parent = 0;
+                    $task->unscheduled = 0;
+                    $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
+                    $task->created_by = 'Demo User';
+                    $dys->save();
+                    $task->save();
+                }
 
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+                return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            } else {
+                throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -141,31 +145,35 @@ class DysfunctionController extends Controller
     }
     public function launchEvaluation($id)
     {
+        $dys = Dysfunction::find($id);
         try {
-            DB::beginTransaction();
-            $dys = Dysfunction::find($id);
-            if ($dys == null) {
-                throw new Exception("La ressource spécifié est introuvable.", 404);
+            if (Gate::allows('DysCanEvaluate', [$dys != null ? $dys : null])) {
+                DB::beginTransaction();
+                if ($dys == null) {
+                    throw new Exception("La ressource spécifié est introuvable.", 404);
+                }
+                if ($dys->status == 3) {
+                    throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
+                }
+                $dys->status = 5;
+                $parentTasks = Task::select('tasks.id', 'tasks.text')
+                    ->distinct()
+                    ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                    ->where('t2.dysfunction', $id)
+                    ->get();
+                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+                if (!empty($corrections)) {
+                    Evaluation::whereIn('task', $corrections->pluck('id')->unique())->delete();
+                }
+                if ($dys->status == 1) {
+                    $dys->status = 2;
+                }
+                $dys->save();
+                DB::commit();
+                return redirect()->back()->with('error', "Lancement de l'Evaluation.");
+            } else {
+                throw new Exception("« Le statut actuel de ce dysfonctionnement ne le permet pas de passer en évaluation. »", 401);
             }
-            if ($dys->status == 3) {
-                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
-            }
-            $dys->status = 5;
-            $parentTasks = Task::select('tasks.id', 'tasks.text')
-                ->distinct()
-                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
-                ->where('t2.dysfunction', $id)
-                ->get();
-            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
-            if (!empty($corrections)) {
-                Evaluation::whereIn('task', $corrections->pluck('id')->unique())->delete();
-            }
-            if ($dys->status == 1) {
-                $dys->status = 2;
-            }
-            $dys->save();
-            DB::commit();
-            return redirect()->back()->with('error', "Lancement de l'Evaluation.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -181,7 +189,11 @@ class DysfunctionController extends Controller
             if ($dys->status == 3) {
                 throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
             }
-            $dys->status = 4;
+            if ($dys->status == 5) {
+                $dys->status = 4;
+            } else {
+                throw new Exception("Ce dysfonctionnement n'était pas en évaluation.", 1);
+            }
 
             if ($dys->status == 1) {
                 $dys->status = 2;
@@ -236,6 +248,7 @@ class DysfunctionController extends Controller
     {
         try {
             $dys = Dysfunction::find($id);
+            Gate::authorize('DysInEvaluation', $dys);
             $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
             if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
                 $ids = $request->input('id');
@@ -254,8 +267,8 @@ class DysfunctionController extends Controller
                         'evaluation_criteria' => $criterias[$index],
                     ]);
                 }
-                if(count(Evaluation::whereIn('task', $ids)->get()) != count($completions)){
-                    throw new Exception("Certaines actions de ce dysfonctionnement n'ont pas été évaluer.", 401);  
+                if (count(Evaluation::whereIn('task', $ids)->get()) != count($completions)) {
+                    throw new Exception("Certaines actions de ce dysfonctionnement n'ont pas été évaluer.", 401);
                 }
                 $dys->save();
                 DB::commit();

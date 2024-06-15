@@ -11,22 +11,29 @@ class DysfunctionPolicy
     /**
      * Determine whether the Dysfunction can be Identified again.
      */
-    public function DysIdentify(Users $users, Dysfunction $dysfunction): bool
+    public function DysCanIdentify(Users $users, Dysfunction $dysfunction): bool
     {
-        return $dysfunction->status == 2;
+        return $dysfunction->status == 1 || $dysfunction->status == 2 || $dysfunction->status == 4;
     }
 
     /**
      * Determine whether the Dysfunction can be planified.
      */
-    public function DysPlanify(Users $users, Dysfunction $dysfunction): bool
+    public function DysCanPlanify(Users $users, Dysfunction $dysfunction): bool
     {
-        return $dysfunction->status == 4;
+        return $dysfunction->status == 3;
     }
     /**
      * Determine whether the Dysfunction can be Evaluated.
      */
-    public function DysEvaluate(Users $users, Dysfunction $dysfunction): bool
+    public function DysCanEvaluate(Users $users, Dysfunction $dysfunction): bool
+    {
+        return $dysfunction->status == 4;
+    }
+        /**
+     * Determine whether the Dysfunction can be Evaluated.
+     */
+    public function DysInEvaluation(Users $users, Dysfunction $dysfunction): bool
     {
         return $dysfunction->status == 5;
     }
