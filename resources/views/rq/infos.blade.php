@@ -232,7 +232,7 @@
                         <h2 class="accordion-header" id="headingDeliveryAddress">
                             <button type="button" class="accordion-button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseDeliveryAddress" aria-expanded="true"
-                                aria-controls="collapseDeliveryAddress"> Actions correctives</button>
+                                aria-controls="collapseDeliveryAddress"> Evaluations des Actions</button>
                         </h2>
                         <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
                             data-bs-parent="#collapsibleSection">
@@ -275,8 +275,33 @@
                                     <div class="mb-0">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="bx bx-plus me-1"></i>
-                                            <span class="align-middle">Sauvegarder l'Evaluation</span>
+                                            <span class="align-middle">Terminer l'Evaluation</span>
                                         </button>
+                                        <div class="modal modal-top fade" id="delentreprise{{ $d->id }}"
+                                            tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <form class="modal-content" id="evaluateForm">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de Fermeture!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                                Souhaitez vous vraiment terminer l'evaluation des actions correctives de ce dysfonctionnement ?
+                                                                <b>Noter que vous ne pourriez plus modifier ce dysfonctionnement en terme d'identification, de planification et etc...</b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button id="confirmEvaluation" class="btn btn-warning">Continuer</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                             </div>
                             </form>
