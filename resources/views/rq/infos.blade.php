@@ -224,93 +224,201 @@
                 </div>
             </div>
         @endif
-        <div class="row my-4">
-            <div class="col">
-                <h6> Mesures correctives</h6>
-                <div class="accordion" id="collapsibleSection">
-                    <div class="card accordion-item">
-                        <h2 class="accordion-header" id="headingDeliveryAddress">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseDeliveryAddress" aria-expanded="true"
-                                aria-controls="collapseDeliveryAddress"> Evaluations des Actions</button>
-                        </h2>
-                        <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
-                            data-bs-parent="#collapsibleSection">
-                            <div class="accordion-body">
-                                <form class="row g-3" action="{!! route('dysfunction.evaluation', ['id' => $data->id]) !!}" method="POST">
-                                    @csrf
-                                    @foreach ($corrections as $c)
-                                        @php
-                                            $ev = $evaluations->where('task', $c->id)->first();
-                                        @endphp
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <input type="hidden" name="id[]" value="{{ $c->id }}" />
-                                                <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
-                                                    <label class="form-label" for="form-repeater-1-1">Action</label>
-                                                    <input type="text" name="action" value="{{ $c->text }}"
-                                                        class="form-control" disabled />
+        @if ($data->status >= 5)
+            <div class="row my-4">
+                <div class="col">
+                    <h6> Evaluation des Actions</h6>
+                    <div class="accordion" id="collapsibleSection">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingDeliveryAddress">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress" aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress"> Evaluations des Actions</button>
+                            </h2>
+                            <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
+                                data-bs-parent="#collapsibleSection">
+                                <div class="accordion-body">
+                                    <form class="row g-3" id="evaluateConfirmForm" action="{!! route('dysfunction.evaluation', ['id' => $data->id]) !!}"
+                                        method="POST">
+                                        @csrf
+                                        @foreach ($corrections as $c)
+                                            @php
+                                                $ev = $evaluations->where('task', $c->id)->first();
+                                            @endphp
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="hidden" name="id[]" value="{{ $c->id }}" />
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-1">Action</label>
+                                                        <input type="text" name="action" value="{{ $c->text }}"
+                                                            class="form-control" disabled />
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-3">Satisfaction
+                                                            (%)
+                                                        </label>
+                                                        <input type="number" name="satisfaction[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->satisfaction : null }}"
+                                                            @if($data->status == 5)required @else disabled @endif />
+                                                    </div>
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="multicol-country">Criteres</label>
+                                                        <textarea rows="2" name="criteria[]" class="form-control" @if($data->status == 5)required @else disabled @endif>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label">Completude(%)</label>
+                                                        <input type="number" name="completion[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->completion : null }}" @if($data->status == 5)required @else disabled @endif />
+                                                    </div>
                                                 </div>
-                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                    <label class="form-label" for="form-repeater-1-3">Satisfaction
-                                                        (%)</label>
-                                                    <input type="number" name="satisfaction[]" class="form-control"
-                                                        placeholder="%" min="0" max="100"
-                                                        value="{{ $ev != null ? $ev->satisfaction : null }}" required />
-                                                </div>
-                                                <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
-                                                    <label class="form-label" for="multicol-country">Criteres</label>
-                                                    <textarea rows="2" name="criteria[]" class="form-control" required>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
-                                                </div>
-                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                    <label class="form-label">Completude(%)</label>
-                                                    <input type="number" name="completion[]" class="form-control"
-                                                        placeholder="%" min="0" max="100"
-                                                        value="{{ $ev != null ? $ev->completion : null }}" required />
-                                                </div>
+                                        @endforeach
+                                        <hr>
+                                        @if ($data->status == 5)
+                                            <div class="mb-0">
+                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#evalCompleteModal">
+                                                    <i class="bx bx-plus me-1"></i>
+                                                    <span class="align-middle">Terminer l'Evaluation</span>
+                                                </button>
                                             </div>
-                                    @endforeach
-                                    <hr>
-
-                                    <div class="mb-0">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="bx bx-plus me-1"></i>
-                                            <span class="align-middle">Terminer l'Evaluation</span>
-                                        </button>
-                                        <div class="modal modal-top fade" id="delentreprise{{ $d->id }}"
-                                            tabindex="-1">
+                                        @endif
+                                    </form>
+                                    @if ($data->status == 5)
+                                        <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
                                             <div class="modal-dialog">
-                                                <form class="modal-content" id="evaluateForm">
+                                                <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de Fermeture!</h5>
+                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                            Fermeture!</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <p class="card-text">
-                                                                Souhaitez vous vraiment terminer l'evaluation des actions correctives de ce dysfonctionnement ?
-                                                                <b>Noter que vous ne pourriez plus modifier ce dysfonctionnement en terme d'identification, de planification et etc...</b>
+                                                                Souhaitez vous vraiment terminer l'evaluation des actions
+                                                                correctives de ce dysfonctionnement ?
+                                                                <b>Noter que vous ne pourriez plus modifier ce
+                                                                    dysfonctionnement en terme d'identification, de
+                                                                    planification et etc...</b>
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <button id="confirmEvaluation" class="btn btn-warning">Continuer</button>
+                                                        <button id="confirmEvaluation"
+                                                            class="btn btn-warning">Continuer</button>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
+                                </div>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endif
+        @if ($data->status == 7)
+            <div class="row my-4">
+                <div class="col">
+                    <h6> Evaluation du Dysfonctionnement</h6>
+                    <div class="accordion" id="DysEvaluation">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingDysEvaluation">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDysEvaluation" aria-expanded="true"
+                                    aria-controls="collapseDysEvaluation"> Evaluations des Actions</button>
+                            </h2>
+                            <div id="collapseDysEvaluation" class="accordion-collapse collapse show"
+                                data-bs-parent="#DysEvaluation">
+                                <div class="accordion-body">
+                                    <form class="row g-3" id="evaluateConfirmForm" action="{!! route('dysfunction.evaluation', ['id' => $data->id]) !!}"
+                                        method="POST">
+                                        @csrf
+                                        @foreach ($corrections as $c)
+                                            @php
+                                                $ev = $evaluations->where('task', $c->id)->first();
+                                            @endphp
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="hidden" name="id[]" value="{{ $c->id }}" />
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-1">Action</label>
+                                                        <input type="text" name="action" value="{{ $c->text }}"
+                                                            class="form-control" disabled />
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-3">Satisfaction
+                                                            (%)
+                                                        </label>
+                                                        <input type="number" name="satisfaction[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->satisfaction : null }}"
+                                                            required />
+                                                    </div>
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="multicol-country">Criteres</label>
+                                                        <textarea rows="2" name="criteria[]" class="form-control" required>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label">Completude(%)</label>
+                                                        <input type="number" name="completion[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->completion : null }}" required />
+                                                    </div>
+                                                </div>
+                                        @endforeach
+                                        <hr>
+
+                                        <div class="mb-0">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#evalCompleteModal">
+                                                <i class="bx bx-plus me-1"></i>
+                                                <span class="align-middle">Terminer l'Evaluation</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                        Fermeture!</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card-body">
+                                                        <p class="card-text">
+                                                            Souhaitez vous vraiment terminer l'evaluation des actions
+                                                            correctives de ce dysfonctionnement ?
+                                                            <b>Noter que vous ne pourriez plus modifier ce
+                                                                dysfonctionnement en terme d'identification, de
+                                                                planification et etc...</b>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-label-secondary"
+                                                        data-bs-dismiss="modal">Fermer</button>
+                                                    <button id="confirmEvaluation"
+                                                        class="btn btn-warning">Continuer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection
 @section('scriptContent')

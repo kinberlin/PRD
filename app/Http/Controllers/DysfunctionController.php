@@ -151,7 +151,15 @@ class DysfunctionController extends Controller
                 throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
             }
             $dys->status = 5;
-
+            $parentTasks = Task::select('tasks.id', 'tasks.text')
+                ->distinct()
+                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                ->where('t2.dysfunction', $id)
+                ->get();
+            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+            if (!empty($corrections)) {
+                Evaluation::whereIn('task', $corrections->pluck('id')->unique())->delete();
+            }
             if ($dys->status == 1) {
                 $dys->status = 2;
             }
@@ -234,9 +242,10 @@ class DysfunctionController extends Controller
                 $satisfactions = $request->input('satisfaction');
                 $criterias = $request->input('criteria');
                 $completions = $request->input('completion');
-               
+
                 DB::beginTransaction();
                 Evaluation::whereIn('task', $ids)->delete();
+                $dys->status = 7;
                 foreach ($ids as $index => $id) {
                     Evaluation::create([
                         'task' => $id,
@@ -245,6 +254,7 @@ class DysfunctionController extends Controller
                         'evaluation_criteria' => $criterias[$index],
                     ]);
                 }
+                $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
             } else {
