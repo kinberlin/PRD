@@ -6,8 +6,12 @@ namespace App\Providers;
 
 use App\Models\AuthorisationRq;
 use App\Models\Department;
+use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Invitation;
 use App\Models\Users;
+use App\Policies\DysfunctionPolicy;
+use App\Policies\InvitationPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -21,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Users::class => UserPolicy::class,
+        Invitation::class => InvitationPolicy::class,
+        Dysfunction::class => DysfunctionPolicy::class,
 
     ];
 
