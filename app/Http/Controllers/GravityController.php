@@ -6,7 +6,9 @@ use App\Models\Gravity;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class GravityController extends Controller
@@ -33,7 +35,8 @@ class GravityController extends Controller
      */
     public function store(Request $request)
     {
-        //try {
+        try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $data = $request->input('data');
             if (!is_array($data)) {
@@ -49,9 +52,9 @@ class GravityController extends Controller
             }
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
 
     /**
@@ -76,6 +79,7 @@ class GravityController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Gravity::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
@@ -93,6 +97,7 @@ class GravityController extends Controller
     public function destroy($id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Gravity::find($id);
             $rec->delete();

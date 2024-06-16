@@ -6,7 +6,9 @@ use App\Models\Processes;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class ProcessesController extends Controller
@@ -33,6 +35,7 @@ class ProcessesController extends Controller
     public function store(Request $request)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $data = $request->input('data');
             if (!is_array($data)) {
@@ -74,6 +77,7 @@ class ProcessesController extends Controller
 public function update(Request $request, $id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Processes::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
@@ -92,6 +96,7 @@ public function update(Request $request, $id)
 public function destroy($id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Processes::find($id);
             $rec->delete();

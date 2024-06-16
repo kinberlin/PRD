@@ -8,7 +8,9 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class AuthorisationRqController extends Controller
@@ -34,6 +36,7 @@ class AuthorisationRqController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('isAdmin', Auth::user());
         try {
             DB::beginTransaction();
             $data = new AuthorisationRq();
@@ -99,6 +102,7 @@ class AuthorisationRqController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('isAdmin', Auth::user());
         try {
             DB::beginTransaction();
             $data = AuthorisationRq::withTrashed()->find($id);

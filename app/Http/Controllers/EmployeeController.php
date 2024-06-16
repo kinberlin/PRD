@@ -51,47 +51,48 @@ class EmployeeController extends Controller
     {
         Gate::authorize('isAdmin', Auth::user());
         try {
-        DB::beginTransaction();
-        $employee = new Users();
-        $employee->enterprise = $request->input('enterprise');
-        if ($request->input('department') == "null") {
-            $employee->department = null;
-        } else {
-            $employee->department = $request->input('department');
-        }
-        $employee->firstname = $request->input('firstname');
-        $employee->lastname = $request->input('lastname');
-        $employee->email = $request->input('email');
-        $employee->password = bcrypt($request->input('password'));
-        $enterp = Enterprise::find($request->input('enterprise'));
-        if ($enterp == null) {
-            throw new Exception("Nous ne parvenons pas a trouver l'entreprise dont l'ID est égal
+            DB::beginTransaction();
+            $employee = new Users();
+            $employee->enterprise = $request->input('enterprise');
+            if ($request->input('department') == "null") {
+                $employee->department = null;
+            } else {
+                $employee->department = $request->input('department');
+            }
+            $employee->firstname = $request->input('firstname');
+            $employee->lastname = $request->input('lastname');
+            $employee->email = $request->input('email');
+            $employee->password = bcrypt($request->input('password'));
+            $enterp = Enterprise::find($request->input('enterprise'));
+            if ($enterp == null) {
+                throw new Exception("Nous ne parvenons pas a trouver l'entreprise dont l'ID est égal
                 a : " . $request->input('enterprise') . ' dans notre systeme. Veuillez consulter la liste des entreprises et entrer un Identifiant valide.', 404);
-        }
-        if (Department::where('id', $request->input('department'))->where('enterprise', $request->input('enterprise')) == null) {
-            throw new Exception("Nous ne parvenons pas a trouver le Département dont l'ID est égal
+            }
+            if (Department::where('id', $request->input('department'))->where('enterprise', $request->input('enterprise')) == null) {
+                throw new Exception("Nous ne parvenons pas a trouver le Département dont l'ID est égal
                 a : " . $request->input('department') . ' dans notre systeme. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $request->input('enterprise') . ' et entrer un Identifiant valide.', 404);
-        }
-        if (strtolower($request->input('phone')) == "null") {
-            $employee->phone = null;
-        } else {
-            $employee->phone = $request->input('phone');
-        }
-        if (strtolower($request->input('poste')) == "null") {
-            $employee->poste = null;
-        } else {
-            $employee->poste = $request->input('poste');
-        }
-        $employee->matricule = $enterp->surfix . $request->input('matricule');
-        $employee->save();
-        DB::commit();
-        return redirect()->back()->with('error', "Insertions terminées avec succes");
+            }
+            if (strtolower($request->input('phone')) == "null") {
+                $employee->phone = null;
+            } else {
+                $employee->phone = $request->input('phone');
+            }
+            if (strtolower($request->input('poste')) == "null") {
+                $employee->poste = null;
+            } else {
+                $employee->poste = $request->input('poste');
+            }
+            $employee->matricule = $enterp->surfix . $request->input('matricule');
+            $employee->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Insertions terminées avec succes");
         } catch (Throwable $th) {
-    return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-    }
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     public function store(Request $request)
     {
+        Gate::authorize('isAdmin', Auth::user());
         try {
             DB::beginTransaction();
             $data = $request->input('data');

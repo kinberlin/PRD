@@ -9,7 +9,9 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class EnterpriseController extends Controller
@@ -36,6 +38,7 @@ class EnterpriseController extends Controller
     public function store(Request $request)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $data = $request->input('data');
             if (!is_array($data)) {
@@ -77,6 +80,7 @@ class EnterpriseController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Enterprise::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
@@ -95,6 +99,7 @@ class EnterpriseController extends Controller
     public function destroy($id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Enterprise::find($id);
             $rec->delete();

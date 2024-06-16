@@ -9,7 +9,9 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class AuthorisationPiloteController extends Controller
@@ -36,6 +38,7 @@ class AuthorisationPiloteController extends Controller
     public function store(Request $request)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $data = new AuthorisationPilote();
             $allprocs = Processes::all();
@@ -101,6 +104,7 @@ class AuthorisationPiloteController extends Controller
     public function destroy($id)
     {
         try {
+            Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $data = AuthorisationPilote::withTrashed()->find($id);
             if ($data == null) {
