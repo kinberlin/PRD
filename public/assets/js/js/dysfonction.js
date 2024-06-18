@@ -28,6 +28,20 @@ function getFile(input) {
 $(document).ready(function () {
     var currentDate = new Date().toISOString().split('T')[0];
     $('#occur_date').attr('max', currentDate);
+    $(document).ready(function() {
+        var selectedOptio = $(this).find(':selected');
+            var selectedValu = selectedOptio.attr('data-extra-info');
+            $('#selsite option').hide();
+            $('#selsite option[data-extra-info="' + selectedValu + '"]').show();
+            $('#selsite').val($('#selsite option:visible:first').val());
+        $('#selents').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var selectedValue = selectedOption.attr('data-extra-info');
+            $('#selsite option').hide();
+            $('#selsite option[data-extra-info="' + selectedValue + '"]').show();
+            $('#selsite').val($('#selsite option:visible:first').val());
+        });
+    });
 });
 
 "use strict";

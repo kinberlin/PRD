@@ -121,7 +121,13 @@ a[x-apple-data-detectors] {
                   <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" bgcolor="#9898a4" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:29px;letter-spacing:0;color:#ffffff;font-size:19px">{{$content}}</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">Chère équipe,</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">Nous souhaitons vous informer qu'un incident a été détecté et enregistré sous l'identifiant [{{$code}}]. Voici les détails du signalement :</p></td>
+                     </tr>
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px"><strong>Description de l'incident :</strong><br>{{$description}}</p></td>
+                     </tr>
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px"><strong>Action en cours:</strong><br>Nous vous écrivons concernant le dysfonctionnement signalé. Afin de faire progresser le processus de résolution, nous avons besoin de votre aide pour identifier et confirmer certains détails relatifs à ce signalement.<br>Nous vous remercions par avance pour votre collaboration et votre promptitude à répondre à cette demande.<br type="_moz"></p></td>
                      </tr>
                    </table></td>
                  </tr>
