@@ -117,15 +117,4 @@
     <script src="{!! url('assets/vendor/libs/jquery-repeater/jquery-repeater.js') !!}"></script>
     <script src="{!! url('assets/js/js/forms-extras.js') !!}"></script>
     <script src="{!! url('assets/js/js/dysfonction.js') !!}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#selents').change(function() {
-                var selectedOption = $(this).find(':selected');
-                var selectedValue = selectedOption.attr('data-extra-info');
-                $('#selsite option').hide();
-                $('#selsite option[data-extra-info="' + selectedValue + '"]').show();
-                $('#selsite').val($('#selsite option:visible:first').val());
-            });
-        });
-    </script>
 @endsection
