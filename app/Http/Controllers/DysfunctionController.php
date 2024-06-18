@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiMail;
+use App\Models\AuthorisationRq;
 use App\Models\Correction;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
@@ -9,6 +11,7 @@ use App\Models\Evaluation;
 use App\Models\Processes;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\Users;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -45,6 +48,10 @@ class DysfunctionController extends Controller
         try {
             DB::beginTransaction();
             $dys = new Dysfunction();
+            $ents = Enterprise::where('name', $request->input('enterprise'))->get()->first();
+            if(empty($ents)){
+                throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
+            }
             $dys->occur_date = $request->input('occur_date');
             $dys->enterprise = $request->input('enterprise');
             $dys->site = $request->input('site');
@@ -69,6 +76,9 @@ class DysfunctionController extends Controller
             DB::commit();
             $dys->code = 'D' . Carbon::now()->year . Carbon::now()->month . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
             $dys->save();
+            $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
+            $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
+            $newmail = new ApiMail(null,$rq->pluck('email')->unique(),'Cadyst PRD App', "Annonce d'incident - Matricule de l'incident : [".$dys->code."]",);
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

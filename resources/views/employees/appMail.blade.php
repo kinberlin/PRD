@@ -84,7 +84,7 @@ a[x-apple-data-detectors] {
           <td align="center" style="padding:0;Margin:0">
            <table class="es-header-body" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;width:600px">
              <tr>
-              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px"><!--[if mso]><table style="width:560px" cellpadding="0"
+              <td align="left" bgcolor="#e3e6ec" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px;background-color:#e3e6ec"><!--[if mso]><table style="width:560px" cellpadding="0"
                             cellspacing="0"><tr><td style="width:180px" valign="top"><![endif]-->
                <table class="es-left" cellspacing="0" cellpadding="0" align="left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
                  <tr>
@@ -121,7 +121,7 @@ a[x-apple-data-detectors] {
                   <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:23px;letter-spacing:0;color:#333333;font-size:15px">"Voici le contenu du Mail."</p></td>
+                      <td align="center" bgcolor="#9898a4" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:29px;letter-spacing:0;color:#ffffff;font-size:19px">{{$content}}</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -148,7 +148,7 @@ a[x-apple-data-detectors] {
           <td align="center" style="padding:0;Margin:0">
            <table class="es-footer-body" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;width:600px">
              <tr>
-              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px">
+              <td align="left" bgcolor="#e3e6ec" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px;background-color:#e3e6ec">
                <table cellpadding="0" cellspacing="0" width="100%" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                  <tr>
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">

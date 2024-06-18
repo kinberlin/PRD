@@ -20,23 +20,21 @@ class AuthController extends Controller
             $credentials = $request->only('matricule', 'password');
 
             if (Auth::attempt($credentials)) {
-                if(Auth::user()->access == 1){
-                if (Auth::user()->role == 1) {
-                    return redirect()->intended('/admin');
+                if (Auth::user()->access == 1) {
+                    if (Auth::user()->role == 1) {
+                        return redirect()->intended('/admin');
+                    } else {
+                        if (Gate::allows('isRq', Auth::user())) {
+                            return redirect()->intended('/rq')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                        } elseif (Gate::allows('isPilote', Auth::user())) {
+                            return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                        } else {
+                            return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                        }
+                    }
                 } else {
-                    if (Gate::allows('isRq', Auth::user())) {
-                        return redirect()->intended('/rq')->with('error', 'Bienvenue ' . Auth::user()->firstname);
-                    }
-                    elseif (Gate::allows('isPilote', Auth::user())) {
-                        return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
-                    }
-                    else{
-                        return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
-                    }
-                    
-                }}else{
                     Auth::logout();
-                    throw new Exception("Il se peut que l'accès à votre compte ait été révoqué.", 400);  
+                    throw new Exception("Il se peut que l'accès à votre compte ait été révoqué.", 400);
                 }
             } else {
                 $credentials = [
@@ -44,10 +42,21 @@ class AuthController extends Controller
                     'password' => $request->password
                 ];
                 if (Auth::attempt($credentials)) {
-                    if (Auth::user()->role == 1) {
-                        return redirect()->intended('/admin');
+                    if (Auth::user()->access == 1) {
+                        if (Auth::user()->role == 1) {
+                            return redirect()->intended('/admin');
+                        } else {
+                            if (Gate::allows('isRq', Auth::user())) {
+                                return redirect()->intended('/rq')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                            } elseif (Gate::allows('isPilote', Auth::user())) {
+                                return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                            } else {
+                                return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                            }
+                        }
                     } else {
-                        return redirect()->intended('/employee')->with('error', 'Bienvenue ' . Auth::user()->firstname);
+                        Auth::logout();
+                        throw new Exception("Il se peut que l'accès à votre compte ait été révoqué.", 400);
                     }
                 }
             }
