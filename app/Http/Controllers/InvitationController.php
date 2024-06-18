@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiMail;
+use App\Models\Dysfunction;
 use App\Models\Invitation;
 use App\Models\Invites;
 use App\Models\Participation;
@@ -46,6 +48,10 @@ class InvitationController extends Controller
         try {
             if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
+                $dys = Dysfunction::find($request->input('dysfunction'));
+                if(empty($dys)){
+                    throw new Exception("Nous ne retrouvons pas la ressource.", 404);
+                }
                 $data = new Invitation();
                 $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
                 $data->object = $request->input('object');
@@ -75,6 +81,11 @@ class InvitationController extends Controller
                 $data->external_invites = json_encode($ext_u);
                 $data->save();
                 DB::commit();
+                $description = "Le motif de cette réunion est : ".$data->motif. ". Elle concerne le dysfonctionnement No. ".$dys->code." ; dont la gravité a été noté : ".$dys->gravity;
+                $emails = array_merge(Users::whereIn('id',$i_v)->get()->pluck('email')->unique()->toArray(), $ext_u);
+                $content = view('employees.invitation_appMail', ['invitation'=>$data, 'description'=>$description])->render();
+                $newmail = new ApiMail(null,$emails,'Cadyst PRD App', "Invitation à la Réunion No #".$data->id." du : ".$data->dates,$content,[]);
+                $newmail->send();
                 return redirect()->back()->with('error', "La réunion a été créer avec succes.");
             } else {
                 throw new Exception("Malheureusement, vous ne disposez pas des acreditations necessaires pour programmer une réunion.", 401);
@@ -90,7 +101,7 @@ class InvitationController extends Controller
     public function show($id)
     {
         try {
-            if (Gate::allows('is-Rq-or-Admin', Auth::user())) {
+            if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
                 $data = Invitation::where('id', $id)->get();
                 if ($data->isEmpty()) {
                     throw new Exception('Nous ne trouvons pas cette invitation: ' . $id, 404);

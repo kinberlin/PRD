@@ -67,7 +67,7 @@ class RQController extends Controller
     public function allSignalement()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Dysfunction::all();
+        $data = Dysfunction::whereNotIn('status',[3,7]);
         $status = Status::all();
         return view('rq/signalements', compact('data', 'status'));
     }
