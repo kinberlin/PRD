@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dysfunction;
+use App\Models\Enterprise;
 use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class DynamicJsController extends Controller
         $dysresults = $this->dysAddedLastWeekByDay();
         $dyscounts = $dysresults['dystring'];
         $dysarrays = $dysresults['dysarray'];
+        $ents = Enterprise::all();
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
         //activity chart
@@ -51,6 +53,19 @@ class DynamicJsController extends Controller
         });
 
         $sites = count($alldys) > 0 ? $mostFrequentSites->sum() * 100 / count($alldys) : 0;
+        //Enterprise
+        $entsurfix = $ents->pluck('surfix')->map(function ($surfix) {
+            return "'$surfix'";
+        })->toArray();
+        $entStringCat = '[' . implode(', ', $entsurfix) . ']';
+        $entStatv= [];
+        $entStatc= [];
+        foreach($ents as $e){
+            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3,6])->count();
+            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3,6])->count();
+        }
+        $entDysV = '[' . implode(', ', $entStatv) . ']';
+        $entDysC = '[' . implode(', ', $entStatc) . ']';
         $jsContent = <<<EOT
         "use strict";
 !(function () {
@@ -197,7 +212,7 @@ class DynamicJsController extends Controller
             (null !== d && new ApexCharts(d, c).render(),
             document.querySelector("#enterpriseChart")),
         c = {
-            series: [{ data: [58, 28, 50, 80] }, { data: [50, 22, 65, 72] }],
+            series: [{ data: $entDysV }, { data: $entDysC }],
             chart: {
                 type: "bar",
                 height: 80,
@@ -221,7 +236,7 @@ class DynamicJsController extends Controller
             stroke: { show: !0, width: 5, colors: r },
             legend: { show: !1 },
             xaxis: {
-                categories: ["Jan", "Apr", "Jul", "Oct"],
+                categories: $entStringCat,
                 axisBorder: { show: !1 },
                 axisTicks: { show: !1 },
                 labels: { style: { colors: r, fontSize: "13px" } },
