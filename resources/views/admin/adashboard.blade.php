@@ -150,7 +150,7 @@
             <div class="card">
               <div class="card-body pb-2">
                 <span class="d-block fw-medium">Entreprise</span>
-                <h3 class="card-title mb-0">En cours/ Résolus</h3>
+                <h3 class="card-title mb-0">Résolus/En cours</h3>
                 <div id="enterpriseChart"></div>
               </div>
             </div>
@@ -165,13 +165,13 @@
           <div class="row row-bordered g-0">
             <div class="col-md-8">
               <div class="card-header">
-                <h5 class="card-title mb-0">Total Income</h5>
+                <h5 class="card-title mb-0">Vue sur l'année</h5>
                 <small class="card-subtitle"
-                  >Yearly report overview</small
+                  >Aperçu du rapport annuel</small
                 >
               </div>
               <div class="card-body">
-                <div id="totalIncomeChart"></div>
+                <div id="yearChart"></div>
               </div>
             </div>
             <div class="col-md-4">

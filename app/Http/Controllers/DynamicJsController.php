@@ -66,6 +66,16 @@ class DynamicJsController extends Controller
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
+        //yearChart
+        // Initialize an array with 12 elements, each representing a month
+        $monthlyQuantities = array_fill(0, 12, 0);
+        // Group dysfunctions by month and sum the quantities
+        $alldys->groupBy(function ($dys_) {
+            return Carbon::parse($dys_->created_at)->format('n') - 1; // 'n' returns 1-12, we need 0-11 for array indices
+        })->each(function ($group, $month) use (&$monthlyQuantities) {
+            $monthlyQuantities[$month] = $group->count('id');
+        });
+        $yearStats = '[' . implode(', ', $monthlyQuantities) . ']';
         $jsContent = <<<EOT
         "use strict";
 !(function () {
@@ -278,7 +288,7 @@ class DynamicJsController extends Controller
         },
         d =
             (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#totalIncomeChart")),
+            document.querySelector("#yearChart")),
         c = {
             chart: {
                 height: 250,
@@ -295,10 +305,7 @@ class DynamicJsController extends Controller
             },
             series: [
                 {
-                    data: [
-                        3350, 3350, 4800, 4800, 2950, 2950, 1800, 1800, 3750,
-                        3750, 5700, 5700,
-                    ],
+                    data: $yearStats,
                 },
             ],
             dataLabels: { enabled: !1 },
@@ -343,12 +350,14 @@ class DynamicJsController extends Controller
                 labels: {
                     offsetX: -15,
                     formatter: function (o) {
-                        return "$" + parseInt(o / 1e3) + "k";
+                    if(0 > 1000)
+                        {return parseInt(o / 1e3) + "k";}
+                        else{return parseInt(o);}
                     },
                     style: { fontSize: "13px", colors: r },
                 },
-                min: 1e3,
-                max: 6e3,
+                min: 0,
+                max: 0.08e3,
                 tickAmount: 5,
             },
         },
