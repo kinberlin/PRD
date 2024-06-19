@@ -72,8 +72,8 @@
               <div
                 class="card-title d-flex align-items-start justify-content-between"
               >
-                <h5 class="mb-0">Activity</h5>
-                <small>Last Week</small>
+                <h5 class="mb-0">Progression</h5>
+                <small>Dysfonctionnement</small>
               </div>
               <div class="d-flex justify-content-between">
                 <div class="mt-auto">
@@ -1163,5 +1163,5 @@
   </div>
 @endsection
 @section('scriptContent')
-    <script src="{!! url('assets/js/js/app-ecommerce-dashboard.js') !!}"></script>
+    <script src="{{route ('admin.dashboardjs') }}"></script>
 @endsection

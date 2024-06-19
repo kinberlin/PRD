@@ -14,7 +14,8 @@ use Throwable;
 
 class GanttController extends Controller
 {
-    public function get($id){
+    public function get($id)
+    {
         $data = Task::where('dysfunction', $id)->orderBy('sortorder')->get();
         $links = Link::whereIn('source', $data->pluck('id')->unique())->orWhereIn('target', $data->pluck('id')->unique())->get();
         return response()->json([
@@ -25,7 +26,8 @@ class GanttController extends Controller
         ]);
     }
 
-    public function rqplanner($id){
+    public function rqplanner($id)
+    {
         try {
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
@@ -34,14 +36,20 @@ class GanttController extends Controller
             }
             if ($dys->status  == 3) {
                 throw new Exception("Erreur de traitement. Ce dysfonctionnement est déja annulé. Il ne peut donc plus être traiter.", 1);
+            }
+            if ($dys->status == 2) {
+                $dys->status = 4;
+                $dys->save();
             }
             return view('rq/planner', compact('id'));
+            DB::commit();
         } catch (Throwable $th) {
+            DB::rollBack();
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
-        
     }
-    public function adminplanner($id){
+    public function adminplanner($id)
+    {
         try {
             DB::beginTransaction();
             $dys = Dysfunction::find($id);
@@ -51,10 +59,15 @@ class GanttController extends Controller
             if ($dys->status  == 3) {
                 throw new Exception("Erreur de traitement. Ce dysfonctionnement est déja annulé. Il ne peut donc plus être traiter.", 1);
             }
+            if ($dys->status == 2) {
+                $dys->status = 4;
+                $dys->save();
+            }
+            DB::commit();
             return view('admin/planner', compact('id'));
         } catch (Throwable $th) {
+            DB::rollBack();
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
-        
     }
 }
