@@ -59,6 +59,24 @@
                         $created = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
                         $rejected = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->where('status', 3)->count();
                         $percentage = $rejected > 0 ? $rejected  * 100 / $created : 0;
+                        //sites with the highest occurances
+                        $sites = '';
+                        $siteCounts = $alldys->groupBy('site')->map(function ($group) {
+                            return $group->count();
+                        });
+
+                        // Step 2: Find the maximum count
+                        $maxCount = $siteCounts->max();
+
+                        // Step 3: Filter the first sites that have the maximum count
+                        $mostFrequentSites = $siteCounts->filter(function ($count) use ($maxCount) {
+                            return $count == $maxCount;
+                        });
+
+                        // Output the results
+                        foreach ($mostFrequentSites as $s => $count) {
+                            $sites .= $s. " - Compte: " . $count . " Signalement ;";
+                        }
                     @endphp
                   <h2 class="mb-2">{{formatNumber($created)}}</h2>
                   <small class="text-danger text-nowrap fw-medium"
@@ -117,75 +135,27 @@
           </div>
           <div class="col-lg-6 col-md-3 col-6 mb-4">
             <div class="card">
-              <div class="card-body pb-2">
-                <span class="d-block fw-medium">Profit</span>
-                <h3 class="card-title mb-0">624k</h3>
-                <div id="profitChart"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-3 col-6 mb-4">
-            <div class="card">
               <div class="card-body pb-0">
-                <span class="d-block fw-medium">Expenses</span>
+                <span class="d-block fw-medium">Le/Les plus signalé</span>
               </div>
-              <div id="expensesChart" class="mb-2"></div>
+              <div id="sitesChart" class="mb-2"></div>
               <div class="p-3 pt-2">
                 <small class="text-muted d-block text-center"
-                  >$21k Expenses more than last month</small
+                  >{{$sites}}</small
                 >
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-3 col-6 mb-4">
+          <div class="col-md-6 col-lg-12 mb-4">
             <div class="card">
-              <div class="card-body">
-                <div
-                  class="card-title d-flex align-items-start justify-content-between"
-                >
-                  <div class="avatar flex-shrink-0">
-                    <img
-                      src="../../assets/img/icons/unicons/briefcase.png"
-                      alt="Credit Card"
-                      class="rounded"
-                    />
-                  </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt1"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardOpt1"
-                    >
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
-                </div>
-                <span class="d-block">Transactions</span>
-                <h4 class="card-title mb-1">$14,857</h4>
-                <small class="text-success fw-medium"
-                  ><i class="bx bx-up-arrow-alt"></i> +28.14%</small
-                >
+              <div class="card-body pb-2">
+                <span class="d-block fw-medium">Entreprise</span>
+                <h3 class="card-title mb-0">En cours/ Résolus</h3>
+                <div id="enterpriseChart"></div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 

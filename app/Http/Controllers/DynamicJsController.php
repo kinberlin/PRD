@@ -21,22 +21,36 @@ class DynamicJsController extends Controller
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
         //activity chart
-        $a_dys = Dysfunction::where('status', 4)
-            ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
-            $codes = $a_dys->pluck('code')->map(function ($code) {
-                return "'$code'";
-            })->toArray();
+        $alldys = Dysfunction::whereYear('created_at', Carbon::now()->year)->get();
+        $a_dys = $alldys->filter(function ($item) {
+            return $item->status == 4;
+        })->sortByDesc('created_at')->take(10);
+        $codes = $a_dys->pluck('code')->map(function ($code) {
+            return "'$code'";
+        })->toArray();
         $a_dysStringCat = '[' . implode(', ', $codes) . ']';
-        $a_tasks = Task::whereIn('dysfunction', $a_dys->pluck('id'))->where('parent',0)->get();
+        $a_tasks = Task::whereIn('dysfunction', $a_dys->pluck('id'))->where('parent', 0)->get();
         $a_tdata = [];
-        foreach($a_dys->pluck('id')->toArray() as $_a){
+        foreach ($a_dys->pluck('id')->toArray() as $_a) {
             $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
-        $a_avgtProgression = collect($a_tdata)->avg(). ' %';
-        $longestTask = $a_tasks->pluck('duration')->max(). 'J';
+        $a_avgtProgression = collect($a_tdata)->avg() . ' %';
+        $longestTask = $a_tasks->pluck('duration')->max() . 'J';
+        //Site Chart
+        $siteCounts = $alldys->groupBy('site')->map(function ($group) {
+            return $group->count();
+        });
+
+        // Step 2: Find the maximum count
+        $maxCount = $siteCounts->max();
+
+        // Step 3: Filter the first sites that have the maximum count
+        $mostFrequentSites = $siteCounts->filter(function ($count) use ($maxCount) {
+            return $count == $maxCount;
+        });
+
+        $sites = count($alldys) > 0 ? $mostFrequentSites->sum() * 100 / count($alldys) : 0;
         $jsContent = <<<EOT
         "use strict";
 !(function () {
@@ -181,7 +195,7 @@ class DynamicJsController extends Controller
         },
         d =
             (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#profitChart")),
+            document.querySelector("#enterpriseChart")),
         c = {
             series: [{ data: [58, 28, 50, 80] }, { data: [50, 22, 65, 72] }],
             chart: {
@@ -216,7 +230,7 @@ class DynamicJsController extends Controller
         },
         d =
             (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#expensesChart")),
+            document.querySelector("#sitesChart")),
         c = {
             chart: {
                 height: 130,
@@ -225,7 +239,7 @@ class DynamicJsController extends Controller
                 type: "radialBar",
             },
             colors: [config.colors.primary],
-            series: [78],
+            series: [$sites],
             plotOptions: {
                 radialBar: {
                     startAngle: -90,
