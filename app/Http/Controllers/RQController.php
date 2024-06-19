@@ -67,14 +67,16 @@ class RQController extends Controller
     public function allSignalement()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Dysfunction::whereNotIn('status',[3,7]);
+        $data = Dysfunction::whereNotIn('status',[3,7])->get();
         $status = Status::all();
         return view('rq/signalements', compact('data', 'status'));
     }
     public function planif()
     {
         Gate::authorize('isRq', Auth::user());
-        $dys = Dysfunction::all();
+        $rqU = AuthorisationRq::where('user', Auth::user()->id)->get();
+
+        $dys = Dysfunction::whereNotIn('status',[3,7])->get();
         $users = Users::all();
         return view('rq/planifs', compact('dys', 'users'));
     }

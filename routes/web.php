@@ -35,6 +35,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.post');
 
+
 Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
@@ -84,7 +85,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
-
+    Route::get('/appmail', 'InvitationController@appMail');
     Route::get('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');

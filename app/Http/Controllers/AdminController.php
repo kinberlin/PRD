@@ -103,7 +103,7 @@ class AdminController extends Controller
     public function planif()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $dys = Dysfunction::all();
+        $dys =  Dysfunction::whereNotIn('status',[3,7])->get();
         $users = Users::all();
         return view('admin/planifs', compact('dys', 'users'));
     }
