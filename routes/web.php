@@ -87,6 +87,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     //users
     Route::get('/appmail', 'InvitationController@appMail');
     Route::get('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
+    Route::get('/admin/dashboard.js', 'DynamicJsController@admin');
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
