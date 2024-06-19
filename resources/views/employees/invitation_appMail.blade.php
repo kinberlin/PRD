@@ -661,7 +661,7 @@
                                                                         <div class="meeting-details">
                                                                             <h4>{{ $invitation->object }}</h4>
                                                                             <p><strong>Date:
-                                                                                    {{ $invitation->dates }}</strong>
+                                                                                    {{ $invitation->dates->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</strong>
                                                                             </p>
                                                                             <p><strong>Heure:</strong>
                                                                                 {{ $invitation->begin }} -
