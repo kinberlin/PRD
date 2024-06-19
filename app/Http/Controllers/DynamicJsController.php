@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dysfunction;
+use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -12,13 +13,30 @@ class DynamicJsController extends Controller
 {
     public function admin(Request $request)
     {
+        //visitor chart
         // Generate the JavaScript content dynamically
         $dysresults = $this->dysAddedLastWeekByDay();
         $dyscounts = $dysresults['dystring'];
         $dysarrays = $dysresults['dysarray'];
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
-
+        //activity chart
+        $a_dys = Dysfunction::where('status', 4)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+            $codes = $a_dys->pluck('code')->map(function ($code) {
+                return "'$code'";
+            })->toArray();
+        $a_dysStringCat = '[' . implode(', ', $codes) . ']';
+        $a_tasks = Task::whereIn('dysfunction', $a_dys->pluck('id'))->where('parent',0)->get();
+        $a_tdata = [];
+        foreach($a_dys->pluck('id')->toArray() as $_a){
+            $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
+        }
+        $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
+        $a_avgtProgression = collect($a_tdata)->avg(). ' %';
+        $longestTask = $a_tasks->pluck('duration')->max(). 'J';
         $jsContent = <<<EOT
         "use strict";
 !(function () {
@@ -42,6 +60,8 @@ class DynamicJsController extends Controller
           (i = "#c3c4ff"),
           (n = "#a5a7ff"),
           "#696cff");
+          $('#activityDysProgression').text('$a_avgtProgression');
+        $('#longestduration').text('$longestTask');
     var d = document.querySelector("#visitorsChart"),
         c = {
             chart: {
@@ -137,7 +157,7 @@ class DynamicJsController extends Controller
             },
             dataLabels: { enabled: !1 },
             stroke: { width: 2, curve: "smooth" },
-            series: [{ data: [15, 20, 14, 22, 17, 40, 12, 35, 25,40,30,36] }],
+            series: [{ data: $a_tdataString }],
             colors: [config.colors.success],
             fill: {
                 type: "gradient",
@@ -152,18 +172,7 @@ class DynamicJsController extends Controller
             grid: { show: !1, padding: { top: -20, bottom: -8 } },
             legend: { show: !1 },
             xaxis: {
-                categories: [
-                    "A15646",
-                    "A2456456",
-                    "A346",
-                    "A4546",
-                    "A545646",
-                    "A6456456456",
-                    "A4564564564564567",
-                    "A4564564568",
-                    "A9456456456456456456",
-                    "A14564564564564560",
-                ],
+                categories: $a_dysStringCat,
                 axisBorder: { show: !1 },
                 axisTicks: { show: !1 },
                 labels: { style: { fontSize: "8px", colors: r } },
@@ -605,7 +614,7 @@ EOT;
 
         return $colors;
     }
-    public function dysAddedLastWeekByDay() 
+    public function dysAddedLastWeekByDay()
     {
         // Initialize an array to hold the results
         $dysCounts = [0, 0, 0, 0, 0, 0, 0]; // Array to store counts for each day (Monday to Sunday)
@@ -624,7 +633,7 @@ EOT;
         }
 
         // Return the array of counts (Monday to Sunday)
-        return   ['dystring' =>'[' . implode(', ', $dysCounts) . ']', 'dysarray'=>$dysCounts];
+        return   ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
     }
     /*public function admin(Request $request)
     {

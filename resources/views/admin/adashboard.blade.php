@@ -55,8 +55,9 @@
               <div class="d-flex justify-content-between">
                 <div class="mt-auto">
                     @php
-                        $created = App\Models\Dysfunction::whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
-                        $rejected = App\Models\Dysfunction::whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->where('status', 3)->count();
+                      $alldys = \App\Models\Dysfunction::whereYear('created_at',\Carbon\Carbon::now()->year)->get();
+                        $created = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
+                        $rejected = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->where('status', 3)->count();
                         $percentage = $rejected > 0 ? $rejected  * 100 / $created : 0;
                     @endphp
                   <h2 class="mb-2">{{formatNumber($created)}}</h2>
@@ -77,9 +78,9 @@
               </div>
               <div class="d-flex justify-content-between">
                 <div class="mt-auto">
-                  <h2 class="mb-2">82%</h2>
-                  <small class="text-success text-nowrap fw-medium"
-                    ><i class="bx bx-up-arrow-alt"></i> 24.8%</small
+                  <h4 class="mb-2" id="activityDysProgression">__%</h4>
+                  <small class="text-success text-nowrap fw-medium" id="longestduration"
+                    ><i class="bx bx-time"></i> __J</small
                   >
                 </div>
                 <div id="activityChart"></div>
@@ -101,42 +102,15 @@
                   <div class="avatar flex-shrink-0">
                     <img
                       src="../../assets/img/icons/unicons/wallet-info.png"
-                      alt="Credit Card"
+                      alt="Total Issues"
                       class="rounded"
                     />
                   </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt6"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="cardOpt6"
-                    >
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a
-                        class="dropdown-item"
-                        href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
                 </div>
-                <span class="d-block">Sales</span>
-                <h4 class="card-title mb-1">$4,679</h4>
+                <span class="d-block">Cette Année</span>
+                <h4 class="card-title mb-1">{{formatNumber($alldys->count())}} <span style="font-size: 8px">Signalements</span></h4>
                 <small class="text-success fw-medium"
-                  ><i class="bx bx-up-arrow-alt"></i> +28.42%</small
+                  ><i class="bx bx-check"></i> {{$alldys->whereIn('status', [3,6])->count()}} terminés</small
                 >
               </div>
             </div>
