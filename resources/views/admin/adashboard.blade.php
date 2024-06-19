@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Tabbleau de Bord | Administrateur
+    Tableau de Bord | Administrateur
 @endsection
 @section('manualstyle')
 @endsection
@@ -13,29 +13,29 @@
             <div class="col-8">
               <div class="card-body">
                 <h6 class="card-title mb-1 text-nowrap">
-                  Congratulations Katie!
+                  Salut, M. {{Auth::user()->firstname}}!
                 </h6>
                 <small class="d-block mb-3 text-nowrap"
-                  >Best seller of the month</small
+                  >Administrateur PRD</small
                 >
 
-                <h5 class="card-title text-primary mb-1">$48.9k</h5>
+                <h5 class="card-title text-primary mb-1">{{formatNumber(App\Models\Users::count())}}</h5>
                 <small class="d-block mb-4 pb-1 text-muted"
-                  >78% of target</small
+                  >Utilisateurs</small
                 >
 
-                <a href="javascript:;" class="btn btn-sm btn-primary"
-                  >View sales</a
+                <a href="{{route('admin.employee')}}" class="btn btn-sm btn-primary"
+                  >Plus d'Info</a
                 >
               </div>
             </div>
             <div class="col-4 pt-3 ps-0">
               <img
-                src="../../assets/img/illustrations/prize-light.png"
+                src="{{url('assets/img/illustrations/prize-light.png')}}"
                 width="90"
                 height="140"
                 class="rounded-start"
-                alt="View Sales"
+                alt="Utilisateurs"
               />
             </div>
           </div>
@@ -49,15 +49,20 @@
               <div
                 class="card-title d-flex align-items-start justify-content-between"
               >
-                <h5 class="mb-0">New Visitors</h5>
-                <small>Last Week</small>
+                <h5 class="mb-0">Nouveaux Signalements</h5>
+                <small>La semaine derniere</small>
               </div>
               <div class="d-flex justify-content-between">
                 <div class="mt-auto">
-                  <h2 class="mb-2">23%</h2>
+                    @php
+                        $created = App\Models\Dysfunction::whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
+                        $rejected = App\Models\Dysfunction::whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->where('status', 3)->count();
+                        $percentage = $rejected > 0 ? $rejected  * 100 / $created : 0;
+                    @endphp
+                  <h2 class="mb-2">{{formatNumber($created)}}</h2>
                   <small class="text-danger text-nowrap fw-medium"
                     ><i class="bx bx-down-arrow-alt"></i>
-                    -13.24%</small
+                    -{{$percentage}}%</small
                   >
                 </div>
                 <div id="visitorsChart"></div>
