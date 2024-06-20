@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property integer $id
+ * @property integer $type
+ * @property integer $solved
+ * @property integer $cost
+ * @property integer $closed_at
  * @property string $enterprise
  * @property string $site
  * @property string $emp_signaling
@@ -28,6 +32,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $occur_date
  * @property string $cause
  * @property string $rej_reason
+ * @property string $closed_by
+ * @property string $satisfaction_description
  */
 class Dysfunction extends Model
 {
@@ -48,7 +54,7 @@ class Dysfunction extends Model
      * @var array
      */
 
-    protected $fillable = ['enterprise', 'site', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons'];
+    protected $fillable = ['enterprise', 'site', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at'];
     public $timestamps = false;
 
     public function tasks()

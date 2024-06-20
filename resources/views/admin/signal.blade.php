@@ -47,7 +47,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
                                                     <div>
-                                                        <h3 class="mb-1">{{count($data->where('status',6))}}</h3>
+                                                        <h3 class="mb-1">{{count($data->whereIn('status',[6, 3]))}}</h3>
                                                         <p class="mb-0">Traités</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-sm-4">

@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des Entreprises
+    Gestion des Type de Dysfonctionnemnts
 @endsection
 @section('manualstyle')
 @endsection
@@ -9,11 +9,11 @@
         <!-- Users List Table -->
         <div class="col-12">
             <div class="card mb-4">
-                <h5 class="card-header">Entreprise</h5>
+                <h5 class="card-header">Type de Dysfonctionnemnt</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter une Entreprise</button>
+                            aria-controls="offcanvasEnd">Ajouter une Type de Dysfonctionnemnt</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
@@ -26,18 +26,13 @@
                                     novalidate="novalidate" action="/admin/enterprise" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Nom de l'Entreprise</label>
+                                        <label class="form-label" for="name">Nom du Type de Dysfonctionnemnt</label>
                                         <input type="text" class="form-control" name="data[0][1]"
                                             placeholder="Nom de l'entreprise">
                                         <input type="hidden" class="form-control" name="data[0][0]">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
-                                    </div>
-                                    <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Surfix de l'Entreprise</label>
-                                        <input type="text" class="form-control" name="data[0][2]"
-                                            placeholder="Surfix de l'Entreprise">
                                     </div>
                                     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
@@ -48,7 +43,7 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="{{route('admin.enterprise.store')}}" method="POST">
+                        <form action="/admin/enterprise" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -71,7 +66,7 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Entreprise</th>
+                                <th>Type de Dysfonctionnemnt</th>
                                 <th>Abbréviation</th>
                                 <th>Action</th>
                             </tr>
@@ -113,7 +108,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{route('admin.enterprise.destroy', ['id'=>$d->id])}}"
+                                                        <a href="/admin/enterprise/{{ $d->id }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
@@ -122,7 +117,7 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="{{route('admin.enterprise.update', ['id'=>$d->id])}}"
+                                                <form class="modal-content" action="/admin/enterprise/{{ $d->id }}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J
@@ -134,10 +129,16 @@
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col mb-6">
-                                                                <label for="nameBasic{{$d->id}}" class="form-label">Nom</label>
-                                                                <input type="text" id="nameBasic{{$d->id}}" name="name"
+                                                                <label for="nameBasic" class="form-label">Nom</label>
+                                                                <input type="text" id="nameBasic" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
+                                                            </div>
+                                                            <div class="col mb-6">
+                                                                <label for="namesurfix" class="form-label">Abbréviation</label>
+                                                                <input type="text" id="namesurfix" name="surfix"
+                                                                    value="{{ $d->surfix }}" class="form-control"
+                                                                    placeholder="Entrer une abbreviation au nom">
                                                             </div>
                                                         </div>
                                                     </div>
