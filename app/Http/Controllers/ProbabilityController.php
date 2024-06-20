@@ -99,8 +99,17 @@ class ProbabilityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Probability $probability)
+    public function destroy($id)
     {
-        //
+        try {
+            Gate::authorize('isAdmin', Auth::user());
+            DB::beginTransaction();
+            $rec = Probability::find($id);
+            $rec->delete();
+            DB::commit();
+            return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
+        }
     }
 }

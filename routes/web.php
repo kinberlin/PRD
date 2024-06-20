@@ -136,6 +136,11 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/probability', 'ProbabilityController@store')->name('admin.probability.store');
     Route::post('/admin/probability/{id}', 'ProbabilityController@update')->name('admin.probability.update');
 
+    Route::get('/admin/dystype', 'AdminController@probability')->name('admin.dystype');
+    Route::get('/admin/dystype/{id}', 'DysfunctionTypeController@destroy')->name('admin.dystype.destroy');
+    Route::post('/admin/dystype', 'DysfunctionTypeController@store')->name('admin.dystype.store');
+    Route::post('/admin/dystype/{id}', 'DysfunctionTypeController@update')->name('admin.dystype.update');
+
     Route::get('/admin/processes', 'AdminController@processes')->name('admin.processes');
     Route::get('/admin/processes/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');
     Route::post('/admin/processes', 'ProcessesController@store')->name('admin.processes.store');

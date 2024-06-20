@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="/admin/enterprise" method="POST">
+                                    novalidate="novalidate" action="{{route('admin.dystype.store')}}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Type de Dysfonctionnemnt</label>
@@ -43,7 +43,7 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="/admin/enterprise" method="POST">
+                        <form action="{{route('admin.dystype.store')}}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -67,7 +67,6 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Type de Dysfonctionnemnt</th>
-                                <th>Abbréviation</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -76,7 +75,6 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
-                                    <td>{{ $d->surfix }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delentreprise{{ $d->id }}">Désactiver</button>
@@ -108,7 +106,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="/admin/enterprise/{{ $d->id }}"
+                                                        <a href="{{route('admin.dystype.destroy', ['id'=>$d->id])}}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
@@ -117,7 +115,7 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="/admin/enterprise/{{ $d->id }}"
+                                                <form class="modal-content" action="{{route('admin.dystype.update', ['id'=>$d->id])}}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J
@@ -133,12 +131,6 @@
                                                                 <input type="text" id="nameBasic" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
-                                                            </div>
-                                                            <div class="col mb-6">
-                                                                <label for="namesurfix" class="form-label">Abbréviation</label>
-                                                                <input type="text" id="namesurfix" name="surfix"
-                                                                    value="{{ $d->surfix }}" class="form-control"
-                                                                    placeholder="Entrer une abbreviation au nom">
                                                             </div>
                                                         </div>
                                                     </div>
