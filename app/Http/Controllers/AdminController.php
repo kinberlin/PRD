@@ -6,6 +6,7 @@ use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
+use App\Models\DysfunctionType;
 use App\Models\Enterprise;
 use App\Models\Gravity;
 use App\Models\Invitation;
@@ -53,6 +54,12 @@ class AdminController extends Controller
         $data = Probability::all();
         return view('admin/probability', compact('data'));
     }
+    public function dystype()
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $data = DysfunctionType::all();
+        return view('admin.dysfunctionType', compact('data'));
+    }
     public function processes()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -93,6 +100,7 @@ class AdminController extends Controller
             $ents = Enterprise::all();
             $site = Site::all();
             $gravity = Gravity::all();
+            $probability = Probability::all();
             $data = $dys;
             return view('admin/infos', compact(
                 'data',
@@ -100,7 +108,8 @@ class AdminController extends Controller
                 'processes',
                 'ents',
                 'site',
-                'gravity'
+                'gravity',
+                'probability'
             ));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

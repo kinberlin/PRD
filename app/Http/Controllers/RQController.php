@@ -10,6 +10,7 @@ use App\Models\Enterprise;
 use App\Models\Evaluation;
 use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
@@ -159,6 +160,7 @@ class RQController extends Controller
             $ents = Enterprise::all();
             $site = Site::all();
             $gravity = Gravity::all();
+            $probability = Probability::all();
             $data = $dys;
             $parentTasks = Task::select('tasks.id', 'tasks.text')
                 ->distinct()

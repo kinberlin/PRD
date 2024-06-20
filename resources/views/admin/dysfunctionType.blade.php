@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter une Type de Dysfonctionnemnt</button>
+                            aria-controls="offcanvasEnd">Ajouter un Type de Dysfonctionnemnt</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">

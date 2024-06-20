@@ -148,9 +148,12 @@
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)
                             <span>compris entre 1 & 5</span></label>
-                        <input type="number" min="1" max="5" name="probability"
-                            value="{{ $data->probability }}" placeholder="Entrer un chiffre" class="form-control"
-                            required>
+                            <select class="form-control" name="probability" data-allow-clear="true" required>
+                                @foreach ($probability as $p)
+                                    <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
+                                        {{ $p->name }} (Note : {{ $p->note }})</option>
+                                @endforeach
+                            </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsables probable de l'incident</label>
