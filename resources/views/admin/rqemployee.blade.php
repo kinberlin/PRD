@@ -84,7 +84,7 @@
                                                         <div class="card-body">
                                                             <p class="card-text">
                                                                 En continuant, vous allez supprimer l'authorisation RQ possèdé par cet utilisateur. Voulez vous Continuer ?
-                                                                <b>Noter que cette action est irréversible!</b>
+                                                                <b>Notez que cette action est irréversible!</b>
                                                             </p>
                                                         </div>
                                                     </div>

@@ -300,7 +300,7 @@
                                                             <p class="card-text">
                                                                 Souhaitez vous vraiment terminer l'evaluation des actions
                                                                 correctives de ce dysfonctionnement ?
-                                                                <b>Noter que vous ne pourriez plus modifier ce
+                                                                <b>Notez que vous ne pourriez plus modifier ce
                                                                     dysfonctionnement en terme d'identification, de
                                                                     planification et etc...</b>
                                                             </p>
@@ -397,7 +397,7 @@
                                                         <p class="card-text">
                                                             Souhaitez vous vraiment terminer l'evaluation des actions
                                                             correctives de ce dysfonctionnement ?
-                                                            <b>Noter que vous ne pourriez plus modifier ce
+                                                            <b>Notez que vous ne pourriez plus modifier ce
                                                                 dysfonctionnement en terme d'identification, de
                                                                 planification et etc...</b>
                                                         </p>

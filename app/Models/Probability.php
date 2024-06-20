@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int    $id
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Probability extends Model
 {
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *

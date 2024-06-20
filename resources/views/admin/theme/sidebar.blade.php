@@ -49,24 +49,24 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @if (request()->route()->getName() == 'admin.enterprise') active @endif">
-                    <a href="{{ route('admin.enterprise')}}" class="menu-link">
+                    <a href="{{ route('admin.enterprise') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Entreprises">Entreprises</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.department') active @endif">
-                    <a href="{{route('admin.department')}}" class="menu-link">
+                    <a href="{{ route('admin.department') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Départements">Départements</div>
                     </a>
                 </li>
 
                 <li class="menu-item @if (request()->route()->getName() == 'admin.site') active @endif">
-                    <a href="{{route('admin.site')}}" class="menu-link">
+                    <a href="{{ route('admin.site') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Sites">Sites</div>
                     </a>
                 </li>
 
                 <li class="menu-item @if (request()->route()->getName() == 'admin.employee') active @endif">
-                    <a href="{{route('admin.employee')}}" class="menu-link">
+                    <a href="{{ route('admin.employee') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Employés">Employés</div>
                     </a>
                 </li>
@@ -81,12 +81,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.inprocess') active @endif">
-                    <a href="{{route('admin.meeting.inprocess')}}" class="menu-link">
+                    <a href="{{ route('admin.meeting.inprocess') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="En Cours">En Cours</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.closed') active @endif">
-                    <a href="{{route('admin.meeting.closed')}}" class="menu-link">
+                    <a href="{{ route('admin.meeting.closed') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Terminé">Terminé</div>
                     </a>
                 </li>
@@ -135,9 +135,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if (
-                request()->route()->getName() == 'admin.signalement' ||
-                request()->route()->getName() == 'admin.invitation' ) active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.signalement' || request()->route()->getName() == 'admin.invitation') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div class="text-truncate" data-i18n="Personnelle">Personnel</div>
@@ -160,7 +158,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.gravity' || request()->route()->getName() == 'admin.probability') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-plus"></i>
                 <div class="text-truncate" data-i18n="Accessoires">Accessoires</div>
@@ -170,6 +168,11 @@
                 <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active @endif">
                     <a href="{!! route('admin.gravity') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Gravité">Gravité</div>
+                    </a>
+                </li>
+                <li class="menu-item @if (request()->route()->getName() == 'admin.probability') active @endif">
+                    <a href="{!! route('admin.probability') !!}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Probabilité">Probabilité</div>
                     </a>
                 </li>
             </ul>

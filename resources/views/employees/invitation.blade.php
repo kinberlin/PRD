@@ -91,7 +91,7 @@
                                                                     <p class="card-text">
                                                                         En continuant, vous confirmer votre présence. Voulez
                                                                         vous Continuer ?
-                                                                        <b>Noter que cette action est irréversible!</b>
+                                                                        <b>Notez que cette action est irréversible!</b>
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -127,7 +127,7 @@
                                                                     <p class="card-text">
                                                                         En continuant, vous confirmer votre présence. Voulez
                                                                         vous Continuer ?
-                                                                        <b>Noter que cette action est irréversible!</b>
+                                                                        <b>Notez que cette action est irréversible!</b>
                                                                     </p>
                                                                 </div>
                                                             </div>

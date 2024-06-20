@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Probability;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -43,9 +45,8 @@ class ProbabilityController extends Controller
                 Probability::create([
                     //'id' => $id,
                     'name' => $row[1],
-                    'least_price' =>  $row[2],
-                    'max_price' => $row[3],
-                    'note' => $row[4]
+                    'note' =>  $row[2],
+                    'description' => $row[3],
                 ]);
             }
             DB::commit();
@@ -82,16 +83,11 @@ class ProbabilityController extends Controller
             DB::beginTransaction();
             $d = Probability::find($id);
             $validatedData = $request->validate([
-                'minloss' => 'required|numeric|min:0.01',
-                'maxloss' => 'required|numeric|min:0.01',
                 'note' => 'required|numeric|min:1',
             ]);
-    
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            $d->least_price = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');
-            $d->max_price = empty($request->input('maxloss')) ? $d->name : $request->input('maxloss');
+            $d->description = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');
             $d->note = empty($request->input('note')) ? $d->note : $request->input('note');
-            
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");

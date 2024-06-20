@@ -132,9 +132,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/gravity/{id}', 'GravityController@update')->name('admin.gravity.update');
 
     Route::get('/admin/probability', 'AdminController@probability')->name('admin.probability');
-    Route::get('/admin/probability/{id}', 'GravityController@destroy')->name('admin.probability.destroy');
-    Route::post('/admin/probability', 'GravityController@store')->name('admin.probability.store');
-    Route::post('/admin/probability/{id}', 'GravityController@update')->name('admin.probability.update');
+    Route::get('/admin/probability/{id}', 'ProbabilityController@destroy')->name('admin.probability.destroy');
+    Route::post('/admin/probability', 'ProbabilityController@store')->name('admin.probability.store');
+    Route::post('/admin/probability/{id}', 'ProbabilityController@update')->name('admin.probability.update');
 
     Route::get('/admin/processes', 'AdminController@processes')->name('admin.processes');
     Route::get('/admin/processes/{id}', 'ProcessesController@destroy')->name('admin.processes.destroy');

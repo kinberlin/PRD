@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="{{route('admin.gravity.store')}}" method="POST">
+                                    novalidate="novalidate" action="{{ route('admin.gravity.store') }}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nommez la gravité</label>
@@ -36,18 +36,18 @@
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="minlost">Perte Minimal en FCFA</label>
-                                        <input type="number" id="minlost" class="form-control" name="data[0][2]" min="0"
-                                            placeholder="XAF">
+                                        <input type="number" id="minlost" class="form-control" name="data[0][2]"
+                                            min="0" placeholder="XAF">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="maxlost">Perte Maximal en FCFA</label>
-                                        <input type="number" id="maxlost" class="form-control" name="data[0][3]" min="0"
-                                            placeholder="XAF">
+                                        <input type="number" id="maxlost" class="form-control" name="data[0][3]"
+                                            min="0" placeholder="XAF">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="note">Note</label>
-                                        <input type="number" id="note" class="form-control" name="data[0][4]" min="0"
-                                            placeholder="ex : 1, 2 ...">
+                                        <input type="number" id="note" class="form-control" name="data[0][4]"
+                                            min="0" placeholder="ex : 1, 2 ...">
                                     </div>
                                     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
@@ -59,8 +59,8 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
 
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="{{route('admin.gravity.store')}}" method="POST">
-                            @csrf 
+                        <form action="{{ route('admin.gravity.store') }}" method="POST">
+                            @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
                             <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
@@ -84,6 +84,7 @@
                                 <th>Id</th>
                                 <th>Gravité</th>
                                 <th>Intervalle en FCFA</th>
+                                <th>Note</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -93,6 +94,7 @@
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->least_price . ' < Perte en XAF ≤ ' . $d->max_price }}</td>
+                                    <td>{{ $d->note }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delgravity{{ $d->id }}">Désactiver</button>
@@ -115,7 +117,7 @@
                                                             <p class="card-text">
                                                                 Souhaitez vous vraiment désactiver :
                                                                 {{ $d->name }} ?
-                                                                <b>Noter que cela reviens a supprimer partiellement celle-ci
+                                                                <b>Notez que cela reviens a supprimer partiellement celle-ci
                                                                     et que vous ne serez pas capable de le restaurer
                                                                     sur cette interface.</b>
                                                             </p>
@@ -124,7 +126,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.gravity.destroy', ['id'=> $d->id]) }}"
+                                                        <a href="{{ route('admin.gravity.destroy', ['id' => $d->id]) }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
@@ -133,7 +135,8 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majgravity{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="{{route('admin.gravity.update', ['id'=> $d->id])}}"
+                                                <form class="modal-content"
+                                                    action="{{ route('admin.gravity.update', ['id' => $d->id]) }}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J
@@ -150,14 +153,15 @@
                                                                 <input type="text" maxlength="50"
                                                                     id="nameBasic{{ $d->id }}" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom">
+                                                                    placeholder="Entrer le nom" required>
                                                             </div>
                                                             <div class="col mb-3">
                                                                 <label for="leastloss{{ $d->id }}"
                                                                     class="form-label">Perte Minimal en XAF</label>
                                                                 <input type="number" id="leastloss{{ $d->id }}"
-                                                                    name="minloss" value="{{ $d->least_price }}" min="0"
-                                                                    class="form-control" placeholder="XAF">
+                                                                    name="minloss" value="{{ $d->least_price }}"
+                                                                    min="0" class="form-control" placeholder="XAF"
+                                                                    required>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -165,15 +169,16 @@
                                                                 <label for="maxloss{{ $d->id }}"
                                                                     class="form-label">Perte Maximal en XAF</label>
                                                                 <input type="number" id="maxloss{{ $d->id }}"
-                                                                    name="maxloss" value="{{ $d->max_price }}" min="0"
-                                                                    class="form-control" placeholder="XAF">
+                                                                    name="maxloss" value="{{ $d->max_price }}"
+                                                                    min="0" class="form-control" placeholder="XAF"
+                                                                    required>
                                                             </div>
                                                             <div class="col mb-3">
                                                                 <label for="no{{ $d->id }}"
                                                                     class="form-label">Note de la gravité</label>
                                                                 <input type="number" id="no{{ $d->id }}"
                                                                     name="note" value="{{ $d->note }}"
-                                                                    class="form-control" placeholder="XAF">
+                                                                    class="form-control" placeholder="XAF" required>
                                                             </div>
                                                         </div>
                                                     </div>

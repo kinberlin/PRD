@@ -104,7 +104,7 @@
                                                             <p class="card-text">
                                                                 Souhaitez vous vraiment désactiver l'entreprise :
                                                                 {{ $d->name }} ?
-                                                                <b>Noter que cela reviens a supprimer partiellement celle-ci
+                                                                <b>Notez que cela reviens a supprimer partiellement celle-ci
                                                                     et que vous ne serez pas capable de le restaurer
                                                                     sur cette interface.</b>
                                                             </p>

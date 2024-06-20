@@ -128,7 +128,7 @@ CREATE TABLE `dysfunction` (
 
 INSERT INTO `dysfunction` (`id`, `enterprise`, `site`, `emp_signaling`, `emp_matricule`, `emp_email`, `description`, `concern_processes`, `impact_processes`, `gravity`, `probability`, `corrective_acts`, `invitations`, `status`, `progression`, `pj`, `created_at`, `deleted_at`, `occur_date`, `cause`, `rej_reasons`, `code`) VALUES
 (1, 'Panzani', 'Usine Pâtes', 'Test First', 'PZN0130', 't@t.t', '...', '[\"Manager l\'Amélioration Continu (MAC)\"]', '[\"Piloter l\'Entreprise (PEN)\", \"Produire les Farines et Semoules (PES)\"]', 'Négligeable', 1, NULL, NULL, 2, 0, '[\"http://localhost:8001/uploads/dysfonction/1715029881_MEETING RECAP cadyst.docx\", \"http://localhost:8001/uploads/dysfonction/1715029881_ctem-flyers-lait_sod-longrich.jpg\"]', '2024-05-06 21:11:21', NULL, '2024-04-30', 'Aucun Responsable Identifier', NULL, NULL),
-(2, 'La Pasta', 'Usine Minoterie Semoulerie (UMS), Carrefour Mitzig', 'Test First', 'PZN0001', 't@t.t', 'Test reunion', '[\"Produire les Pâtes alimentaires\"]', '[\"Manager l\'Amélioration Continu\", \"Produire les Farines et Semoules\"]', 'Négligeable', 2, NULL, NULL, 2, 0, '[\"http://localhost:8001/uploads/dysfonction/1716032993_Configuring VLANs Instructions.pdf\"]', '2024-05-18 11:49:53', NULL, '2024-05-17', 'Aucun Responsable Identifier', NULL, NULL),
+(2, 'La Pasta', 'Usine MiNotezie Semoulerie (UMS), Carrefour Mitzig', 'Test First', 'PZN0001', 't@t.t', 'Test reunion', '[\"Produire les Pâtes alimentaires\"]', '[\"Manager l\'Amélioration Continu\", \"Produire les Farines et Semoules\"]', 'Négligeable', 2, NULL, NULL, 2, 0, '[\"http://localhost:8001/uploads/dysfonction/1716032993_Configuring VLANs Instructions.pdf\"]', '2024-05-18 11:49:53', NULL, '2024-05-17', 'Aucun Responsable Identifier', NULL, NULL),
 (4, 'Panzani', 'Usine Pâtes, Bassa', 'Test First', 'YU14AS', 't@t.t', 'popups', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '[]', '2024-05-23 11:41:43', NULL, '2024-05-16', NULL, NULL, 'D20245PZN4');
 
 -- --------------------------------------------------------
@@ -338,8 +338,8 @@ INSERT INTO `site` (`id`, `name`, `enterprise`, `location`, `created_at`, `delet
 (2, 'Magasin Pâtes', 1, 'Bassa', '2024-05-02 11:52:17', NULL),
 (3, 'Magasin', 1, 'Ndogsimbi', '2024-05-03 15:40:27', NULL),
 (4, 'Magasin Grand Hangar', 1, 'Bonabéri', '2024-05-03 15:47:14', NULL),
-(5, 'Usine Minoterie Semoulerie (UMS)', 2, 'Carrefour Mitzig', '2024-05-18 11:22:36', NULL),
-(6, 'Usine Minoteries', 2, 'Kribi', '2024-05-28 14:32:03', NULL),
+(5, 'Usine MiNotezie Semoulerie (UMS)', 2, 'Carrefour Mitzig', '2024-05-18 11:22:36', NULL),
+(6, 'Usine MiNotezies', 2, 'Kribi', '2024-05-28 14:32:03', NULL),
 (7, 'te', 2, 'sa', '2024-06-06 09:16:11', NULL);
 
 -- --------------------------------------------------------
