@@ -101,6 +101,7 @@ class AdminController extends Controller
             $site = Site::all();
             $gravity = Gravity::all();
             $probability = Probability::all();
+            $dystype = DysfunctionType::all();
             $data = $dys;
             return view('admin/infos', compact(
                 'data',
@@ -109,7 +110,8 @@ class AdminController extends Controller
                 'ents',
                 'site',
                 'gravity',
-                'probability'
+                'probability',
+                'dystype',
             ));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

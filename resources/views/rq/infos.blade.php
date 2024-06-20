@@ -145,11 +145,31 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)
-                            <span>compris entre 1 & 5</span></label>
-                        <input type="number" min="1" max="5" name="probability"
-                            value="{{ $data->probability }}" placeholder="Entrer un chiffre" class="form-control"
-                            required>
+                        <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
+                        <select class="form-control" name="gravity" data-allow-clear="true" required>
+                            @foreach ($gravity as $g)
+                                <option value="{{ $g->name }}" @if ($g->name == $data->gravity) selected @endif>
+                                    {{ $g->name }} (Note : {{ $g->note }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)</label>
+                            <select class="form-control" name="probability" data-allow-clear="true" required>
+                                @foreach ($probability as $p)
+                                    <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
+                                        {{ $p->name }} (Note : {{ $p->note }})</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span style="color: red">*</span>)</label>
+                            <select class="form-control" name="type" data-allow-clear="true" required>
+                                @foreach ($dystype as $d)
+                                    <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
+                                        {{ $d->name }}</option>
+                                @endforeach
+                            </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsables probable de l'incident</label>

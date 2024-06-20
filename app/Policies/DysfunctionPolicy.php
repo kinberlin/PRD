@@ -13,7 +13,7 @@ class DysfunctionPolicy
      */
     public function DysCanIdentify(Users $users, Dysfunction $dysfunction): bool
     {
-        return $dysfunction->status == 1 || $dysfunction->status == 2 || $dysfunction->status == 4;
+        return ($dysfunction->status == 1 || $dysfunction->status == 2 || $dysfunction->status == 4);
     }
 
     /**
@@ -36,5 +36,9 @@ class DysfunctionPolicy
     public function DysInEvaluation(Users $users, Dysfunction $dysfunction): bool
     {
         return $dysfunction->status == 5;
+    }
+    public function DysRunning(Users $users, Dysfunction $dysfunction): bool
+    {
+        return $dysfunction->status != 3 && $dysfunction->status != 6;
     }
 }

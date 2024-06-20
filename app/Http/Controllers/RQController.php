@@ -6,6 +6,7 @@ use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
+use App\Models\DysfunctionType;
 use App\Models\Enterprise;
 use App\Models\Evaluation;
 use App\Models\Gravity;
@@ -161,6 +162,7 @@ class RQController extends Controller
             $site = Site::all();
             $gravity = Gravity::all();
             $probability = Probability::all();
+            $dystype = DysfunctionType::all();
             $data = $dys;
             $parentTasks = Task::select('tasks.id', 'tasks.text')
                 ->distinct()
@@ -177,7 +179,8 @@ class RQController extends Controller
                 'site',
                 'gravity',
                 'corrections',
-                'evaluations'
+                'evaluations',
+                'dystype'
             ));
         } else {
             throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);

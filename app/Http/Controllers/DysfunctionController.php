@@ -99,6 +99,7 @@ class DysfunctionController extends Controller
                 $dys->concern_processes = json_encode($request->input('concern_processes'));
                 $dys->gravity = $request->input('gravity');
                 $dys->probability = $request->input('probability');
+                $dys->type = $request->input('type');
                 $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
 
                 $dys->save();
