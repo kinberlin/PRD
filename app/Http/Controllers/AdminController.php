@@ -9,6 +9,7 @@ use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
@@ -45,6 +46,12 @@ class AdminController extends Controller
         Gate::authorize('isAdmin', Auth::user());
         $data = Gravity::all();
         return view('admin/gravity', compact('data'));
+    }
+    public function probability()
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $data = Probability::all();
+        return view('admin/probability', compact('data'));
     }
     public function processes()
     {

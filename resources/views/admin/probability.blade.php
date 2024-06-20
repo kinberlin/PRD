@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des niveaux de gravités
+    Gestion des niveaux de probabilités
 @endsection
 @section('manualstyle')
 @endsection
@@ -9,11 +9,11 @@
         <!-- Users List Table -->
         <div class="col-12">
             <div class="card mb-4">
-                <h5 class="card-header">Niveaux de gravités</h5>
+                <h5 class="card-header">Niveaux de probabilités</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter une Gravité</button>
+                            aria-controls="offcanvasEnd">Ajouter une Probabilité</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
@@ -23,10 +23,10 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="{{route('admin.gravity.store')}}" method="POST">
+                                    novalidate="novalidate" action="{{route('admin.probability.store')}}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Nommez la gravité</label>
+                                        <label class="form-label" for="name">Nommez la probabilité</label>
                                         <input type="text" maxlength="50" class="form-control" name="data[0][1]"
                                             placeholder="Grave">
                                         <input type="hidden" class="form-control" name="data[0][0]">
@@ -59,7 +59,7 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
 
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="{{route('admin.gravity.store')}}" method="POST">
+                        <form action="{{route('admin.probability.store')}}" method="POST">
                             @csrf 
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -75,14 +75,14 @@
         <div class="card">
 
             <div class="card-body">
-                <h5 class="card-title">Liste d'gravitys sur PRD</h5>
+                <h5 class="card-title">Liste d'probabilitys sur PRD</h5>
                 <div class=" align-items-start justify-content-between">
                     <table id="datatables-orders"
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Gravité</th>
+                                <th>Probabilité</th>
                                 <th>Intervalle en FCFA</th>
                                 <th>Action</th>
                             </tr>
@@ -95,12 +95,12 @@
                                     <td>{{ $d->least_price . ' < Perte en XAF ≤ ' . $d->max_price }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
-                                            data-bs-target="#delgravity{{ $d->id }}">Désactiver</button>
+                                            data-bs-target="#delprobability{{ $d->id }}">Désactiver</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#majgravity{{ $d->id }}">
+                                            data-bs-target="#majprobability{{ $d->id }}">
                                             M.A.J
                                         </button>
-                                        <div class="modal modal-top fade" id="delgravity{{ $d->id }}"
+                                        <div class="modal modal-top fade" id="delprobability{{ $d->id }}"
                                             tabindex="-1">
                                             <div class="modal-dialog">
                                                 <form class="modal-content">
@@ -124,16 +124,16 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.gravity.destroy', ['id'=> $d->id]) }}"
+                                                        <a href="{{ route('admin.probability.destroy', ['id'=> $d->id]) }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                         <div class="modal animate__animated animate__bounceInUp"
-                                            id="majgravity{{ $d->id }}" tabindex="-1" aria-hidden="true">
+                                            id="majprobability{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="{{route('admin.gravity.update', ['id'=> $d->id])}}"
+                                                <form class="modal-content" action="{{route('admin.probability.update', ['id'=> $d->id])}}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J
@@ -170,7 +170,7 @@
                                                             </div>
                                                             <div class="col mb-3">
                                                                 <label for="no{{ $d->id }}"
-                                                                    class="form-label">Note de la gravité</label>
+                                                                    class="form-label">Note de la probabilité</label>
                                                                 <input type="number" id="no{{ $d->id }}"
                                                                     name="note" value="{{ $d->note }}"
                                                                     class="form-control" placeholder="XAF">
