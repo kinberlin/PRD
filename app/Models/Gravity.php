@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property int    $created_at
  * @property int    $deleted_at
+ * @property int    $least_price
+ * @property int    $max_price
  * @property int    $note
  * @property string $name
  */
 class Gravity extends Model
-{use SoftDeletes;
+{
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -34,7 +37,7 @@ class Gravity extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'name', 'note'
+        'created_at', 'deleted_at', 'least_price', 'max_price', 'name', 'note'
     ];
 
     /**
@@ -42,9 +45,7 @@ class Gravity extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be casted to native types.
@@ -52,7 +53,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'name' => 'string', 'note' => 'int'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int'
     ];
 
     /**

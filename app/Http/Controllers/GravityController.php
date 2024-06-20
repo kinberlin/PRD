@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class GravityController extends Controller
@@ -43,11 +44,12 @@ class GravityController extends Controller
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-
-                $name = $row[1];
                 Gravity::create([
                     //'id' => $id,
-                    'name' => $name,
+                    'name' => $row[1],
+                    'least_price' =>  $row[2],
+                    'max_price' => $row[3],
+                    'note' => $row[4]
                 ]);
             }
             DB::commit();
@@ -80,9 +82,20 @@ class GravityController extends Controller
     {
         try {
             Gate::authorize('isAdmin', Auth::user());
+            
             DB::beginTransaction();
             $d = Gravity::find($id);
+            $validatedData = $request->validate([
+                'minloss' => 'required|numeric|min:0.01',
+                'maxloss' => 'required|numeric|min:0.01',
+                'note' => 'required|numeric|min:1',
+            ]);
+    
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
+            $d->least_price = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');
+            $d->max_price = empty($request->input('maxloss')) ? $d->name : $request->input('maxloss');
+            $d->note = empty($request->input('note')) ? $d->note : $request->input('note');
+            
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");

@@ -27,12 +27,27 @@
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nommez la gravité</label>
-                                        <input type="text" class="form-control" name="data[0][1]"
+                                        <input type="text" maxlength="50" class="form-control" name="data[0][1]"
                                             placeholder="Grave">
                                         <input type="hidden" class="form-control" name="data[0][0]">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="minlost">Perte Minimal en FCFA</label>
+                                        <input type="number" id="minlost" class="form-control" name="data[0][2]" min="0"
+                                            placeholder="XAF">
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="maxlost">Perte Maximal en FCFA</label>
+                                        <input type="number" id="maxlost" class="form-control" name="data[0][3]" min="0"
+                                            placeholder="XAF">
+                                    </div>
+                                    <div class="mb-3 fv-plugins-icon-container">
+                                        <label class="form-label" for="note">Note</label>
+                                        <input type="number" id="note" class="form-control" name="data[0][4]" min="0"
+                                            placeholder="ex : 1, 2 ...">
                                     </div>
                                     <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Ajouter</button>
                                     <button type="reset" class="btn btn-label-secondary"
@@ -42,7 +57,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        
+
                         <input type="file" style="visibility: hidden" id="excelFileInput">
                         <form action="/admin/gravity" method="POST">
                             @csrf
@@ -68,6 +83,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Gravité</th>
+                                <th>Intervalle en FCFA</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -76,6 +92,7 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
+                                    <td>{{ $d->least_price . ' < Perte en XAF ≤ ' . $d->max_price }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delgravity{{ $d->id }}">Désactiver</button>
@@ -128,10 +145,35 @@
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Nom</label>
-                                                                <input type="text" id="nameBasic" name="name"
+                                                                <label for="nameBasic{{ $d->id }}"
+                                                                    class="form-label">Nom</label>
+                                                                <input type="text" maxlength="50"
+                                                                    id="nameBasic{{ $d->id }}" name="name"
                                                                     value="{{ $d->name }}" class="form-control"
                                                                     placeholder="Entrer le nom">
+                                                            </div>
+                                                            <div class="col mb-3">
+                                                                <label for="leastloss{{ $d->id }}"
+                                                                    class="form-label">Perte Minimal en XAF</label>
+                                                                <input type="number" id="leastloss{{ $d->id }}"
+                                                                    name="minloss" value="{{ $d->least_price }}" min="0"
+                                                                    class="form-control" placeholder="XAF">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <label for="maxloss{{ $d->id }}"
+                                                                    class="form-label">Perte Maximal en XAF</label>
+                                                                <input type="number" id="maxloss{{ $d->id }}"
+                                                                    name="maxloss" value="{{ $d->max_price }}" min="0"
+                                                                    class="form-control" placeholder="XAF">
+                                                            </div>
+                                                            <div class="col mb-3">
+                                                                <label for="no{{ $d->id }}"
+                                                                    class="form-label">Note de la gravité</label>
+                                                                <input type="number" id="no{{ $d->id }}"
+                                                                    name="note" value="{{ $d->note }}"
+                                                                    class="form-control" placeholder="XAF">
                                                             </div>
                                                         </div>
                                                     </div>
