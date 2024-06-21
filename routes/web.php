@@ -90,6 +90,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
     
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
+    Route::post('/dysfunction/cost/{id}', 'DysfunctionController@cost')->name('dysfunction.cost');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
     Route::post('/dysfunction/evaluate/{id}', 'DysfunctionController@evaluation')->name('dysfunction.evaluation');

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $solved
  * @property integer $cost
  * @property integer $closed_at
+ * @property int $created_at
  * @property string $enterprise
  * @property string $site
  * @property string $emp_signaling
@@ -27,7 +28,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $status
  * @property integer $progression
  * @property mixed $pj
- * @property string $created_at
  * @property string $deleted_at
  * @property string $occur_date
  * @property string $cause
@@ -56,7 +56,18 @@ class Dysfunction extends Model
 
     protected $fillable = ['enterprise', 'site', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at'];
     public $timestamps = false;
+    protected $casts = [
+       'created_at' => 'datetime:d-m-Y H:i'
+    ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at'
+    ];
     public function tasks()
     {
         return $this->hasMany(Task::class, 'dysfunction', 'id');

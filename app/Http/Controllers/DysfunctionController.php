@@ -156,6 +156,25 @@ class DysfunctionController extends Controller
 
         return view('admin/dys_report');
     }
+    public function cost(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $validatedData = $request->validate([
+                'cost' => 'required|numeric|min:1',
+            ]);
+            $dys = Dysfunction::find($id);
+            if ($dys == null) {
+                throw new Exception("La ressource spécifié est introuvable.", 404);
+            }
+            $dys->cost = $request->input('cost');
+            $dys->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
     public function launchEvaluation($id)
     {
         $dys = Dysfunction::find($id);

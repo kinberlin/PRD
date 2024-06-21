@@ -21,7 +21,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
                                                     <div>
-                                                        <h3 class="mb-1">{{$complainant}}</h3>
+                                                        <h3 class="mb-1">{{ $complainant }}</h3>
                                                         <p class="mb-0">Plaignants</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-sm-4">
@@ -34,7 +34,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
                                                     <div>
-                                                        <h3 class="mb-1">{{count($data)}}</h3>
+                                                        <h3 class="mb-1">{{ count($data) }}</h3>
                                                         <p class="mb-0">Signalements</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-lg-4">
@@ -47,7 +47,7 @@
                                                 <div
                                                     class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
                                                     <div>
-                                                        <h3 class="mb-1">{{count($data->whereIn('status',[6, 3]))}}</h3>
+                                                        <h3 class="mb-1">{{ count($data->whereIn('status', [6, 3])) }}</h3>
                                                         <p class="mb-0">Traités</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2 me-sm-4">
@@ -58,7 +58,8 @@
                                             <div class="col-sm-6 col-lg-3">
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <div>
-                                                        <h3 class="mb-1">{{count($data->whereNotIn('status', [1, 3, 6]))}}</h3>
+                                                        <h3 class="mb-1">
+                                                            {{ count($data->whereNotIn('status', [1, 3, 6])) }}</h3>
                                                         <p class="mb-0">En cours de traitement</p>
                                                     </div>
                                                     <span class="badge bg-label-secondary rounded p-2">
@@ -86,10 +87,8 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Lieu</th>
-                                <th>Date d'Ajout<br>sur PRD</th>
-                                <th>Date de Constat</th>
-                                <th>Lieu</th>
+                                <th>Detail du<br>Constat</th>
+                                <th>Dépense</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -97,15 +96,57 @@
                         <tbody>
                             @foreach ($data as $d)
                                 <tr>
-                                    <td>#{{$d->id}}</td>
-                                    <td>{{$d->enterprise}} ( {{$d->site}} )</td>
-                                    <td>{{$d->created_at}}</td>
-                                    <td>{{$d->occur_date}}</td>
-                                    <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
-                                    <td>{{\App\Models\Status::find($d->status)->name}}</td>
-                                    <td><a href="{!! route('admin.dysfunction.show', ['id'=>$d->id]) !!}" target="_blank" class="btn rounded-pill btn-icon btn-info">
+                                    <td>#{{ $d->id }}</td>
+                                    <td>Date : <b>{{ $d->occur_date }}</b><br>Lieu :
+                                        <b>{{ $d->enterprise . ' (' . $d->site . ')' }}</b>
+                                    <br>Enregistrement : <b>{{ $d->created_at->locale('fr')->isoFormat('DD-MM-YYYY HH:mm:ss'); }}</b>
+                                    </td>
+                                    <td>{{formatNumber($d->cost)}}</td>
+                                    <td>{{ \App\Models\Status::find($d->status)->name }}</td>
+                                    <td>
+                                        @can('DysRunning', $d)
+                                            <button type="button" class="btn btn-info rounded-pill btn-icon"
+                                                data-bs-toggle="modal" data-bs-target="#dys_cost{{ $d->id }}">
+                                                <span class="tf-icons bx bx-dollar"></span>
+                                            </button>
+
+                                            <div class="modal animate__animated animate__bounceInUp"
+                                                id="dys_cost{{ $d->id }}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <form class="modal-content"
+                                                        action="{{ route('dysfunction.cost', ['id' => $d->id]) }}"
+                                                        method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel1">Dépense non Qualité
+                                                                pour [{{ $d->code }}] </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            <div class="row">
+                                                                <div class="col mb-6">
+                                                                    <label for="nameBasic" class="form-label">Montant</label>
+                                                                    <input type="number" id="nameBasic" name="cost"
+                                                                        value="{{ $d->cost }}" class="form-control"
+                                                                        placeholder="Entrer le montant" min="0">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-label-secondary"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endcan
+                                        <a href="{!! route('admin.dysfunction.show', ['id' => $d->id]) !!}" target="_blank"
+                                            class="btn rounded-pill btn-icon btn-success">
                                             <span class="tf-icons bx bx-info-circle"></span>
-                                        </a></td>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
