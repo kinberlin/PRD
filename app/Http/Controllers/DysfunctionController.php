@@ -49,7 +49,7 @@ class DysfunctionController extends Controller
             DB::beginTransaction();
             $dys = new Dysfunction();
             $ents = Enterprise::where('name', $request->input('enterprise'))->get()->first();
-            if(empty($ents)){
+            if (empty($ents)) {
                 throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
             }
             $dys->occur_date = $request->input('occur_date');
@@ -78,10 +78,10 @@ class DysfunctionController extends Controller
             $dys->save();
             $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-            $content = view('employees.dysfunction_appMail', ['code'=>$dys->code, 'description'=>$dys->description])->render();
-            $newmail = new ApiMail(null,$rq->pluck('email')->unique()->toArray(),'Cadyst PRD App', "Annonce d'incident - Matricule de l'incident : [".$dys->code."]",$content,[]);
+            $content = view('employees.dysfunction_appMail', ['code' => $dys->code, 'description' => $dys->description])->render();
+            $newmail = new ApiMail(null, $rq->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Annonce d'incident - Matricule de l'incident : [" . $dys->code . "]", $content, []);
             $result = $newmail->send();
-            return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (".$result->getData()->code.')');
+            return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (" . $result->getData()->code . ')');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -131,21 +131,27 @@ class DysfunctionController extends Controller
     public function cancel($id)
     {
         try {
-            DB::beginTransaction();
             $dys = Dysfunction::find($id);
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 404);
             }
-            if ($dys->status == 3) {
-                throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
-            }
-            $dys->status = 3;
+            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('name', $dys->enterprise)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+                DB::beginTransaction();
 
-            if ($dys->status == 1) {
-                $dys->status = 2;
+                if ($dys->status == 3) {
+                    throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
+                }
+                $dys->status = 3;
+                $dys->closed_by = Auth::user()->firstname . ' (' . Auth::user()->matricule . ')';
+                if ($dys->status == 1) {
+                    $dys->status = 2;
+                }
+                $dys->save();
+                DB::commit();
+            } else {
+                // The user is neither an rq nor a super admin
+                abort(403, 'Unauthorized action.');
             }
-            $dys->save();
-            DB::commit();
             return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -167,9 +173,15 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 404);
             }
-            $dys->cost = $request->input('cost');
-            $dys->save();
-            DB::commit();
+            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('name', $dys->enterprise)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+                Gate::authorize('DysInEvaluation', $dys);
+                $dys->cost = $request->input('cost');
+                $dys->save();
+                DB::commit();
+            } else {
+                // The user is neither an rq nor a super admin
+                abort(403, 'Unauthorized action.');
+            }
             return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -179,32 +191,37 @@ class DysfunctionController extends Controller
     {
         $dys = Dysfunction::find($id);
         try {
-            if (Gate::allows('DysCanEvaluate', [$dys != null ? $dys : null])) {
-                DB::beginTransaction();
-                if ($dys == null) {
-                    throw new Exception("La ressource spécifié est introuvable.", 404);
+            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('name', $dys->enterprise)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+                if (Gate::allows('DysCanEvaluate', [$dys != null ? $dys : null])) {
+                    DB::beginTransaction();
+                    if ($dys == null) {
+                        throw new Exception("La ressource spécifié est introuvable.", 404);
+                    }
+                    if ($dys->status == 3) {
+                        throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
+                    }
+                    $dys->status = 5;
+                    $parentTasks = Task::select('tasks.id', 'tasks.text')
+                        ->distinct()
+                        ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                        ->where('t2.dysfunction', $id)
+                        ->get();
+                    $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+                    if (!empty($corrections)) {
+                        Evaluation::whereIn('task', $corrections->pluck('id')->unique())->delete();
+                    }
+                    if ($dys->status == 1) {
+                        $dys->status = 2;
+                    }
+                    $dys->save();
+                    DB::commit();
+                    return redirect()->back()->with('error', "Lancement de l'Evaluation.");
+                } else {
+                    throw new Exception("« Le statut actuel de ce dysfonctionnement ne le permet pas de passer en évaluation. »", 401);
                 }
-                if ($dys->status == 3) {
-                    throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
-                }
-                $dys->status = 5;
-                $parentTasks = Task::select('tasks.id', 'tasks.text')
-                    ->distinct()
-                    ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
-                    ->where('t2.dysfunction', $id)
-                    ->get();
-                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
-                if (!empty($corrections)) {
-                    Evaluation::whereIn('task', $corrections->pluck('id')->unique())->delete();
-                }
-                if ($dys->status == 1) {
-                    $dys->status = 2;
-                }
-                $dys->save();
-                DB::commit();
-                return redirect()->back()->with('error', "Lancement de l'Evaluation.");
             } else {
-                throw new Exception("« Le statut actuel de ce dysfonctionnement ne le permet pas de passer en évaluation. »", 401);
+                // The user is neither an rq nor a super admin
+                abort(403, 'Unauthorized action.');
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

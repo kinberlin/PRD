@@ -56,7 +56,11 @@
                 <div class="mt-auto">
                     @php
                       $alldys = \App\Models\Dysfunction::whereYear('created_at',\Carbon\Carbon::now()->year)->get();
-                        $created = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
+                      $alldystype = \App\Models\DysfunctionType::all();  
+                      $allgravity = \App\Models\Gravity::all();  
+                      $allsite = \App\Models\Site::all();  
+                      $allprocess = \App\Models\Processes::all();  
+                      $created = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->count();
                         $rejected = $alldys->whereBetween('created_at', [Carbon\Carbon::now()->subWeek()->startOfWeek(), Carbon\Carbon::now()->subWeek()->endOfWeek()])->where('status', 3)->count();
                         $percentage = $rejected > 0 ? $rejected  * 100 / $created : 0;
                         //sites with the highest occurances
@@ -159,7 +163,7 @@
         </div>
       </div>
 
-      <!-- Total Income -->
+
       <div class="col-md-12 col-lg-8 mb-4">
         <div class="card">
           <div class="row row-bordered g-0">
@@ -177,117 +181,298 @@
             <div class="col-md-4">
               <div class="card-header d-flex justify-content-between">
                 <div>
-                  <h5 class="card-title mb-0">Report</h5>
+                  <h5 class="card-title mb-0">Rapport</h5>
                   <small class="card-subtitle"
-                    >Monthly Avg. $45.578k</small
+                    >Cout de Non Qualité : <b>{{formatNumber($alldys->sum('cost'))}}</b> XAF</small
                   >
-                </div>
-                <div class="dropdown">
-                  <button
-                    class="btn p-0"
-                    type="button"
-                    id="totalIncome"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                  </button>
-                  <div
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="totalIncome"
-                  >
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      >Last 28 Days</a
-                    >
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      >Last Month</a
-                    >
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0);"
-                      >Last Year</a
-                    >
-                  </div>
                 </div>
               </div>
               <div class="card-body">
                 <div class="report-list">
+                  @foreach ($alldys->sortByDesc('cost')->take(5) as $_c)
                   <div class="report-list-item rounded-2 mb-3">
                     <div class="d-flex align-items-start">
                       <div class="report-list-icon shadow-sm me-2">
-                        <img
-                          src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/svg/icons/paypal-icon.svg"
-                          width="22"
-                          height="22"
-                          alt="Paypal"
-                        />
+                        <i class="bx bx-cog" style="width: 22px, height : 22px"></i>
                       </div>
                       <div
                         class="d-flex justify-content-between align-items-end w-100 flex-wrap gap-2"
                       >
                         <div class="d-flex flex-column">
-                          <span>Income</span>
-                          <h5 class="mb-0">$42,845</h5>
+                          <span>{{$_c->code}}</span>
+                          <h6 class="mb-0">{{formatNumber($_c->cost)}} XAF</h6>
                         </div>
-                        <small class="text-success">+2.34k</small>
+                        <small class="text-success">{{\Carbon\Carbon::parse($_c->created_at)->format('d/m')}}</small>
                       </div>
                     </div>
                   </div>
-                  <div class="report-list-item rounded-2 mb-3">
-                    <div class="d-flex align-items-start">
-                      <div class="report-list-icon shadow-sm me-2">
-                        <img
-                          src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/svg/icons/shopping-bag-icon.svg"
-                          width="22"
-                          height="22"
-                          alt="Shopping Bag"
-                        />
-                      </div>
-                      <div
-                        class="d-flex justify-content-between align-items-end w-100 flex-wrap gap-2"
-                      >
-                        <div class="d-flex flex-column">
-                          <span>Expense</span>
-                          <h5 class="mb-0">$38,658</h5>
-                        </div>
-                        <small class="text-danger">-1.15k</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="report-list-item rounded-2">
-                    <div class="d-flex align-items-start">
-                      <div class="report-list-icon shadow-sm me-2">
-                        <img
-                          src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/svg/icons/wallet-icon.svg"
-                          width="22"
-                          height="22"
-                          alt="Wallet"
-                        />
-                      </div>
-                      <div
-                        class="d-flex justify-content-between align-items-end w-100 flex-wrap gap-2"
-                      >
-                        <div class="d-flex flex-column">
-                          <span>Profit</span>
-                          <h5 class="mb-0">$18,220</h5>
-                        </div>
-                        <small class="text-success">+1.35k</small>
-                      </div>
-                    </div>
-                  </div>
+                  @endforeach
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!--/ Total Income -->
+
       </div>
-      <!--/ Total Income -->
+
+    </div>
+    <div class="row">
+    <div class="col-12 col-lg-8 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-6">
+            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+              <h5 class="card-title m-0 me-2">Dysfonctionnemnets par <span class="text-primary">Type</span></h5>
+              <div class="dropdown">
+                <button class="btn p-0" type="button" id="topSales" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topSales">
+                  <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="p-0 m-0">
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/oneplus.png" alt="oneplus">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Oneplus Nord</h6>
+                      <small class="text-muted d-block mb-1">Oneplus</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">$98,348</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/watch-primary.png" alt="smart band">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Smart Band 4</h6>
+                      <small class="text-muted d-block mb-1">Xiaomi</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">$15,459</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/surface.png" alt="Surface">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Surface Pro X</h6>
+                      <small class="text-muted d-block mb-1">Miscrosoft</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">$4,589</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/iphone.png" alt="iphone">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">iphone 13</h6>
+                      <small class="text-muted d-block mb-1">Apple</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">$84,345</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/earphone.png" alt="Bluetooth Earphone">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Bluetooth Earphone</h6>
+                      <small class="text-muted d-block mb-1">Beats</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">$10,374</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+              <h5 class="card-title m-0 me-2">Top Products by <span class="text-primary">Volume</span></h5>
+              <div class="dropdown">
+                <button class="btn p-0" type="button" id="topVolume" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topVolume">
+                  <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="p-0 m-0">
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/laptop-secondary.png" alt="ENVY Laptop" class="rounded">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">ENVY Laptop</h6>
+                      <small class="text-muted d-block mb-1">HP</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-3">
+                      <span class="fw-medium">124k</span>
+                      <span class="badge bg-label-success">+12.4%</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/computer.png" alt="Apple" class="rounded">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Apple</h6>
+                      <small class="text-muted d-block mb-1">iMac Pro</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-3">
+                      <span class="fw-medium">74.9k</span>
+                      <span class="badge bg-label-danger">-8.5%</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/watch.png" alt="Smart Watch" class="rounded">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Smart Watch</h6>
+                      <small class="text-muted d-block mb-1">Fitbit</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-3">
+                      <span class="fw-medium">4.4k</span>
+                      <span class="badge bg-label-success">+62.6%</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/oneplus-success.png" alt="Oneplus RT" class="rounded">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Oneplus RT</h6>
+                      <small class="text-muted d-block mb-1">Oneplus</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-3">
+                      <span class="fw-medium">12,3k.71</span>
+                      <span class="badge bg-label-success">+16.7%</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <img src="../../assets/img/icons/unicons/pixel.png" alt="Pixel 4a" class="rounded">
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Pixel 4a</h6>
+                      <small class="text-muted d-block mb-1">Google</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-3">
+                      <span class="fw-medium">834k</span>
+                      <span class="badge bg-label-danger">-12.9%</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 col-xl-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between">
+          <div class="card-title mb-0">
+            <h5 class="m-0 me-2">Earning Reports</h5>
+            <small class="text-muted">Weekly Earnings Overview</small>
+          </div>
+          <div class="dropdown">
+            <button class="btn p-0" type="button" id="earningReports" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="bx bx-dots-vertical-rounded"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReports">
+              <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pb-0">
+          <ul class="p-0 m-0">
+            <li class="d-flex mb-4 pb-1">
+              <div class="avatar flex-shrink-0 me-3">
+                <span class="avatar-initial rounded bg-label-primary"><i class='bx bx-trending-up'></i></span>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Net Profit</h6>
+                  <small class="text-muted">12.4k Sales</small>
+                </div>
+                <div class="user-progress">
+                  <small class="fw-medium">$1,619</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">18.6%</small>
+                </div>
+              </div>
+            </li>
+            <li class="d-flex mb-4 pb-1">
+              <div class="avatar flex-shrink-0 me-3">
+                <span class="avatar-initial rounded bg-label-success"><i class='bx bx-dollar'></i></span>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Total Income</h6>
+                  <small class="text-muted">Sales, Affiliation</small>
+                </div>
+                <div class="user-progress">
+                  <small class="fw-medium">$3,571</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">39.6%</small>
+                </div>
+              </div>
+            </li>
+            <li class="d-flex mb-4 pb-1">
+              <div class="avatar flex-shrink-0 me-3">
+                <span class="avatar-initial rounded bg-label-secondary"><i class='bx bx-credit-card'></i></span>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Total Expenses</h6>
+                  <small class="text-muted">ADVT, Marketing</small>
+                </div>
+                <div class="user-progress">
+                  <small class="fw-medium">$430</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">52.8%</small>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div id="reportBarChart"></div>
+        </div>
+      </div>
+    </div>
     </div>
     <div class="row">
       <!-- Performance -->

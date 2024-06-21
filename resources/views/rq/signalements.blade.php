@@ -12,7 +12,7 @@
                 <h5 class="card-header">Tous les Signalements</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        
+
                     </div>
                 </div>
                 <hr class="m-0">
@@ -27,33 +27,76 @@
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Date de soumission</th>
-                                <th>Date de Constat</th>
-                                <th>Description</th>
-                                <th>Lieu</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
+                                <th>Id</th>
+                                <th>Detail du<br>Constat</th>
+                                <th>Dépense</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $d)
                                 <tr>
-                                    <td>{{ $d->id }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y H:i:s') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($d->occur_date)->format('d-m-Y') }}</td>
-                                    <td>{{ $d->description }}</td>
-                                    <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
-                                    <td>{{ $status->where('id', $d->status)->first()->name }}</td>
+                                    <td>#{{ $d->id }}</td>
+                                    <td>Date : <b>{{ $d->occur_date }}</b><br>Lieu :
+                                        <b>{{ $d->enterprise . ' (' . $d->site . ')' }}</b>
+                                        <br>Enregistrement :
+                                        <b>{{ $d->created_at->locale('fr')->isoFormat('DD-MM-YYYY HH:mm:ss') }}</b>
+                                    </td>
+                                    <td>{{ formatNumber($d->cost) }}</td>
+                                    <td>{{ \App\Models\Status::find($d->status)->name }}</td>
                                     <td>
-                                        @canany(['isEnterpriseRQ', 'isAdmin'], [\App\Models\Enterprise::where('name', $d->enterprise)->get()->first(), Auth::user()])
+                                        @canany(['isEnterpriseRQ', 'isAdmin'],
+                                            [
+                                            \App\Models\Enterprise::where('name', $d->enterprise)->get()->first(),
+                                            Auth::user(),
+                                            ])
+                                        @can('DysRunning', $d)
+                                            <button type="button" class="btn btn-info rounded-pill btn-icon"
+                                                data-bs-toggle="modal" data-bs-target="#dys_cost{{ $d->id }}">
+                                                <span class="tf-icons bx bx-dollar"></span>
+                                            </button>
+
+                                            <div class="modal animate__animated animate__bounceInUp"
+                                                id="dys_cost{{ $d->id }}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <form class="modal-content"
+                                                        action="{{ route('dysfunction.cost', ['id' => $d->id]) }}"
+                                                        method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel1">Dépense non Qualité
+                                                                pour [{{ $d->code }}] </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @csrf
+                                                            <div class="row">
+                                                                <div class="col mb-6">
+                                                                    <label for="nameBasic" class="form-label">Montant</label>
+                                                                    <input type="number" id="nameBasic" name="cost"
+                                                                        value="{{ $d->cost }}" class="form-control"
+                                                                        placeholder="Entrer le montant" min="0">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-label-secondary"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endcan
                                             <a href="/rq/detail/dysfonctionnement/{{ $d->id }}" target="_blank"
-                                                class="btn rounded-pill btn-icon btn-info">
+                                                class="btn rounded-pill btn-icon btn-success">
                                                 <span class="tf-icons bx bx-info-circle"></span>
                                             </a>
                                         @else
-                                        Aucune action possible.
+                                            Aucune action possible.
                                         @endcanany
+                                    </td>
                                     </td>
                                 </tr>
                             @endforeach
@@ -76,20 +119,20 @@
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
     <script>
         /* document.addEventListener("DOMContentLoaded", function() {
-                // Datatables Orders
-                $("#datatables-order").DataTable({
-                    "paging": true,
-                    "pageLength": 10,
-                    "dom": 'Bfrtip', // Show buttons (B) for export
-                    "buttons": [
-                        'excel' // Add export button for Excel
-                    ],
-                    responsive: true,
-                    aoColumnDefs: [{
-                        bSortable: false,
-                        aTargets: [-1]
-                    }]
-                });
-            });*/
+                    // Datatables Orders
+                    $("#datatables-order").DataTable({
+                        "paging": true,
+                        "pageLength": 10,
+                        "dom": 'Bfrtip', // Show buttons (B) for export
+                        "buttons": [
+                            'excel' // Add export button for Excel
+                        ],
+                        responsive: true,
+                        aoColumnDefs: [{
+                            bSortable: false,
+                            aTargets: [-1]
+                        }]
+                    });
+                });*/
     </script>
 @endsection

@@ -366,8 +366,8 @@ class DynamicJsController extends Controller
             document.querySelector("#performanceChart")),
         c = {
             series: [
-                { name: "Income", data: [26, 29, 31, 40, 29, 24] },
-                { name: "Earning", data: [30, 26, 24, 26, 24, 40] },
+                { name: "Income", data: [26, 29, 31, 40, 29, 24,26, 29, 31, 40, 29, 24] },
+                { name: "Earning", data: [30, 26, 24, 26, 24, 40,30, 26, 24, 26, 24, 40] },
             ],
             chart: {
                 height: 270,
@@ -386,22 +386,22 @@ class DynamicJsController extends Controller
             plotOptions: {
                 radar: { polygons: { strokeColors: s, connectorColors: s } },
             },
-            stroke: { show: !1, width: 0 },
+            stroke: { show: !0, width: 0 },
             legend: {
                 show: !0,
                 fontSize: "13px",
                 position: "bottom",
-                labels: { colors: "#aab3bf", useSeriesColors: !1 },
+                labels: { colors: "#aab3bf", useSeriesColors: !0 },
                 markers: { height: 10, width: 10, offsetX: -3 },
                 itemMargin: { horizontal: 10 },
-                onItemHover: { highlightDataSeries: !1 },
+                onItemHover: { highlightDataSeries: !0 },
             },
             colors: [config.colors.primary, config.colors.info],
             fill: { opacity: [1, 0.85] },
             markers: { size: 0 },
             grid: { show: !1, padding: { top: -8, bottom: -5 } },
             xaxis: {
-                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 labels: {
                     show: !0,
                     style: {
