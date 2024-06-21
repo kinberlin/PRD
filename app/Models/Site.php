@@ -14,7 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $location
  */
 class Site extends Model
-{use SoftDeletes;
+{
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -43,9 +44,7 @@ class Site extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be casted to native types.
@@ -77,4 +76,8 @@ class Site extends Model
     // Functions ...
 
     // Relations ...
+    public function dysfunctions()
+    {
+        return $this->hasMany(Site::class, 'site_id', 'id');
+    }
 }

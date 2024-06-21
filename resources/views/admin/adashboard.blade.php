@@ -217,99 +217,62 @@
 
     </div>
     <div class="row">
-    <div class="col-12 col-lg-8 mb-4">
+    <div class="col-12 col-lg-12 mb-4">
       <div class="card">
         <div class="row row-bordered g-0">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card-header d-flex align-items-center justify-content-between mb-4">
               <h5 class="card-title m-0 me-2">Dysfonctionnemnets par <span class="text-primary">Type</span></h5>
-              <div class="dropdown">
-                <button class="btn p-0" type="button" id="topSales" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topSales">
-                  <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                  <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                  <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                </div>
-              </div>
             </div>
             <div class="card-body">
               <ul class="p-0 m-0">
+                @foreach ($alldystype as $dyst)
+                  
                 <li class="d-flex mb-4 pb-1">
                   <div class="avatar flex-shrink-0 me-3">
-                    <img src="../../assets/img/icons/unicons/oneplus.png" alt="oneplus">
+                    <i class="bx bx-paperclip"></i>
                   </div>
                   <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                     <div class="me-2">
-                      <h6 class="mb-0">Oneplus Nord</h6>
-                      <small class="text-muted d-block mb-1">Oneplus</small>
+                      <h6 class="mb-0">{{$dyst->name}}</h6>
+                      <small class="text-muted d-block mb-1">Nombre de dysfonctionnements :</small>
                     </div>
                     <div class="user-progress d-flex align-items-center gap-1">
-                      <span class="fw-medium">$98,348</span>
+                      <span class="fw-medium">{{formatNumber(count($dyst->dysfunctions))}}</span>
                     </div>
                   </div>
                 </li>
-                <li class="d-flex mb-4 pb-1">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../../assets/img/icons/unicons/watch-primary.png" alt="smart band">
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">Smart Band 4</h6>
-                      <small class="text-muted d-block mb-1">Xiaomi</small>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <span class="fw-medium">$15,459</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../../assets/img/icons/unicons/surface.png" alt="Surface">
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">Surface Pro X</h6>
-                      <small class="text-muted d-block mb-1">Miscrosoft</small>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <span class="fw-medium">$4,589</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../../assets/img/icons/unicons/iphone.png" alt="iphone">
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">iphone 13</h6>
-                      <small class="text-muted d-block mb-1">Apple</small>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <span class="fw-medium">$84,345</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../../assets/img/icons/unicons/earphone.png" alt="Bluetooth Earphone">
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">Bluetooth Earphone</h6>
-                      <small class="text-muted d-block mb-1">Beats</small>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <span class="fw-medium">$10,374</span>
-                    </div>
-                  </div>
-                </li>
+                @endforeach
               </ul>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+              <h5 class="card-title m-0 me-2">Dysfonctionnemnets par <span class="text-primary">Site</span></h5>
+            </div>
+            <div class="card-body">
+              <ul class="p-0 m-0">
+                @foreach ($allsite as $si)
+                  
+                <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                    <i class="bx bx-paperclip"></i>
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">{{$si->name}}</h6>
+                      <small class="text-muted d-block mb-1">Nombre de dysfonctionnements :</small>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-1">
+                      <span class="fw-medium">{{formatNumber(count($dyst->dysfunctions))}}</span>
+                    </div>
+                  </div>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
             <div class="card-header d-flex align-items-center justify-content-between mb-4">
               <h5 class="card-title m-0 me-2">Top Products by <span class="text-primary">Volume</span></h5>
               <div class="dropdown">
@@ -403,73 +366,6 @@
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-4 col-xl-4 mb-4">
-      <div class="card h-100">
-        <div class="card-header d-flex justify-content-between">
-          <div class="card-title mb-0">
-            <h5 class="m-0 me-2">Earning Reports</h5>
-            <small class="text-muted">Weekly Earnings Overview</small>
-          </div>
-          <div class="dropdown">
-            <button class="btn p-0" type="button" id="earningReports" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="bx bx-dots-vertical-rounded"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReports">
-              <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-              <a class="dropdown-item" href="javascript:void(0);">Share</a>
-            </div>
-          </div>
-        </div>
-        <div class="card-body pb-0">
-          <ul class="p-0 m-0">
-            <li class="d-flex mb-4 pb-1">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class='bx bx-trending-up'></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <h6 class="mb-0">Net Profit</h6>
-                  <small class="text-muted">12.4k Sales</small>
-                </div>
-                <div class="user-progress">
-                  <small class="fw-medium">$1,619</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">18.6%</small>
-                </div>
-              </div>
-            </li>
-            <li class="d-flex mb-4 pb-1">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-success"><i class='bx bx-dollar'></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <h6 class="mb-0">Total Income</h6>
-                  <small class="text-muted">Sales, Affiliation</small>
-                </div>
-                <div class="user-progress">
-                  <small class="fw-medium">$3,571</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">39.6%</small>
-                </div>
-              </div>
-            </li>
-            <li class="d-flex mb-4 pb-1">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-secondary"><i class='bx bx-credit-card'></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <h6 class="mb-0">Total Expenses</h6>
-                  <small class="text-muted">ADVT, Marketing</small>
-                </div>
-                <div class="user-progress">
-                  <small class="fw-medium">$430</small><i class='bx bx-chevron-up text-success ms-1'></i> <small class="text-muted">52.8%</small>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div id="reportBarChart"></div>
         </div>
       </div>
     </div>

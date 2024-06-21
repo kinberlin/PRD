@@ -76,4 +76,8 @@ class DysfunctionType extends Model
     // Functions ...
 
     // Relations ...
+    public function dysfunctions()
+    {
+        return $this->hasMany(Dysfunction::class, 'type', 'id');
+    }
 }
