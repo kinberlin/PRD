@@ -78,6 +78,6 @@ class Site extends Model
     // Relations ...
     public function dysfunctions()
     {
-        return $this->hasMany(Site::class, 'site_id', 'id');
+        return $this->hasMany(Dysfunction::class, 'site_id', 'id');
     }
 }
