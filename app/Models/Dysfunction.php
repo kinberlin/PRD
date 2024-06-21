@@ -58,7 +58,7 @@ class Dysfunction extends Model
     protected $fillable = ['enterprise', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at'];
     public $timestamps = false;
     protected $casts = [
-       'created_at' => 'datetime:d-m-Y H:i'
+        'created_at' => 'datetime:d-m-Y H:i'
     ];
 
     /**
@@ -72,5 +72,16 @@ class Dysfunction extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class, 'dysfunction', 'id');
+    }
+    // Define the relationship with the Gravity model
+    public function gravities()
+    {
+        return $this->belongsTo(Gravity::class, 'name', 'gravity');
+    }
+
+    // Define the relationship with the Probability model
+    public function probabilities()
+    {
+        return $this->belongsTo(Probability::class, 'id');
     }
 }

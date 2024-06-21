@@ -69,13 +69,22 @@ class DynamicJsController extends Controller
         //yearChart
         // Initialize an array with 12 elements, each representing a month
         $monthlyQuantities = array_fill(0, 12, 0);
-        // Group dysfunctions by month and sum the quantities
+        // Group dysfunctions by month and count thier number
         $alldys->groupBy(function ($dys_) {
             return Carbon::parse($dys_->created_at)->format('n') - 1; // 'n' returns 1-12, we need 0-11 for array indices
         })->each(function ($group, $month) use (&$monthlyQuantities) {
             $monthlyQuantities[$month] = $group->count('id');
         });
         $yearStats = '[' . implode(', ', $monthlyQuantities) . ']';
+        //Total Balance
+        $months = array_fill(0, 12, 0);
+        $alldys->groupBy(function ($dys_) {
+            return Carbon::parse($dys_->created_at)->format('n') - 1; // 'n' returns 1-12, we need 0-11 for array indices
+        })->each(function ($group, $month) use (&$months) {
+            $months[$month] = $group->sum('cost');
+        });
+        $totalBalancedata = '[' . implode(', ', $months) . ']';
+        $arrSum = array_sum($months). ' FCFA';
         $jsContent = <<<EOT
         "use strict";
 !(function () {
@@ -101,6 +110,7 @@ class DynamicJsController extends Controller
           "#696cff");
           $('#activityDysProgression').text('$a_avgtProgression');
         $('#longestduration').text('$longestTask');
+        $('#noqualityCost').text('$arrSum');
     var d = document.querySelector("#visitorsChart"),
         c = {
             chart: {
@@ -363,220 +373,9 @@ class DynamicJsController extends Controller
         },
         d =
             (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#performanceChart")),
-        c = {
-            series: [
-                { name: "Income", data: [26, 29, 31, 40, 29, 24,26, 29, 31, 40, 29, 24] },
-                { name: "Earning", data: [30, 26, 24, 26, 24, 40,30, 26, 24, 26, 24, 40] },
-            ],
-            chart: {
-                height: 270,
-                type: "radar",
-                toolbar: { show: !1 },
-                dropShadow: {
-                    enabled: !0,
-                    enabledOnSeries: void 0,
-                    top: 6,
-                    left: 0,
-                    blur: 6,
-                    color: "#000",
-                    opacity: 0.14,
-                },
-            },
-            plotOptions: {
-                radar: { polygons: { strokeColors: s, connectorColors: s } },
-            },
-            stroke: { show: !0, width: 0 },
-            legend: {
-                show: !0,
-                fontSize: "13px",
-                position: "bottom",
-                labels: { colors: "#aab3bf", useSeriesColors: !0 },
-                markers: { height: 10, width: 10, offsetX: -3 },
-                itemMargin: { horizontal: 10 },
-                onItemHover: { highlightDataSeries: !0 },
-            },
-            colors: [config.colors.primary, config.colors.info],
-            fill: { opacity: [1, 0.85] },
-            markers: { size: 0 },
-            grid: { show: !1, padding: { top: -8, bottom: -5 } },
-            xaxis: {
-                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                labels: {
-                    show: !0,
-                    style: {
-                        colors: [r, r, r, r, r, r],
-                        fontSize: "13px",
-                        fontFamily: "Public Sans",
-                    },
-                },
-            },
-            yaxis: { show: !1, min: 0, max: 40, tickAmount: 4 },
-        },
-        d =
-            (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#conversionRateChart")),
-        c = {
-            chart: {
-                height: 80,
-                width: 140,
-                type: "line",
-                toolbar: { show: !1 },
-                dropShadow: {
-                    enabled: !0,
-                    top: 10,
-                    left: 5,
-                    blur: 3,
-                    color: config.colors.primary,
-                    opacity: 0.15,
-                },
-                sparkline: { enabled: !0 },
-            },
-            markers: {
-                size: 6,
-                colors: "transparent",
-                strokeColors: "transparent",
-                strokeWidth: 4,
-                discrete: [
-                    {
-                        fillColor: config.colors.white,
-                        seriesIndex: 0,
-                        dataPointIndex: 3,
-                        strokeColor: config.colors.primary,
-                        strokeWidth: 4,
-                        size: 6,
-                        radius: 2,
-                    },
-                ],
-                hover: { size: 7 },
-            },
-            grid: { show: !1, padding: { right: 8 } },
-            colors: [config.colors.primary],
-            dataLabels: { enabled: !1 },
-            stroke: { width: 5, curve: "smooth" },
-            series: [{ data: [137, 210, 160, 245] }],
-            xaxis: {
-                show: !1,
-                lines: { show: !1 },
-                labels: { show: !1 },
-                axisBorder: { show: !1 },
-            },
-            yaxis: { show: !1 },
-        },
-        d =
-            (null !== d && new ApexCharts(d, c).render(),
-            document.querySelector("#expensesBarChart")),
-        c = {
-            series: [
-                {
-                    name: "2021",
-                    data: [15, 37, 14, 30, 38, 30, 20, 13, 14, 23],
-                },
-                {
-                    name: "2020",
-                    data: [-33, -23, -29, -21, -25, -21, -23, -19, -37, -22],
-                },
-            ],
-            chart: {
-                height: 150,
-                stacked: !0,
-                type: "bar",
-                toolbar: { show: !1 },
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: !1,
-                    columnWidth: "40%",
-                    borderRadius: 5,
-                    startingShape: "rounded",
-                },
-            },
-            colors: [config.colors.primary, config.colors.warning],
-            dataLabels: { enabled: !1 },
-            stroke: {
-                curve: "smooth",
-                width: 2,
-                lineCap: "round",
-                colors: [o],
-            },
-            legend: { show: !1 },
-            grid: { show: !1, padding: { top: -10 } },
-            xaxis: {
-                show: !1,
-                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-                labels: { show: !1 },
-                axisTicks: { show: !1 },
-                axisBorder: { show: !1 },
-            },
-            yaxis: { show: !1 },
-            responsive: [
-                {
-                    breakpoint: 1440,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 5, columnWidth: "60%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1300,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 5, columnWidth: "70%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1200,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 4, columnWidth: "50%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1040,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 4, columnWidth: "60%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 991,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 4, columnWidth: "40%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 420,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 5, columnWidth: "60%" },
-                        },
-                    },
-                },
-                {
-                    breakpoint: 360,
-                    options: {
-                        plotOptions: {
-                            bar: { borderRadius: 5, columnWidth: "70%" },
-                        },
-                    },
-                },
-            ],
-            states: {
-                hover: { filter: { type: "none" } },
-                active: { filter: { type: "none" } },
-            },
-        },
-        d =
-            (null !== d && new ApexCharts(d, c).render(),
             document.querySelector("#totalBalanceChart")),
         c = {
-            series: [{ data: [137, 210, 160, 275, 205, 315] }],
+            series: [{ data: $totalBalancedata }],
             chart: {
                 height: 250,
                 parentHeightOffset: 0,
@@ -619,7 +418,7 @@ class DynamicJsController extends Controller
                 padding: { top: -10, left: 0, right: 0, bottom: 10 },
             },
             xaxis: {
-                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 axisBorder: { show: !1 },
                 axisTicks: { show: !1 },
                 labels: { show: !0, style: { fontSize: "13px", colors: r } },

@@ -81,7 +81,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     //users
     Route::get('/appmail', 'InvitationController@appMail');
     Route::get('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
-    Route::get('/admin/dashboard.js', 'DynamicJsController@admin')->name('admin.dashboardjs');
+    
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
@@ -114,7 +114,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
 
     Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
     Route::get('/admin/planner/{id}', 'GanttController@adminplanner')->name('admin.planner');
-
+    Route::get('/admin/js/dashboard.js', 'DynamicJsController@admin')->name('admin.dashboardjs');
     Route::get('/admin/dashboard', 'AdminController@index')->name('admin.index');
     Route::get('/admin/messignalements', 'AdminController@listeSignalement')->name('admin.signalement');
     Route::get('/admin/invitations', 'AdminController@invitation')->name('admin.invitation');

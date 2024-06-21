@@ -50,6 +50,7 @@
                                         $allgravity = \App\Models\Gravity::all();
                                         $allsite = \App\Models\Site::all();
                                         $allprocess = \App\Models\Processes::all();
+                                        $allprobability = \App\Models\Probability::all();
                                         $created = $alldys
                                             ->whereBetween('created_at', [
                                                 Carbon\Carbon::now()->subWeek()->startOfWeek(),
@@ -82,6 +83,35 @@
                                         foreach ($mostFrequentSites as $s => $count) {
                                             $sites .= $s . ' - Compte: ' . $count . ' Signalement ;';
                                         }
+                                        // Calculate the value and get the top 30 dysfunctions
+                                        $critics = $alldys
+                                            ->sortByDesc(function ($k) use ($allgravity, $allprobability) {
+                                                $value =
+                                                    ($allgravity->where('name', $k->gravity)->first() == null
+                                                        ? 0
+                                                        : $allgravity->where('name', $k->gravity)->first()->note) +
+                                                    ($allprobability->where('id', $k->probability)->first() == null
+                                                        ? 0
+                                                        : $allprobability->where('id', $k->probability)->first()
+                                                            ->note);
+                                                $k->setAttribute('critic', $value);
+                                                return $k;
+                                            })
+                                            ->take(30);
+                                        $criticaldys = $alldys
+                                            ->sortByDesc(function ($k) use ($allgravity, $allprobability) {
+                                                $value =
+                                                    ($allgravity->where('name', $k->gravity)->first() == null
+                                                        ? 0
+                                                        : $allgravity->where('name', $k->gravity)->first()->note) +
+                                                    ($allprobability->where('id', $k->probability)->first() == null
+                                                        ? 0
+                                                        : $allprobability->where('id', $k->probability)->first()
+                                                            ->note);
+                                                $k->setAttribute('cal_gravity', $value);
+                                                return $k;
+                                            })
+                                            ->take(30);
                                     @endphp
                                     <h2 class="mb-2">{{ formatNumber($created) }}</h2>
                                     <small class="text-danger text-nowrap fw-medium"><i class="bx bx-down-arrow-alt"></i>
@@ -201,7 +231,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-lg-12 mb-4">
+            <div class="col-12 col-lg-12 mb-4 pb-3">
                 <div class="card">
                     <div class="row row-bordered g-0">
                         <div class="col-md-4">
@@ -296,31 +326,29 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-lg-12 mb-4">
+            <div class="col-12 col-lg-12 mb-4 pb-3">
                 <div class="card">
                     <div class="row row-bordered g-0">
                         <div class="col-md-4">
                             <div class="card-header d-flex align-items-center justify-content-between mb-4">
                                 <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Type</span></h5>
+                                        class="text-primary">Criticité</span></h5>
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($alldystype as $dyst)
+                                    @foreach ($critics->sortByDesc('critic') as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-paperclip"></i>
+                                                <i class="bx bx-fast-forward"></i>
                                             </div>
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $dyst->name }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
+                                                    <h6 class="mb-0">{{ $cri->code }}</h6>
+                                                    <small class="text-muted d-block mb-1">Note Critique :</small>
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($dyst->dysfunctions)) }}</span>
+                                                    <span class="fw-medium">{{ $cri->critic }}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -331,25 +359,23 @@
                         <div class="col-md-4">
                             <div class="card-header d-flex align-items-center justify-content-between mb-4">
                                 <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Site</span></h5>
+                                        class="text-primary">Gravité</span></h5>
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($allsite as $si)
+                                    @foreach ($criticaldys->sortByDesc('cal_gravity') as $gra)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-current-location"></i>
+                                                <i class="bx bx-bell"></i>
                                             </div>
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $si->name }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
+                                                    <h6 class="mb-0">{{ $gra->code }}</h6>
+                                                    <small class="text-muted d-block mb-1">Gravité Enregistré : </small>
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($si->dysfunctions)) }}</span>
+                                                    <span class="fw-medium">{{ $gra->cal_gravity }}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -367,7 +393,7 @@
                                     @foreach ($allprocess as $p)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-color"></i>
+                                                <i class="bx bx-loader"></i>
                                             </div>
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
@@ -395,18 +421,18 @@
             <div class="col-md-12 col-lg-12">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="card-title m-0 me-2">Total Balance</h5>
-                        <div class="dropdown">
-                            <button class="btn p-0" type="button" id="totalBalance" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalBalance">
-                                <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                            </div>
-                        </div>
+                        <h5 class="card-title m-0 me-2">Apercu des Dépenses</h5>
+                        <!--<div class="dropdown">
+                                <button class="btn p-0" type="button" id="totalBalance" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalBalance">
+                                    <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                </div>
+                            </div>-->
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-start">
@@ -416,31 +442,13 @@
                                             class="bx bx-wallet text-warning"></i></span>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0">$2.54k</h6>
-                                    <small>Wallet</small>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="me-3">
-                                    <span class="badge bg-label-secondary p-2"><i
-                                            class="bx bx-dollar text-secondary"></i></span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">$4.2k</h6>
-                                    <small>Paypal</small>
+                                    <h6 class="mb-0" id="noqualityCost">------ XAF</h6>
+                                    <small>Cout de non Qualité</small>
                                 </div>
                             </div>
                         </div>
                         <div id="totalBalanceChart" class="border-bottom mb-3"></div>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">You have done
-                                <span class="fw-medium">57.6%</span> more sales.<br />Check
-                                your new badge in your profile.</small>
-                            <div>
-                                <span class="badge bg-label-warning p-2"><i
-                                        class="bx bx-chevron-right text-warning scaleX-n1-rtl"></i></span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
