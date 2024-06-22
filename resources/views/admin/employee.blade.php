@@ -118,6 +118,7 @@
                                 <th>Email</th>
                                 <th>Téléphone</th>
                                 <th>Matricule</th>
+                                <th>Accès</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -135,6 +136,7 @@
                                     <td>{{ $d->email }}</td>
                                     <td>{{ $d->phone }}</td>
                                     <td>{{ $d->matricule }}</td>
+                                    <td>{{$d->access == 1 ? "Accordé" : "Refusé"}}</td>
                                     <td><button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majemp{{ $d->id }}">
                                             M.A.J

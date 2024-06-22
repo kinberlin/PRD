@@ -54,7 +54,7 @@
                 request()->route()->getName() == 'rq.pilotes') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
-                <div class="text-truncate" data-i18n="Le Personnelle">Le Personnelle</div>
+                <div class="text-truncate" data-i18n="Le personnel">Le personnel</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
@@ -107,7 +107,7 @@
                 request()->route()->getName() == 'rq.n1dysfonction') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div class="text-truncate" data-i18n="Personnelle">Personnel</div>
+                <div class="text-truncate" data-i18n="Mon espace">Personnel</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">

@@ -142,7 +142,7 @@ class InvitationController extends Controller
                         throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
                     }
                     if (Carbon::now() > $data->dates) {
-                        throw new Exception("Il n'est plus possible de modifier cette réunion. Elle a déja eu lieu.", 1);
+                        throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
                     }
                     $dys = Dysfunction::find($request->input('dysfunction'));
                     if (empty($dys)) {
@@ -204,7 +204,8 @@ class InvitationController extends Controller
     {
         try {
             $data = Invitation::find($request->input('invitation'));
-            if (Gate::allows('isInvitationOpen', $data)) {
+            
+            //if (Gate::allows('isInvitationOpen', $data)) {
                 DB::beginTransaction();
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
@@ -224,10 +225,10 @@ class InvitationController extends Controller
                     }
                 }
                 DB::commit();
-                return redirect()->back()->with('error', 'Mise a jour de la disponibilité terminé.');
-            } else {
-                throw new Exception("Cette réunion est déja terminé. Il n'est plus possible de l'editer, confirmer ou desister.", 401);
-            }
+                return redirect()->back()->with('error', 'Mise à jour de la disponibilité terminé.');
+            /*} else {
+                throw new Exception("Cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
+            }*/
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -238,12 +239,12 @@ class InvitationController extends Controller
             $data = Invitation::find($id);
             DB::beginTransaction();
             if ($data == null) {
-                throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+                throw new Exception("Impossible de trouver l'élément à mettre à jour", 404);
             }
             $data->closed_at = Carbon::now();
             $data->save();
             DB::commit();
-            return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturer.');
+            return redirect()->back()->with('error', 'Réunion No. #' . $data->id . ' a été clôturée.');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
@@ -257,7 +258,7 @@ class InvitationController extends Controller
             if (Gate::allows('isInvitationOpen', $data)) {
                 DB::beginTransaction();
                 if ($data == null) {
-                    throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+                    throw new Exception("Impossible de trouver l'élément à mettre à jour", 404);
                 }
                 $_p = [];
                 $participant = $request->input('participant', []);
@@ -288,9 +289,9 @@ class InvitationController extends Controller
                 $data->participation = json_encode($_p);
                 $data->save();
                 DB::commit();
-                return redirect()->back()->with('error', 'Participation pour la Réunion No. #' . $data->id . ' a été mis a jour.');
+                return redirect()->back()->with('error', 'Participation pour la Réunion No. #' . $data->id . ' a été mise à jour.');
             } else {
-                throw new Exception("Cette réunion est déja terminé. Il n'est plus possible de l'editer, confirmer ou desister.", 401);
+                throw new Exception("Cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

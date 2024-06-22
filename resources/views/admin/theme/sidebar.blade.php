@@ -87,7 +87,7 @@
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.meeting.closed') active @endif">
                     <a href="{{ route('admin.meeting.closed') }}" class="menu-link">
-                        <div class="text-truncate" data-i18n="Terminé">Terminé</div>
+                        <div class="text-truncate" data-i18n="Terminées">Terminées</div>
                     </a>
                 </li>
             </ul>
@@ -138,7 +138,7 @@
         <li class="menu-item @if (request()->route()->getName() == 'admin.signalement' || request()->route()->getName() == 'admin.invitation') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div class="text-truncate" data-i18n="Personnelle">Personnel</div>
+                <div class="text-truncate" data-i18n="Mon espace">Personnel</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
