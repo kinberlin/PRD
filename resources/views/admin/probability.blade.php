@@ -77,7 +77,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Probabilité</th>
-                                <th>Note</th>
+                                <th style="text-align: center">Note</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -87,7 +87,7 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
-                                    <td>{{ $d->note }}</td>
+                                    <td style="text-align: center">{{ $d->note }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"

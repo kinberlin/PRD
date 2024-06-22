@@ -89,7 +89,7 @@
                                                 $value =
                                                     ($allgravity->where('name', $k->gravity)->first() == null
                                                         ? 0
-                                                        : $allgravity->where('name', $k->gravity)->first()->note) +
+                                                        : $allgravity->where('name', $k->gravity)->first()->note) *
                                                     ($allprobability->where('id', $k->probability)->first() == null
                                                         ? 0
                                                         : $allprobability->where('id', $k->probability)->first()
@@ -274,7 +274,7 @@
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $si->name }}</h6>
+                                                    <h6 class="mb-0">{{ $si->name. ' ('.$si->location.')' }}</h6>
                                                     <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
                                                         :</small>
                                                 </div>
