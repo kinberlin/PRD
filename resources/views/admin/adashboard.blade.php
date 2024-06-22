@@ -103,11 +103,7 @@
                                                 $value =
                                                     ($allgravity->where('name', $k->gravity)->first() == null
                                                         ? 0
-                                                        : $allgravity->where('name', $k->gravity)->first()->note) +
-                                                    ($allprobability->where('id', $k->probability)->first() == null
-                                                        ? 0
-                                                        : $allprobability->where('id', $k->probability)->first()
-                                                            ->note);
+                                                        : $allgravity->where('name', $k->gravity)->first()->note);
                                                 $k->setAttribute('cal_gravity', $value);
                                                 return $k;
                                             })

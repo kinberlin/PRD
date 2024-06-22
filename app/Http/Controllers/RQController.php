@@ -69,7 +69,7 @@ class RQController extends Controller
     public function allSignalement()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Dysfunction::whereNotIn('status',[3,7])->get();
+        $data = Dysfunction::whereNotIn('status',[3,7])->get()->sortByDesc('created_at');
         $status = Status::all();
         return view('rq/signalements', compact('data', 'status'));
     }
@@ -178,6 +178,7 @@ class RQController extends Controller
                 'ents',
                 'site',
                 'gravity',
+                'probability',
                 'corrections',
                 'evaluations',
                 'dystype'

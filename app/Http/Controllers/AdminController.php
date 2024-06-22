@@ -83,7 +83,8 @@ class AdminController extends Controller
     public function signals()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $data = Dysfunction::all();
+        $data = Dysfunction::all()->sortByDesc('created_at');
+        //$data = Dysfunction::whereNotIn('status',[3,7])->get()->sortByDesc('created_at');
         $complainant = Dysfunction::distinct('emp_matricule')->count('matricule');
         return view('admin/signal', compact('data', 'complainant'));
     }

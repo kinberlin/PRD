@@ -79,4 +79,8 @@ class Processes extends Model
     {
         return Dysfunction::whereJsonContains('impact_processes', $this->name. ' ('.$this->surfix.')')->get();
     }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'process', 'id');
+    }
 }
