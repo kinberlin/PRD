@@ -79,7 +79,11 @@ class Dysfunction extends Model
     {
         return $this->belongsTo(Gravity::class, 'name', 'gravity');
     }
-
+    // Define the relationship with the Origin model
+    public function origins()
+    {
+        return $this->belongsTo(Origin::class, 'origin');
+    }
     // Define the relationship with the Probability model
     public function probabilities()
     {

@@ -74,4 +74,8 @@ class Origin extends Model
     // Functions ...
 
     // Relations ...
+    public function dysfunctions()
+    {
+        return $this->hasMany(Dysfunction::class, 'origin', 'id');
+    }
 }

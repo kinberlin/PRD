@@ -48,6 +48,7 @@
                                             ->get();
                                         $alldystype = \App\Models\DysfunctionType::all();
                                         $allgravity = \App\Models\Gravity::all();
+                                        $allorigin = \App\Models\Origin::all();
                                         $allsite = \App\Models\Site::where('enterprise', $id)->get();
                                         $allprocess = \App\Models\Processes::all();
                                         $allprobability = \App\Models\Probability::all();
@@ -332,7 +333,7 @@
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($critics->where('critic', '>', 15) as $cri)
+                                    @foreach ($critics->where('critic', '<', 4) as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
                                                 <i class="bx bx-fast-forward"></i>
@@ -361,7 +362,7 @@
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
                                     @foreach ($criticaldys->filter(function ($d) {
-                                                    return $d->critic >= 5 && $d->critic <= 15;
+                                                    return $d->critic >= 5 && $d->critic <= 19;
                                                 }) as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
@@ -389,7 +390,7 @@
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($criticaldys->where('critic', '<', 5) as $cri)
+                                    @foreach ($criticaldys->where('critic', '>', 19) as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
                                                 <i class="bx bx-fast-forward"></i>
@@ -426,7 +427,7 @@
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($critics->sortByDesc('critic') as $cri)
+                                    @foreach ($allorigin as $o)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
                                                 <i class="bx bx-analyse"></i>
@@ -434,11 +435,11 @@
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $cri->code }}</h6>
-                                                    <small class="text-muted d-block mb-1">Note Critique :</small>
+                                                    <h6 class="mb-0">{{ $o->name }}</h6>
+                                                    <small class="text-muted d-block mb-1">Totale :</small>
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span class="fw-medium">{{ $cri->critic }}</span>
+                                                    <span class="fw-medium">{{ count($alldys->where('origin',$o->id)) }}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -466,35 +467,6 @@
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
                                                     <span class="fw-medium">{{ $gra->cal_gravity }}</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
-                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Processus</span></h5>
-                            </div>
-                            <div class="card-body" style="height:420px; overflow-y: auto;">
-                                <ul class="p-0 m-0">
-                                    @foreach ($allprocess as $p)
-                                        <li class="d-flex mb-4 pb-1">
-                                            <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-loader"></i>
-                                            </div>
-                                            <div
-                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">{{ $p->name }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
-                                                </div>
-                                                <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($p->dysfunctions())) }}</span>
                                                 </div>
                                             </div>
                                         </li>
