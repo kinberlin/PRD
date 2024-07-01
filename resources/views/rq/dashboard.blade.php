@@ -42,13 +42,13 @@
                             <div class="d-flex justify-content-between">
                                 <div class="mt-auto">
                                     @php
-                                        $alldys = \App\Models\Dysfunction::whereYear(
-                                            'created_at',
-                                            \Carbon\Carbon::now()->year,
-                                        )->get();
+                                        $_enterprise = \App\Models\Enterprise::find($id);
+                                        $alldys = \App\Models\Dysfunction::where('enterprise', $_enterprise->name)
+                                            ->whereYear('created_at', \Carbon\Carbon::now()->year)
+                                            ->get();
                                         $alldystype = \App\Models\DysfunctionType::all();
                                         $allgravity = \App\Models\Gravity::all();
-                                        $allsite = \App\Models\Site::all();
+                                        $allsite = \App\Models\Site::where('enterprise', $id)->get();
                                         $allprocess = \App\Models\Processes::all();
                                         $allprobability = \App\Models\Probability::all();
                                         $created = $alldys
@@ -92,8 +92,7 @@
                                                         : $allgravity->where('name', $k->gravity)->first()->note) *
                                                     ($allprobability->where('id', $k->probability)->first() == null
                                                         ? 0
-                                                        : $allprobability->where('id', $k->probability)->first()
-                                                            ->note);
+                                                        : $allprobability->where('id', $k->probability)->first()->note);
                                                 $k->setAttribute('critic', $value);
                                                 return $k;
                                             })
@@ -101,9 +100,9 @@
                                         $criticaldys = $alldys
                                             ->sortByDesc(function ($k) use ($allgravity, $allprobability) {
                                                 $value =
-                                                    ($allgravity->where('name', $k->gravity)->first() == null
+                                                    $allgravity->where('name', $k->gravity)->first() == null
                                                         ? 0
-                                                        : $allgravity->where('name', $k->gravity)->first()->note);
+                                                        : $allgravity->where('name', $k->gravity)->first()->note;
                                                 $k->setAttribute('cal_gravity', $value);
                                                 return $k;
                                             })
@@ -274,7 +273,7 @@
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $si->name. ' ('.$si->location.')' }}</h6>
+                                                    <h6 class="mb-0">{{ $si->name . ' (' . $si->location . ')' }}</h6>
                                                     <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
                                                         :</small>
                                                 </div>
@@ -328,14 +327,109 @@
                         <div class="col-md-4">
                             <div class="card-header d-flex align-items-center justify-content-between mb-4">
                                 <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Criticité</span></h5>
+                                        class="text-primary">Criticité</span>(<span class="text-success">Mineur</span>)
+                                </h5>
+                            </div>
+                            <div class="card-body" style="height:420px; overflow-y: auto;">
+                                <ul class="p-0 m-0">
+                                    @foreach ($critics->where('critic', '>', 15) as $cri)
+                                        <li class="d-flex mb-4 pb-1">
+                                            <div class="avatar flex-shrink-0 me-3">
+                                                <i class="bx bx-fast-forward"></i>
+                                            </div>
+                                            <div
+                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                <div class="me-2">
+                                                    <h6 class="mb-0">{{ $cri->code }}</h6>
+                                                    <small class="text-muted d-block mb-1">Note Critique :</small>
+                                                </div>
+                                                <div class="user-progress d-flex align-items-center gap-1">
+                                                    <span class="fw-medium">{{ $cri->critic }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
+                                        class="text-primary">Criticité</span>(<span class="text-warning">Modérés</span>)
+                                </h5>
+                            </div>
+                            <div class="card-body" style="height:420px; overflow-y: auto;">
+                                <ul class="p-0 m-0">
+                                    @foreach ($criticaldys->filter(function ($d) {
+                                                    return $d->critic >= 5 && $d->critic <= 15;
+                                                }) as $cri)
+                                        <li class="d-flex mb-4 pb-1">
+                                            <div class="avatar flex-shrink-0 me-3">
+                                                <i class="bx bx-fast-forward"></i>
+                                            </div>
+                                            <div
+                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                <div class="me-2">
+                                                    <h6 class="mb-0">{{ $cri->code }}</h6>
+                                                    <small class="text-muted d-block mb-1">Note Critique :</small>
+                                                </div>
+                                                <div class="user-progress d-flex align-items-center gap-1">
+                                                    <span class="fw-medium">{{ $cri->critic }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
+                                        class="text-primary">Criticité</span>(<span class="text-danger">Majeurs</span>)</h5>
+                            </div>
+                            <div class="card-body" style="height:420px; overflow-y: auto;">
+                                <ul class="p-0 m-0">
+                                    @foreach ($criticaldys->where('critic', '<', 5) as $cri)
+                                        <li class="d-flex mb-4 pb-1">
+                                            <div class="avatar flex-shrink-0 me-3">
+                                                <i class="bx bx-fast-forward"></i>
+                                            </div>
+                                            <div
+                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                <div class="me-2">
+                                                    <h6 class="mb-0">{{ $cri->code}}</h6>
+                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
+                                                        :</small>
+                                                </div>
+                                                <div class="user-progress d-flex align-items-center gap-1">
+                                                    <span
+                                                        class="fw-medium">{{  $cri->critic }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-12 mb-4 pb-3">
+                <div class="card">
+                    <div class="row row-bordered g-0">
+                        <div class="col-md-4">
+                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
+                                        class="text-primary">Origine</span></h5>
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
                                     @foreach ($critics->sortByDesc('critic') as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-fast-forward"></i>
+                                                <i class="bx bx-analyse"></i>
                                             </div>
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
@@ -419,16 +513,16 @@
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h5 class="card-title m-0 me-2">Apercu des Dépenses</h5>
                         <!--<div class="dropdown">
-                                <button class="btn p-0" type="button" id="totalBalance" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalBalance">
-                                    <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                                </div>
-                            </div>-->
+                                        <button class="btn p-0" type="button" id="totalBalance" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalBalance">
+                                            <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                        </div>
+                                    </div>-->
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-start">
@@ -453,5 +547,5 @@
     </div>
 @endsection
 @section('scriptContent')
-    <script src="{{ route('rq.dashboardjs', ['id'=>$id]) }}"></script>
+    <script src="{{ route('rq.dashboardjs', ['id' => $id]) }}"></script>
 @endsection
