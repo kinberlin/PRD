@@ -71,7 +71,7 @@ class RQController extends Controller
     public function allSignalement()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Dysfunction::whereNotIn('status',[3,7])->get()->sortByDesc('created_at');
+        $data = Dysfunction::whereNotIn('status', [3, 7])->get()->sortByDesc('created_at');
         $status = Status::all();
         return view('rq/signalements', compact('data', 'status'));
     }
@@ -80,7 +80,8 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         $rqU = AuthorisationRq::where('user', Auth::user()->id)->get();
 
-        $dys = Dysfunction::whereNotIn('status',[3,7])->get();
+        $dys = Dysfunction::whereIn('enterprise', Enterprise::whereIn('id', $rqU->pluck('enterprise')->unique())->get()->pluck('name'))
+            ->whereNotIn('status', [3, 7])->get();
         $users = Users::all();
         return view('rq/planifs', compact('dys', 'users'));
     }
@@ -126,7 +127,7 @@ class RQController extends Controller
     {
         Gate::authorize('isRq', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
-        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get()->sortByDesc('created_at');
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
         return view('rq/invitation', compact('data', 'dys'));
     }
@@ -197,7 +198,7 @@ class RQController extends Controller
     public function meetingProcess()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Invitation::whereNUll('closed_at')->get();
+        $data = Invitation::whereNUll('closed_at')->get()->sortByDesc('created_at');
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites
@@ -218,7 +219,7 @@ class RQController extends Controller
     public function meetingClosed()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Invitation::whereNotNUll('closed_at')->get();
+        $data = Invitation::whereNotNUll('closed_at')->get()->sortByDesc('created_at');;
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites

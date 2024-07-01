@@ -204,13 +204,12 @@ class InvitationController extends Controller
     {
         try {
             $data = Invitation::find($request->input('invitation'));
-            
-            //if (Gate::allows('isInvitationOpen', $data)) {
+            if (Gate::allows('isInvitationOpen', $data)) {
                 DB::beginTransaction();
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
                 }
-                $invites = $data->findInviteByMatricule('PZN0131'); // waiting for auth
+                $invites = $data->findInviteByMatricule(Auth::user()->matricule); 
                 if ($invites) {
                     if ($request->input('decision') == 'Accept') {
                         $invites = $invites->confirm();
@@ -225,10 +224,10 @@ class InvitationController extends Controller
                     }
                 }
                 DB::commit();
-                return redirect()->back()->with('error', 'Mise à jour de la disponibilité terminé.');
-            /*} else {
+                return redirect()->back()->with('error', 'Mise à jour de la disponibilité terminée.');
+            } else {
                 throw new Exception("Cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
-            }*/
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

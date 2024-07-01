@@ -16,6 +16,6 @@ class InvitationPolicy
         if($invitation == null){
             return false;
         }
-        return $invitation->closed_at == null;
+        return is_null($invitation->closed_at);
     }
 }

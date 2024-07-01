@@ -38,8 +38,8 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>
-                                        @if ($dys->where('id', $d->dysfunction)->first() != null)
-                                            No.{{ $dys->where('id', $d->dysfunction)->first()->code }}
+                                        @if ($dys->where('id', $d->dysfonction)->first() != null)
+                                            No.{{ $dys->where('id', $d->dysfonction)->first()->code }}
                                         @else
                                             Ce dysfonctionnement n'existe plus.
                                         @endif
@@ -52,7 +52,7 @@
                                     <td>{{ $d->dates }}</td>
                                     <td>Début : {{ $d->begin }}<br>Fin : {{ $d->end }}</td>
                                     @php
-                                        $invite = $d->findInviteByMatricule(Auth::user()->matricule); // Replace 'SAE0186' with the matricule you want to search waiting for auth
+                                        $invite = $d->findInviteByMatricule(Auth::user()->matricule); 
                                     @endphp
                                     <td>{{$invite->decision}}</td>
                                     <td>
@@ -125,7 +125,7 @@
                                                             <div class="modal-body">
                                                                 <div class="card-body">
                                                                     <p class="card-text">
-                                                                        En continuant, vous confirmer votre présence. Voulez
+                                                                        En continuant, vous décliner votre présence. Voulez
                                                                         vous Continuer ?
                                                                         <b>Notez que cette action est irréversible!</b>
                                                                     </p>
@@ -135,8 +135,7 @@
                                                                 <button type="button" class="btn btn-label-secondary"
                                                                     data-bs-dismiss="modal">Fermer</button>
                                                                 <button type="submit"
-                                                                    class="btn btn-label-success">Confirmer ma
-                                                                    Présence</button>
+                                                                    class="btn btn-label-danger">Décliner</button>
                                                             </div>
                                                         </form>
                                                     </div>
