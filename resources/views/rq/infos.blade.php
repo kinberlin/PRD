@@ -145,11 +145,11 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
-                        <select class="form-control" name="gravity" data-allow-clear="true" required>
-                            @foreach ($gravity as $g)
-                                <option value="{{ $g->name }}" @if ($g->name == $data->gravity) selected @endif>
-                                    {{ $g->name }} (Note : {{ $g->note }})</option>
+                        <label class="form-label">Origine (<span style="color: red">*</span>)</label>
+                        <select class="form-control" name="origin" data-allow-clear="true" required>
+                            @foreach ($origin as $o)
+                                <option value="{{ $o->id }}" @if ($o->name == $data->origin) selected @endif>
+                                    {{ $o->name }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -11,6 +11,7 @@ use App\Models\Enterprise;
 use App\Models\Evaluation;
 use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Origin;
 use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
@@ -162,6 +163,7 @@ class RQController extends Controller
             $ents = Enterprise::all();
             $site = Site::all();
             $gravity = Gravity::all();
+            $origin = Origin::all();
             $probability = Probability::all();
             $dystype = DysfunctionType::all();
             $data = $dys;
@@ -179,6 +181,7 @@ class RQController extends Controller
                 'ents',
                 'site',
                 'gravity',
+                'origin',
                 'probability',
                 'corrections',
                 'evaluations',

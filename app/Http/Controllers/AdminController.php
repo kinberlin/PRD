@@ -10,6 +10,7 @@ use App\Models\DysfunctionType;
 use App\Models\Enterprise;
 use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Origin;
 use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
@@ -101,6 +102,7 @@ class AdminController extends Controller
             $ents = Enterprise::all();
             $site = Site::all();
             $gravity = Gravity::all();
+            $origin = Origin::all();
             $probability = Probability::all();
             $dystype = DysfunctionType::all();
             $data = $dys;
@@ -111,6 +113,7 @@ class AdminController extends Controller
                 'ents',
                 'site',
                 'gravity',
+                'origin',
                 'probability',
                 'dystype',
             ));

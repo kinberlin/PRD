@@ -146,6 +146,15 @@
                         </select>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label">Origine (<span style="color: red">*</span>)</label>
+                        <select class="form-control" name="origin" data-allow-clear="true" required>
+                            @foreach ($origin as $o)
+                                <option value="{{ $o->id }}" @if ($o->name == $data->origin) selected @endif>
+                                    {{ $o->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)</label>
                             <select class="form-control" name="probability" data-allow-clear="true" required>
                                 @foreach ($probability as $p)

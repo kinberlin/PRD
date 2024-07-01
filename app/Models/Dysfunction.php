@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $closed_at
  * @property int $created_at
  * @property int $site_id
+ * @property int $origin
  * @property string $enterprise
  * @property string $site
  * @property string $emp_signaling
@@ -55,7 +56,7 @@ class Dysfunction extends Model
      * @var array
      */
 
-    protected $fillable = ['enterprise', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at'];
+    protected $fillable = ['enterprise', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
     public $timestamps = false;
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i'
