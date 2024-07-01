@@ -25,6 +25,13 @@
     </div>
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1 overflow-auto">
+        <!-- Dashboards -->
+        <li class="menu-item @if (request()->route()->getName() == 'rq.index') active @endif">
+            <a href="{!! route('rq.index') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div class="text-truncate" data-i18n="Accueil">Accueil</div>
+            </a>
+        </li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
         </li>

@@ -32,6 +32,7 @@ class RQController extends Controller
     public function index()
     {
         Gate::authorize('isRq', Auth::user());
+        return view('rq.dashboard');
     }
     public function department()
     {

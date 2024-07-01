@@ -16,7 +16,7 @@ use Livewire\Livewire;
  */
 
 Route::get('/', function () {
-    return view('login');
+    return redirect('/login');
 });
 Route::get('/admin', function () {
     return redirect('/admin/dashboard');
@@ -39,11 +39,12 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.pos
 Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
+    Route::get('/rq/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
     Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employees.signalement');
     Route::get('/employee/mestaches', 'EmployeeController@mytasks')->name('employees.mytask');
     Route::get('/employee/invitations', 'EmployeeController@invitation')->name('emp.invitation');
-
+    Route::get('/rq/js/dashboard.js', 'DynamicJsController@rq')->name('rq.dashboardjs');
 
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');
@@ -68,7 +69,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 
     Route::get('rq/planner/{id}', 'GanttController@rqplanner')->name('rq.planner');
     Route::get('notification/{id}', 'NotificationController@destroy')->name('admin.notification.destroy');
-    Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
+    //Route::get('/employee/dashboard', 'RQController@index')->name('rq.index');
     Route::get('/rq/profile', 'RQController@profile')->name('rq.profile');
     Route::get('/employee/profile', 'EmployeeController@profile')->name('emp.profile');
 
