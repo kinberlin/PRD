@@ -20,7 +20,7 @@
                                 <h5 class="card-title text-primary mb-1">{{ formatNumber(App\Models\Users::count()) }}</h5>
                                 <small class="d-block mb-4 pb-1 text-muted">Utilisateurs</small>
 
-                                <a href="{{ route('admin.employee') }}" class="btn btn-sm btn-primary">Plus d'Info</a>
+                                <a href="{{ route('rq.employees') }}" class="btn btn-sm btn-primary">Plus d'Info</a>
                             </div>
                         </div>
                         <div class="col-4 pt-3 ps-0">

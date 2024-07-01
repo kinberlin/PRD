@@ -438,17 +438,18 @@ class DynamicJsController extends Controller
     }
     public function rq(Request $request, $e_)
     {
-        Gate::authorize('isEnterpriseRQ', Enterprise::find($e_));
+        $globEnt = Enterprise::find($e_);
+        Gate::authorize('isEnterpriseRQ', $globEnt);
         //visitor chart
         // Generate the JavaScript content dynamically
-        $dysresults = $this->rqdysAddedLastWeekByDay($e_);
+        $dysresults = $this->rqdysAddedLastWeekByDay($globEnt);
         $dyscounts = $dysresults['dystring'];
         $dysarrays = $dysresults['dysarray'];
         $ents = Enterprise::all();
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
         //activity chart
-        $alldys = Dysfunction::whereYear('created_at', Carbon::now()->year)->get();
+        $alldys = Dysfunction::where('enterprise', $globEnt->name)->whereYear('created_at', Carbon::now()->year)->get();
         $a_dys = $alldys->filter(function ($item) {
             return $item->status == 4;
         })->sortByDesc('created_at')->take(10);
@@ -463,7 +464,17 @@ class DynamicJsController extends Controller
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
         $a_avgtProgression = collect($a_tdata)->avg() . ' %';
-        $longestTask = $a_tasks->pluck('duration')->max() . 'J';
+        $compDates = $alldys->map(function ($d) {
+            $startDate = Carbon::parse($d->start_date);
+            $compDate = $startDate->addDays($d->duration);
+            return [
+                'dysfunction' => $d->id,
+                'complete_date' => $compDate,
+            ];
+        });
+        $sortecompDates = $compDates->sortByDesc('complete_date');
+
+        $longestTask = empty($sortecompDates) ? 'RAS' : $sortecompDates->max('complete_date');
         //Site Chart
         $siteCounts = $alldys->groupBy('site')->map(function ($group) {
             return $group->count();
@@ -907,7 +918,7 @@ class DynamicJsController extends Controller
         $endDate = Carbon::now()->subWeek()->endOfWeek()->addDay(); // End of last week (Sunday)
 
         // Query to fetch all dyss added last week
-        $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->where('enterprise', $ents)->get();
+        $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->where('enterprise', $ents->name)->get();
 
         // Loop through the dyss collection to count dyss for each day
         foreach ($dyss as $dys) {
