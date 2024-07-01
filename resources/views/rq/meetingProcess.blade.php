@@ -81,7 +81,7 @@
                                                             <div class="card-body">
                                                                 <p class="card-text">
                                                                     Souhaitez vous vraiment clôturer cette Réunion ?
-                                                                    <b>Notez qu'une fois terminer, les RQs ayant acces a
+                                                                    <b>Notez qu'une fois terminer, les RQs ayant accès a
                                                                         cette ressource ne pourront plus la modifier.</b>
                                                                 </p>
                                                             </div>

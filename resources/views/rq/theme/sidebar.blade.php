@@ -25,6 +25,28 @@
     </div>
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1 overflow-auto">
+        <!-- Dashboards -->
+        <li class="menu-item @if (request()->route()->getName() == 'rq.index') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div class="text-truncate" data-i18n="Mon Entreprise">Accueil</div>
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+            </a>
+            <ul class="menu-sub">
+                @php
+                    $permissions = \App\Models\AuthorisationRq::where('user', Auth::user()->id)->get();
+                    $ents = \App\Models\Enterprise::whereIn('id', $permissions->pluck('enterprise')->unique())->get();
+                @endphp
+                @foreach ($permissions as $ar)
+                <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->enterprise) active @endif">
+                    <a href="{!! route('rq.index', ['id'=>$ar->enterprise]) !!}" class="menu-link">
+                        <div class="text-truncate" data-i18n="{{$ents->where('id', $ar->enterprise)->first()->name}}"></div>
+                    </a>
+                </li>                    
+                @endforeach
+            </ul>
+        </li>
+        
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
         </li>
@@ -54,7 +76,7 @@
                 request()->route()->getName() == 'rq.pilotes') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
-                <div class="text-truncate" data-i18n="Le Personnelle">Le Personnelle</div>
+                <div class="text-truncate" data-i18n="Le personnel">Le personnel</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
@@ -107,7 +129,7 @@
                 request()->route()->getName() == 'rq.n1dysfonction') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div class="text-truncate" data-i18n="Personnelle">Personnel</div>
+                <div class="text-truncate" data-i18n="Mon espace">Personnel</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
