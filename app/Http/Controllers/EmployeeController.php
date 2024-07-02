@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Invitation;
+use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
@@ -23,8 +24,8 @@ class EmployeeController extends Controller
 {
     public function index($id)
     {
-        Gate::authorize('isEnterpriseRQ', Enterprise::find($id));
-        return view('rq.dashboard', compact('id'));
+        Gate::authorize('isProcessusPilote', Processes::find($id));
+        return view('employees.dashboard', compact('id'));
     }
     public function dysfunction()
     {

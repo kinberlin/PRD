@@ -28,16 +28,16 @@
         <li class="menu-item @if (request()->route()->getName() == 'rq.index') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div class="text-truncate" data-i18n="Mon Entreprise">Accueil</div>
+                <div class="text-truncate" data-i18n="Accueil">Accueil</div>
                 <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
             </a>
             <ul class="menu-sub">
                 @php
                     $permissions = \App\Models\AuthorisationPilote::where('user', Auth::user()->id)->get();
-                    $procs = \App\Models\Processes::whereIn('id', $permissions->pluck('enterprise')->unique())->get();
+                    $procs = \App\Models\Processes::whereIn('id', $permissions->pluck('process')->unique())->get();
                 @endphp
                 @foreach ($permissions as $ar)
-                    <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->enterprise) active @endif">
+                    <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->process) active @endif">
                         <a href="{!! route('employee.index', ['id' => $ar->process]) !!}" class="menu-link">
                             <div class="text-truncate"
                                 data-i18n="{{ $procs->where('id', $ar->process)->first()->name }}"></div>

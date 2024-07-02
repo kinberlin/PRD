@@ -884,7 +884,7 @@ class DynamicJsController extends Controller
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
         //activity chart
-        $alldys = Dysfunction::where('enterprise', $globProc->name)->whereYear('created_at', Carbon::now()->year)->get();
+        $alldys = Dysfunction::whereJsonContains('impact_processes', $globProc->name. ' ('.$globProc->surfix.')')->whereYear('created_at', Carbon::now()->year)->get();
         $a_dys = $alldys->filter(function ($item) {
             return $item->status == 4;
         })->sortByDesc('created_at')->take(10);
