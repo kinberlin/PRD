@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int    $id
  * @property int    $created_at
+ * @property int    $deleted_at
  * @property string $description
  * @property string $name
  */
 class Origin extends Model
-{
+{   use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -32,7 +34,7 @@ class Origin extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'description', 'name'
+        'deleted_at', 'created_at', 'description', 'name'
     ];
 
     /**
@@ -50,7 +52,7 @@ class Origin extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
+        'id' => 'int', 'deleted_at' => 'timestamp','created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
     ];
 
     /**
@@ -59,7 +61,7 @@ class Origin extends Model
      * @var array
      */
     protected $dates = [
-        'created_at'
+        'created_at', 'deleted_at'
     ];
 
     /**

@@ -160,6 +160,7 @@
         </li>
         <li class="menu-item @if (request()->route()->getName() == 'admin.gravity' || 
         request()->route()->getName() == 'admin.probability' ||
+        request()->route()->getName() == 'admin.origin' ||
         request()->route()->getName() == 'admin.dystype') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-plus"></i>
@@ -170,6 +171,11 @@
                 <li class="menu-item @if (request()->route()->getName() == 'admin.gravity') active @endif">
                     <a href="{!! route('admin.gravity') !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="Gravité">Gravité</div>
+                    </a>
+                </li>
+                <li class="menu-item @if (request()->route()->getName() == 'admin.origin') active @endif">
+                    <a href="{!! route('admin.origin') !!}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Origine">Origine</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.probability') active @endif">

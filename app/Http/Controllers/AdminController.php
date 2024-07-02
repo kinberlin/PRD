@@ -55,6 +55,12 @@ class AdminController extends Controller
         $data = Probability::all();
         return view('admin/probability', compact('data'));
     }
+    public function origin()
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $data = Origin::all();
+        return view('admin/origin', compact('data'));
+    }
     public function dystype()
     {
         Gate::authorize('isAdmin', Auth::user());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Origin;
 use App\Models\Probability;
 use Exception;
 use Illuminate\Http\Request;
@@ -77,17 +78,18 @@ class ProbabilityController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'note' => 'required|numeric|min:1',
+        ]);
         try {
             Gate::authorize('isAdmin', Auth::user());
             
             DB::beginTransaction();
             $d = Probability::find($id);
-            $validatedData = $request->validate([
-                'note' => 'required|numeric|min:1',
-            ]);
+
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
-            $d->description = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');
-            $d->note = empty($request->input('note')) ? $d->note : $request->input('note');
+            $d->note = empty($request->input('note')) ? $d->name : $request->input('note');
+            $d->description = empty($request->input('description')) ? $d->description : $request->input('description');
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");

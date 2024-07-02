@@ -80,16 +80,16 @@ class GravityController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'minloss' => 'required|numeric|min:0.01',
+            'maxloss' => 'required|numeric|min:0.01',
+            'note' => 'required|numeric|min:1',
+        ]);
         try {
             Gate::authorize('isAdmin', Auth::user());
             
             DB::beginTransaction();
             $d = Gravity::find($id);
-            $validatedData = $request->validate([
-                'minloss' => 'required|numeric|min:0.01',
-                'maxloss' => 'required|numeric|min:0.01',
-                'note' => 'required|numeric|min:1',
-            ]);
     
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
             $d->least_price = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');

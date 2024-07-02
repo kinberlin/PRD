@@ -154,15 +154,15 @@
                                                                     class="form-label">Note</label>
                                                                 <input type="number" id="note{{ $d->id }}"
                                                                     name="note" value="{{ $d->note }}"
-                                                                    min="0" class="form-control" placeholder="XAF"
+                                                                    min="0" class="form-control"
                                                                     required>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col mb-12">
                                                                 <label for="description{{ $d->id }}"
-                                                                    class="form-label">Perte Maximal en XAF</label>
-                                                                <textarea id="description{{ $d->id }}" class="form-control" placeholder="XAF" required>{{ $d->description }}</textarea>
+                                                                    class="form-label">Description</label>
+                                                                <textarea id="description{{ $d->id }}" class="form-control" name="description" required>{{ $d->description }}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
