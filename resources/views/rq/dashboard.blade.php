@@ -251,7 +251,7 @@
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
                                                     <span
-                                                        class="fw-medium">{{ formatNumber(count($dyst->dysfunctions)) }}</span>
+                                                        class="fw-medium">{{ formatNumber(count($alldys->where('type', $dyst->id))) }}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -280,7 +280,7 @@
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
                                                     <span
-                                                        class="fw-medium">{{ formatNumber(count($si->dysfunctions)) }}</span>
+                                                        class="fw-medium">{{ formatNumber(count($alldys->where('site', $si->id))) }}</span>
                                                 </div>
                                             </div>
                                         </li>

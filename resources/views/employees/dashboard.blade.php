@@ -1,4 +1,4 @@
-@extends('rq.theme.main')
+@extends('employees.theme.main')
 @section('title')
     Tableau de Bord | RQ
 @endsection
@@ -15,12 +15,10 @@
                                 <h6 class="card-title mb-1 text-nowrap">
                                     Salut, M. {{ Auth::user()->firstname }}!
                                 </h6>
-                                <small class="d-block mb-3 text-nowrap">RQ PRD</small>
+                                <small class="d-block mb-3 text-nowrap">Pilote PRD</small>
 
                                 <h5 class="card-title text-primary mb-1">{{ formatNumber(App\Models\Users::count()) }}</h5>
                                 <small class="d-block mb-4 pb-1 text-muted">Utilisateurs</small>
-
-                                <a href="{{ route('rq.employees') }}" class="btn btn-sm btn-primary">Plus d'Info</a>
                             </div>
                         </div>
                         <div class="col-4 pt-3 ps-0">
@@ -42,14 +40,14 @@
                             <div class="d-flex justify-content-between">
                                 <div class="mt-auto">
                                     @php
-                                        $_process = \App\Models\Enterprise::find($id);
+                                        $_process = \App\Models\Processes::find($id);
                                         $alldys = \App\Models\Dysfunction::whereJsonContains('impact_processes', $_process->name. ' ('.$_process->surfix.')')
                                             ->whereYear('created_at', \Carbon\Carbon::now()->year)
                                             ->get();
                                         $alldystype = \App\Models\DysfunctionType::all();
                                         $allgravity = \App\Models\Gravity::all();
                                         $allorigin = \App\Models\Origin::all();
-                                        $allsite = \App\Models\Site::where('enterprise', $id)->get();
+                                        $allsite = \App\Models\Site::whereIn('id', $alldys->pluck('site_id')->unique())->get();
                                         $allprocess = \App\Models\Processes::all();
                                         $allprobability = \App\Models\Probability::all();
                                         $created = $alldys
@@ -251,7 +249,7 @@
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
                                                     <span
-                                                        class="fw-medium">{{ formatNumber(count($dyst->dysfunctions)) }}</span>
+                                                        class="fw-medium">{{ formatNumber(count($alldys->where('type', $dyst->id))) }}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -280,7 +278,7 @@
                                                 </div>
                                                 <div class="user-progress d-flex align-items-center gap-1">
                                                     <span
-                                                        class="fw-medium">{{ formatNumber(count($si->dysfunctions)) }}</span>
+                                                        class="fw-medium">{{ formatNumber(count($alldys->where('site_id', $si->id))) }}</span>
                                                 </div>
                                             </div>
                                         </li>

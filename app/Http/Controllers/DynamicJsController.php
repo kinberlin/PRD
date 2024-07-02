@@ -874,7 +874,7 @@ class DynamicJsController extends Controller
     public function pilote(Request $request, $e_)
     {
         $globProc = Processes::find($e_);
-        Gate::authorize('isEnterpriseRQ', $globProc);
+        Gate::authorize('isProcessusPilote', $globProc);
         //visitor chart
         // Generate the JavaScript content dynamically
         $dysresults = $this->rqdysAddedLastWeekByDay($globProc);

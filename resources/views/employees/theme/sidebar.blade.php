@@ -24,8 +24,9 @@
         </a>
     </div>
     <ul class="menu-inner py-1 overflow-auto">
+        @can('isPilote', Auth::user())
         <!-- Dashboards -->
-        <li class="menu-item @if (request()->route()->getName() == 'rq.index') active open @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'employee.index') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div class="text-truncate" data-i18n="Accueil">Accueil</div>
@@ -37,7 +38,7 @@
                     $procs = \App\Models\Processes::whereIn('id', $permissions->pluck('process')->unique())->get();
                 @endphp
                 @foreach ($permissions as $ar)
-                    <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->process) active @endif">
+                    <li class="menu-item @if (request()->route()->getName() == 'employee.index' && request()->route('id') == $ar->process) active @endif">
                         <a href="{!! route('employee.index', ['id' => $ar->process]) !!}" class="menu-link">
                             <div class="text-truncate"
                                 data-i18n="{{ $procs->where('id', $ar->process)->first()->name }}"></div>
@@ -46,6 +47,7 @@
                 @endforeach
             </ul>
         </li>
+        @endcan
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
         </li>
