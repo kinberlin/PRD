@@ -21,6 +21,11 @@ use Throwable;
 
 class EmployeeController extends Controller
 {
+    public function index($id)
+    {
+        Gate::authorize('isEnterpriseRQ', Enterprise::find($id));
+        return view('rq.dashboard', compact('id'));
+    }
     public function dysfunction()
     {
         $ents = Enterprise::all();
@@ -29,7 +34,7 @@ class EmployeeController extends Controller
     }
     public function listeSignalement()
     {
-        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get();
+        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get()->sortByDesc('created_at');
         $status = Status::all();
         return view('employees/listesignalement', compact('data', 'status'));
     }
@@ -37,7 +42,7 @@ class EmployeeController extends Controller
     {
         Gate::authorize('isPilote', Auth::user());
         $pltU = AuthorisationPilote::where('user', Auth::user()->id)->get();
-        $dys = Dysfunction::whereIn('status', [2, 4, 5])->whereHas('tasks')->get();
+        $dys = Dysfunction::whereIn('status', [2, 4, 5])->whereHas('tasks')->get()->sortByDesc('created_at');
         $data = Task::whereIn('process', $pltU->pluck('process'))->whereIn('dysfunction', $dys->pluck('id'))->get();
         return view('employees/mytasks', compact('data', 'dys'));
     }
@@ -144,7 +149,7 @@ class EmployeeController extends Controller
     public function invitation()
     {
         // Query to get all invitations where internal_invites contains an invite with the user's email
-        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get();
+        $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get()->sortByDesc('created_at');
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
         return view('employees/invitation', compact('data', 'dys'));
     }

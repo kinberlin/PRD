@@ -45,17 +45,5 @@ class UserPolicy
             return false;
         }
     }
-    /**
-     * Determine whether the user is Pilote or not.
-     */
-    public function isProcessusPilote(Users $user, Processes $proc): bool
-    {
-        if ($user->access == 1) {
-            $pltU = AuthorisationPilote::where('interim', 0)->where('process', $proc->id)->get();
-            $users = Users::whereIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
-            return $users->where('id', $user->id)->first() !== null ? true : false;
-        } else {
-            return false;
-        }
-    }
+
 }

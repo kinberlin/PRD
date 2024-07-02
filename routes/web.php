@@ -40,11 +40,13 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/dys/data', 'GanttController@get');
 
     Route::get('/rq/dashboard/{id}', 'RQController@index')->name('rq.index');
+    Route::get('/rq/js/{id}/dashboard.js', 'DynamicJsController@rq')->name('rq.dashboardjs');
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
     Route::get('/employee/messignalements', 'EmployeeController@listeSignalement')->name('employees.signalement');
     Route::get('/employee/mestaches', 'EmployeeController@mytasks')->name('employees.mytask');
     Route::get('/employee/invitations', 'EmployeeController@invitation')->name('emp.invitation');
-    Route::get('/rq/js/{id}/dashboard.js', 'DynamicJsController@rq')->name('rq.dashboardjs');
+    Route::get('/employee/dashboard/{id}', 'EmployeeController@index')->name('employee.index');
+    Route::get('/employee/js/{id}/dashboard.js', 'DynamicJsController@pilote')->name('employee.dashboardjs');
 
     Route::get('/rq/dysfonctionnement', 'RQController@dysfonction')->name('rq.dysfonction');
     Route::get('/rq/detail/dysfonctionnement/{id}', 'RQController@show')->name('rq.n1dysfonction');

@@ -4,11 +4,13 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Invitation;
+use App\Models\Processes;
 use App\Models\Users;
 use App\Policies\DysfunctionPolicy;
 use App\Policies\InvitationPolicy;
@@ -41,10 +43,26 @@ class AuthServiceProvider extends ServiceProvider
          */
         Gate::define('isEnterpriseRQ', function (Users $user, Enterprise $ents): bool {
             if ($user->access == 1) {
-                if ($ents != null) {
+                if (!is_null($ents)) {
                     $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
                     $users = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
                     return $users->where('id', $user->id)->first() != null ? true : false;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        /**
+         * Determine whether the user is Pilote or not.
+         */
+        Gate::define('isProcessusPilote', function (Users $user, Processes $proc): bool {
+            if ($user->access == 1) {
+                if (!is_null($proc)) {
+                    $pltU = AuthorisationPilote::where('process', $proc->id)->get();
+                    $users = Users::whereIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
+                    return $users->where('id', $user->id)->first() !== null ? true : false;
                 } else {
                     return false;
                 }
