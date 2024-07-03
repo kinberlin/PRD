@@ -73,17 +73,18 @@ class Dysfunction extends Model
     ];
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'dysfunction', 'id');
+        return $this->hasMany(Task::class, 'dysfunction');
+    }
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class, 'dysfonction');
     }
     // Define the relationship with the Gravity model
     public function gravities()
     {
         return $this->belongsTo(Gravity::class, 'name', 'gravity');
     }
-    public function evaluations()
-    {
-        return $this->hasMany(Evaluation::class, 'dysfonction', 'id');
-    }
+
     // Define the relationship with the Origin model
     public function origins()
     {

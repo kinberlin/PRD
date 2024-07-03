@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Gestion des divers Origines de Dysfonctionnements
+    Gestion des divers Catégories de Dysfonctionnements
 @endsection
 @section('manualstyle')
 @endsection
@@ -9,11 +9,11 @@
         <!-- Users List Table -->
         <div class="col-12">
             <div class="card mb-4">
-                <h5 class="card-header">Origine de Dysfonctionnements</h5>
+                <h5 class="card-header">Catégorie de Dysfonctionnements</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
-                            aria-controls="offcanvasEnd">Ajouter une Origine</button>
+                            aria-controls="offcanvasEnd">Ajouter une Catégorie</button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
@@ -26,7 +26,7 @@
                                     novalidate="novalidate" action="{{ route('admin.origin.store') }}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="name">Nommez l'Origine</label>
+                                        <label class="form-label" for="name">Nommez la Catégorie</label>
                                         <input type="text" maxlength="50" class="form-control" name="data[0][1]"
                                             placeholder="..." required>
                                         <input type="hidden" class="form-control" name="data[0][0]">
@@ -64,14 +64,14 @@
         <div class="card">
 
             <div class="card-body">
-                <h5 class="card-title">Liste des Origines sur PRD</h5>
+                <h5 class="card-title">Liste des Catégories sur PRD</h5>
                 <div class=" align-items-start justify-content-between">
                     <table id="datatables-orders"
                         class="table table-striped datatables-basic table border-top dataTable no-footer dtr-column">
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Origines</th>
+                                <th>Catégories</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>

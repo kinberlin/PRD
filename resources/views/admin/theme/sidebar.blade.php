@@ -175,7 +175,7 @@
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.origin') active @endif">
                     <a href="{!! route('admin.origin') !!}" class="menu-link">
-                        <div class="text-truncate" data-i18n="Origine">Origine</div>
+                        <div class="text-truncate" data-i18n="Catégorie">Catégorie</div>
                     </a>
                 </li>
                 <li class="menu-item @if (request()->route()->getName() == 'admin.probability') active @endif">

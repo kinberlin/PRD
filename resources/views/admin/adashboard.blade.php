@@ -423,7 +423,7 @@
                         <div class="col-md-4">
                             <div class="card-header d-flex align-items-center justify-content-between mb-4">
                                 <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Origine</span></h5>
+                                        class="text-primary">Catégorie</span></h5>
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">

@@ -10,4 +10,9 @@ class Task extends Model
     use HasFactory;
     protected $appends = ["open"]; 
     public function getOpenAttribute(){        return true;    }
+
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'task');
+    }
 }

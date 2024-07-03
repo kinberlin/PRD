@@ -139,7 +139,7 @@ class InvitationController extends Controller
                 if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
                     DB::beginTransaction();
                     if ($data == null) {
-                        throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+                        throw new Exception("Impossible de trouver l'element a mettre à jour", 404);
                     }
                     if (Carbon::now() > $data->dates) {
                         throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
@@ -207,7 +207,7 @@ class InvitationController extends Controller
             if (Gate::allows('isInvitationOpen', $data)) {
                 DB::beginTransaction();
                 if ($data == null) {
-                    throw new Exception("Impossible de trouver l'element a mettre a jour", 404);
+                    throw new Exception("Impossible de trouver l'element a mettre à jour", 404);
                 }
                 $invites = $data->findInviteByMatricule(Auth::user()->matricule); 
                 if ($invites) {

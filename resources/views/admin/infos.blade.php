@@ -146,7 +146,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Origine (<span style="color: red">*</span>)</label>
+                        <label class="form-label">Catégorie (<span style="color: red">*</span>)</label>
                         <select class="form-control" name="origin" data-allow-clear="true" required>
                             @foreach ($origin as $o)
                                 <option value="{{ $o->id }}" @if ($o->name == $data->origin) selected @endif>
@@ -173,9 +173,9 @@
                             </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Responsables probable de l'incident</label>
+                        <label class="form-label">Responsable(s) probable(s) de l'incident</label>
                         <input type="text"
-                            value="@if (empty($data->cause)) Aucun Responsable Identifier @else {{ $data->cause }} @endif"
+                            value="@if (empty($data->cause)) Aucun Responsable Identifié @else {{ $data->cause }} @endif"
                             name="cause" class="form-control"
                             placeholder="Le(s) Nom(s) de(s) Responsable(s) & matricule(s) si possible">
                     </div>
@@ -184,11 +184,11 @@
                     @if ($data->status != 3)
                         <div class="row">
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre a Jour</button>
+                                <button type="submit" class="btn btn-success me-sm-3 me-1">mettre à jour</button>
                             </div>
                             <div class="col-md-8 text-end">
-                                <button type="reset" class="btn btn-secondary">Annuler Modifications</button>
-                                <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeté ce Signalement</a>
+                                <button type="reset" class="btn btn-secondary">Annuler modifications</button>
+                                <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeter ce signalement</a>
                             </div>
                         </div>
                 </div>
@@ -353,7 +353,7 @@
                                     <form class="row g-3" action="{!! route('admin.planner', ['id' => $data->id]) !!}" method="GET">
                                         <div class="pt-4">
                                             <button type="submit" id="saveActionsBtn"
-                                                class="btn btn-success me-sm-3 me-1">Aller a la Page de
+                                                class="btn btn-success me-sm-3 me-1">mettre à jour de
                                                 Planification</button>
                                         </div>
                                     </form>

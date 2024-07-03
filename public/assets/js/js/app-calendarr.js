@@ -234,7 +234,7 @@ function executeAfterAjax() {
                 (a = e.event).url &&
                     (e.jsEvent.preventDefault(), window.open(a.url, "_blank")),
                 C.show(),
-                b && (b.innerHTML = "Mettre a jour"),
+                b && (b.innerHTML = "mettre à jour"),
                 (y.innerHTML = "MAJ"),
                 y.classList.add("btn-update-event"),
                 y.classList.remove("btn-add-event"),

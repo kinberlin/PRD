@@ -100,17 +100,50 @@ class EnterpriseController extends Controller
      */
     public function destroy($id)
     {
-        try {
+       // try {
             Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Enterprise::find($id);
+            // Soft delete all products associated with the supplier
+            if (!$rec) {
+                dd('Rec not found');
+            }
+
             
-            $rec->delete();
+            dd( $rec->departments); // Confirm the collection of departments
+
+            $rec->departments->each(function ($department) {
+                dd($department);
+                // Soft delete related departments
+                $department->users()->each(function ($user) {
+                    // Soft delete related users
+                    $user->dysfunctions()->each(function ($dysfunction) {
+                        // Soft delete related dysfunctions
+                        $dysfunction->tasks()->each(function ($task) {
+                            // Soft delete related tasks
+                            $task->tasks()->each(function ($evaluations) {
+                                // Soft delete related evaluations
+                                $evaluations->delete();
+                            });
+                            $task->delete();
+                        });
+                        $dysfunction->invitations()->each(function ($invitation) {
+                            // Soft delete related invitations
+                            $invitation->delete();
+                        });
+                        $dysfunction->delete();
+                    });
+                    $user->delete();
+                });
+                // Soft delete the product itself
+                $department->delete();
+            });
+            //$rec->delete();
             DB::commit();
             return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
-        }
+        }*/
     }
     // Restore a single soft-deleted enterprise by ID
     public function restore($id)

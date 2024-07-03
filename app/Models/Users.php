@@ -99,12 +99,16 @@ class Users extends  Authenticatable
     {
         return $this->belongsTo(Enterprise::class, 'enterprise');
     }
-    public function authorisationRq()
+    public function authorisationRqs()
     {
         return $this->hasMany(AuthorisationRq::class, 'user');
     }
-    public function authorisationPilote()
+    public function authorisationPilotes()
     {
         return $this->hasMany(AuthorisationPilote::class, 'user');
+    }
+    public function dysfunctions()
+    {
+        return $this->hasMany(Dysfunction::class, 'emp_matricule', 'matricule');
     }
 }

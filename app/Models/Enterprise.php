@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -76,7 +77,7 @@ class Enterprise extends Model
     // Functions ...
 
     // Relations ...
-    public function departments()
+    public function departments() : HasMany
     {
         return $this->hasMany(Department::class, 'enterprise');
     }
@@ -92,7 +93,7 @@ class Enterprise extends Model
     {
         return $this->hasMany(Site::class, 'enterprise');
     }
-    public function authorisationRq()
+    public function authorisationRqs()
     {
         return $this->hasMany(AuthorisationRq::class, 'enterprise');
     }

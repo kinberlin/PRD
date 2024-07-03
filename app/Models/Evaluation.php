@@ -76,4 +76,9 @@ class Evaluation extends Model
     // Functions ...
 
     // Relations ...
+        // Define the relationship with the Enterprise model
+        public function task()
+        {
+            return $this->belongsTo(Task::class, 'task');
+        }
 }
