@@ -1,6 +1,6 @@
 @extends('admin.theme.main')
 @section('title')
-    Page de Planification de Reunion Pour Signalements
+    Page de planification de Reunion Pour Signalements
 @endsection
 @section('manualstyle')
     <link rel="stylesheet" href="{!! url('assets/vendor/libs/quill/editor.css') !!}" />

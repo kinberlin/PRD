@@ -80,7 +80,7 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         $rqU = AuthorisationRq::where('user', Auth::user()->id)->get();
 
-        $dys = Dysfunction::whereIn('enterprise_id', $rqU->pluck('enterprise')->unique())->get()->pluck('name')
+        $dys = Dysfunction::whereIn('enterprise_id', $rqU->pluck('enterprise')->unique())
             ->whereNotIn('status', [3, 7])->get();
         $users = Users::all();
         return view('rq/planifs', compact('dys', 'users'));
@@ -128,7 +128,7 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get()->sortByDesc('created_at');
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
         return view('rq/invitation', compact('data', 'dys'));
     }
     /**

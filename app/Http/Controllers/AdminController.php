@@ -168,7 +168,7 @@ class AdminController extends Controller
         Gate::authorize('isAdmin', Auth::user());
         // Query to get all invitations where internal_invites contains an invite with the user's email
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get()->sortByDesc('created_at');
-        $dys = Dysfunction::whereIn('id', $data->pluck('dysfunction')->unique())->get();
+        $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
         return view('admin/invitation', compact('data', 'dys'));
     }
     public function listeSignalement()

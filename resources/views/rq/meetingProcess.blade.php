@@ -80,8 +80,8 @@
                                                         <div class="modal-body">
                                                             <div class="card-body">
                                                                 <p class="card-text">
-                                                                    Souhaitez vous vraiment clôturer cette Réunion ?
-                                                                    <b>Notez qu'une fois terminer, les RQs ayant accès a
+                                                                    Souhaitez vous vraiment clôturer cette réunion ?
+                                                                    <b>Notez qu'une fois terminée, les RQs ayant accès à
                                                                         cette ressource ne pourront plus la modifier.</b>
                                                                 </p>
                                                             </div>

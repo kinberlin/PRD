@@ -184,10 +184,10 @@
                     @if ($data->status != 3)
                         <div class="row">
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success me-sm-3 me-1">mettre à jour</button>
+                                <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre à jour</button>
                             </div>
                             <div class="col-md-8 text-end">
-                                <button type="reset" class="btn btn-secondary">Annuler modifications</button>
+                                <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
                                 <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeter ce signalement</a>
                             </div>
                         </div>
@@ -353,8 +353,8 @@
                                     <form class="row g-3" action="{!! route('admin.planner', ['id' => $data->id]) !!}" method="GET">
                                         <div class="pt-4">
                                             <button type="submit" id="saveActionsBtn"
-                                                class="btn btn-success me-sm-3 me-1">mettre à jour de
-                                                Planification</button>
+                                                class="btn btn-success me-sm-3 me-1">Aller à la page de
+                                                planification</button>
                                         </div>
                                     </form>
                                 </div>

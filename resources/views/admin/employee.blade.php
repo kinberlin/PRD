@@ -247,7 +247,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="onboarding-content mb-0">
-                                                            <h4 class="onboarding-title text-body">mettre à jour le Profil
+                                                            <h4 class="onboarding-title text-body">Mettre à jour le Profil
                                                                 de {{ $d->firstname }}</h4>
                                                             <div class="onboarding-info">Veuillez a renseigner tout les
                                                                 champs obligatoires.</div>

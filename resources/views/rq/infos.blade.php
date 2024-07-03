@@ -183,10 +183,10 @@
                     @if ($data->status != 3)
                         <div class="row">
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-success me-sm-3 me-1">mettre à jour</button>
+                                <button type="submit" class="btn btn-success me-sm-3 me-1">Mettre à jour</button>
                             </div>
                             <div class="col-md-8 text-end">
-                                <button type="reset" class="btn btn-secondary">Annuler modifications</button>
+                                <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
                                 <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeter ce signalement</a>
                             </div>
                         </div>
@@ -217,8 +217,8 @@
                                                     <form action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
                                                         <div>
                                                             <button type="submit" id="saveActionsBtn"
-                                                                class="btn btn-success me-sm-3 me-1">mettre à jour de
-                                                                Planification</button>
+                                                                class="btn btn-success me-sm-3 me-1">Aller à la page de
+                                                                planification</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -320,9 +320,9 @@
                                                             <p class="card-text">
                                                                 Souhaitez vous vraiment terminer l'evaluation des actions
                                                                 correctives de ce dysfonctionnement ?
-                                                                <b>Notez que vous ne pourriez plus modifier ce
+                                                                <b>Notez que vous ne pourrez plus modifier ce
                                                                     dysfonctionnement en terme d'identification, de
-                                                                    planification et etc...</b>
+                                                                    planification etc..</b>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -417,9 +417,9 @@
                                                         <p class="card-text">
                                                             Souhaitez vous vraiment terminer l'evaluation des actions
                                                             correctives de ce dysfonctionnement ?
-                                                            <b>Notez que vous ne pourriez plus modifier ce
+                                                            <b>Notez que vous ne pourrez plus modifier ce
                                                                 dysfonctionnement en terme d'identification, de
-                                                                planification et etc...</b>
+                                                                planification etc..</b>
                                                         </p>
                                                     </div>
                                                 </div>
