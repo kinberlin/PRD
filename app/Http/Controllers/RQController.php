@@ -80,7 +80,7 @@ class RQController extends Controller
         Gate::authorize('isRq', Auth::user());
         $rqU = AuthorisationRq::where('user', Auth::user()->id)->get();
 
-        $dys = Dysfunction::whereIn('enterprise', Enterprise::whereIn('id', $rqU->pluck('enterprise')->unique())->get()->pluck('name'))
+        $dys = Dysfunction::whereIn('enterprise_id', $rqU->pluck('enterprise')->unique())->get()->pluck('name')
             ->whereNotIn('status', [3, 7])->get();
         $users = Users::all();
         return view('rq/planifs', compact('dys', 'users'));
@@ -157,7 +157,7 @@ class RQController extends Controller
         if ($dys == null) {
             throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
         }
-        $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+        $ents = Enterprise::where('id', $dys->enterprise_id)->get()->first();
         if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
             $status = Status::all();
             $processes = Processes::all();

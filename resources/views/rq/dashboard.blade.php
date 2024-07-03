@@ -43,7 +43,7 @@
                                 <div class="mt-auto">
                                     @php
                                         $_enterprise = \App\Models\Enterprise::find($id);
-                                        $alldys = \App\Models\Dysfunction::where('enterprise', $_enterprise->name)
+                                        $alldys = \App\Models\Dysfunction::where('enterprise_id', $_enterprise->id)
                                             ->whereYear('created_at', \Carbon\Carbon::now()->year)
                                             ->get();
                                         $alldystype = \App\Models\DysfunctionType::all();

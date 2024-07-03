@@ -19,9 +19,11 @@ class EnterpriseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function trashenterprise()
     {
-        //
+        Gate::authorize('isAdmin', Auth::user());
+        $data = Enterprise::onlyTrashed()->get();
+        return view('admin.trash.enterprise', compact('data'));
     }
 
     /**
@@ -108,5 +110,17 @@ class EnterpriseController extends Controller
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
+    }
+    // Restore a single soft-deleted enterprise by ID
+    public function restore($id)
+    {
+        $ent = Enterprise::onlyTrashed()->find($id);
+
+        if ($ent) {
+            $ent->restore();
+            return redirect()->back()->with('error', "L'entreprise et toutes les données qui en dépendent ont bien été restaurées.");
+        }
+
+        return redirect()->back()->with('error', "L'élément à restaurer n'a peut-être pas pu être restauré.");
     }
 }

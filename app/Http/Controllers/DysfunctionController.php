@@ -54,6 +54,7 @@ class DysfunctionController extends Controller
             }
             $dys->occur_date = $request->input('occur_date');
             $dys->enterprise = $request->input('enterprise');
+            $dys->enterprise_id = $ents->id;
             $dys->site = $request->input('site');
             $dys->description = $request->input('description');
             $dys->emp_signaling = Auth::user()->firstname . ' ' . Auth::user()->lastname;

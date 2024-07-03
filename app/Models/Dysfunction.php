@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $cost
  * @property integer $closed_at
  * @property int $created_at
+ * @property int $enterprise_id
  * @property int $site_id
  * @property int $origin
  * @property string $enterprise
@@ -56,7 +57,7 @@ class Dysfunction extends Model
      * @var array
      */
 
-    protected $fillable = ['enterprise', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
+    protected $fillable = ['enterprise', 'enterprise_id', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'invitations', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
     public $timestamps = false;
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i'
@@ -83,6 +84,11 @@ class Dysfunction extends Model
     public function origins()
     {
         return $this->belongsTo(Origin::class, 'origin');
+    }
+    // Define the relationship with the Enterprise model
+    public function enterprises()
+    {
+        return $this->belongsTo(Enterprise::class, 'enterprise_id');
     }
     // Define the relationship with the Probability model
     public function probabilities()

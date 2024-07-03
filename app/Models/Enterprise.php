@@ -71,13 +71,17 @@ class Enterprise extends Model
      * @var boolean
      */
     public $timestamps = false;
-    public function users()
-    {
-        return $this->hasMany(Users::class, 'enterprise');
-    }
     // Scopes...
 
     // Functions ...
 
     // Relations ...
+    public function users()
+    {
+        return $this->hasMany(Users::class, 'enterprise');
+    }
+    public function dysfunctions()
+    {
+        return $this->hasMany(Dysfunction::class, 'enterprise_id');
+    }
 }
