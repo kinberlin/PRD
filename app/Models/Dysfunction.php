@@ -80,6 +80,10 @@ class Dysfunction extends Model
     {
         return $this->belongsTo(Gravity::class, 'name', 'gravity');
     }
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'dysfonction', 'id');
+    }
     // Define the relationship with the Origin model
     public function origins()
     {
@@ -94,5 +98,14 @@ class Dysfunction extends Model
     public function probabilities()
     {
         return $this->belongsTo(Probability::class, 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'emp_matricule', 'matricule');
+    }
+    // Define the relationship with the Site model
+    public function site_id()
+    {
+        return $this->belongsTo(Site::class, 'site_id');
     }
 }

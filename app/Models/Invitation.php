@@ -165,4 +165,8 @@ class Invitation extends Model
         return null;
     }
     // Relations ...
+    public function dysfonction()
+    {
+        return $this->belongsTo(Dysfunction::class, 'dysfonction');
+    }
 }

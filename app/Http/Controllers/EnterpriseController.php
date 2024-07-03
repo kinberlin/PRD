@@ -104,6 +104,7 @@ class EnterpriseController extends Controller
             Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Enterprise::find($id);
+            
             $rec->delete();
             DB::commit();
             return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");

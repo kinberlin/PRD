@@ -80,4 +80,8 @@ class Site extends Model
     {
         return $this->hasMany(Dysfunction::class, 'site_id', 'id');
     }
+    public function enterprise()
+    {
+        return $this->belongsTo(Enterprise::class, 'enterprise');
+    }
 }

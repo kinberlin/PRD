@@ -77,4 +77,8 @@ class AuthorisationPilote extends Model
     // Functions ...
 
     // Relations ...
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'enterprise');
+    }
 }

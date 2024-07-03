@@ -79,4 +79,8 @@ class Department extends Model
     // Functions ...
 
     // Relations ...
+    public function enterprise()
+    {
+        return $this->belongsTo(Enterprise::class, 'enterprise');
+    }
 }

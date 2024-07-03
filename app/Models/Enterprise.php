@@ -76,6 +76,10 @@ class Enterprise extends Model
     // Functions ...
 
     // Relations ...
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'enterprise');
+    }
     public function users()
     {
         return $this->hasMany(Users::class, 'enterprise');
@@ -84,4 +88,13 @@ class Enterprise extends Model
     {
         return $this->hasMany(Dysfunction::class, 'enterprise_id');
     }
+    public function sites()
+    {
+        return $this->hasMany(Site::class, 'enterprise');
+    }
+    public function authorisationRq()
+    {
+        return $this->hasMany(AuthorisationRq::class, 'enterprise');
+    }
+
 }

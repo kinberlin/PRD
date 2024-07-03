@@ -86,6 +86,11 @@ class Users extends  Authenticatable
      * @var boolean
      */
     public $timestamps = false;
+    // Scopes...
+
+    // Functions ...
+
+    // Relations ...
     public function department()
     {
         return $this->belongsTo(Department::class, 'department');
@@ -94,9 +99,12 @@ class Users extends  Authenticatable
     {
         return $this->belongsTo(Enterprise::class, 'enterprise');
     }
-    // Scopes...
-
-    // Functions ...
-
-    // Relations ...
+    public function authorisationRq()
+    {
+        return $this->hasMany(AuthorisationRq::class, 'user');
+    }
+    public function authorisationPilote()
+    {
+        return $this->hasMany(AuthorisationPilote::class, 'user');
+    }
 }
