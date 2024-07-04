@@ -41,7 +41,7 @@
                                 <div class="mt-auto">
                                     @php
                                         $_process = \App\Models\Processes::find($id);
-                                        $alldys = \App\Models\Dysfunction::whereJsonContains('impact_processes', $_process->name. ' ('.$_process->surfix.')')
+                                        $alldys = \App\Models\Dysfunction::whereJsonContains('concern_processes', $_process->name)
                                             ->whereYear('created_at', \Carbon\Carbon::now()->year)
                                             ->get();
                                         $alldystype = \App\Models\DysfunctionType::all();

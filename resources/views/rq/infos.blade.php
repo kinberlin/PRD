@@ -318,7 +318,7 @@
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <p class="card-text">
-                                                                Souhaitez vous vraiment terminer l'evaluation des actions
+                                                                Souhaitez vous vraiment terminer l'évaluation des actions
                                                                 correctives de ce dysfonctionnement ?
                                                                 <b>Notez que vous ne pourrez plus modifier ce
                                                                     dysfonctionnement en terme d'identification, de
@@ -415,7 +415,7 @@
                                                 <div class="modal-body">
                                                     <div class="card-body">
                                                         <p class="card-text">
-                                                            Souhaitez vous vraiment terminer l'evaluation des actions
+                                                            Souhaitez vous vraiment terminer l'évaluation des actions
                                                             correctives de ce dysfonctionnement ?
                                                             <b>Notez que vous ne pourrez plus modifier ce
                                                                 dysfonctionnement en terme d'identification, de

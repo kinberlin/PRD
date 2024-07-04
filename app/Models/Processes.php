@@ -77,7 +77,7 @@ class Processes extends Model
     // Relations ...
     public function dysfunctions()
     {
-        return Dysfunction::whereJsonContains('impact_processes', $this->name. ' ('.$this->surfix.')')->get();
+        return Dysfunction::whereJsonContains('impact_processes', $this->name)->get();
     }
     public function tasks()
     {

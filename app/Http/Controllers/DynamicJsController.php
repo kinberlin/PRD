@@ -877,14 +877,14 @@ class DynamicJsController extends Controller
         Gate::authorize('isProcessusPilote', $globProc);
         //visitor chart
         // Generate the JavaScript content dynamically
-        $dysresults = $this->rqdysAddedLastWeekByDay($globProc);
+        $dysresults = $this->pilotedysAddedLastWeekByDay($globProc);
         $dyscounts = $dysresults['dystring'];
         $dysarrays = $dysresults['dysarray'];
         $ents = Enterprise::all();
         $colors = $this->generateColorsArray($dysarrays);
         $colorsString = '[' . implode(', ', $colors) . ']';
         //activity chart
-        $alldys = Dysfunction::whereJsonContains('impact_processes', $globProc->name. ' ('.$globProc->surfix.')')->whereYear('created_at', Carbon::now()->year)->get();
+        $alldys = Dysfunction::whereJsonContains('concern_processes', $globProc->name)->whereYear('created_at', Carbon::now()->year)->get();
         $a_dys = $alldys->filter(function ($item) {
             return $item->status == 4;
         })->sortByDesc('created_at')->take(10);
@@ -1355,6 +1355,26 @@ class DynamicJsController extends Controller
         // Query to fetch all dyss added last week
         $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->where('enterprise', $ents->name)->get();
 
+        // Loop through the dyss collection to count dyss for each day
+        foreach ($dyss as $dys) {
+            $createdDate = Carbon::parse($dys->created_at)->format('N') - 1; // Get day of the week (1 for Monday, ..., 7 for Sunday)
+            $dysCounts[$createdDate]++;
+        }
+
+        // Return the array of counts (Monday to Sunday)
+        return   ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
+    }
+    public function pilotedysAddedLastWeekByDay($globProc)
+    {
+        // Initialize an array to hold the results
+        $dysCounts = [0, 0, 0, 0, 0, 0, 0]; // Array to store counts for each day (Monday to Sunday)
+
+        // Get the start and end dates for last week (Monday to Sunday)
+        $startDate = Carbon::now()->subWeek()->startOfWeek()->addDay(); // Start of last week (Monday)
+        $endDate = Carbon::now()->subWeek()->endOfWeek()->addDay(); // End of last week (Sunday)
+
+        // Query to fetch all dyss added last week
+        $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->whereJsonContains('concern_processes', $globProc->name)->get();
         // Loop through the dyss collection to count dyss for each day
         foreach ($dyss as $dys) {
             $createdDate = Carbon::parse($dys->created_at)->format('N') - 1; // Get day of the week (1 for Monday, ..., 7 for Sunday)
