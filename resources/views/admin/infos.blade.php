@@ -40,7 +40,7 @@
                                 <div class="form-text"> Extras</div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Date d'enregistrement sur Glitch</label>
+                                <label class="form-label">Date d'enregistrement sur PRD</label>
                                 <input type="text" class="form-control"
                                     value="{{ \Carbon\Carbon::parse($data->created_at)->format('d-m-Y H:i:s') }}" readonly>
                             </div>

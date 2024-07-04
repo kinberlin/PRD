@@ -48,6 +48,7 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
                         
                         <input type="file" style="visibility: hidden" id="excelFileInput">
+                        <a href="{{route('admin.trash.enterprise')}}" class="btn btn-warning"><i class="bx bx-trash"></i> Corbeille</a>
                         <form action="{{route('admin.enterprise.store')}}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">

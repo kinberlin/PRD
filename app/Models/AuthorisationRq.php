@@ -77,8 +77,8 @@ class AuthorisationRq extends Model
     // Functions ...
 
     // Relations ...
-    public function enterprise()
+    public function user()
     {
-        return $this->belongsTo(Enterprise::class, 'enterprise');
+        return $this->belongsTo(Users::class, 'user');
     }
 }

@@ -183,6 +183,10 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/meetings/inprocess', 'AdminController@meetingProcess')->name('admin.meeting.inprocess');
     Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
     
+    //Trash
+    Route::get('/admin/trash/enterprise', 'TrashController@enterprise')->name('admin.trash.enterprise');
+    Route::post('/admin/trash/enterprise/{id)', 'EnterpriseController@restore')->name('admin.trash.enterprise.restore');
+
 
 
 

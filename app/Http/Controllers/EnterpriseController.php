@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Service;
 use App\Models\Users;
@@ -100,50 +101,66 @@ class EnterpriseController extends Controller
      */
     public function destroy($id)
     {
-       // try {
+        try {
             Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $rec = Enterprise::find($id);
-            // Soft delete all products associated with the supplier
-            if (!$rec) {
-                dd('Rec not found');
-            }
-
-            
-            dd( $rec->departments); // Confirm the collection of departments
+            $rec->dysfunctions->each(function ($dysfunction) {
+                // Soft delete related dysfunctions
+                $dysfunction->tasks->each(function ($task) {
+                    // Soft delete related tasks
+                    $task->evaluations->each(function ($evaluations) {
+                        // Soft delete related evaluations
+                        $evaluations->delete();
+                    });
+                    $task->delete();
+                });
+                $dysfunction->invitations->each(function ($invitation) {
+                    // Soft delete related invitations
+                    $invitation->delete();
+                });
+                $dysfunction->delete();
+            });
 
             $rec->departments->each(function ($department) {
-                dd($department);
                 // Soft delete related departments
-                $department->users()->each(function ($user) {
+                $department->users->each(function ($user) {
                     // Soft delete related users
-                    $user->dysfunctions()->each(function ($dysfunction) {
+                    $user->dysfunctions->each(function ($dysfunction) {
                         // Soft delete related dysfunctions
                         $dysfunction->tasks()->each(function ($task) {
                             // Soft delete related tasks
-                            $task->tasks()->each(function ($evaluations) {
+                            $task->evaluations->each(function ($evaluations) {
                                 // Soft delete related evaluations
                                 $evaluations->delete();
                             });
                             $task->delete();
                         });
-                        $dysfunction->invitations()->each(function ($invitation) {
+                        $dysfunction->invitations->each(function ($invitation) {
                             // Soft delete related invitations
                             $invitation->delete();
                         });
                         $dysfunction->delete();
+                    });
+                    $user->authorisationRqs->each(function ($arq) {
+                        // Soft delete related authorisations
+                        $arq->delete();
+                    });
+                    $user->authorisationPilotes->each(function ($ap) {
+                        // Soft delete related authorisations
+                        $ap->delete();
                     });
                     $user->delete();
                 });
                 // Soft delete the product itself
                 $department->delete();
             });
-            //$rec->delete();
+            $rec->delete();
             DB::commit();
             return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
-        }*/
+        }
     }
     // Restore a single soft-deleted enterprise by ID
     public function restore($id)
