@@ -163,12 +163,69 @@ class EnterpriseController extends Controller
         }
     }
     // Restore a single soft-deleted enterprise by ID
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
-        $ent = Enterprise::onlyTrashed()->find($id);
+        Gate::authorize('isAdmin', Auth::user());
+        DB::beginTransaction();
+        $rec = Enterprise::onlyTrashed()->find($id);
 
-        if ($ent) {
-            $ent->restore();
+        if ($rec) {
+            // Restore the main record itself first
+            $rec->restore();
+
+
+            // Restore related departments and users
+            $rec->departments()->withTrashed()->get()->each(function ($department) {
+                $department->restore();
+                $department->users()->withTrashed()->get()->each(function ($user) {
+                    $user->restore();
+                    // Restore related dysfunctions
+                    $user->dysfunctions()->withTrashed()->get()->each(function ($dysfunction) {
+                        $dysfunction->restore();
+                        // Restore related tasks
+                        $dysfunction->tasks()->withTrashed()->get()->each(function ($task) {
+                            $task->restore();
+                            // Restore related evaluations
+                            $task->evaluations()->withTrashed()->get()->each(function ($evaluation) {
+                                $evaluation->restore();
+                            });
+                        });
+                        // Restore related invitations
+                        $dysfunction->invitations()->withTrashed()->get()->each(function ($invitation) {
+                            $invitation->restore();
+                        });
+                    });
+                    // Restore related authorisations
+                    $user->authorisationRqs()->withTrashed()->get()->each(function ($arq) {
+                        $arq->restore();
+                    });
+                    $user->authorisationPilotes()->withTrashed()->get()->each(function ($ap) {
+                        $ap->restore();
+                    });
+                });
+            });
+
+// Restore related dysfunctions and their tasks, evaluations, and invitations directly under $rec
+$rec->dysfunctions()->withTrashed()->get()->each(function ($dysfunction) {
+    $dysfunction->restore();
+    
+    // Restore related tasks for each dysfunction
+    $dysfunction->tasks()->withTrashed()->get()->each(function ($task) {
+        $task->restore();
+        
+        // Restore related evaluations for each task
+        $task->evaluations()->withTrashed()->get()->each(function ($evaluation) {
+            $evaluation->restore();
+        });
+    });
+    
+    // Restore related invitations for each dysfunction
+    $dysfunction->invitations()->withTrashed()->get()->each(function ($invitation) {
+        $invitation->restore();
+    });
+});
+            //$rec->restore();
+            DB::commit();
             return redirect()->back()->with('error', "L'entreprise et toutes les données qui en dépendent ont bien été restaurées.");
         }
 

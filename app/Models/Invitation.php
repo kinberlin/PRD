@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\ParticipationCast;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int    $id
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed  $participation
  */
 class Invitation extends Model
-{
+{ use SoftDeletes;
     /**
      * The database table used by the model.
      *

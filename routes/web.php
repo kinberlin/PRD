@@ -185,7 +185,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     
     //Trash
     Route::get('/admin/trash/enterprise', 'TrashController@enterprise')->name('admin.trash.enterprise');
-    Route::post('/admin/trash/enterprise/{id)', 'EnterpriseController@restore')->name('admin.trash.enterprise.restore');
+    Route::post('/admin/trash/enterprise/{id}', 'EnterpriseController@restore')->name('admin.trash.enterprise.restore');
 
 
 

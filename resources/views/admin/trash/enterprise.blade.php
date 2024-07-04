@@ -40,7 +40,7 @@
                                         <div class="modal modal-top fade" id="restoreentreprise{{ $d->id }}"
                                             tabindex="-1">
                                             <div class="modal-dialog">
-                                                <form class="modal-content" action="{{route('admin.trash.enterprise.restore',['id'=>$d->id])}} method="post">
+                                                <form class="modal-content" action="{{route('admin.trash.enterprise.restore',['id'=>$d->id])}}" method="post">
                                                     @csrf
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modalTopTitle">Confirmation de

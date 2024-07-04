@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int    $satisfaction
  * @property int    $completion
  * @property int    $created_at
+ * @property int    $deleted_at
  * @property string $evaluation_criteria
  */
 class Evaluation extends Model
@@ -34,7 +35,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $fillable = [
-        'task', 'satisfaction', 'completion', 'evaluation_criteria', 'created_at'
+        'task', 'satisfaction', 'completion', 'evaluation_criteria', 'created_at', 'deleted_at'
     ];
 
     /**
@@ -52,7 +53,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'task' => 'int', 'satisfaction' => 'int', 'completion' => 'int', 'evaluation_criteria' => 'string', 'created_at' => 'timestamp'
+        'id' => 'int', 'task' => 'int', 'satisfaction' => 'int', 'completion' => 'int', 'evaluation_criteria' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
     ];
 
     /**
@@ -61,7 +62,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $dates = [
-        'created_at'
+        'created_at', 'deleted_at'
     ];
 
     /**
