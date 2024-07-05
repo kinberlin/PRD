@@ -86,7 +86,10 @@ class InvitationController extends Controller
                 $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
                 $content = view('employees.invitation_appMail', ['invitation' => $data, 'description' => $description])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
-                $newmail->send();
+                $jsonResponse = $newmail->send();
+                if ($jsonResponse['code'] != 200) {
+                    throw new Exception("Une erreur est survenue ors de l'envoi des mails : (".$jsonResponse['error'].")", 500);
+                }
                 return redirect()->back()->with('error', "La réunion a été créer avec succes.");
             } else {
                 throw new Exception("Malheureusement, vous ne disposez pas des acreditations necessaires pour programmer une réunion.", 401);
@@ -181,7 +184,10 @@ class InvitationController extends Controller
                     $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
                     $content = view('employees.invitation_appMail', ['invitation' => $data, 'description' => $description])->render();
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
-                    $newmail->send();
+                    $jsonResponse = $newmail->send();
+                    if ($jsonResponse['code'] != 200) {
+                        throw new Exception("Une erreur est survenue ors de l'envoi des mails : (".$jsonResponse['error'].")", 500);
+                    }
                     return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
                 } else {
                     // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more

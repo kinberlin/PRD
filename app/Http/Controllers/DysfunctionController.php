@@ -79,9 +79,12 @@ class DysfunctionController extends Controller
             $dys->save();
             $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-            $content = view('employees.dysfunction_appMail', ['code' => $dys->code, 'description' => $dys->description])->render();
-            $newmail = new ApiMail(null, $rq->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Annonce d'incident - Matricule de l'incident : [" . $dys->code . "]", $content, []);
+            foreach ($rq as $user) {
+            $content = view('employees.dysfunction_appMail', ['user' => $user, 'dysfunction' => Dysfunction::find($dys->id)])->render();
+            $newmail = new ApiMail(null, array_fill(0, 1, $user->email), 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
             $result = $newmail->send();
+            }
+            
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (" . $result->getData()->code . ')');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

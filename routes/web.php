@@ -27,6 +27,9 @@ Route::get('/rq', function () {
 Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');
 });
+Route::get('/dysmail', function () {
+    return view('employees.dysfunction_appMail');
+});
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
