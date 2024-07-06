@@ -82,13 +82,13 @@ class InvitationController extends Controller
                 $data->external_invites = json_encode($ext_u);
                 $data->save();
                 DB::commit();
-                $description = "Le motif de cette réunion est : " . $data->motif . ". Elle concerne le dysfonctionnement No. " . $dys->code . " ; dont la gravité a été noté : " . $dys->gravity;
                 $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
-                $content = view('employees.invitation_appMail', ['invitation' => $data, 'description' => $description])->render();
+                $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
-                $jsonResponse = $newmail->send();
+                $response = $newmail->send();
+                $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
-                    throw new Exception("Une erreur est survenue ors de l'envoi des mails : (".$jsonResponse['error'].")", 500);
+                    throw new Exception("Une erreur est survenue ors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
                 }
                 return redirect()->back()->with('error', "La réunion a été créer avec succes.");
             } else {
@@ -136,7 +136,7 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
+        //try {
             $data = Invitation::find($id);
             if (Gate::allows('isInvitationOpen', $data)) {
                 if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
@@ -180,13 +180,13 @@ class InvitationController extends Controller
                     $data->external_invites = json_encode($ext_u);
                     $data->save();
                     DB::commit();
-                    $description = "Le motif de cette réunion est : " . $data->motif . ". Elle concerne le dysfonctionnement No. " . $dys->code . " ; dont la gravité a été noté : " . $dys->gravity;
                     $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
-                    $content = view('employees.invitation_appMail', ['invitation' => $data, 'description' => $description])->render();
+                    $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
-                    $jsonResponse = $newmail->send();
+                    $response = $newmail->send();
+                    $jsonResponse = json_decode($response->getContent(), true);
                     if ($jsonResponse['code'] != 200) {
-                        throw new Exception("Une erreur est survenue ors de l'envoi des mails : (".$jsonResponse['error'].")", 500);
+                        throw new Exception("Une erreur est survenue ors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
                     }
                     return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
                 } else {
@@ -195,11 +195,11 @@ class InvitationController extends Controller
                 }
             } else {
                 // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
-                abort(403, 'Unauthorized action.');
+                abort(403, 'Unauthorized action. Invitation is closed');
             }
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
     public function appMail()
     {
@@ -215,7 +215,7 @@ class InvitationController extends Controller
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
                 }
-                $invites = $data->findInviteByMatricule(Auth::user()->matricule); 
+                $invites = $data->findInviteByMatricule(Auth::user()->matricule);
                 if ($invites) {
                     if ($request->input('decision') == 'Accept') {
                         $invites = $invites->confirm();

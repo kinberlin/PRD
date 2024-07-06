@@ -523,8 +523,8 @@
                                       font-size: 0px;
                                     ">
                                                                     <img class="adapt-img"
-                                                                        src="https://jobs.cadyst-app.com/app-assets/images/logo/cadyst.png"
-                                                                        alt="DLogo Daily"
+                                                                        src="data:image/png;base64, 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"
+                                                                        alt="Logo Cadyst"
                                                                         style="
                                         display: block;
                                         font-size: 14px;
@@ -638,43 +638,67 @@
                                   border-spacing: 0px;
                                 ">
                                                             <tr>
-                                                                <td align="center" style="padding: 0; margin: 0">
-                                                                    <p
-                                                                        style="
-                                      margin: 0;
-                                      mso-line-height-rule: exactly;
-                                      font-family: arial, 'helvetica neue',
-                                        helvetica, sans-serif;
-                                      line-height: 29px;
-                                      letter-spacing: 0;
-                                      color: #000000;
-                                      font-size: 15px;
-                                    ">
-                                                                        Votre présence est requise pour notre réunion de
-                                                                        planification.
-                                                                    </p><br>
-                                                                    <div class="containers">
-                                                                        <div class="clock-logo">
-                                                                            <img src="https://img.freepik.com/premium-vector/clock-face-vector-illustration-isolated-white-background_389737-289.jpg?w=240"
-                                                                                alt="Clock Logo">
-                                                                        </div>
-                                                                        <div class="meeting-details">
-                                                                            <h4>{{ $invitation->object }}</h4>
-                                                                            <p><strong>Date:
-                                                                                    {{ $invitation->dates->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</strong>
-                                                                            </p>
-                                                                            <p><strong>Heure:</strong>
-                                                                                {{ $invitation->begin }} -
-                                                                                {{ $invitation->end }}</p>
-                                                                            <p><strong>Emplacement/Lien:</strong>
-                                                                                {{ $invitation->place }}{{ '/' . $invitation->link }}
-                                                                            </p>
-                                                                            <p><strong>Info:</strong>
-                                                                                {{ $description }}</p>
-                                                                            <p><strong>Description:</strong>
-                                                                                {{ $invitation->description }}</p>
-                                                                        </div>
-                                                                    </div>
+                                                                <td style="padding: 0; margin: 0">
+
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour,</span></p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                    </p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
+                                                                            vous informons qu'une réunion de résolution
+                                                                            d’incidents a été programmée avec pour motif
+                                                                            : <span style="background-color: yellow">{{$invitation->motif}}</span>. Cette
+                                                                            réunion concerne le dysfonctionnement No.
+                                                                            <b>{{$invitation->dysfunction->code}}</b> dont la gravité a été noté :
+                                                                            <b>{{$invitation->dysfunction->gravity}}</b></span></p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
+                                                                            de la réunion :</span></p>
+                                                                    <ul style="margin-top:0cm" type="disc">
+                                                                        <li style="margin-left:0cm; text-align:justify"
+                                                                            class="x_MsoListParagraphCxSpFirst"><span
+                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
+                                                                                : {{$invitation->dates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</span></li>
+                                                                        <li style="margin-left:0cm; text-align:justify"
+                                                                            class="x_MsoListParagraphCxSpMiddle"><span
+                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Horaire
+                                                                                : {{$invitation->begin}} - {{$invitation->end}}</span></li>
+                                                                        <li style="margin-left:0cm; text-align:justify"
+                                                                            class="x_MsoListParagraphCxSpLast"><span
+                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
+                                                                                : [{{$invitation->place}}/@if(empty($invitation->link) )Aucun lien fourni @else <a href="{{$invitation->link}}">Lien de visioconférence</a>@endif ]</span></li>
+                                                                    </ul>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                    </p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
+                                                                            présence et participation active sont
+                                                                            cruciales pour identifier les causes
+                                                                            sous-jacentes et élaborer des solutions
+                                                                            efficaces. Merci de bien vouloir préparer
+                                                                            tout document ou information pertinente que
+                                                                            vous pourriez partager. Veuillez confirmer
+                                                                            votre présence en acceptant l’invitation
+                                                                            avant le <b>{{$invitation->dates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</b> Si
+                                                                            vous avez des questions ou des
+                                                                            préoccupations, n'hésitez pas à en faire
+                                                                            part au Responsable Qualité.</span></p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                    </p>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Merci
+                                                                            d’avance pour votre collaboration.</span>
                                                                 </td>
                                                             </tr>
                                                         </table>
