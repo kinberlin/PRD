@@ -28,7 +28,7 @@ Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');
 });
 Route::get('/dysmail', function () {
-    return view('employees.dysfunction_appMail');
+    return view('employees.dysfunction_appMail', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');

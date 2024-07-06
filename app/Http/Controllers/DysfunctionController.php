@@ -92,7 +92,7 @@ class DysfunctionController extends Controller
     }
     public function store(Request $request, $id)
     {
-        try {
+        //try {
             $dys = Dysfunction::find($id);
             if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
                 DB::beginTransaction();
@@ -129,9 +129,9 @@ class DysfunctionController extends Controller
             } else {
                 throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
             }
-        } catch (Throwable $th) {
+        /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
+        }*/
     }
     public function cancel($id)
     {
