@@ -179,83 +179,58 @@ class Invitation extends Model
     {
         $messages = '
             <p style="text-align:justify" class="x_MsoNormal">
-        <span
-            style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous souhaitons vous informer qu\'une réunion de résolution d\'incidents a été programmée. Nous avons récemment apporté quelques mises à jour importantes à l\'ordre du jour et au contenu de la réunion.
-            Cette réunion concerne le dysfonctionnement No.
-            <b>' . $this->dysfunction->code . '</b> dont la gravité a été noté :
-            <b>' . $this->dysfunction->gravity . '</b></span></p>
+                <span style="font-family:&quot;Century Gothic&quot;,sans-serif">
+                    Nous souhaitons vous informer qu\'une réunion de résolution d\'incidents a été programmée. Nous avons récemment apporté quelques mises à jour importantes à l\'ordre du jour et au contenu de la réunion.
+                    Cette réunion concerne le dysfonctionnement No.
+                    <b>' . $this->dysfunction->code . '</b> dont la gravité a été notée :
+                    <b>' . $this->dysfunction->gravity . '</b>
+                </span>
+            </p>
             <p style="text-align:justify" class="x_MsoNormal">
-        <span
-            style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
-            de la réunion :</span></p>
+                <span style="font-family:&quot;Century Gothic&quot;,sans-serif">
+                    Détails de la réunion :
+                </span>
+            </p>
             <ul style="margin-top:0cm" type="disc">
-                <li style="margin-left:0cm; text-align:justify"
-                    class="x_MsoListParagraphCxSpFirst">';
-
-        // Check each attribute for changes and add the corresponding message
-        $messages .= '
-            <span style="' . $this->isDirty('odates') ? 'background-color: yellow;' : '' . ' font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                : ' . $this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') . '</span></li>';
-
-        //Object
-        $messages .= '
-            <li style="margin-left:0cm; text-align:justify"
-                class="x_MsoListParagraphCxSpMiddle">';
-
-        $messages .= '<span
-                            style="' . ($this->isDirty('object') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Objet
-                            : '.$this->object . '</span></li>';
-
-        //begin and end
-        $messages .= '
-        <li style="margin-left:0cm; text-align:justify"
-            class="x_MsoListParagraphCxSpMiddle">';
-
-        $messages .= '<span
-            style="' . $this->isDirty('begin') || $this->isDirty('end') ? 'background-color: yellow; ' : '' . ' font-family:&quot;Century Gothic&quot;,sans-serif">Horaire
-            : ' . $this->begin . ' - ' . $this->end . '</span></li>';
-
-        //Link and place
-        $messages .= '
-            <li style="margin-left:0cm; text-align:justify"
-                class="x_MsoListParagraphCxSpMiddle">';
-
-        $messages .= '<span
-                            style="' . ($this->isDirty('link') || $this->isDirty('place') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
-                            : [' . $this->place . '/' . (empty($this->link) ? 'Aucun lien fourni' : '<a href="' . $this->link . '">Lien de visioconférence</a>') . ']</span></li>';
-
-        //Description
-        $messages .= '
-        <li style="margin-left:0cm; text-align:justify"
-            class="x_MsoListParagraphCxSpMiddle">';
-
-        $messages .= '<span
-                        style="' . ($this->isDirty('object') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Extra
-                        : '.$this->description . '</span></li>';
-        //Paragraph
-        $messages .= '
-                <p style="text-align:justify" class="x_MsoNormal">
-                    <span
-                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
-                </p>';
-        $messages .= '
-        <p style="text-align:justify" class="x_MsoNormal">
-            <span
-                style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
-                présence et participation active sont
-                cruciales pour identifier les causes
-                sous-jacentes et élaborer des solutions
-                efficaces. Merci de bien vouloir préparer
-                tout document ou information pertinente que
-                vous pourriez partager. Veuillez confirmer
-                votre présence en acceptant l’invitation
-                avant le <b>'.$this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY').'</b> Si
-                vous avez des questions ou des
-                préoccupations, n\'hésitez pas à en faire
-                part au Responsable Qualité.</span></p>';
-
+                <li style="margin-left:0cm; text-align:justify" class="x_MsoListParagraphCxSpFirst">
+                    <span style="' . ($this->isDirty('odates') ? 'background-color: yellow;' : '') . ' font-family:&quot;Century Gothic&quot;,sans-serif">
+                        Date : ' . $this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') . '
+                    </span>
+                </li>
+                <li style="margin-left:0cm; text-align:justify" class="x_MsoListParagraphCxSpMiddle">
+                    <span style="' . ($this->isDirty('object') ? 'background-color: yellow;' : '') . ' font-family:&quot;Century Gothic&quot;,sans-serif">
+                        Objet : ' . $this->object . '
+                    </span>
+                </li>
+                <li style="margin-left:0cm; text-align:justify" class="x_MsoListParagraphCxSpMiddle">
+                    <span style="' . ($this->isDirty('begin') || $this->isDirty('end') ? 'background-color: yellow;' : '') . ' font-family:&quot;Century Gothic&quot;,sans-serif">
+                        Horaire : ' . $this->begin . ' - ' . $this->end . '
+                    </span>
+                </li>
+                <li style="margin-left:0cm; text-align:justify" class="x_MsoListParagraphCxSpMiddle">
+                    <span style="' . ($this->isDirty('link') || $this->isDirty('place') ? 'background-color: yellow;' : '') . ' font-family:&quot;Century Gothic&quot;,sans-serif">
+                        Lieu : [' . $this->place . '/' . (empty($this->link) ? 'Aucun lien fourni' : '<a href="' . $this->link . '">Lien de visioconférence</a>') . ']
+                    </span>
+                </li>
+                <li style="margin-left:0cm; text-align:justify" class="x_MsoListParagraphCxSpMiddle">
+                    <span style="' . ($this->isDirty('description') ? 'background-color: yellow;' : '') . ' font-family:&quot;Century Gothic&quot;,sans-serif">
+                        Extra : ' . $this->description . '
+                    </span>
+                </li>
+            </ul>
+            <p style="text-align:justify" class="x_MsoNormal">
+                <span style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+            </p>
+            <p style="text-align:justify" class="x_MsoNormal">
+                <span style="font-family:&quot;Century Gothic&quot;,sans-serif">
+                    Votre présence et participation active sont cruciales pour identifier les causes sous-jacentes et élaborer des solutions efficaces. Merci de bien vouloir préparer tout document ou information pertinente que vous pourriez partager. Veuillez confirmer votre présence en acceptant l’invitation avant le 
+                    <b>' . $this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') . '</b>. Si vous avez des questions ou des préoccupations, n\'hésitez pas à en faire part au Responsable Qualité.
+                </span>
+            </p>';
+    
         return $messages;
     }
+    
 
     public function save(array $options = [])
     {

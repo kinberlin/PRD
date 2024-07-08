@@ -141,7 +141,8 @@ class InvitationController extends Controller
         if (Gate::allows('isInvitationOpen', $data)) {
             if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
-                $invits = collect($data->getInternalInvites());
+                //old invite collection
+                $old_invits = collect($data->getInternalInvites());
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
                 }
@@ -165,9 +166,10 @@ class InvitationController extends Controller
                 $i_v = $request->input('internal_invites', []);
                 $newinvites = Users::whereIn('id', $i_v)->get();
                 $internal_invites = [];
+                //conserving all invite old datas
                 if (!empty($i_v)) {
                     foreach ($i_v as $option) {
-                        $old = $invits->where('matricule', Users::find('id', $option)->matricule)->first();
+                        $old = $old_invits->where('matricule', Users::find($option)->matricule)->first();
                         if (is_null($old)) {
                             $internal_invites[] = new Invites($newinvites->where('id', $option)->first());
                         } else {
@@ -175,7 +177,8 @@ class InvitationController extends Controller
                         }
                     }
                 }
-                dd($internal_invites);
+                //new invite collection
+                $new_invits = collect($internal_invites);
                 $data->internal_invites = json_encode($internal_invites);
                 $ext_u = [];
                 if ($request->has('extuser') && !empty($request->extuser)) {
@@ -185,9 +188,9 @@ class InvitationController extends Controller
                     }
                 }
                 $data->external_invites = json_encode($ext_u);
-                $data->save();
+
                 $is_updated = $data->isInvitationUpdated();
-                DB::commit();
+                //inform internal and external invites about modification
                 if ($is_updated) {
                     $message = $data->getUpdateMessage();
                     $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
@@ -199,6 +202,18 @@ class InvitationController extends Controller
                         throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
                     }
                 }
+                //mails for removed users
+                foreach ($old_invits as $oi) {
+                    if (is_null($new_invits->where('matricule', $oi->matricule)->first()) && !in_array($oi->email, $ext_u)) {
+                        $content = view('employees.invitation_excludeMail')->render();
+                        $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                        $response = $newmail->send();
+                    }
+                }
+
+                $data->save();
+                dd($data);
+                DB::commit();
 
                 return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
             } else {

@@ -33,6 +33,9 @@ Route::get('/appmail', function () {
 Route::get('/dysmail', function () {
     return view('employees.dysfunction_appMail', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
+Route::get('/excmail', function () {
+    return view('employees.invitation_excludeMail');
+});
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');

@@ -25,12 +25,12 @@ class Invites
             $this->decision = 'En attente de Validation';
             $this->created_at = Carbon::now();
         } else {
-            $this->email = $exist['email'];
-            $this->department = $exist['department'];
-            $this->enterprise = $exist['enterprise'];
-            $this->matricule = $exist['matricule'];
-            $this->decision = $exist['decision'];
-            $this->created_at = $exist['created_at'];
+            $this->email = data_get($exist, 'email');
+            $this->department = data_get($exist, 'department');
+            $this->enterprise = data_get($exist, 'enterprise');
+            $this->matricule = data_get($exist, 'matricule');
+            $this->decision = data_get($exist, 'decision');
+            $this->created_at = data_get($exist, 'created_at');
         }
     }
 
