@@ -270,7 +270,7 @@ function executeAfterAjax() {
                         $("#eventTitle").val(eventData.object);
                         $("#dysfunctionList").val(eventData.dysfonction);
                         $("#eventLabel").val(eventData.motif);
-                        $("#eventStartDate").val(eventData.dates);
+                        $("#eventStartDate").val(eventData.odates);
                         $("#flatpickr-begintime").val(eventData.begin);
                         $("#flatpickr-endtime").val(eventData.end);
                         $("#eventLocation").val(eventData.place);

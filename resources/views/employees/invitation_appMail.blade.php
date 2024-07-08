@@ -662,6 +662,10 @@
                                                                     <ul style="margin-top:0cm" type="disc">
                                                                         <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpFirst"><span
+                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Objet
+                                                                                : {{$invitation->object}}</span></li>
+                                                                        <li style="margin-left:0cm; text-align:justify"
+                                                                            class="x_MsoListParagraphCxSpFirst"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
                                                                                 : {{$invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</span></li>
                                                                         <li style="margin-left:0cm; text-align:justify"
@@ -672,6 +676,10 @@
                                                                             class="x_MsoListParagraphCxSpLast"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
                                                                                 : [{{$invitation->place}}/@if(empty($invitation->link) )Aucun lien fourni @else <a href="{{$invitation->link}}">Lien de visioconférence</a>@endif ]</span></li>
+                                                                                <li style="margin-left:0cm; text-align:justify"
+                                                                            class="x_MsoListParagraphCxSpFirst"><span
+                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Extras
+                                                                                : {{$invitation->description}}</span></li>
                                                                     </ul>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span

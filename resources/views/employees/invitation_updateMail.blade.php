@@ -646,51 +646,7 @@
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
                                                                     </p>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
-                                                                            vous informons qu'une réunion de résolution
-                                                                            d’incidents a été programmée avec pour motif
-                                                                            : <span style="background-color: yellow">{{$invitation->motif}}</span>. Cette
-                                                                            réunion concerne le dysfonctionnement No.
-                                                                            <b>{{$invitation->dysfunction->code}}</b> dont la gravité a été noté :
-                                                                            <b>{{$invitation->dysfunction->gravity}}</b></span></p>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
-                                                                            de la réunion :</span></p>
-                                                                    <ul style="margin-top:0cm" type="disc">
-                                                                        <li style="margin-left:0cm; text-align:justify"
-                                                                            class="x_MsoListParagraphCxSpFirst"><span
-                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                                                                                : {{$invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</span></li>
-                                                                        <li style="margin-left:0cm; text-align:justify"
-                                                                            class="x_MsoListParagraphCxSpMiddle"><span
-                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Horaire
-                                                                                : {{$invitation->begin}} - {{$invitation->end}}</span></li>
-                                                                        <li style="margin-left:0cm; text-align:justify"
-                                                                            class="x_MsoListParagraphCxSpLast"><span
-                                                                                style="font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
-                                                                                : [{{$invitation->place}}/@if(empty($invitation->link) )Aucun lien fourni @else <a href="{{$invitation->link}}">Lien de visioconférence</a>@endif ]</span></li>
-                                                                    </ul>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
-                                                                    </p>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
-                                                                            présence et participation active sont
-                                                                            cruciales pour identifier les causes
-                                                                            sous-jacentes et élaborer des solutions
-                                                                            efficaces. Merci de bien vouloir préparer
-                                                                            tout document ou information pertinente que
-                                                                            vous pourriez partager. Veuillez confirmer
-                                                                            votre présence en acceptant l’invitation
-                                                                            avant le <b>{{$invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</b> Si
-                                                                            vous avez des questions ou des
-                                                                            préoccupations, n'hésitez pas à en faire
-                                                                            part au Responsable Qualité.</span></p>
+                                                                        {!!$message!!}
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>

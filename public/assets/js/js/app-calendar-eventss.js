@@ -33,7 +33,7 @@ $(document).ready(function () {
                         id: eventData.id,
                         //url: eventData.link,
                         title: eventData.object,
-                        start: eventData.dates,
+                        start: eventData.odates,
                         end: eventData.end,
                         allDay: !1,
                         extendedProps: { calendar: eventData.motif }
@@ -45,7 +45,7 @@ $(document).ready(function () {
                         id: eventData.id,
                         url: eventData.link,
                         title: eventData.object,
-                        start: eventData.dates,
+                        start: eventData.odates,
                         end: eventData.end,
                         allDay: !1,
                         extendedProps: { calendar: eventData.motif }

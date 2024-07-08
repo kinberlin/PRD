@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property int    $created_at
  * @property int    $closed_at
- * @property int    $dates
+
  * @property int    $deleted_at
  * @property int    $dysfonction
  * @property string $begin
@@ -54,7 +54,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'closed_at', 'created_at', 'dates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'participation'
+        'begin', 'closed_at', 'created_at', 'odates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'participation'
     ];
 
     /**
@@ -70,7 +70,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'dates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'odates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
     ];
 
     /**
@@ -172,16 +172,18 @@ class Invitation extends Model
 
         return null;
     }
-    public function getUpdateMessage()
+    public function isInvitationUpdated() : bool {
+        return $this->isDirty('object') || $this->isDirty('motif') || $this->isDirty('odates') || $this->isDirty('begin') || $this->isDirty('end') || $this->isDirty('place') || $this->isDirty('link') || $this->isDirty('description');
+    }
+    public function getUpdateMessage() : string
     {
         $messages = '
             <p style="text-align:justify" class="x_MsoNormal">
         <span
             style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous souhaitons vous informer qu\'une réunion de résolution d\'incidents a été programmée. Nous avons récemment apporté quelques mises à jour importantes à l\'ordre du jour et au contenu de la réunion.
-            : <span style="background-color: yellow">{{$invitation->motif}}</span>. Cette
-            réunion concerne le dysfonctionnement No.
-            <b>'.$this->dysfunction->code.'</b> dont la gravité a été noté :
-            <b>'.$this->dysfunction->gravity.'</b></span></p>
+            Cette réunion concerne le dysfonctionnement No.
+            <b>' . $this->dysfunction->code . '</b> dont la gravité a été noté :
+            <b>' . $this->dysfunction->gravity . '</b></span></p>
             <p style="text-align:justify" class="x_MsoNormal">
         <span
             style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
@@ -191,67 +193,68 @@ class Invitation extends Model
                     class="x_MsoListParagraphCxSpFirst">';
 
         // Check each attribute for changes and add the corresponding message
-        if ($this->isDirty('dates')) {
-            $messages .= '
-            <span style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                : '.$this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY').'</span>';
-        }
+        $messages .= '
+            <span style="' . $this->isDirty('odates') ? 'background-color: yellow;' : '' . ' font-family:&quot;Century Gothic&quot;,sans-serif">Date
+                : ' . $this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') . '</span></li>';
 
-        if ($this->isDirty('dysfonction') || $this->isDirty('meeting_link')) {
-            $messages[] = 'The meeting place or link has been updated.';
-        }
+        //Object
+        $messages .= '
+            <li style="margin-left:0cm; text-align:justify"
+                class="x_MsoListParagraphCxSpMiddle">';
 
-        if ($this->isDirty('begin')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        $messages .= '<span
+                            style="' . ($this->isDirty('object') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Objet
+                            : '.$this->object . '</span></li>';
 
-        if ($this->isDirty('end')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        //begin and end
+        $messages .= '
+        <li style="margin-left:0cm; text-align:justify"
+            class="x_MsoListParagraphCxSpMiddle">';
 
-        if ($this->isDirty('description')) {
-            $messages[] = 'The meeting concern has been updated.';
-        }
+        $messages .= '<span
+            style="' . $this->isDirty('begin') || $this->isDirty('end') ? 'background-color: yellow; ' : '' . ' font-family:&quot;Century Gothic&quot;,sans-serif">Horaire
+            : ' . $this->begin . ' - ' . $this->end . '</span></li>';
 
-        if ($this->isDirty('link')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        //Link and place
+        $messages .= '
+            <li style="margin-left:0cm; text-align:justify"
+                class="x_MsoListParagraphCxSpMiddle">';
 
-        if ($this->isDirty('motif')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        $messages .= '<span
+                            style="' . ($this->isDirty('link') || $this->isDirty('place') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
+                            : [' . $this->place . '/' . (empty($this->link) ? 'Aucun lien fourni' : '<a href="' . $this->link . '">Lien de visioconférence</a>') . ']</span></li>';
 
-        if ($this->isDirty('object')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        //Description
+        $messages .= '
+        <li style="margin-left:0cm; text-align:justify"
+            class="x_MsoListParagraphCxSpMiddle">';
 
-        if ($this->isDirty('place')) {
-            $messages[] = 'The meeting object has been updated.';
-        }
+        $messages .= '<span
+                        style="' . ($this->isDirty('object') ? 'background-color: yellow; ' : '') . 'font-family:&quot;Century Gothic&quot;,sans-serif">Extra
+                        : '.$this->description . '</span></li>';
+        //Paragraph
+        $messages .= '
+                <p style="text-align:justify" class="x_MsoNormal">
+                    <span
+                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                </p>';
+        $messages .= '
+        <p style="text-align:justify" class="x_MsoNormal">
+            <span
+                style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
+                présence et participation active sont
+                cruciales pour identifier les causes
+                sous-jacentes et élaborer des solutions
+                efficaces. Merci de bien vouloir préparer
+                tout document ou information pertinente que
+                vous pourriez partager. Veuillez confirmer
+                votre présence en acceptant l’invitation
+                avant le <b>'.$this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY').'</b> Si
+                vous avez des questions ou des
+                préoccupations, n\'hésitez pas à en faire
+                part au Responsable Qualité.</span></p>';
 
-        // Special case for meeting cancellation
-        if ($this->isDirty('status') && $this->status == 'cancelled') {
-            return 'The meeting has been cancelled.';
-        }
-
-        // Generate the global message if multiple changes
-        if (count($messages) > 1) {
-            return 'Multiple changes have been made to the meeting: ' . implode(' ', $messages);
-        }
-
-        return count($messages) > 0 ? implode(' ', $messages) : null;
-    }
-
-    public function getParticipantMessage($action)
-    {
-        switch ($action) {
-            case 'removed':
-                return 'You have been removed from the meeting.';
-            case 'joined':
-                return 'You have joined the meeting.';
-            default:
-                return null;
-        }
+        return $messages;
     }
 
     public function save(array $options = [])

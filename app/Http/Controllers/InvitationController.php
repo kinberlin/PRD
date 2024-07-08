@@ -88,7 +88,7 @@ class InvitationController extends Controller
                 $response = $newmail->send();
                 $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
-                    throw new Exception("Une erreur est survenue ors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
+                    throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
                 }
                 return redirect()->back()->with('error', "La réunion a été créer avec succes.");
             } else {
@@ -136,70 +136,82 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $data = Invitation::find($id);
-            if (Gate::allows('isInvitationOpen', $data)) {
-                if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
-                    DB::beginTransaction();
-                    if ($data == null) {
-                        throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
-                    }
-                    if (Carbon::now() > $data->odates) {
-                        throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
-                    }
-                    $dys = Dysfunction::find($request->input('dysfunction'));
-                    if (empty($dys)) {
-                        throw new Exception("Nous ne retrouvons pas la ressource.", 404);
-                    }
-                    $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
-                    $data->object = $request->has('object') ? $request->input('object') : $data->object;
-                    $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
-                    $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-                    $data->odates = $request->has('dates') ? $request->input('dates') : $data->odates;
-                    $data->place = $request->has('place') ? $request->input('place') : $data->place;
-                    $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
-                    $data->description = $request->has('description') ? $request->input('description') : $data->description;
-                    $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
-                    $data->end = $request->has('end') ? $request->input('end') : $data->end;
-                    $i_v = $request->input('internal_invites', []);
-                    $newinvites = Users::whereIn('id', $i_v)->get();
-                    $internal_invites = [];
-                    if (!empty($i_v)) {
-                        foreach ($i_v as $option) {
+        //try {
+        $data = Invitation::find($id);
+        if (Gate::allows('isInvitationOpen', $data)) {
+            if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
+                DB::beginTransaction();
+                $invits = collect($data->getInternalInvites());
+                if ($data == null) {
+                    throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
+                }
+                if (Carbon::now() > $data->odates) {
+                    throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
+                }
+                $dys = Dysfunction::find($request->input('dysfunction'));
+                if (empty($dys)) {
+                    throw new Exception("Nous ne retrouvons pas la ressource.", 404);
+                }
+                $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
+                $data->object = $request->has('object') ? $request->input('object') : $data->object;
+                $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
+                $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
+                $data->odates = $request->has('dates') ? $request->input('dates') : $data->odates;
+                $data->place = $request->has('place') ? $request->input('place') : $data->place;
+                $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
+                $data->description = $request->has('description') ? $request->input('description') : $data->description;
+                $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
+                $data->end = $request->has('end') ? $request->input('end') : $data->end;
+                $i_v = $request->input('internal_invites', []);
+                $newinvites = Users::whereIn('id', $i_v)->get();
+                $internal_invites = [];
+                if (!empty($i_v)) {
+                    foreach ($i_v as $option) {
+                        $old = $invits->where('matricule', Users::find('id', $option)->matricule)->first();
+                        if (is_null($old)) {
                             $internal_invites[] = new Invites($newinvites->where('id', $option)->first());
+                        } else {
+                            $internal_invites[] = new Invites(null, $old);
                         }
                     }
-                    $data->internal_invites = json_encode($internal_invites);
-                    $ext_u = [];
-                    if ($request->has('extuser') && !empty($request->extuser)) {
-                        for ($i = 0; $i < count($request->extuser); $i++) {
-                            // Create a new Person object for each row and add it to the array
-                            $ext_u[] = $request->extuser[$i];
-                        }
+                }
+                dd($internal_invites);
+                $data->internal_invites = json_encode($internal_invites);
+                $ext_u = [];
+                if ($request->has('extuser') && !empty($request->extuser)) {
+                    for ($i = 0; $i < count($request->extuser); $i++) {
+                        // Create a new Person object for each row and add it to the array
+                        $ext_u[] = $request->extuser[$i];
                     }
-                    $data->external_invites = json_encode($ext_u);
-                    $data->save();
-                    DB::commit();
+                }
+                $data->external_invites = json_encode($ext_u);
+                $data->save();
+                $is_updated = $data->isInvitationUpdated();
+                DB::commit();
+                if ($is_updated) {
+                    $message = $data->getUpdateMessage();
                     $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
-                    $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
+                    $content = view('employees.invitation_updateMail', ['invitation' => $data, 'message' => $message])->render();
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                     $response = $newmail->send();
                     $jsonResponse = json_decode($response->getContent(), true);
                     if ($jsonResponse['code'] != 200) {
-                        throw new Exception("Une erreur est survenue ors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
+                        throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
                     }
-                    return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
-                } else {
-                    // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
-                    abort(403, 'Unauthorized action.');
                 }
+
+                return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
             } else {
                 // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
-                abort(403, 'Unauthorized action. Invitation is closed');
+                abort(403, 'Unauthorized action.');
             }
-        } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        } else {
+            // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
+            abort(403, 'Unauthorized action. Invitation is closed');
         }
+        /*} catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }*/
     }
     public function appMail()
     {
