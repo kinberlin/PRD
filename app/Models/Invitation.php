@@ -26,14 +26,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property mixed  $participation
  */
 class Invitation extends Model
-{ use SoftDeletes;
+{
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'invitation';
-
+    // Store the original attributes before updating
+    protected $originalAttributes = [];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->originalAttributes = $this->attributesToArray();
+    }
     /**
      * The primary key for the model.
      *
@@ -164,6 +171,98 @@ class Invitation extends Model
         }
 
         return null;
+    }
+    public function getUpdateMessage()
+    {
+        $messages = '
+            <p style="text-align:justify" class="x_MsoNormal">
+        <span
+            style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous souhaitons vous informer qu\'une réunion de résolution d\'incidents a été programmée. Nous avons récemment apporté quelques mises à jour importantes à l\'ordre du jour et au contenu de la réunion.
+            : <span style="background-color: yellow">{{$invitation->motif}}</span>. Cette
+            réunion concerne le dysfonctionnement No.
+            <b>'.$this->dysfunction->code.'</b> dont la gravité a été noté :
+            <b>'.$this->dysfunction->gravity.'</b></span></p>
+            <p style="text-align:justify" class="x_MsoNormal">
+        <span
+            style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
+            de la réunion :</span></p>
+            <ul style="margin-top:0cm" type="disc">
+                <li style="margin-left:0cm; text-align:justify"
+                    class="x_MsoListParagraphCxSpFirst">';
+
+        // Check each attribute for changes and add the corresponding message
+        if ($this->isDirty('dates')) {
+            $messages .= '
+            <span style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
+                : '.$this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY').'</span>';
+        }
+
+        if ($this->isDirty('dysfonction') || $this->isDirty('meeting_link')) {
+            $messages[] = 'The meeting place or link has been updated.';
+        }
+
+        if ($this->isDirty('begin')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        if ($this->isDirty('end')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        if ($this->isDirty('description')) {
+            $messages[] = 'The meeting concern has been updated.';
+        }
+
+        if ($this->isDirty('link')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        if ($this->isDirty('motif')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        if ($this->isDirty('object')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        if ($this->isDirty('place')) {
+            $messages[] = 'The meeting object has been updated.';
+        }
+
+        // Special case for meeting cancellation
+        if ($this->isDirty('status') && $this->status == 'cancelled') {
+            return 'The meeting has been cancelled.';
+        }
+
+        // Generate the global message if multiple changes
+        if (count($messages) > 1) {
+            return 'Multiple changes have been made to the meeting: ' . implode(' ', $messages);
+        }
+
+        return count($messages) > 0 ? implode(' ', $messages) : null;
+    }
+
+    public function getParticipantMessage($action)
+    {
+        switch ($action) {
+            case 'removed':
+                return 'You have been removed from the meeting.';
+            case 'joined':
+                return 'You have joined the meeting.';
+            default:
+                return null;
+        }
+    }
+
+    public function save(array $options = [])
+    {
+        $this->originalAttributes = $this->getOriginal();
+        parent::save($options);
+    }
+
+    public function isDirty($attribute = null)
+    {
+        return $this->getOriginal($attribute) !== $this->getAttribute($attribute);
     }
     // Relations ...
     public function dysfunction()

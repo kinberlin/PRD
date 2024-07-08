@@ -528,7 +528,7 @@
                                                                     @if (count($ferier->where('pme', $d->id)) > 0)
                                                                         @foreach ($ferier->where('pme', $d->id) as $d)
                                                                             <label
-                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($d->dates)->format('d-m-Y H:i:s') }}</label>
+                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($d->odates)->format('d-m-Y H:i:s') }}</label>
                                                                         @endforeach
                                                                     @else
                                                                         <label class="col-md-9 col-form-label">Aucun Jour
@@ -689,7 +689,7 @@
                                                                     @if (count($ferier->where('pne', $d->id)) > 0)
                                                                         @foreach ($ferier->where('pne', $d->id) as $f)
                                                                             <label
-                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($f->dates)->format('d-m-Y H:i:s') }}</label>
+                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($f->odates)->format('d-m-Y H:i:s') }}</label>
                                                                         @endforeach
                                                                     @else
                                                                         <label class="col-md-9 col-form-label">Aucun Jour
@@ -862,7 +862,7 @@
                                                                     @if (count($ferier->where('holliday', $d->id)) > 0)
                                                                         @foreach ($ferier->where('holliday', $d->id) as $f)
                                                                             <label
-                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($f->dates)->format('d-m-Y H:i:s') }}</label>
+                                                                                class="col-md-3 col-form-label">{{ \Carbon\Carbon::parse($f->odates)->format('d-m-Y H:i:s') }}</label>
                                                                         @endforeach
                                                                     @else
                                                                         <label class="col-md-9 col-form-label">Aucun Jour

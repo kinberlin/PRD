@@ -42,7 +42,7 @@
                                     <td>ID : {{ $d->dysfonction }}
                                         {{ $_dys->enterprise . ' (' . $_dys->site . ') ' . ' ' . $_dys->gravity }} </td>
                                     <td>{{ $d->object }}<br>{{ $d->motif }}</td>
-                                    <td>Date : {{ $d->dates }}<br>Début : {{ $d->begin }}<br>Fin :
+                                    <td>Date : {{ $d->odates }}<br>Début : {{ $d->begin }}<br>Fin :
                                         {{ $d->end }}</td>
                                     <td>{{ $d->place }}
                                         <br>

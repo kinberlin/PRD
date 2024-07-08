@@ -57,7 +57,7 @@ class InvitationController extends Controller
                 $data->object = $request->input('object');
                 $data->dysfonction = $request->input('dysfunction');
                 $data->motif = $request->input('motif');
-                $data->dates = $request->input('dates');
+                $data->odates = $request->input('dates');
                 $data->place = $request->input('place');
                 $data->link = isEmpty($request->input('link')) ? null : $request->input('link');
                 $data->description = $request->input('description');
@@ -84,7 +84,7 @@ class InvitationController extends Controller
                 DB::commit();
                 $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
-                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
+                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
                 $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
@@ -136,7 +136,7 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //try {
+        try {
             $data = Invitation::find($id);
             if (Gate::allows('isInvitationOpen', $data)) {
                 if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
@@ -144,7 +144,7 @@ class InvitationController extends Controller
                     if ($data == null) {
                         throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
                     }
-                    if (Carbon::now() > $data->dates) {
+                    if (Carbon::now() > $data->odates) {
                         throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
                     }
                     $dys = Dysfunction::find($request->input('dysfunction'));
@@ -155,7 +155,7 @@ class InvitationController extends Controller
                     $data->object = $request->has('object') ? $request->input('object') : $data->object;
                     $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
                     $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-                    $data->dates = $request->has('dates') ? $request->input('dates') : $data->dates;
+                    $data->odates = $request->has('dates') ? $request->input('dates') : $data->odates;
                     $data->place = $request->has('place') ? $request->input('place') : $data->place;
                     $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
                     $data->description = $request->has('description') ? $request->input('description') : $data->description;
@@ -182,7 +182,7 @@ class InvitationController extends Controller
                     DB::commit();
                     $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
                     $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
-                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->dates, $content, []);
+                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                     $response = $newmail->send();
                     $jsonResponse = json_decode($response->getContent(), true);
                     if ($jsonResponse['code'] != 200) {
@@ -197,9 +197,9 @@ class InvitationController extends Controller
                 // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
                 abort(403, 'Unauthorized action. Invitation is closed');
             }
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
     public function appMail()
     {

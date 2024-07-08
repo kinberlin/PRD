@@ -49,7 +49,7 @@
                                         <b>{{ blank($d->link) ? 'Aucun Lien indiqué' : $d->link }}</b>
                                     </td>
                                     <td>{{ $d->rq }}</td>
-                                    <td>{{ $d->dates }}</td>
+                                    <td>{{ $d->odates }}</td>
                                     <td>Début : {{ $d->begin }}<br>Fin : {{ $d->end }}</td>
                                     @php
                                         $invite = $d->findInviteByMatricule(Auth::user()->matricule);
