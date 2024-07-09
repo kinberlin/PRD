@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ApiMail;
 use App\Models\ApiSms;
+use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
 use App\Models\Correction;
 use App\Models\Dysfunction;
@@ -114,12 +115,14 @@ class DysfunctionController extends Controller
             //alert pilotes
             foreach($dys->getCProcesses() as $nd){
                 if(is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())){
-                $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
-                $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
-                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                $content = view('employees.dysfunctionpilote_appMail', ['dysfunction' => $dys])->render();
+                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
                 $response = $newmail->send();
-                $newmessage = new ApiSms(array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()), 
-                'Cadyst PRD App', "Vous êtes cordialement invité(e) à notre réunion qui se tiendra le ".$data->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')." de ".$data->begin." à ".$data->end.". L'événement se déroulera à ".$data->place.". Objet : ".$data->object." | Motif : ".$data->motif." | Dysfonctionnement No. : ".$dys->code.".");
+                $newmessage = new ApiSms(array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()), 
+                'Cadyst PRD App', "Nous tenons à vous informer que vous êtes concerné(e) par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code);
                 $newmessage->send();
                 }
             }
