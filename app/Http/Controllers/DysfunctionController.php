@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApiMail;
+use App\Models\ApiSms;
 use App\Models\AuthorisationRq;
 use App\Models\Correction;
 use App\Models\Dysfunction;
@@ -80,11 +81,15 @@ class DysfunctionController extends Controller
             $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
             foreach ($rq as $user) {
-            $content = view('employees.dysfunction_appMail', ['user' => $user, 'dysfunction' => Dysfunction::find($dys->id)])->render();
-            $newmail = new ApiMail(null, array_fill(0, 1, $user->email), 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
-            $result = $newmail->send();
+                $newmessage = new ApiSms(array_fill(0, 1, $user->phone), 'Cadyst PRD App', "Nous tenons à vous informer qu'un incident a été signalé par un employé via notre plateforme de résolution des incidents. Il s'agit du No." . $dys->code);
+                $rres = $newmessage->send();
+                dd($rres);
+                $content = view('employees.dysfunction_appMail', ['user' => $user, 'dysfunction' => Dysfunction::find($dys->id)])->render();
+                $newmail = new ApiMail(null, array_fill(0, 1, $user->email), 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+
+                $result = $newmail->send();
             }
-            
+
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (" . $result->getData()->code . ')');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -93,42 +98,42 @@ class DysfunctionController extends Controller
     public function store(Request $request, $id)
     {
         //try {
-            $dys = Dysfunction::find($id);
-            if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
-                DB::beginTransaction();
-                if ($dys == null) {
-                    throw new Exception("Impossible de trouver la ressource demandée.", 404);
-                }
-                $dys->impact_processes = json_encode($request->input('impact_processes'));
-                $dys->concern_processes = json_encode($request->input('concern_processes'));
-                $dys->gravity = $request->input('gravity');
-                $dys->origin = $request->input('origin');
-                $dys->probability = $request->input('probability');
-                $dys->type = $request->input('type');
-                $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
-
-                $dys->save();
-                DB::commit();
-                if ($dys->status == 1) {
-                    $dys->status = 2;
-                    $task = new Task();
-                    $task->dysfunction = $dys->id;
-                    $task->text = 'Dysfonctionnement ' . $dys->code;
-                    $task->duration = 1;
-                    $task->progress = 0.01;
-                    $task->start_date = Carbon::now();
-                    $task->parent = 0;
-                    $task->unscheduled = 0;
-                    $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
-                    $task->created_by = 'Demo User';
-                    $dys->save();
-                    $task->save();
-                }
-
-                return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-            } else {
-                throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
+        $dys = Dysfunction::find($id);
+        if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
+            DB::beginTransaction();
+            if ($dys == null) {
+                throw new Exception("Impossible de trouver la ressource demandée.", 404);
             }
+            $dys->impact_processes = json_encode($request->input('impact_processes'));
+            $dys->concern_processes = json_encode($request->input('concern_processes'));
+            $dys->gravity = $request->input('gravity');
+            $dys->origin = $request->input('origin');
+            $dys->probability = $request->input('probability');
+            $dys->type = $request->input('type');
+            $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
+
+            $dys->save();
+            DB::commit();
+            if ($dys->status == 1) {
+                $dys->status = 2;
+                $task = new Task();
+                $task->dysfunction = $dys->id;
+                $task->text = 'Dysfonctionnement ' . $dys->code;
+                $task->duration = 1;
+                $task->progress = 0.01;
+                $task->start_date = Carbon::now();
+                $task->parent = 0;
+                $task->unscheduled = 0;
+                $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
+                $task->created_by = 'Demo User';
+                $dys->save();
+                $task->save();
+            }
+
+            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+        } else {
+            throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
+        }
         /*} catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }*/
