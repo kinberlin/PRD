@@ -37,7 +37,9 @@ class DynamicJsController extends Controller
         $a_tasks = Task::whereIn('dysfunction', $a_dys->pluck('id'))->where('parent', 0)->get();
         $a_tdata = [];
         foreach ($a_dys->pluck('id')->toArray() as $_a) {
-            $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
+            if (!is_null($a_tasks->where('dysfunction', $_a)->first())) {
+                $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
+            }
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
         $a_avgtProgression = collect($a_tdata)->avg() . ' %';
@@ -61,11 +63,11 @@ class DynamicJsController extends Controller
             return "'$surfix'";
         })->toArray();
         $entStringCat = '[' . implode(', ', $entsurfix) . ']';
-        $entStatv= [];
-        $entStatc= [];
-        foreach($ents as $e){
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3,6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3,6])->count();
+        $entStatv = [];
+        $entStatc = [];
+        foreach ($ents as $e) {
+            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -87,7 +89,7 @@ class DynamicJsController extends Controller
             $months[$month] = $group->sum('cost');
         });
         $totalBalancedata = '[' . implode(', ', $months) . ']';
-        $arrSum = array_sum($months). ' FCFA';
+        $arrSum = array_sum($months) . ' FCFA';
         $jsContent = <<<EOT
         "use strict";
         !(function () {
@@ -461,7 +463,9 @@ class DynamicJsController extends Controller
         $a_tasks = Task::whereIn('dysfunction', $a_dys->pluck('id'))->where('parent', 0)->get();
         $a_tdata = [];
         foreach ($a_dys->pluck('id')->toArray() as $_a) {
-            $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
+            if (!is_null($a_tasks->where('dysfunction', $_a)->first())) {
+                $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
+            }
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
         $a_avgtProgression = collect($a_tdata)->avg() . ' %';
@@ -495,11 +499,11 @@ class DynamicJsController extends Controller
             return "'$surfix'";
         })->toArray();
         $entStringCat = '[' . implode(', ', $entsurfix) . ']';
-        $entStatv= [];
-        $entStatc= [];
-        foreach($ents as $e){
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3,6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3,6])->count();
+        $entStatv = [];
+        $entStatc = [];
+        foreach ($ents as $e) {
+            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -521,7 +525,7 @@ class DynamicJsController extends Controller
             $months[$month] = $group->sum('cost');
         });
         $totalBalancedata = '[' . implode(', ', $months) . ']';
-        $arrSum = array_sum($months). ' FCFA';
+        $arrSum = array_sum($months) . ' FCFA';
         $jsContent = <<<EOT
         "use strict";
         !(function () {
@@ -929,11 +933,11 @@ class DynamicJsController extends Controller
             return "'$surfix'";
         })->toArray();
         $entStringCat = '[' . implode(', ', $entsurfix) . ']';
-        $entStatv= [];
-        $entStatc= [];
-        foreach($ents as $e){
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3,6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3,6])->count();
+        $entStatv = [];
+        $entStatc = [];
+        foreach ($ents as $e) {
+            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -955,7 +959,7 @@ class DynamicJsController extends Controller
             $months[$month] = $group->sum('cost');
         });
         $totalBalancedata = '[' . implode(', ', $months) . ']';
-        $arrSum = array_sum($months). ' FCFA';
+        $arrSum = array_sum($months) . ' FCFA';
         $jsContent = <<<EOT
         "use strict";
         !(function () {
