@@ -187,13 +187,42 @@
                             </div>
                             <div class="col-md-8 text-end">
                                 <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
-                                <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Rejeter ce signalement</a>
+                                <button class="btn btn-danger " data-bs-toggle="modal"
+                                data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
+
                             </div>
                         </div>
                     @endif
                 </div>
 
             </form>
+        </div>
+        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}"
+            tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                            Rejet!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                Souhaitez-vous vraiment rejeter ce dysfonctionnement ?
+                                <b>Notez que cette action est irréversible.</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary"
+                            data-bs-dismiss="modal">Fermer</button>
+                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}"
+                            class="btn btn-danger">Continuer</a>
+                    </div>
+                </form>
+            </div>
         </div>
         <!-- Collapsible Section -->
         @if ($data->status != 1 && $data->status != 3)

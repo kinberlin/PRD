@@ -549,7 +549,7 @@
                                                                     ici </a>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Notes supplémentaire</label>
+                                                                <label class="form-label">Description du Dysfonctionnement</label>
                                                                 <textarea class="form-control" rows="3" required readonly>{{ $d->description }}</textarea>
                                                             </div>
                                                             @if ($d->status == 3)
@@ -710,7 +710,7 @@
                                                                     ici </a>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Notes supplémentaire</label>
+                                                                <label class="form-label">Description du Dysfonctionnement</label>
                                                                 <textarea class="form-control" rows="3" required readonly>{{ $d->description }}</textarea>
                                                             </div>
                                                             @if ($d->status == 3)
