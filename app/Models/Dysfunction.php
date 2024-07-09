@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -70,6 +71,28 @@ class Dysfunction extends Model
     protected $dates = [
         'created_at'
     ];
+    public function getCProcesses() : Collection
+    {
+        $processes = $this->internal_invites == null ? [] : json_decode($this->concern_processes, true);
+        $processObjects = [];
+
+        foreach ($processes as $processData) {
+            $processObjects[] = Processes::where('name', $processData)->get()->first();
+        }
+
+        return collect($processObjects);
+    }
+    public function getIProcesses() : Collection
+    {
+        $processes = $this->internal_invites == null ? [] : json_decode($this->impact_processes, true);
+        $processObjects = [];
+
+        foreach ($processes as $processData) {
+            $processObjects[] = Processes::where('name', $processData)->get()->first();
+        }
+
+        return collect($processObjects);
+    }
     public function tasks()
     {
         return $this->hasMany(Task::class, 'dysfunction');

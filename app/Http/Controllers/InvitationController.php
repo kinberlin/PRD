@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApiMail;
+use App\Models\ApiSms;
 use App\Models\Dysfunction;
 use App\Models\Invitation;
 use App\Models\Invites;
@@ -86,6 +87,9 @@ class InvitationController extends Controller
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
+                $newmessage = new ApiSms(array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()), 
+                'Cadyst PRD App', "Vous êtes cordialement invité(e) à notre réunion qui se tiendra le ".$data->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')." de ".$data->begin." à ".$data->end.". L'événement se déroulera à ".$data->place.". Objet : ".$data->object." | Motif : ".$data->motif." | Dysfonctionnement No. : ".$dys->code.".");
+                $newmessage->send();
                 $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
                     throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
@@ -208,6 +212,7 @@ class InvitationController extends Controller
                         $content = view('employees.invitation_excludeMail')->render();
                         $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                         $response = $newmail->send();
+                        
                     }
                 }
 

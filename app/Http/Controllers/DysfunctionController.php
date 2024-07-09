@@ -82,8 +82,7 @@ class DysfunctionController extends Controller
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
             foreach ($rq as $user) {
                 $newmessage = new ApiSms(array_fill(0, 1, $user->phone), 'Cadyst PRD App', "Nous tenons à vous informer qu'un incident a été signalé par un employé via notre plateforme de résolution des incidents. Il s'agit du No." . $dys->code);
-                $rres = $newmessage->send();
-                dd($rres);
+                $newmessage->send();
                 $content = view('employees.dysfunction_appMail', ['user' => $user, 'dysfunction' => Dysfunction::find($dys->id)])->render();
                 $newmail = new ApiMail(null, array_fill(0, 1, $user->email), 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
 
@@ -100,6 +99,7 @@ class DysfunctionController extends Controller
         //try {
         $dys = Dysfunction::find($id);
         if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
+            $old_dys = Dysfunction::find($id);
             DB::beginTransaction();
             if ($dys == null) {
                 throw new Exception("Impossible de trouver la ressource demandée.", 404);
@@ -111,7 +111,18 @@ class DysfunctionController extends Controller
             $dys->probability = $request->input('probability');
             $dys->type = $request->input('type');
             $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
-
+            //alert pilotes
+            foreach($dys->getCProcesses() as $nd){
+                if(is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())){
+                $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
+                $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
+                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                $response = $newmail->send();
+                $newmessage = new ApiSms(array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()), 
+                'Cadyst PRD App', "Vous êtes cordialement invité(e) à notre réunion qui se tiendra le ".$data->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')." de ".$data->begin." à ".$data->end.". L'événement se déroulera à ".$data->place.". Objet : ".$data->object." | Motif : ".$data->motif." | Dysfonctionnement No. : ".$dys->code.".");
+                $newmessage->send();
+                }
+            }
             $dys->save();
             DB::commit();
             if ($dys->status == 1) {
@@ -138,6 +149,7 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }*/
     }
+
     public function cancel($id)
     {
         try {
