@@ -154,22 +154,24 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)</label>
-                            <select class="form-control" name="probability" data-allow-clear="true" required>
-                                @foreach ($probability as $p)
-                                    <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
-                                        {{ $p->name }} (Note : {{ $p->note }})</option>
-                                @endforeach
-                            </select>
+                        <label class="form-label" for="multicol-last-name">Probabilité(<span
+                                style="color: red">*</span>)</label>
+                        <select class="form-control" name="probability" data-allow-clear="true" required>
+                            @foreach ($probability as $p)
+                                <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
+                                    {{ $p->name }} (Note : {{ $p->note }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span style="color: red">*</span>)</label>
-                            <select class="form-control" name="type" data-allow-clear="true" required>
-                                @foreach ($dystype as $d)
-                                    <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
-                                        {{ $d->name }}</option>
-                                @endforeach
-                            </select>
+                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span
+                                style="color: red">*</span>)</label>
+                        <select class="form-control" name="type" data-allow-clear="true" required>
+                            @foreach ($dystype as $d)
+                                <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
+                                    {{ $d->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsable(s) probable(s) de l'incident</label>
@@ -188,7 +190,7 @@
                             <div class="col-md-8 text-end">
                                 <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
                                 <button class="btn btn-danger " data-bs-toggle="modal"
-                                data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
+                                    data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
 
                             </div>
                         </div>
@@ -197,15 +199,13 @@
 
             </form>
         </div>
-        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}"
-            tabindex="-1">
+        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTopTitle">Confirmation de
                             Rejet!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="card-body">
@@ -216,10 +216,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-label-secondary"
-                            data-bs-dismiss="modal">Fermer</button>
-                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}"
-                            class="btn btn-danger">Continuer</a>
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Continuer</a>
                     </div>
                 </form>
             </div>
@@ -309,17 +307,19 @@
                                                         <input type="number" name="satisfaction[]" class="form-control"
                                                             placeholder="%" min="0" max="100"
                                                             value="{{ $ev != null ? $ev->satisfaction : null }}"
-                                                            @if($data->status == 5)required @else disabled @endif />
+                                                            @if ($data->status == 5) required @else disabled @endif />
                                                     </div>
                                                     <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
                                                         <label class="form-label" for="multicol-country">Criteres</label>
-                                                        <textarea rows="2" name="criteria[]" class="form-control" @if($data->status == 5)required @else disabled @endif>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
+                                                        <textarea rows="2" name="criteria[]" class="form-control"
+                                                            @if ($data->status == 5) required @else disabled @endif>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
                                                     </div>
                                                     <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
                                                         <label class="form-label">Completude(%)</label>
                                                         <input type="number" name="completion[]" class="form-control"
                                                             placeholder="%" min="0" max="100"
-                                                            value="{{ $ev != null ? $ev->completion : null }}" @if($data->status == 5)required @else disabled @endif />
+                                                            value="{{ $ev != null ? $ev->completion : null }}"
+                                                            @if ($data->status == 5) required @else disabled @endif />
                                                     </div>
                                                 </div>
                                         @endforeach

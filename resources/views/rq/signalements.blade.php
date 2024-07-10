@@ -117,22 +117,4 @@
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/cleavejs/cleave-phone.js') !!}"></script>
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
-    <script>
-        /* document.addEventListener("DOMContentLoaded", function() {
-                    // Datatables Orders
-                    $("#datatables-order").DataTable({
-                        "paging": true,
-                        "pageLength": 10,
-                        "dom": 'Bfrtip', // Show buttons (B) for export
-                        "buttons": [
-                            'excel' // Add export button for Excel
-                        ],
-                        responsive: true,
-                        aoColumnDefs: [{
-                            bSortable: false,
-                            aTargets: [-1]
-                        }]
-                    });
-                });*/
-    </script>
 @endsection

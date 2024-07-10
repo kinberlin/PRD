@@ -103,7 +103,7 @@
             <h5 class="card-header">Informations complémentaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                                <h6> Info Supplementaires</h6>-->
+                                                                    <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -155,22 +155,24 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Probabilité(<span style="color: red">*</span>)</label>
-                            <select class="form-control" name="probability" data-allow-clear="true" required>
-                                @foreach ($probability as $p)
-                                    <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
-                                        {{ $p->name }} (Note : {{ $p->note }})</option>
-                                @endforeach
-                            </select>
+                        <label class="form-label" for="multicol-last-name">Probabilité(<span
+                                style="color: red">*</span>)</label>
+                        <select class="form-control" name="probability" data-allow-clear="true" required>
+                            @foreach ($probability as $p)
+                                <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
+                                    {{ $p->name }} (Note : {{ $p->note }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span style="color: red">*</span>)</label>
-                            <select class="form-control" name="type" data-allow-clear="true" required>
-                                @foreach ($dystype as $d)
-                                    <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
-                                        {{ $d->name }}</option>
-                                @endforeach
-                            </select>
+                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span
+                                style="color: red">*</span>)</label>
+                        <select class="form-control" name="type" data-allow-clear="true" required>
+                            @foreach ($dystype as $d)
+                                <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
+                                    {{ $d->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Responsable(s) probable(s) de l'incident</label>
@@ -189,24 +191,21 @@
                             <div class="col-md-8 text-end">
                                 <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
                                 <button class="btn btn-danger " data-bs-toggle="modal"
-                                            data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
+                                    data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
 
                             </div>
                         </div>
                 </div>
-
                 @endif
             </form>
         </div>
-        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}"
-            tabindex="-1">
+        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTopTitle">Confirmation de
                             Rejet!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="card-body">
@@ -217,155 +216,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-label-secondary"
-                            data-bs-dismiss="modal">Fermer</button>
-                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}"
-                            class="btn btn-danger">Continuer</a>
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <a href="{!! route('dysfunction.cancel', ['id' => $data->id]) !!}" class="btn btn-danger">Continuer</a>
                     </div>
                 </form>
             </div>
         </div>
         <!-- Collapsible Section -->
-        @if ($data->status > 5 && $data->status != 3)
-            <div class="row my-4">
-                <div class="col">
-                    <h6> Mesures correctives</h6>
-                    <div class="accordion" id="collapsibleSection">
-                        <div class="card accordion-item">
-                            <h2 class="accordion-header" id="headingDeliveryAddress">
-                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseDeliveryAddress" aria-expanded="true"
-                                    aria-controls="collapseDeliveryAddress"> Actions correctives</button>
-                            </h2>
-                            <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
-                                data-bs-parent="#collapsibleSection">
-                                <div class="accordion-body">
-                                    <form class="row g-3" action="{!! route('dysfunction.action', ['id' => $data->id]) !!}" method="POST"
-                                        id="myForm">
-                                        @csrf
-                                        <div class="repeater col-md-12">
-                                            <div data-repeater-item>
-                                                <div data-repeater-list="original">
-                                                    @if ($data->corrective_acts != null)
-                                                        @foreach (json_decode($data->corrective_acts) as $index => $item)
-                                                            <div class="row">
-                                                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                                    <label class="form-label"
-                                                                        for="repeater-1-1">Action</label>
-                                                                    <input type="text" name="action"
-                                                                        id="repeater-1-1" class="form-control"
-                                                                        placeholder="..." required />
-                                                                </div>
-                                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                                    <label class="form-label"
-                                                                        for="form-repeater-1-3">Département</label>
-                                                                    <select id="form-repeater-1-3" name="departmentt"
-                                                                        class="form-select"required>
-                                                                        <option value="Male">Info...</option>
-                                                                        <option value="Female">RH...</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                                    <label class="form-label"
-                                                                        for="multicol-country">Personnes</label>
-                                                                    <select id="multicol-country" name="userr"
-                                                                        class="select2 form-select"
-                                                                        data-allow-clear="true"required>
-                                                                        <option value="Australia">Monsieur Y</option>
-                                                                        <option value="Bangladesh">M. Z</option>
-                                                                        <option value="Belarus">M. B</option>
-                                                                        <option value="Brazil">M. A</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                                    <label class="form-label">Delai</label>
-                                                                    <input type="date" name="delay"
-                                                                        class="form-control"
-                                                                        placeholder="YYYY-MM-DD"required>
-                                                                </div>
-                                                                <div
-                                                                    class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
-                                                                    <button class="btn btn-label-danger mt-4"
-                                                                        data-repeater-delete>
-                                                                        <i class="bx bx-x me-1"></i>
-                                                                        <span class="align-middle">Retirer</span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-                                                        @endforeach
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-repeater col-md-12">
-                                            <div data-repeater-list="group-a">
-                                                <div data-repeater-item>
-                                                    <div class="row">
-                                                        <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                            <label class="form-label"
-                                                                for="form-repeater-1-1">Action</label>
-                                                            <input type="text" name="action" id="form-repeater-1-1"
-                                                                class="form-control" placeholder="..." required />
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                            <label class="form-label"
-                                                                for="form-repeater-1-3">Département</label>
-                                                            <select id="form-repeater-1-3" name="departmentt"
-                                                                class="form-select" required>
-                                                                <option value="Male">Info...</option>
-                                                                <option value="Female">RH...</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
-                                                            <label class="form-label"
-                                                                for="multicol-country">Personnes</label>
-                                                            <select id="multicol-country" name="userr"
-                                                                class="select2 form-select" data-allow-clear="true"
-                                                                required>
-                                                                <option value="Australia">Monsieur Y</option>
-                                                                <option value="Bangladesh">M. Z</option>
-                                                                <option value="Belarus">M. B</option>
-                                                                <option value="Brazil">M. A</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
-                                                            <label class="form-label">Delai</label>
-                                                            <input type="date" name="delay" class="form-control"
-                                                                placeholder="YYYY-MM-DD" required>
-                                                        </div>
-                                                        <div
-                                                            class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
-                                                            <button class="btn btn-label-danger mt-4" data-repeater-delete>
-                                                                <i class="bx bx-x me-1"></i>
-                                                                <span class="align-middle">Retirer</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-
-                                                </div>
-                                            </div>
-                                            <div class="mb-0">
-                                                <button class="btn btn-primary" data-repeater-create>
-                                                    <i class="bx bx-plus me-1"></i>
-                                                    <span class="align-middle">Ajouter une Action</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="pt-4">
-                                            <button type="submit" id="saveActionsBtn"
-                                                class="btn btn-success me-sm-3 me-1">Enregistrer les
-                                                actions</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
         @if ($data->status != 1 && $data->status != 3)
             <div class="row my-4">
                 <div class="col">
@@ -380,13 +237,230 @@
                             <div id="accordionPlanner" class="accordion-collapse collapse show"
                                 data-bs-parent="#collapsibleSection2">
                                 <div class="accordion-body">
-                                    <form class="row g-3" action="{!! route('admin.planner', ['id' => $data->id]) !!}" method="GET">
-                                        <div class="pt-4">
-                                            <button type="submit" id="saveActionsBtn"
-                                                class="btn btn-success me-sm-3 me-1">Aller à la page de
-                                                planification</button>
+                                    <div class="pt-4">
+                                        @if ($data->status != 3)
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <form action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
+                                                        <div>
+                                                            <button type="submit" id="saveActionsBtn"
+                                                                class="btn btn-success me-sm-3 me-1">Aller à la page de
+                                                                planification</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                @if ($data->status != 5)
+                                                    <div class="col-md-8 text-end">
+                                                        <a href="{!! route('dysfunction.evaluation.launch', ['id' => $data->id]) !!}" class="btn btn-success">Débuter
+                                                            l'évaluation</a>
+                                                    </div>
+                                                @else
+                                                    <div class="col-md-8 text-end">
+                                                        <a href="{!! route('dysfunction.evaluation.cancel', ['id' => $data->id]) !!}" class="btn btn-success">Arrêter
+                                                            l'évaluation</a>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if ($data->status >= 5)
+            <div class="row my-4">
+                <div class="col">
+                    <h6> Evaluation des Actions</h6>
+                    <div class="accordion" id="collapsibleSection">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingDeliveryAddress">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDeliveryAddress" aria-expanded="true"
+                                    aria-controls="collapseDeliveryAddress"> Evaluations des Actions</button>
+                            </h2>
+                            <div id="collapseDeliveryAddress" class="accordion-collapse collapse show"
+                                data-bs-parent="#collapsibleSection">
+                                <div class="accordion-body">
+                                    <form class="row g-3" id="evaluateConfirmForm" action="{!! route('dysfunction.evaluation', ['id' => $data->id]) !!}"
+                                        method="POST">
+                                        @csrf
+                                        @foreach ($corrections as $c)
+                                            @php
+                                                $ev = $evaluations->where('task', $c->id)->first();
+                                            @endphp
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="hidden" name="id[]" value="{{ $c->id }}" />
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-1">Action</label>
+                                                        <input type="text" name="action" value="{{ $c->text }}"
+                                                            class="form-control" disabled />
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-3">Satisfaction
+                                                            (%)
+                                                        </label>
+                                                        <input type="number" name="satisfaction[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->satisfaction : null }}"
+                                                            @if ($data->status == 5) required @else disabled @endif />
+                                                    </div>
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="multicol-country">Criteres</label>
+                                                        <textarea rows="2" name="criteria[]" class="form-control"
+                                                            @if ($data->status == 5) required @else disabled @endif>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label">Completude(%)</label>
+                                                        <input type="number" name="completion[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->completion : null }}"
+                                                            @if ($data->status == 5) required @else disabled @endif />
+                                                    </div>
+                                                </div>
+                                        @endforeach
+                                        <hr>
+                                        @if ($data->status == 5)
+                                            <div class="mb-0">
+                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#evalCompleteModal">
+                                                    <i class="bx bx-plus me-1"></i>
+                                                    <span class="align-middle">Terminer l'Evaluation</span>
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </form>
+                                    @if ($data->status == 5)
+                                        <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                            Fermeture!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                                Souhaitez vous vraiment terminer l'évaluation des actions
+                                                                correctives de ce dysfonctionnement ?
+                                                                <b>Notez que vous ne pourrez plus modifier ce
+                                                                    dysfonctionnement en terme d'identification, de
+                                                                    planification etc..</b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button id="confirmEvaluation"
+                                                            class="btn btn-warning">Continuer</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if ($data->status == 7)
+            <div class="row my-4">
+                <div class="col">
+                    <h6> Evaluation du Dysfonctionnement</h6>
+                    <div class="accordion" id="DysEvaluation">
+                        <div class="card accordion-item">
+                            <h2 class="accordion-header" id="headingDysEvaluation">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDysEvaluation" aria-expanded="true"
+                                    aria-controls="collapseDysEvaluation"> Evaluations des Actions</button>
+                            </h2>
+                            <div id="collapseDysEvaluation" class="accordion-collapse collapse show"
+                                data-bs-parent="#DysEvaluation">
+                                <div class="accordion-body">
+                                    <form class="row g-3" id="evaluateConfirmForm" action="{!! route('dysfunction.evaluation', ['id' => $data->id]) !!}"
+                                        method="POST">
+                                        @csrf
+                                        @foreach ($corrections as $c)
+                                            @php
+                                                $ev = $evaluations->where('task', $c->id)->first();
+                                            @endphp
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="hidden" name="id[]" value="{{ $c->id }}" />
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-1">Action</label>
+                                                        <input type="text" name="action" value="{{ $c->text }}"
+                                                            class="form-control" disabled />
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label" for="form-repeater-1-3">Satisfaction
+                                                            (%)
+                                                        </label>
+                                                        <input type="number" name="satisfaction[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->satisfaction : null }}"
+                                                            required />
+                                                    </div>
+                                                    <div class="mb-4 col-lg-6 col-xl-3 col-12 mb-0">
+                                                        <label class="form-label" for="multicol-country">Criteres</label>
+                                                        <textarea rows="2" name="criteria[]" class="form-control" required>{{ $ev != null ? $ev->evaluation_criteria : null }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                                                        <label class="form-label">Completude(%)</label>
+                                                        <input type="number" name="completion[]" class="form-control"
+                                                            placeholder="%" min="0" max="100"
+                                                            value="{{ $ev != null ? $ev->completion : null }}" required />
+                                                    </div>
+                                                </div>
+                                        @endforeach
+                                        <hr>
+
+                                        <div class="mb-0">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#evalCompleteModal">
+                                                <i class="bx bx-plus me-1"></i>
+                                                <span class="align-middle">Terminer l'Evaluation</span>
+                                            </button>
                                         </div>
                                     </form>
+                                    <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                        Fermeture!</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card-body">
+                                                        <p class="card-text">
+                                                            Souhaitez vous vraiment terminer l'évaluation des actions
+                                                            correctives de ce dysfonctionnement ?
+                                                            <b>Notez que vous ne pourrez plus modifier ce
+                                                                dysfonctionnement en terme d'identification, de
+                                                                planification etc..</b>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-label-secondary"
+                                                        data-bs-dismiss="modal">Fermer</button>
+                                                    <button id="confirmEvaluation"
+                                                        class="btn btn-warning">Continuer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

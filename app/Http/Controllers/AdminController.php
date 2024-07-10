@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\DysfunctionType;
 use App\Models\Enterprise;
+use App\Models\Evaluation;
 use App\Models\Gravity;
 use App\Models\Invitation;
 use App\Models\Origin;
@@ -15,6 +16,7 @@ use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
+use App\Models\Task;
 use App\Models\Users;
 use App\Policies\UserPolicy;
 use Exception;
@@ -112,6 +114,13 @@ class AdminController extends Controller
             $probability = Probability::all();
             $dystype = DysfunctionType::all();
             $data = $dys;
+            $parentTasks = Task::select('tasks.id', 'tasks.text')
+                ->distinct()
+                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                ->where('t2.dysfunction', $id)
+                ->get();
+            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+            $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
             return view('admin/infos', compact(
                 'data',
                 'status',
@@ -121,7 +130,9 @@ class AdminController extends Controller
                 'gravity',
                 'origin',
                 'probability',
-                'dystype',
+                'corrections',
+                'evaluations',
+                'dystype'
             ));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
