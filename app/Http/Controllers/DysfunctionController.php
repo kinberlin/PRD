@@ -146,7 +146,6 @@ class DysfunctionController extends Controller
                     }
                 }
                 $dys->save();
-                dd($dys);
                 DB::commit();
 
                 if ($dys->status == 1) {

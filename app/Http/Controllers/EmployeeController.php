@@ -45,7 +45,11 @@ class EmployeeController extends Controller
         $processes = Processes::all();
         $pltU = AuthorisationPilote::where('user', Auth::user()->id)->get();
         $dys = Dysfunction::whereIn('status', [2, 4, 5])->whereHas('tasks')->get()->sortByDesc('created_at');
-        $data = Task::whereIn('process', $pltU->pluck('process'))->whereIn('dysfunction', $dys->pluck('id'))->get();
+        $parentTasks = Task::select('tasks.id', 'tasks.text')
+            ->distinct()
+            ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+            ->get();
+        $data = Task::whereIn('process', $pltU->pluck('process'))->whereNotIn('id', $parentTasks->pluck('id')->unique())->whereIn('dysfunction', $dys->pluck('id'))->get();
         return view('employees/mytasks', compact('data', 'dys', 'pltU', 'processes'));
     }
     public function profile()

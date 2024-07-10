@@ -19,13 +19,15 @@
                 <hr style="border-top: 1px solid var(--bs-info);">
                 @if (!is_null($_p))
                     @php
-                        $fildys = $dys->filter(function ($x) use ($_p) {
+                    $tasks = $data->where('process', $_p->id);
+                    $fildys = $dys->whereIn('id', $tasks->pluck('dysfunction')->unique()); 
+                        /*$fildys = $dys->filter(function ($x) use ($_p) {
                             // Decode the JSON string into a PHP array
                             $s = json_decode($x->impact_processes, true);
 
                             // Check if the search string is in the array
                             return is_array($s) && in_array($_p->name, $s);
-                        });
+                        });*/
                     @endphp
                     @if (count($fildys) > 0)
                         @foreach ($fildys as $_d)
