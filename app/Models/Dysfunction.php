@@ -60,7 +60,8 @@ class Dysfunction extends Model
     protected $fillable = ['enterprise', 'enterprise_id', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
     public $timestamps = false;
     protected $casts = [
-        'created_at' => 'datetime:d-m-Y H:i'
+        'created_at' => 'datetime:d-m-Y H:i',
+        'occur_date' => 'datetime:d-m-Y H:i'
     ];
 
     /**
@@ -69,7 +70,7 @@ class Dysfunction extends Model
      * @var array
      */
     protected $dates = [
-        'created_at'
+        'created_at', 'occur_date'
     ];
     public function getCProcesses() : Collection
     {

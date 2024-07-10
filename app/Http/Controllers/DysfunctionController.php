@@ -118,7 +118,6 @@ class DysfunctionController extends Controller
                     $ap = AuthorisationPilote::where('process', $nd->id)->get();
                     $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
                     $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                    dd($dys);
                     $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name'=> $nd->name])->render();
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
                     $response = $newmail->send();
