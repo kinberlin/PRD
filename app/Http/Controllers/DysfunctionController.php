@@ -97,81 +97,81 @@ class DysfunctionController extends Controller
     }
     public function store(Request $request, $id)
     {
-        //try {
-        $dys = Dysfunction::find($id);
-        if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
-            $old_dys = Dysfunction::find($id);
-            DB::beginTransaction();
-            if ($dys == null) {
-                throw new Exception("Impossible de trouver la ressource demandée.", 404);
-            }
-            $dys->impact_processes = json_encode($request->input('impact_processes'));
-            $dys->concern_processes = json_encode($request->input('concern_processes'));
-            $dys->gravity = $request->input('gravity');
-            $dys->origin = $request->input('origin');
-            $dys->probability = $request->input('probability');
-            $dys->type = $request->input('type');
-            $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
-            //alert pilotes
-            foreach ($dys->getCProcesses() as $nd) {
-                if (is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())) {
-                    $ap = AuthorisationPilote::where('process', $nd->id)->get();
-                    $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
-                    $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                    $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name'=> $nd->name])->render();
-                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
-                    $response = $newmail->send();
-                    $newmessage = new ApiSms(
-                        array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()),
-                        'Cadyst PRD App',
-                        "Nous tenons à vous informer que votre processus(".$nd->name.") est concerné(comme cause) par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code
-                    );
-                    $newmessage->send();
+        try {
+            $dys = Dysfunction::find($id);
+            if (Gate::allows('DysCanIdentify', [$dys != null ? $dys : null])) {
+                $old_dys = Dysfunction::find($id);
+                DB::beginTransaction();
+                if ($dys == null) {
+                    throw new Exception("Impossible de trouver la ressource demandée.", 404);
                 }
-            }
-            foreach ($dys->getIProcesses() as $nd) {
-                if (is_null($old_dys->getIProcesses()->where('id', $nd->id)->first())) {
-                    $ap = AuthorisationPilote::where('process', $nd->id)->get();
-                    $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
-                    $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                    $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name'=>$nd->name])->render();
-                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
-                    $response = $newmail->send();
-                    $newmessage = new ApiSms(
-                        array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()),
-                        'Cadyst PRD App',
-                        "Nous tenons à vous informer que votre processus(".$nd->name.") est impacté par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code
-                    );
-                    $newmessage->send();
+                $dys->impact_processes = json_encode($request->input('impact_processes'));
+                $dys->concern_processes = json_encode($request->input('concern_processes'));
+                $dys->gravity = $request->input('gravity');
+                $dys->origin = $request->input('origin');
+                $dys->probability = $request->input('probability');
+                $dys->type = $request->input('type');
+                $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
+                //alert pilotes
+                foreach ($dys->getCProcesses() as $nd) {
+                    if (is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())) {
+                        $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                        $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                        $newmessage = new ApiSms(
+                            $a_pilotes->pluck('phone')->unique()->toArray(),
+                            'Cadyst PRD App',
+                            "Nous tenons à vous informer que votre processus(" . $nd->name . ") est concerné(comme cause) par un incident. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                        );
+                        $newmessage->send();
+                        $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                        $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                        $response = $newmail->send();
+                    }
                 }
-            }
-            $dys->save();
-            dd($dys);
-            DB::commit();
-
-            if ($dys->status == 1) {
-                $dys->status = 2;
-                $task = new Task();
-                $task->dysfunction = $dys->id;
-                $task->text = 'Dysfonctionnement ' . $dys->code;
-                $task->duration = 1;
-                $task->progress = 0.01;
-                $task->start_date = Carbon::now();
-                $task->parent = 0;
-                $task->unscheduled = 0;
-                $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
-                $task->created_by = 'Demo User';
+                foreach ($dys->getIProcesses() as $nd) {
+                    if (is_null($old_dys->getIProcesses()->where('id', $nd->id)->first())) {
+                        $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                        $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                        $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                        $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                        $response = $newmail->send();
+                        $newmessage = new ApiSms(
+                            $a_pilotes->pluck('phone')->unique()->toArray(),
+                            'Cadyst PRD App',
+                            "Nous tenons à vous informer que votre processus(" . $nd->name . ") est impacté par un incident. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                        );
+                        $newmessage->send();
+                    }
+                }
                 $dys->save();
-                $task->save();
-            }
+                dd($dys);
+                DB::commit();
 
-            return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
-        } else {
-            throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
-        }
-        /*} catch (Throwable $th) {
+                if ($dys->status == 1) {
+                    $dys->status = 2;
+                    $task = new Task();
+                    $task->dysfunction = $dys->id;
+                    $task->text = 'Dysfonctionnement ' . $dys->code;
+                    $task->duration = 1;
+                    $task->progress = 0.01;
+                    $task->start_date = Carbon::now();
+                    $task->parent = 0;
+                    $task->unscheduled = 0;
+                    $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
+                    $task->created_by = 'Demo User';
+                    $dys->save();
+                    $task->save();
+                }
+
+                return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+            } else {
+                throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
+            }
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
 
     public function cancel($id)

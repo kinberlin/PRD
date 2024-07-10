@@ -508,15 +508,6 @@
                                                                     <span
                                                                         style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
                                                                 </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
-                                                                        intervention est requise pour évaluer la
-                                                                        situation et prendre les mesures nécessaires
-                                                                        pour résoudre cet incident dans les plus brefs
-                                                                        délais. Merci de bien vouloir accorder à ce
-                                                                        signalement l'attention nécessaire.</span>
-                                                                </p>
                                                             </div>
                                                         </table>
                                                     </td>
