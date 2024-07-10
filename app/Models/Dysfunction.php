@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * @property integer $id
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $solved
  * @property integer $cost
  * @property integer $closed_at
- * @property int $created_at
+
  * @property int $enterprise_id
  * @property int $site_id
  * @property int $origin
@@ -73,7 +73,7 @@ class Dysfunction extends Model
     ];
     public function getCProcesses() : Collection
     {
-        $processes = $this->internal_invites == null ? [] : json_decode($this->concern_processes, true);
+        $processes = $this->concern_processes == null ? [] : json_decode($this->concern_processes, true);
         $processObjects = [];
 
         foreach ($processes as $processData) {
@@ -84,7 +84,7 @@ class Dysfunction extends Model
     }
     public function getIProcesses() : Collection
     {
-        $processes = $this->internal_invites == null ? [] : json_decode($this->impact_processes, true);
+        $processes = $this->impact_processes == null ? [] : json_decode($this->impact_processes, true);
         $processObjects = [];
 
         foreach ($processes as $processData) {

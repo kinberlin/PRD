@@ -475,7 +475,7 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous tenons à vous informer qu'un incident a été signalé et identifié comme étant causé par votre processus. </span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous tenons à vous informer qu'un incident a été signalé et identifié comme étant causé par votre processus ({{$name}}). </span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span

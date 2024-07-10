@@ -113,21 +113,43 @@ class DysfunctionController extends Controller
             $dys->type = $request->input('type');
             $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
             //alert pilotes
-            foreach($dys->getCProcesses() as $nd){
-                if(is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())){
-                $ap = AuthorisationPilote::where('process', $nd->id)->get();
-                $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
-                $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                $content = view('employees.dysfunctionpilote_appMail', ['dysfunction' => $dys])->render();
-                $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
-                $response = $newmail->send();
-                $newmessage = new ApiSms(array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()), 
-                'Cadyst PRD App', "Nous tenons à vous informer que vous êtes concerné(e) par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code);
-                $newmessage->send();
+            foreach ($dys->getCProcesses() as $nd) {
+                if (is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())) {
+                    $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                    $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                    $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                    dd($dys);
+                    $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name'=> $nd->name])->render();
+                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                    $response = $newmail->send();
+                    $newmessage = new ApiSms(
+                        array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()),
+                        'Cadyst PRD App',
+                        "Nous tenons à vous informer que votre processus(".$nd->name.") est concerné(comme cause) par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                    );
+                    $newmessage->send();
+                }
+            }
+            foreach ($dys->getIProcesses() as $nd) {
+                if (is_null($old_dys->getIProcesses()->where('id', $nd->id)->first())) {
+                    $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                    $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                    $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                    $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name'=>$nd->name])->render();
+                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                    $response = $newmail->send();
+                    $newmessage = new ApiSms(
+                        array_fill(0, 1, $a_pilotes->pluck('phone')->unique()->toArray()),
+                        'Cadyst PRD App',
+                        "Nous tenons à vous informer que votre processus(".$nd->name.") est impacté par un incident qui a été signalé par un employé via notre plateforme de résolution des incidents. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                    );
+                    $newmessage->send();
                 }
             }
             $dys->save();
+            dd($dys);
             DB::commit();
+
             if ($dys->status == 1) {
                 $dys->status = 2;
                 $task = new Task();
