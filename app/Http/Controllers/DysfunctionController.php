@@ -110,7 +110,6 @@ class DysfunctionController extends Controller
                 $dys->gravity = $request->input('gravity');
                 $dys->origin = $request->input('origin');
                 $dys->probability = $request->input('probability');
-                $dys->type = $request->input('type');
                 $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
                 //alert pilotes
                 foreach ($dys->getCProcesses() as $nd) {

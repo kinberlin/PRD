@@ -165,16 +165,6 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Type de dysfonctionnement(<span
-                                style="color: red">*</span>)</label>
-                        <select class="form-control" name="type" data-allow-clear="true" required>
-                            @foreach ($dystype as $d)
-                                <option value="{{ $d->id }}" @if ($d->id == $data->type) selected @endif>
-                                    {{ $d->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6">
                         <label class="form-label">Responsable(s) probable(s) de l'incident</label>
                         <input type="text"
                             value="@if (empty($data->cause)) Aucun Responsable Identifié @else {{ $data->cause }} @endif"

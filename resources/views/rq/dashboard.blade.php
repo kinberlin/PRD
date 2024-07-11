@@ -46,7 +46,6 @@
                                         $alldys = \App\Models\Dysfunction::where('enterprise_id', $_enterprise->id)
                                             ->whereYear('created_at', \Carbon\Carbon::now()->year)
                                             ->get();
-                                        $alldystype = \App\Models\DysfunctionType::all();
                                         $allgravity = \App\Models\Gravity::all();
                                         $allorigin = \App\Models\Origin::all();
                                         $allsite = \App\Models\Site::where('enterprise', $id)->get();
@@ -220,101 +219,6 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-12 mb-4 pb-3">
-                <div class="card">
-                    <div class="row row-bordered g-0">
-                        <div class="col-md-4">
-                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
-                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Type</span></h5>
-                            </div>
-                            <div class="card-body" style="height:420px; overflow-y: auto;">
-                                <ul class="p-0 m-0">
-                                    @foreach ($alldystype as $dyst)
-                                        <li class="d-flex mb-4 pb-1">
-                                            <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-paperclip"></i>
-                                            </div>
-                                            <div
-                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">{{ $dyst->name }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
-                                                </div>
-                                                <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($alldys->where('type', $dyst->id))) }}</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
-                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Site</span></h5>
-                            </div>
-                            <div class="card-body" style="height:420px; overflow-y: auto;">
-                                <ul class="p-0 m-0">
-                                    @foreach ($allsite as $si)
-                                        <li class="d-flex mb-4 pb-1">
-                                            <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-current-location"></i>
-                                            </div>
-                                            <div
-                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">{{ $si->name . ' (' . $si->location . ')' }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
-                                                </div>
-                                                <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($alldys->where('site', $si->id))) }}</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-header d-flex align-items-center justify-content-between mb-4">
-                                <h5 class="card-title m-0 me-2">Dysfonctionnements par <span
-                                        class="text-primary">Processus</span></h5>
-                            </div>
-                            <div class="card-body" style="height:420px; overflow-y: auto;">
-                                <ul class="p-0 m-0">
-                                    @foreach ($allprocess as $p)
-                                        <li class="d-flex mb-4 pb-1">
-                                            <div class="avatar flex-shrink-0 me-3">
-                                                <i class="bx bx-color"></i>
-                                            </div>
-                                            <div
-                                                class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">{{ $p->name }}</h6>
-                                                    <small class="text-muted d-block mb-1">Nombre de dysfonctionnements
-                                                        :</small>
-                                                </div>
-                                                <div class="user-progress d-flex align-items-center gap-1">
-                                                    <span
-                                                        class="fw-medium">{{ formatNumber(count($p->dysfunctions())) }}</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
                             </div>
                         </div>
                     </div>
