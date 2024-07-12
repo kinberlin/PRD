@@ -121,7 +121,7 @@ class Dysfunction extends Model
     // Define the relationship with the Probability model
     public function probabilities()
     {
-        return $this->belongsTo(Probability::class, 'id');
+        return $this->belongsTo(Probability::class, 'probability');
     }
     public function user()
     {

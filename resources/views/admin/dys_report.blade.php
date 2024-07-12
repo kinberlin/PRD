@@ -7,7 +7,8 @@
 @endsection
 @section('mainContent')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="faq-header d-flex flex-column justify-content-center align-items-center h-px-300 position-relative" style="margin-bottom: 25px;">
+        <div class="faq-header d-flex flex-column justify-content-center align-items-center h-px-300 position-relative"
+            style="margin-bottom: 25px;">
             <img src="{{ url('assets/img/pages/header.png') }}" class="scaleX-n1-rtl faq-banner-img" alt="background image" />
             <h3 class="text-center">Plus d'info sur un Dysfonctionnement signalé ?</h3>
             <div class="input-wrapper my-3 input-group input-group-merge">
@@ -21,52 +22,100 @@
             </p>
         </div>
         <div class="row">
-        <div class="card mb-4" style="margin-bottom: 25px;">
-            <h5 class="card-header">Information sur la déclaration</h5>
-            <form class="card-body" >
+            <div class="card mb-4" style="margin-bottom: 25px;">
+                <h5 class="card-header">Information sur la déclaration</h5>
+                <form class="card-body">
+                    <!--<hr class="my-4 mx-n4">
+                                                                                    <h6> Info Supplementaires</h6>-->
+                    @csrf
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-fullname">Noms</label>
+                            <input type="text" class="form-control" id="basic-default-fullname"
+                                value={{ $data->emp_signaling }} readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-company">Matricule</label>
+                            <input type="text" class="form-control" id="basic-default-company"
+                                value="{{ $data->emp_matricule }}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-email">Contact</label>
+                            <div class="input-group input-group-merge">
+                                <input type="text" id="basic-default-email" class="form-control"
+                                    value="{{ $data->emp_email }}" aria-label="john.doe"
+                                    aria-describedby="basic-default-email2">
+                                <span class="input-group-text" id="basic-default-email2">@</span>
+                            </div>
+                            <div class="form-text"> Extras</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date d'enregistrement sur PRD</label>
+                            <input type="text" class="form-control"
+                                value="{{ formatDateInFrench($data->created_at, 'complete') }}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-message">Date de Constat</label>
+                            <input type="text" class="form-control"
+                                value="{{ formatDateInFrench($data->occur_date, 'complete') }}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-message">Description</label>
+                            <textarea id="basic-default-message" class="form-control" placeholder="Aucune description n'a été faites" readonly> {{ $data->description }}</textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <h4 class="form-label text-center" style="font-size: 18px" for="basic-default-message">Status :
+                                <span class="text-primary">{{ $data->status_id->name }}</span></h2>
+                        </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <h5 class="card-header">Information d'Identification </h5>
+            <form class="card-body" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                                                <h6> Info Supplementaires</h6>-->
-                @csrf
+                <h6> Info Supplementaires</h6>-->
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="basic-default-fullname">Noms</label>
-                        <input type="text" class="form-control" id="basic-default-fullname"
-                            value={{ $data->emp_signaling }} readonly>
+                        <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné</label>
+                        <input type="text" value="{{ $data->enterprise }}  ({{ $data->site }})" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="basic-default-company">Matricule</label>
-                        <input type="text" class="form-control" id="basic-default-company"
-                            value="{{ $data->emp_matricule }}" readonly>
+                        <label class="form-label" for="multicol-last-name">Processus Concernés</label>
+                        <input type="text" value="{{ implode(', ',$data->getCProcesses()->pluck('name')->toArray()) }}" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="basic-default-email">Contact</label>
-                        <div class="input-group input-group-merge">
-                            <input type="text" id="basic-default-email" class="form-control"
-                                value="{{ $data->emp_email }}" aria-label="john.doe"
-                                aria-describedby="basic-default-email2">
-                            <span class="input-group-text" id="basic-default-email2">@</span>
-                        </div>
-                        <div class="form-text"> Extras</div>
+                        <label class="form-label" for="multicol-last-name">Processus Impactés</label>
+                        <input type="text" value="{{ implode(', ',$data->getIProcesses()->pluck('name')->toArray()) }}" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Date d'enregistrement sur PRD</label>
-                        <input type="text" class="form-control"
-                            value="{{ formatDateInFrench($data->created_at, 'complete')}}" readonly>
+                        <label class="form-label" for="multicol-last-name">Gravité</label>
+                        <input type="text" value="{{ $data->gravity }}" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="basic-default-message">Date de Constat</label>
-                        <input type="text" class="form-control"
-                            value="{{ formatDateInFrench($data->occur_date, 'complete')}}" readonly>
+                        <label class="form-label" for="multicol-last-name">Catégorie</label>
+                        <input type="text" value="{{ $data->origin }}" class="form-control"
+                            readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="basic-default-message">Description</label>
-                        <textarea id="basic-default-message" class="form-control" placeholder="Aucune description n'a été faites" readonly> {{ $data->description }}</textarea>
+                        <label class="form-label" for="multicol-last-name">Probabilité</label>
+                        <input type="text" value="{{ $data->probabilities->name }}" class="form-control"
+                            readonly>
                     </div>
-                    <div class="col-md-12">
-                        <h4 class="form-label text-center" style="font-size: 18px" for="basic-default-message">Status : <span class="text-primary">{{$data->status_id->name}}</span></h2>
+                    <div class="col-md-6">
+                        <label class="form-label">Responsable(s) probable(s) de l'incident</label>
+                        <input type="text"
+                            value="@if (empty($data->cause)) Aucun Responsable Identifié @else {{ $data->cause }} @endif"
+                            name="cause" class="form-control"
+                            placeholder="Le(s) Nom(s) de(s) Responsable(s) & matricule(s) si possible" readonly>
                     </div>
+                </div>
             </form>
-        </div></div>
+        </div>
         <!-- Project Cards -->
         <div class="row g-4 mt-6">
             <div class="col-xl-4 col-lg-6 col-md-6">
@@ -79,7 +128,8 @@
                                         class="rounded-circle" />
                                 </div>
                                 <div class="me-2">
-                                    <h5 class="mb-1"><a href="javascript:;" class="h5 stretched-link">Social Banners</a>
+                                    <h5 class="mb-1"><a href="javascript:;" class="h5 stretched-link">Social
+                                            Banners</a>
                                     </h5>
                                     <div class="client-info d-flex align-items-center">
                                         <h6 class="mb-0 me-1">Client:</h6><span>Christian Jimenez</span>
