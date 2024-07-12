@@ -10,7 +10,11 @@ use App\Models\Correction;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Evaluation;
+use App\Models\Gravity;
+use App\Models\Origin;
+use App\Models\Probability;
 use App\Models\Processes;
+use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\Users;
@@ -201,10 +205,44 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-    public function report()
+    public function report($code)
     {
-
-        return view('admin/dys_report');
+        try {
+            $dys = is_null(Dysfunction::find($code)) ? Dysfunction::where('code', $code)->get()->first() : Dysfunction::find($code);
+            if ($dys == null) {
+                throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
+            }
+            $id = $dys->id;
+            $status = Status::all();
+            $processes = Processes::all();
+            $ents = Enterprise::all();
+            $site = Site::all();
+            $gravity = Gravity::all();
+            $origin = Origin::all();
+            $probability = Probability::all();
+            $data = $dys;
+            $parentTasks = Task::select('tasks.id', 'tasks.text')
+                ->distinct()
+                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                ->where('t2.dysfunction', $id)
+                ->get();
+            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+            $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
+            return view('admin/dys_report', compact(
+                'data',
+                'status',
+                'processes',
+                'ents',
+                'site',
+                'gravity',
+                'origin',
+                'probability',
+                'corrections',
+                'evaluations'
+            ));
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     public function cost(Request $request, $id)
     {

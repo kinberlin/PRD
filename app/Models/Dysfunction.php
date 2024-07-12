@@ -72,7 +72,7 @@ class Dysfunction extends Model
     protected $dates = [
         'created_at', 'occur_date'
     ];
-    public function getCProcesses() : Collection
+    public function getCProcesses(): Collection
     {
         $processes = $this->concern_processes == null ? [] : json_decode($this->concern_processes, true);
         $processObjects = [];
@@ -83,7 +83,7 @@ class Dysfunction extends Model
 
         return collect($processObjects);
     }
-    public function getIProcesses() : Collection
+    public function getIProcesses(): Collection
     {
         $processes = $this->impact_processes == null ? [] : json_decode($this->impact_processes, true);
         $processObjects = [];
@@ -131,5 +131,10 @@ class Dysfunction extends Model
     public function site_id()
     {
         return $this->belongsTo(Site::class, 'site_id');
+    }
+    // Define the relationship with the Site model
+    public function status_id()
+    {
+        return $this->belongsTo(Status::class, 'status');
     }
 }

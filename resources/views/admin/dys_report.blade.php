@@ -22,26 +22,48 @@
         </div>
         <div class="row">
         <div class="card mb-4" style="margin-bottom: 25px;">
-            <h5 class="card-header">Informations complémentaires</h5>
-            <form class="card-body" action="{!! route('dysfunction.store', ['id' => 1]) !!}" method="POST">
+            <h5 class="card-header">Information sur la déclaration</h5>
+            <form class="card-body" >
                 <!--<hr class="my-4 mx-n4">
                                                                                 <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné (Non
-                            Modifiable)</label>
-                        <input type="text" value="" class="form-control"
-                            readonly>
+                        <label class="form-label" for="basic-default-fullname">Noms</label>
+                        <input type="text" class="form-control" id="basic-default-fullname"
+                            value={{ $data->emp_signaling }} readonly>
                     </div>
-                    <div class="col-md-6 select2-primary">
-                        <label class="form-label" for="multicol-language2">Processus Impactés (<span
-                                style="color: red">*</span>)</label>
-                        <select name="impact_processes[]" class="select2 form-select" multiple required>
-                                <option value="" data-extra-info="" selected>
-                                    ...
-                                </option>
-                        </select>
+                    <div class="col-md-6">
+                        <label class="form-label" for="basic-default-company">Matricule</label>
+                        <input type="text" class="form-control" id="basic-default-company"
+                            value="{{ $data->emp_matricule }}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="basic-default-email">Contact</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="basic-default-email" class="form-control"
+                                value="{{ $data->emp_email }}" aria-label="john.doe"
+                                aria-describedby="basic-default-email2">
+                            <span class="input-group-text" id="basic-default-email2">@</span>
+                        </div>
+                        <div class="form-text"> Extras</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Date d'enregistrement sur PRD</label>
+                        <input type="text" class="form-control"
+                            value="{{ formatDateInFrench($data->created_at, 'complete')}}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="basic-default-message">Date de Constat</label>
+                        <input type="text" class="form-control"
+                            value="{{ formatDateInFrench($data->occur_date, 'complete')}}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="basic-default-message">Description</label>
+                        <textarea id="basic-default-message" class="form-control" placeholder="Aucune description n'a été faites" readonly> {{ $data->description }}</textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <h4 class="form-label text-center" style="font-size: 18px" for="basic-default-message">Status : <span class="text-primary">{{$data->status_id->name}}</span></h2>
                     </div>
             </form>
         </div></div>

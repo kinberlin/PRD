@@ -91,7 +91,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
-    Route::get('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
+    Route::get('/dysfunction/report/{code}', 'DysfunctionController@report')->name('dysfunction.report');
     
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');

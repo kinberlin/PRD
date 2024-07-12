@@ -42,12 +42,12 @@
                             <div class="mb-3">
                                 <label class="form-label">Date d'enregistrement sur PRD</label>
                                 <input type="text" class="form-control"
-                                    value="{{ \Carbon\Carbon::parse($data->created_at)->format('d-m-Y H:i:s') }}" readonly>
+                                    value="{{ formatDateInFrench($data->created_at, 'complete')}}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-message">Date de Constat</label>
                                 <input type="text" class="form-control"
-                                    value="{{ \Carbon\Carbon::parse($data->occur_date)->format('d-m-Y') }}" readonly>
+                                    value="{{ formatDateInFrench($data->occur_date, 'complete')}}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="basic-default-message">Description</label>
