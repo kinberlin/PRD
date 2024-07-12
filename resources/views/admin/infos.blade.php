@@ -103,7 +103,7 @@
             <h5 class="card-header">Informations complémentaires</h5>
             <form class="card-body" action="{!! route('dysfunction.store', ['id' => $data->id]) !!}" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                                                                            <h6> Info Supplementaires</h6>-->
+                                                                                <h6> Info Supplementaires</h6>-->
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -376,30 +376,36 @@
                             <div id="collapseDysEvaluation" class="accordion-collapse collapse show"
                                 data-bs-parent="#DysEvaluation">
                                 <div class="accordion-body">
-                                    <form class="row g-3" id="evaluateConfirmForm" action="{!! route('dysfunction.close', ['id' => $data->id]) !!}"
+                                    <form class="row g-3" id="dysConfirmForm" action="{!! route('dysfunction.close', ['id' => $data->id]) !!}"
                                         method="POST">
                                         @csrf
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="mb-4 form-check form-switch col-lg-6 col-xl-3 col-12 mb-0">
-                                                    <label class="form-check-label" for="switchSolve">Dysfonctionnements résolus ? </label>
-                                                    <input class="form-check-input" id="switchSolve" type="checkbox" name="solved" @if($data->solved == 1) checked @endif>  
+                                                    <label class="form-check-label" for="switchSolve">Dysfonctionnements
+                                                        résolus ? </label>
+                                                    <input class="form-check-input" id="switchSolve" type="checkbox"
+                                                        name="solved" @if ($data->solved == 1) checked @endif
+                                                        @if (!is_null($data->closed_at)) disabled @endif required>
                                                 </div>
                                                 <div class="mb-4 col-lg-6 col-xl-9 col-12 mb-0">
-                                                    <label class="form-label" for="multicol-country">Décrivez le niveau de satisfaction</label>
-                                                    <textarea rows="2" name="satisfaction_description" class="form-control" required>{{ $data->satisfaction_description != null ? $data->satisfaction_description  : null }}</textarea>
+                                                    <label class="form-label" for="multicol-country">Décrivez le niveau de
+                                                        satisfaction</label>
+                                                    <textarea rows="2" name="satisfaction_description" class="form-control" required
+                                                        @if (!is_null($data->closed_at)) disabled @endif>{{ $data->satisfaction_description != null ? $data->satisfaction_description : null }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <hr>
-
-                                        <div class="mb-0">
-                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#dysCompleteModal">
-                                                <i class="bx bx-check me-1"></i>
-                                                <span class="align-middle">Terminer ce Dysfonctionnement</span>
-                                            </button>
-                                        </div>
+                                        @can('DysEvaluation')
+                                            <div class="mb-0">
+                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#dysCompleteModal">
+                                                    <i class="bx bx-check me-1"></i>
+                                                    <span class="align-middle">Terminer ce Dysfonctionnement</span>
+                                                </button>
+                                            </div>
+                                        @endcan
                                     </form>
                                     <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
                                         <div class="modal-dialog">
@@ -430,32 +436,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                        Fermeture!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="card-body">
-                                                        <p class="card-text">
-                                                            Souhaitez vous vraiment terminer l'évaluation de ce dysfonctionnement ?
-                                                            <b>Notez que ceci clôturera définitivement ce dysfonctionnement.</b>
-                                                        </p>
+                                    @can('DysEvaluation', $data)
+                                        <div class="modal modal-top fade" id="dysCompleteModal" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                            Fermeture!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-label-secondary"
-                                                        data-bs-dismiss="modal">Fermer</button>
-                                                    <button id="confirmEvaluation"
-                                                        class="btn btn-warning">Continuer</button>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                                Souhaitez vous vraiment terminer l'évaluation de ce
+                                                                dysfonctionnement ?
+                                                                <b>Notez que ceci clôturera définitivement ce
+                                                                    dysfonctionnement.</b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button id="btnCloseDys" class="btn btn-warning">Continuer</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endcan
                                 </div>
                             </div>
                         </div>

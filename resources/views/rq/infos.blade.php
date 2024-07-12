@@ -413,14 +413,15 @@
                                                 </div>
                                         @endforeach
                                         <hr>
-
+                                        @can('DysEvaluation')
                                         <div class="mb-0">
                                             <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#evalCompleteModal">
-                                                <i class="bx bx-plus me-1"></i>
-                                                <span class="align-middle">Terminer l'Evaluation</span>
+                                                data-bs-target="#dysCompleteModal">
+                                                <i class="bx bx-check me-1"></i>
+                                                <span class="align-middle">Terminer ce Dysfonctionnement</span>
                                             </button>
                                         </div>
+                                        @endcan
                                     </form>
                                     <div class="modal modal-top fade" id="evalCompleteModal" tabindex="-1">
                                         <div class="modal-dialog">
@@ -451,6 +452,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @can('DysEvaluation', $data)
+                                    <div class="modal modal-top fade" id="dysCompleteModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                        Fermeture!</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card-body">
+                                                        <p class="card-text">
+                                                            Souhaitez vous vraiment terminer l'évaluation de ce dysfonctionnement ?
+                                                            <b>Notez que ceci clôturera définitivement ce dysfonctionnement.</b>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-label-secondary"
+                                                        data-bs-dismiss="modal">Fermer</button>
+                                                    <button id="btnCloseDys"
+                                                        class="btn btn-warning">Continuer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endcan
                                 </div>
                             </div>
                         </div>

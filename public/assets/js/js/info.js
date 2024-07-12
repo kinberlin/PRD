@@ -26,4 +26,17 @@ $(document).ready(function () {
       form[0].reportValidity();
     }
   });
+  $("#btnCloseDys").click(function (event) {
+    // Submit the form
+    var form = $("#dysConfirmForm");
+
+    // Check if all required fields are filled
+    if (form[0].checkValidity()) {
+      // Submit the form if all required fields are filled
+      form.submit();
+    } else {
+      // If required fields are not filled, trigger HTML5 validation
+      form[0].reportValidity();
+    }
+  });
 });
