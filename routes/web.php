@@ -105,6 +105,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
     Route::post('/dysfunction/action/{id}', 'DysfunctionController@action')->name('dysfunction.action');
     Route::post('/dysfunction/evaluate/{id}', 'DysfunctionController@evaluation')->name('dysfunction.evaluation');
+    Route::post('/dysfunction/close/{id}', 'DysfunctionController@close')->name('dysfunction.close');
     Route::get('/dysfunction/cancel/{id}', 'DysfunctionController@cancel')->name('dysfunction.cancel');
     Route::get('/dysfunction/evaluation/launch/{id}', 'DysfunctionController@launchEvaluation')->name('dysfunction.evaluation.launch');
     Route::get('/dysfunction/evaluation/cancel/{id}', 'DysfunctionController@cancelEvaluation')->name('dysfunction.evaluation.cancel');

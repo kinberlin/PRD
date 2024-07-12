@@ -180,7 +180,7 @@
                             <div class="col-md-8 text-end">
                                 <button type="reset" class="btn btn-secondary">Annuler les modifications</button>
                                 <button class="btn btn-danger " data-bs-toggle="modal"
-                                    data-bs-target="#rejectdys{{ $d->id }}">Rejeter ce signalement</button>
+                                    data-bs-target="#rejectdys{{ $data->id }}">Rejeter ce signalement</button>
 
                             </div>
                         </div>
@@ -189,7 +189,7 @@
 
             </form>
         </div>
-        <div class="modal modal-top fade" id="rejectdys{{ $d->id }}" tabindex="-1">
+        <div class="modal modal-top fade" id="rejectdys{{ $data->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-content">
                     <div class="modal-header">

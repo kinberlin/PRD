@@ -374,6 +374,28 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    public function close(Request $request, $id)
+    {
+        try {
+            $dys = Dysfunction::find($id);
+            Gate::authorize('DysInEvaluation', $dys);
+            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
+                DB::beginTransaction();
+                $dys->satisfaction_description = $request->input('satisfaction_description');
+                $dys->solved = $request->has('solved') ? 1 : 0;
+                $dys->created_at = Carbon::now();
+                $dys->save();
+                DB::commit();
+                return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
+            } else {
+                throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
+            }
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
     /**
      * Display the specified resource.
      */
