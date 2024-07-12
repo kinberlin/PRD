@@ -386,13 +386,13 @@
                                                         résolus ? </label>
                                                     <input class="form-check-input" id="switchSolve" type="checkbox"
                                                         name="solved" @if ($data->solved == 1) checked @endif
-                                                        @if (!is_null($data->closed_at)) disabled @endif required>
+                                                        @if (!is_null($data->closed_at)) readonly @endif required>
                                                 </div>
                                                 <div class="mb-4 col-lg-6 col-xl-9 col-12 mb-0">
                                                     <label class="form-label" for="multicol-country">Décrivez le niveau de
                                                         satisfaction</label>
                                                     <textarea rows="2" name="satisfaction_description" class="form-control" required
-                                                        @if (!is_null($data->closed_at)) disabled @endif>{{ $data->satisfaction_description != null ? $data->satisfaction_description : null }}</textarea>
+                                                        @if (!is_null($data->closed_at)) readonly @endif>{{ $data->satisfaction_description != null ? $data->satisfaction_description : null }}</textarea>
                                                 </div>
                                             </div>
                                         </div>

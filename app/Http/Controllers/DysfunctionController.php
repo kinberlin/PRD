@@ -384,7 +384,7 @@ class DysfunctionController extends Controller
                 DB::beginTransaction();
                 $dys->satisfaction_description = $request->input('satisfaction_description');
                 $dys->solved = $request->has('solved') ? 1 : 0;
-                $dys->created_at = Carbon::now();
+                $dys->closed_at = Carbon::now();
                 $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
