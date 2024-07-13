@@ -355,8 +355,29 @@ class InvitationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invitation $invitation)
+    public function destroy($id)
     {
-        //
+        $rec = Invitation::find($id);
+        Gate::authorize('isInvitationPast', $rec);
+        try {
+            //if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise)])) {
+                DB::beginTransaction();
+                $content = view('employees.invitation_excludeMail')->render();
+                $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                $response = $newmail->send();
+                $newmessage = new ApiSms(
+                    array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                    'Cadyst PRD App', "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. ".$dys->code." du ".formatDateInFrench($data->odates, 'short')." à ".$data->end.". Merci de votre compréhension. "
+                );
+                $newmessage->send();
+                $rec->forceDelete();
+                DB::commit();
+                return redirect()->back()->with('error', "Suppression Effectuée.");
+            /*} else {
+                throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+            }*/
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
+        }
     }
 }
