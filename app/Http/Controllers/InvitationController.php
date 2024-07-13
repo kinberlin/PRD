@@ -87,8 +87,11 @@ class InvitationController extends Controller
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
-                $newmessage = new ApiSms(array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()), 
-                'Cadyst PRD App', 'Réunion résolution '.$dys->code.' | Date : '.formatDateInFrench($data->odates, 'complete').' | Heure : '.$data->begin .' - '.$data->end.' | Lieu : '.(is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place).' Merci de confirmer avant le '.formatDateInFrench($data->odates, 'short'));
+                $newmessage = new ApiSms(
+                    array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                    'Cadyst PRD App',
+                    'Réunion résolution ' . $dys->code . ' | Date : ' . formatDateInFrench($data->odates, 'complete') . ' | Heure : ' . $data->begin . ' - ' . $data->end . ' | Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . ' Merci de confirmer avant le ' . formatDateInFrench($data->odates, 'short')
+                );
                 $newmessage->send();
                 $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
@@ -146,6 +149,7 @@ class InvitationController extends Controller
             if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
                 //old invite collection
+                $olddatas = $data;
                 $old_invits = collect($data->getInternalInvites());
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
@@ -170,6 +174,10 @@ class InvitationController extends Controller
                 $i_v = $request->input('internal_invites', []);
                 $newinvites = Users::whereIn('id', $i_v)->get();
                 $internal_invites = [];
+                //if date or begin or end properties are updated, reinitialise participation array to make participants confirm thier participation back.
+                if ($data->end != $olddatas->end || $data->start != $olddatas->start || $data->odates != $olddatas->odates) {
+                    $data->participation = null;
+                }
                 //conserving all invite old datas
                 if (!empty($i_v)) {
                     foreach ($i_v as $option) {
@@ -201,6 +209,12 @@ class InvitationController extends Controller
                     $content = view('employees.invitation_updateMail', ['invitation' => $data, 'message' => $message])->render();
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                     $response = $newmail->send();
+                    $newmessage = new ApiSms(
+                        array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                        'Cadyst PRD App',
+                        'Réunion pour ' . $dys->code . ' MAJ : Nouvelle date : ' . formatDateInFrench($data->odates, 'short') . ' Horaire : ' . $data->begin . ' - ' . $data->end . ' Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . '. Merci de confirmer.'
+                    );
+                    $newmessage->send();
                     $jsonResponse = json_decode($response->getContent(), true);
                     if ($jsonResponse['code'] != 200) {
                         throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
@@ -212,7 +226,11 @@ class InvitationController extends Controller
                         $content = view('employees.invitation_excludeMail')->render();
                         $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                         $response = $newmail->send();
-                        
+                        $newmessage = new ApiSms(
+                            array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                            'Cadyst PRD App', "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. ".$dys->code." du ".formatDateInFrench($data->odates, 'short')." à ".$data->end.". Merci de votre compréhension. "
+                        );
+                        $newmessage->send();
                     }
                 }
 

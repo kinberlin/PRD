@@ -96,6 +96,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
+    Route::get('/invitations/delete/{id}', 'InvitationController@destroy')->name('invitation.destroy');
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');

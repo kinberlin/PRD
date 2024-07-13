@@ -113,6 +113,8 @@
                         <div class="offcanvas-body">
                             <form class="event-form pt-0" id="myForm" method="POST">
                                 @csrf
+                                <input type="hidden" value="{{route('invitation.destroy', ['id'=>'0'])}}" id="destroyRoute" />
+                                <input type="hidden" value="" id="invit_id" />
                                 <div class="mb-3">
                                     <label class="form-label" for="eventTitle">Objet</label>
                                     <input type="text" class="form-control" id="eventTitle" name="object"
