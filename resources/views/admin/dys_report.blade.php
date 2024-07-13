@@ -107,6 +107,11 @@
                             readonly>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label" for="multicol-last-name">Coût de non-qualité</label>
+                        <input type="text" value="{{ formatNumber($data->cost) }}" class="form-control"
+                            readonly>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Responsable(s) probable(s) de l'incident</label>
                         <input type="text"
                             value="@if (empty($data->cause)) Aucun Responsable Identifié @else {{ $data->cause }} @endif"
@@ -115,6 +120,10 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <hr>
+        <div class="card mb-4">
+            <h3 class="card-header text-center text-primary"> Actions Correctives mise en place & Evaluations</h3>
         </div>
         <!-- Project Cards -->
         <div class="row g-4 mt-6">

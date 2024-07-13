@@ -88,7 +88,7 @@ class InvitationController extends Controller
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
                 $newmessage = new ApiSms(array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()), 
-                'Cadyst PRD App', "Vous êtes cordialement invité(e) à notre réunion qui se tiendra le ".$data->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')." de ".$data->begin." à ".$data->end.". L'événement se déroulera à ".$data->place.". Objet : ".$data->object." | Motif : ".$data->motif." | Dysfonctionnement No. : ".$dys->code.".");
+                'Cadyst PRD App', 'Réunion résolution '.$dys->code.' | Date : '.formatDateInFrench($data->odates, 'complete').' | Heure : '.$data->begin .' - '.$data->end.' | Lieu : '.(is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place).' Merci de confirmer avant le '.formatDateInFrench($data->odates, 'short'));
                 $newmessage->send();
                 $jsonResponse = json_decode($response->getContent(), true);
                 if ($jsonResponse['code'] != 200) {
