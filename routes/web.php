@@ -31,7 +31,7 @@ Route::get('/appmail', function () {
     return view('employees.invitation_appMail', ['invitation' => App\Models\Invitation::find(16)]);
 });
 Route::get('/dysmail', function () {
-    return view('employees.dysfunction_appMail', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
+    return view('employees.invitation_cancelMail', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 Route::get('/excmail', function () {
     return view('employees.invitation_excludeMail');
@@ -198,6 +198,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');
 });
-Route::any('{any}', function () {
+/*Route::any('{any}', function () {
     return redirect('/notfound');
-})->where('any', '.*');
+})->where('any', '.*');*/

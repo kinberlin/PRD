@@ -41,11 +41,8 @@ function executeAfterAjax() {
     }
     $(".btn-delete-event").click(function () {
         if ($("#regInvitation").val() == $("#invit_id").val())
-            // Set the href property of the <a> element
-            $("#myLink").attr(
-                "href",
-                $("#destroyRoute").val().replace(/\/0$/, $("#invit_id").val())
-            );
+            // Redirect to another URL
+            window.location.href = $("#destroyRoute").val().replace(/0$/, $("#invit_id").val())
     });
     $(".btn-toggle-sidebar").click(function (event) {
         console.log("test toggle");

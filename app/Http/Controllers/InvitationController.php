@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ApiMail;
 use App\Models\ApiSms;
 use App\Models\Dysfunction;
+use App\Models\Enterprise;
 use App\Models\Invitation;
 use App\Models\Invites;
 use App\Models\Participation;
@@ -228,7 +229,8 @@ class InvitationController extends Controller
                         $response = $newmail->send();
                         $newmessage = new ApiSms(
                             array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
-                            'Cadyst PRD App', "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. ".$dys->code." du ".formatDateInFrench($data->odates, 'short')." à ".$data->end.". Merci de votre compréhension. "
+                            'Cadyst PRD App',
+                            "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. " . $dys->code . " du " . formatDateInFrench($data->odates, 'short') . " à " . $data->end . ". Merci de votre compréhension. "
                         );
                         $newmessage->send();
                     }
@@ -360,22 +362,29 @@ class InvitationController extends Controller
         $rec = Invitation::find($id);
         Gate::authorize('isInvitationPast', $rec);
         try {
-            //if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise)])) {
+            $dys = Dysfunction::find($rec->dysfonction);
+            if (is_null($dys)) {
+                throw new Exception("Nous ne retrouvons pas la ressource.", 404);
+            }
+            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($dys->enterprise)])) {
                 DB::beginTransaction();
-                $content = view('employees.invitation_excludeMail')->render();
-                $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                $invites = collect($rec->getInternalInvites());
+                $content = view('employees.invitation_cancelMail', ['invitation' => $rec, 'dysfunction' => $dys])->render();
+                $newmail = new ApiMail(null, $invites->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Annulation de la réunion de résolution du dysfonctionnement No." . $dys->code, $content, []);
                 $response = $newmail->send();
+                $internalusers = Users::whereIn('matricule', $invites->pluck('matricule'))->get();
                 $newmessage = new ApiSms(
-                    array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
-                    'Cadyst PRD App', "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. ".$dys->code." du ".formatDateInFrench($data->odates, 'short')." à ".$data->end.". Merci de votre compréhension. "
+                    array_fill(0, 1, $internalusers->pluck('phone')->unique()->toArray()),
+                    'Cadyst PRD App',
+                    "Réunion " . $dys->code . " le " . formatDateInFrench($rec->odates) . " à " . $rec->begin . " est annulée. Merci pour votre compréhension. "
                 );
                 $newmessage->send();
                 $rec->forceDelete();
                 DB::commit();
-                return redirect()->back()->with('error', "Suppression Effectuée.");
-            /*} else {
+                // return redirect()->back()->with('error', "Suppression Effectuée.");
+            } else {
                 throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
-            }*/
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }

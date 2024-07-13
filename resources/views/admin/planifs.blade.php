@@ -233,9 +233,9 @@
                                             Annuler
                                         </button>
                                     </div>
-                                    <a href="" class="btn btn-label-danger btn-delete-event d-none">
+                                    <button class="btn btn-label-danger btn-delete-event d-none">
                                         Supprimer
-                                    </a>
+                                    </button>
                                 </div>
 
                             </form>
