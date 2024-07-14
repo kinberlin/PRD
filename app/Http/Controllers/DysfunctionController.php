@@ -83,6 +83,7 @@ class DysfunctionController extends Controller
             DB::commit();
             $dys->code = 'D' . Carbon::now()->year . date('m') . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
             $dys->save();
+            //alert rq on dysfunction alert
             $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
             foreach ($rq as $user) {
@@ -93,7 +94,6 @@ class DysfunctionController extends Controller
 
                 $result = $newmail->send();
             }
-
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (" . $result->getData()->code . ')');
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -123,12 +123,12 @@ class DysfunctionController extends Controller
                         $newmessage = new ApiSms(
                             $a_pilotes->pluck('phone')->unique()->toArray(),
                             'Cadyst PRD App',
-                            "Nous tenons à vous informer que votre processus(" . $nd->name . ") est concerné(comme cause) par un incident. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                            "Bonjour cher(e) pilote ;Dysfonctionnement ".$dys->code." : Votre processus(".$nd->name.") a été identifié comme origine. Préparez-vous pour intervention. Merci."
                         );
                         $newmessage->send();
                         $emails = $a_pilotes->pluck('email')->unique()->toArray();
                         $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. ". $dys->code ." - Processus concerné identifié", $content, []);
                         $response = $newmail->send();
                     }
                 }
@@ -138,12 +138,12 @@ class DysfunctionController extends Controller
                         $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
                         $emails = $a_pilotes->pluck('email')->unique()->toArray();
                         $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code ." - Processus impacté identifié", $content, []);
                         $response = $newmail->send();
                         $newmessage = new ApiSms(
                             $a_pilotes->pluck('phone')->unique()->toArray(),
                             'Cadyst PRD App',
-                            "Nous tenons à vous informer que votre processus(" . $nd->name . ") est impacté par un incident. Le numéro de référence de cet incident est le suivant : " . $dys->code
+                            "Dysfonctionnement ".$dys->code." : Votre processus(".$nd->name.") a été identifié comme impacté. Préparez-vous pour intervention. Merci. "
                         );
                         $newmessage->send();
                     }

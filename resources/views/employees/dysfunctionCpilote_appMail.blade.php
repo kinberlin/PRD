@@ -475,7 +475,7 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous tenons à vous informer qu'un incident a été signalé et identifié comme étant causé par votre processus ({{$name}}). </span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous vous informons qu'un dysfonctionnement a été signalé sur la plateforme PRD sous le numéro No. {{$dysfunction->code}}</span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
@@ -483,30 +483,19 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
-                                                                        de l'incident :</span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">À l’identification, il a été déterminé que votre processus({{$name}}) est à l'origine de ce dysfonctionnement. </span>
                                                                 </p>
-                                                                <ul style="margin-top:0cm" type="disc">
-                                                                    <li style="margin-left:0cm; text-align:justify"
-                                                                        class="x_MsoListParagraphCxSpFirst"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Employé
-                                                                            ayant rapporté l'incident : {{ $dysfunction->emp_signaling}}[{{$dysfunction->emp_matricule}}]</span></li>
-                                                                    <li style="margin-left:0cm; text-align:justify"
-                                                                        class="x_MsoListParagraphCxSpMiddle"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                                                                            et heure du signalement : {{formatDateInFrench($dysfunction->created_at, 'complete')}} | Date et heure du constat : {{formatDateInFrench($dysfunction->occur_date, 'complete')}}</span></li>
-                                                                    <li style="margin-left:0cm; text-align:justify"
-                                                                        class="x_MsoListParagraphCxSpMiddle"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Description
-                                                                            de l'incident : {{$dysfunction->description}}</span></li>
-                                                                    <li style="margin-left:0cm; text-align:justify"
-                                                                        class="x_MsoListParagraphCxSpLast"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Filiale
-                                                                            et Site concerné : {{$dysfunction->enterprise. ' ('.$dysfunction->site.')'}}</span></li>
-                                                                </ul>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre collaboration est essentielle pour analyser ce dysfonctionnement et y apporter des solutions rapides. Veuillez préparer les informations nécessaires pour une prochaine réunion de résolution. 
+
+                                                                        Si vous avez des questions ou des points à discuter, n'hésitez pas à contacter le Responsable Qualité. </span>
+                                                                </p>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Si vous avez des questions ou des points à discuter, n'hésitez pas à contacter le Responsable Qualité. 
+
+                                                                        Merci pour votre diligence. </span>
                                                                 </p>
                                                             </div>
                                                         </table>

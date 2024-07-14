@@ -478,7 +478,7 @@
                                                                         style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
                                                                         vous informons que la réunion de résolution du
                                                                         dysfonctionnement No. {{$dysfunction->code}} prévue le
-                                                                        [{{formatDateInFrench($invitation->odates, 'long')}}] à {{$invitation->begin}} a
+                                                                        {{formatDateInFrench($invitation->odates, 'long')}} à {{$invitation->begin}} a
                                                                         été annulée. </span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
