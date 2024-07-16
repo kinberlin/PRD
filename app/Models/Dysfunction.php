@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
 /**
@@ -41,6 +42,7 @@ use Illuminate\Support\Collection;
 class Dysfunction extends Model
 {
     use SoftDeletes;
+    use Notifiable;
     /**
      * The table associated with the model.
      *

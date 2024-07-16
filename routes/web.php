@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
@@ -31,6 +32,11 @@ Route::get('/appmail', function () {
     return view('employees.invitation_appMail', ['invitation' => App\Models\Invitation::find(16)]);
 });
 Route::get('/dysmail', function () {
+    $currentDate = \Carbon\Carbon::now();
+$dysfunctions = App\Models\Dysfunction::whereNull('closed_at')->whereHas('tasks', function ($query) use ($currentDate) {
+            $query->whereDate(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '<=', $currentDate->subDays(env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90));
+        })->get();
+        dd($dysfunctions);
     return view('employees.dysfunction_reminder', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 Route::get('/excmail', function () {
@@ -92,7 +98,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
     Route::get('/dysfunction/report/{code}', 'DysfunctionController@report')->name('dysfunction.report');
-    
+
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
@@ -100,7 +106,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
     Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
     Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
-    
+
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
     Route::post('/dysfunction/cost/{id}', 'DysfunctionController@cost')->name('dysfunction.cost');
     Route::post('/dysfunction/store/{id}', 'DysfunctionController@store')->name('dysfunction.store');
@@ -187,7 +193,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
 
     Route::get('/admin/meetings/inprocess', 'AdminController@meetingProcess')->name('admin.meeting.inprocess');
     Route::get('/admin/meetings/closed', 'AdminController@meetingClosed')->name('admin.meeting.closed');
-    
+
     //Trash
     Route::get('/admin/trash/enterprise', 'TrashController@enterprise')->name('admin.trash.enterprise');
     Route::post('/admin/trash/enterprise/{id}', 'EnterpriseController@restore')->name('admin.trash.enterprise.restore');

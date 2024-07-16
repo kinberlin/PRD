@@ -475,7 +475,7 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous vous informons que la période d'évaluation du dysfonctionnement n° {{$dysfunction->code}} est arrivée à terme le :{{ Carbon::parse($task->end)->addDays( env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90)}}. Vous pouvez dès à présent évaluer ce dysfonctionnement et le clôturer sur PRD.</span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous vous informons que la période d'évaluation du dysfonctionnement n° {{$dysfunction->code}} est arrivée à terme le :{{formatDateInFrench( Carbon::parse($task->end)->addDays( env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90), 'complete')}}. Vous pouvez dès à présent évaluer ce dysfonctionnement et le clôturer sur PRD.</span>
                                                                 </p>
                                                             </div>
                                                         </table>
