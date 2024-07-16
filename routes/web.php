@@ -31,7 +31,7 @@ Route::get('/appmail', function () {
     return view('employees.invitation_appMail', ['invitation' => App\Models\Invitation::find(16)]);
 });
 Route::get('/dysmail', function () {
-    return view('employees.invitation_cancelMail', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
+    return view('employees.dysfunction_reminder', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 Route::get('/excmail', function () {
     return view('employees.invitation_excludeMail');

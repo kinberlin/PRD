@@ -2,21 +2,25 @@
 
 namespace App\Notifications;
 
+use App\Models\ApiMail;
+use App\Models\AuthorisationRq;
+use App\Models\Dysfunction;
+use App\Models\Task;
+use App\Models\Users;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
 
 class DysfunctionReminder extends Notification
 {
     use Queueable;
-
+    protected Dysfunction $dys;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Dysfunction $dysfunction)
     {
-        //
+        $this->dys = $dysfunction;
     }
 
     /**
@@ -32,12 +36,24 @@ class DysfunctionReminder extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        // Get the longest task
+        $task = Task::select(
+            'task.dysfunction',
+            'task.start_date',
+            'task.duration',
+            DB::raw('DATE_ADD(task.start_date, INTERVAL task.duration DAY) AS end')
+        )
+            ->join('dysfunction', 'dysfunction.id', '=', 'task.dysfunction')
+            ->orderByDesc('end')
+            ->first();
+        $content = view('employees.dysfunction_reminder', ['task' => $task, 'dysfunction' => $this->dys])->render();
+        //rq emails
+        $rqU = AuthorisationRq::where('enterprise', $this->dys->enterprise_id)->get();
+        $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
+        $newmail = new ApiMail(null, $rq->pluck('email')->unique(), 'Cadyst PRD App', "Rappel d'Evaluation de Dysfonctionnement No. " . $this->dys->code, $content, []);
+        $newmail->send();
     }
 
     /**
