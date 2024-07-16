@@ -40,19 +40,20 @@ class DysfunctionReminder extends Notification
     {
         // Get the longest task
         $task = Task::select(
-            'task.dysfunction',
-            'task.start_date',
-            'task.duration',
-            DB::raw('DATE_ADD(task.start_date, INTERVAL task.duration DAY) AS end')
+            'tasks.dysfunction',
+            'tasks.start_date',
+            'tasks.duration',
+            DB::raw('DATE_ADD(tasks.start_date, INTERVAL tasks.duration DAY) AS end')
         )
-            ->join('dysfunction', 'dysfunction.id', '=', 'task.dysfunction')
+            ->join('dysfunction', 'dysfunction.id', '=', 'tasks.dysfunction') // Adjust 'dysfunction_id' as necessary
+            ->where('dysfunction.id' , $this->dys->id)
             ->orderByDesc('end')
             ->first();
         $content = view('employees.dysfunction_reminder', ['task' => $task, 'dysfunction' => $this->dys])->render();
         //rq emails
         $rqU = AuthorisationRq::where('enterprise', $this->dys->enterprise_id)->get();
         $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
-        $newmail = new ApiMail(null, $rq->pluck('email')->unique(), 'Cadyst PRD App', "Rappel d'Evaluation de Dysfonctionnement No. " . $this->dys->code, $content, []);
+        $newmail = new ApiMail(null, $rq->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Rappel d'Evaluation de Dysfonctionnement No. " . $this->dys->code, $content, []);
         $newmail->send();
     }
 
