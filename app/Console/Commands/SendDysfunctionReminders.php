@@ -7,7 +7,6 @@ use App\Notifications\DysfunctionReminder;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SendDysfunctionReminders extends Command
 {
@@ -35,9 +34,7 @@ class SendDysfunctionReminders extends Command
         $dysfunctions = Dysfunction::whereNull('closed_at')->whereHas('tasks', function ($query) use ($currentDate) {
             $query->whereDate(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '<=', $currentDate->subDays(env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90));
         })->get();
-        Log::info("hello");
         foreach ($dysfunctions as $dys) {
-            Log::debug($dys);
             $dys->notify(new DysfunctionReminder($dys));
         }
     }
