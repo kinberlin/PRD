@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -10,13 +11,13 @@ use Illuminate\Notifications\Notification;
 class TaskReminder extends Notification
 {
     use Queueable;
-
+    protected Task $task;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Task $task)
     {
-        //
+        $this->task = $task;
     }
 
     /**
