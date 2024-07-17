@@ -32,11 +32,10 @@ Route::get('/appmail', function () {
     return view('employees.invitation_appMail', ['invitation' => App\Models\Invitation::find(16)]);
 });
 Route::get('/dysmail', function () {
-    $currentDate = \Carbon\Carbon::now();
-$dysfunctions = App\Models\Dysfunction::whereNull('closed_at')->whereHas('tasks', function ($query) use ($currentDate) {
-            $query->whereDate(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '<=', $currentDate->subDays(env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90));
-        })->get();
-        dd($dysfunctions);
+        $currentTimePlusOneHour = \Carbon\Carbon::now()->addHour()->toDateTimeString();
+        $invitations = App\Models\Invitation::where(DB::raw('STR_TO_DATE(CONCAT(odates, " ", begin), "%Y-%m-%d %H:%i")'), '=', $currentTimePlusOneHour)
+            ->get();
+        dd($invitations);
     return view('employees.dysfunction_reminder', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 Route::get('/excmail', function () {

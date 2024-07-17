@@ -15,7 +15,7 @@ class Send_InvitationReminders extends Command
      *
      * @var string
      */
-    protected $signature = 'app:send_-invitation-reminders';
+    protected $signature = 'app:send-invitation-reminders';
 
     /**
      * The console command description.
@@ -29,10 +29,9 @@ class Send_InvitationReminders extends Command
      */
     public function handle()
     {
-        // Get the current date
         // Get the current datetime plus one hour
         $currentTimePlusOneHour = Carbon::now()->addHour()->toDateTimeString();
-        $invitations = Invitation::where(DB::raw('STR_TO_DATE(CONCAT(odates, " ", begin), "%Y-%m-%d %H:%i")'), '>=', $currentTimePlusOneHour)
+        $invitations = Invitation::where(DB::raw('STR_TO_DATE(CONCAT(odates, " ", begin), "%Y-%m-%d %H:%i")'), '=', $currentTimePlusOneHour)
             ->get();
         foreach ($invitations as $invitation) {
             $invitation->notify(new MeetingReminder($invitation));
