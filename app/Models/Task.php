@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Task extends Model
 { use SoftDeletes;
     use HasFactory;
-    protected $appends = ["open"]; 
+    use Notifiable;
+    protected $appends = ["open"];
     public function getOpenAttribute(){        return true;    }
 
     public function evaluations()

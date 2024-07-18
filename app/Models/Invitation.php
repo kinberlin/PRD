@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\ParticipationCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property int    $id
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Invitation extends Model
 {
     use SoftDeletes;
+    use Notifiable;
     /**
      * The database table used by the model.
      *
@@ -223,14 +225,14 @@ class Invitation extends Model
             </p>
             <p style="text-align:justify" class="x_MsoNormal">
                 <span style="font-family:&quot;Century Gothic&quot;,sans-serif">
-                    Votre présence et participation active sont cruciales pour identifier les causes sous-jacentes et élaborer des solutions efficaces. Merci de bien vouloir préparer tout document ou information pertinente que vous pourriez partager. Veuillez confirmer votre présence en acceptant l’invitation avant le 
+                    Votre présence et participation active sont cruciales pour identifier les causes sous-jacentes et élaborer des solutions efficaces. Merci de bien vouloir préparer tout document ou information pertinente que vous pourriez partager. Veuillez confirmer votre présence en acceptant l’invitation avant le
                     <b>' . $this->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') . '</b>. Si vous avez des questions ou des préoccupations, n\'hésitez pas à en faire part au Responsable Qualité.
                 </span>
             </p>';
-    
+
         return $messages;
     }
-    
+
 
     public function save(array $options = [])
     {

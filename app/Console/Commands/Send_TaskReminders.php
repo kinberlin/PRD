@@ -31,12 +31,14 @@ class Send_TaskReminders extends Command
     {
         // Get the current datetime plus one hour
         $current = Carbon::now();
-        $tasks = Task::where(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '>=', $current)
+        $tasks = Task::where(DB::raw('(progress * 100)'), '<', 100)
             ->get();
+            dd($tasks);
         foreach ($tasks as $task) {
             $diff = $current->diffInDays(Carbon::parse($task->start_date)->addDay($task->duration));
-if ($diff > 0 && $diff < 8 && $diff % 2 == 0) {
-            $task->notify(new TaskReminder($task));
-        }}
+            if ( $diff < 8 && $diff % 2 == 0) {
+                $task->notify(new TaskReminder($task));
+            }
+        }
     }
 }
