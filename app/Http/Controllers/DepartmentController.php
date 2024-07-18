@@ -150,7 +150,7 @@ class DepartmentController extends Controller
                 DB::beginTransaction();
                 $rec->forceDelete();
                 DB::commit();
-                return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
+                return redirect()->back()->with('error', "Ce département a été supprimé avec succès.");
             } else {
                 throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
             }} else {
