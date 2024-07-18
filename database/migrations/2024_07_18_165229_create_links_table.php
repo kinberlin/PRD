@@ -8,12 +8,14 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
     public function up()
     {
         Schema::create('links', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('dysfunction');
+            $table->integer('dysfunction')->nullable();
             $table->string('type');
             $table->integer('source');
             $table->integer('target');
@@ -21,6 +23,11 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('links');

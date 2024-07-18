@@ -28,7 +28,7 @@ class Viewby
 
         foreach ($views as $key => &$viewData) {
             if ($viewData['matricule'] == $viewObject->matricule) {
-                $views[$key] = $viewObject;
+                $views[$key] = $viewObject; 
                 break;
             }
         }
