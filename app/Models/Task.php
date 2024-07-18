@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,5 +18,10 @@ class Task extends Model
     public function evaluations()
     {
         return $this->hasMany(Evaluation::class, 'task');
+    }
+    //Functions
+        protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
     }
 }

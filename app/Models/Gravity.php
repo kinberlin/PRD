@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,7 +38,7 @@ class Gravity extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'least_price', 'max_price', 'name', 'note'
+        'created_at', 'deleted_at', 'least_price', 'max_price', 'name', 'note',
     ];
 
     /**
@@ -53,7 +54,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int',
     ];
 
     /**
@@ -62,7 +63,7 @@ class Gravity extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'deleted_at',
     ];
 
     /**
@@ -75,6 +76,10 @@ class Gravity extends Model
     // Scopes...
 
     // Functions ...
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
 
     // Relations ...
     public function dysfunctions()

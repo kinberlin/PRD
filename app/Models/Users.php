@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -59,7 +60,7 @@ class Users extends  Authenticatable
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -89,6 +90,10 @@ class Users extends  Authenticatable
     // Scopes...
 
     // Functions ...
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
 
     // Relations ...
     public function department()

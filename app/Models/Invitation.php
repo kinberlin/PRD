@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Casts\ParticipationCast;
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -56,7 +56,7 @@ class Invitation extends Model
      * @var array
      */
     protected $fillable = [
-        'begin', 'closed_at', 'created_at', 'odates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'participation'
+        'begin', 'closed_at', 'created_at', 'odates', 'deleted_at', 'description', 'dysfonction', 'end', 'external_invites', 'internal_invites', 'link', 'motif', 'object', 'place', 'rq', 'participation',
     ];
 
     /**
@@ -72,7 +72,7 @@ class Invitation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'odates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string'
+        'id' => 'int', 'begin' => 'string', 'created_at' => 'timestamp', 'closed_at' => 'datetime:Y-m-d H:i', 'odates' => 'datetime:Y-m-d H:i', 'deleted_at' => 'timestamp', 'description' => 'string', 'dysfonction' => 'int', 'end' => 'string', 'link' => 'string', 'motif' => 'string', 'object' => 'string', 'place' => 'string', 'rq' => 'string',
     ];
 
     /**
@@ -94,6 +94,10 @@ class Invitation extends Model
     // Scopes...
 
     // Functions ...
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     // Function to get the JSON array into a Laravel array of Invites
     public function getInternalInvites()
     {
@@ -174,10 +178,11 @@ class Invitation extends Model
 
         return null;
     }
-    public function isInvitationUpdated() : bool {
+    public function isInvitationUpdated(): bool
+    {
         return $this->isDirty('object') || $this->isDirty('motif') || $this->isDirty('odates') || $this->isDirty('begin') || $this->isDirty('end') || $this->isDirty('place') || $this->isDirty('link') || $this->isDirty('description');
     }
-    public function getUpdateMessage() : string
+    public function getUpdateMessage(): string
     {
         $messages = '
             <p style="text-align:justify" class="x_MsoNormal">
@@ -232,7 +237,6 @@ class Invitation extends Model
 
         return $messages;
     }
-
 
     public function save(array $options = [])
     {

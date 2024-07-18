@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,7 +38,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $fillable = [
-        'user', 'process', 'created_at', 'deleted_at', 'interim', 'updated_at'
+        'user', 'process', 'created_at', 'deleted_at', 'interim', 'updated_at',
     ];
 
     /**
@@ -53,7 +54,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'user' => 'int', 'process' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int', 'updated_at' => 'timestamp'
+        'id' => 'int', 'user' => 'int', 'process' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'interim' => 'int', 'updated_at' => 'timestamp',
     ];
 
     /**
@@ -62,7 +63,7 @@ class AuthorisationPilote extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at', 'updated_at'
+        'created_at', 'deleted_at', 'updated_at',
     ];
 
     /**
@@ -75,7 +76,11 @@ class AuthorisationPilote extends Model
     // Scopes...
 
     // Functions ...
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
+    
     // Relations ...
     public function user()
     {

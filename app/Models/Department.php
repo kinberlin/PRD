@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -79,7 +80,10 @@ class Department extends Model
     // Scopes...
 
     // Functions ...
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     // Relations ...
     public function enterprise(): BelongsTo
     {

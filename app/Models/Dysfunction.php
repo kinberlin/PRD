@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -63,7 +64,7 @@ class Dysfunction extends Model
     public $timestamps = false;
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i',
-        'occur_date' => 'datetime:d-m-Y H:i'
+        'occur_date' => 'datetime:d-m-Y H:i',
     ];
 
     /**
@@ -72,8 +73,13 @@ class Dysfunction extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'occur_date'
+        'created_at', 'occur_date',
     ];
+    //Functions
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     public function getCProcesses(): Collection
     {
         $processes = $this->concern_processes == null ? [] : json_decode($this->concern_processes, true);

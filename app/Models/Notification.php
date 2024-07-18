@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,7 +35,7 @@ class Notification extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'message', 'receiver', 'sender', 'title'
+        'created_at', 'message', 'receiver', 'sender', 'title',
     ];
 
     /**
@@ -43,7 +44,7 @@ class Notification extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -52,7 +53,7 @@ class Notification extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'message' => 'string', 'receiver' => 'int', 'sender' => 'int', 'title' => 'string'
+        'id' => 'int', 'created_at' => 'timestamp', 'message' => 'string', 'receiver' => 'int', 'sender' => 'int', 'title' => 'string',
     ];
 
     /**
@@ -61,7 +62,7 @@ class Notification extends Model
      * @var array
      */
     protected $dates = [
-        'created_at'
+        'created_at',
     ];
 
     /**
@@ -74,6 +75,9 @@ class Notification extends Model
     // Scopes...
 
     // Functions ...
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     // Relations ...
 }

@@ -25,7 +25,7 @@ class Viewby
     public function updateViewByMatricule(Task $task, $viewObject): Task
     {
         $views = json_decode($task->view_by, true);
-        
+
         foreach ($views as $key => &$viewData) {
             if ($viewData['matricule'] == $viewObject->matricule) {
                 $views[$key] = $viewObject;

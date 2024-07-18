@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -72,6 +73,9 @@ class Status extends Model
     // Scopes...
 
     // Functions ...
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     // Relations ...
 }

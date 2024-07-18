@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -36,7 +37,7 @@ class Probability extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'description', 'name', 'note'
+        'created_at', 'deleted_at', 'description', 'name', 'note',
     ];
 
     /**
@@ -45,7 +46,7 @@ class Probability extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -54,7 +55,7 @@ class Probability extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int'
+        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int',
     ];
 
     /**
@@ -63,7 +64,7 @@ class Probability extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'deleted_at',
     ];
 
     /**
@@ -76,6 +77,10 @@ class Probability extends Model
     // Scopes...
 
     // Functions ...
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
 
     // Relations ...
 }

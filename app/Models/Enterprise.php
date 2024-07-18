@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,7 +57,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix'=> 'string', 'created_at' => 'timestamp',
+        'id' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix' => 'string', 'created_at' => 'timestamp',
     ];
 
     /**
@@ -65,7 +66,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $dates = [
-        'deleted_at', 'created_at'
+        'deleted_at', 'created_at',
     ];
 
     /**
@@ -77,9 +78,13 @@ class Enterprise extends Model
     // Scopes...
 
     // Functions ...
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
 
     // Relations ...
-    public function departments() : HasMany
+    public function departments(): HasMany
     {
         return $this->hasMany(Department::class, 'enterprise');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\YearScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -35,7 +36,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $fillable = [
-        'task', 'satisfaction', 'completion', 'evaluation_criteria', 'created_at', 'deleted_at'
+        'task', 'satisfaction', 'completion', 'evaluation_criteria', 'created_at', 'deleted_at',
     ];
 
     /**
@@ -44,7 +45,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -53,7 +54,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'task' => 'int', 'satisfaction' => 'int', 'completion' => 'int', 'evaluation_criteria' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'id' => 'int', 'task' => 'int', 'satisfaction' => 'int', 'completion' => 'int', 'evaluation_criteria' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp',
     ];
 
     /**
@@ -62,7 +63,7 @@ class Evaluation extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'deleted_at'
+        'created_at', 'deleted_at',
     ];
 
     /**
@@ -75,11 +76,14 @@ class Evaluation extends Model
     // Scopes...
 
     // Functions ...
-
+    protected static function booted()
+    {
+        static::addGlobalScope(new YearScope());
+    }
     // Relations ...
-        // Define the relationship with the Enterprise model
-        public function task()
-        {
-            return $this->belongsTo(Task::class, 'task');
-        }
+    // Define the relationship with the Enterprise model
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task');
+    }
 }
