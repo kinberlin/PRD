@@ -12,7 +12,7 @@ class DepartmentPolicy
      * Determine whether the Department is deletable.
      * By ensuring it dont have any dependency data, it is said deletable.
      */
-    public function canDelete(Users $users, Department $department): bool
+    public function canDepDelete(Users $users, Department $department): bool
     {
         if(is_null($department)){
             return false;

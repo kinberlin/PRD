@@ -11,10 +11,12 @@ use App\Models\Dysfunction;
 use App\Models\Enterprise;
 use App\Models\Invitation;
 use App\Models\Processes;
+use App\Models\Site;
 use App\Models\Users;
 use App\Policies\DepartmentPolicy;
 use App\Policies\DysfunctionPolicy;
 use App\Policies\InvitationPolicy;
+use App\Policies\SitePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -31,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Invitation::class => InvitationPolicy::class,
         Dysfunction::class => DysfunctionPolicy::class,
         Department::class => DepartmentPolicy::class,
-
+        Site::class => SitePolicy::class,
     ];
 
     /**

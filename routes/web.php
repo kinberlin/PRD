@@ -72,9 +72,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/department', 'RQController@department')->name('rq.department');
 
     Route::get('/rq/site', 'RQController@site')->name('rq.site');
-    Route::get('/rq/site/{id}', 'SiteController@destroy')->name('rq.site.destroy');
-    Route::post('/rq/site', 'SiteController@store')->name('rq.site.store');
-    Route::post('/rq/site/{id}', 'SiteController@update')->name('rq.site.update');
 
     Route::get('/rq/employee', 'RQController@employee')->name('rq.employees');
     Route::get('/rq/responsable', 'RQController@rqemployee')->name('rq.responsables');

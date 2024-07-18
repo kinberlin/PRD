@@ -132,16 +132,19 @@ class SiteController extends Controller
      */
     public function destroy($id)
     {
+        $rec = Site::find($id);
         try {
-            $rec = Site::find($id);
-            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($rec->enterprise)])) {
-                DB::beginTransaction();
-
-                $rec->delete();
-                DB::commit();
-                return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
+            if (Gate::allows('canSiteDelete', $rec)) {
+                if (Gate::allows('isAdmin', Auth::user())) {
+                    DB::beginTransaction();
+                    $rec->forceDelete();
+                    DB::commit();
+                    return redirect()->back()->with('error', "Ce site a été supprimé avec succès.");
+                } else {
+                    throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                }
             } else {
-                throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());

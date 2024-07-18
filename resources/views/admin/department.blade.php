@@ -84,7 +84,7 @@
                                             data-bs-target="#majentreprise{{ $d->id }}">
                                             M.A.J
                                         </button>
-                                        @can('canDelete', $d)
+                                        @can('canDepDelete', $d)
                                             <button class="btn btn-danger " data-bs-toggle="modal"
                                                 data-bs-target="#deldepartment{{ $d->id }}">Supprimer</button>
                                             <div class="modal modal-top fade" id="deldepartment{{ $d->id }}"
@@ -93,7 +93,7 @@
                                                     <form class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                                Désactivation!</h5>
+                                                                Suppression!</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>

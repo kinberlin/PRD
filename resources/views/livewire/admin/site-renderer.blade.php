@@ -117,10 +117,44 @@
                                     :{{ $d->enterprise }})</td>
                                 <td>{{ $d->name }} </td>
                                 <td>{{ $d->location }}</td>
-                                <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#majentreprise{{ $d->id }}">
                                         M.A.J
                                     </button>
+                                     @can('canSiteDelete', $d)
+                                            <button class="btn btn-danger " data-bs-toggle="modal"
+                                                data-bs-target="#delsite{{ $d->id }}">Supprimer</button>
+                                            <div class="modal modal-top fade" id="delsite{{ $d->id }}"
+                                                tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <form class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                                Suppression!</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card-body">
+                                                                <p class="card-text">
+                                                                    Souhaitez vous vraiment supprimer le Site :
+                                                                    {{ $d->name }} ?
+                                                                    <b>Notez que cela reviens a supprimer celui-ci
+                                                                        et que vous ne serez pas capable de le restaurer.</b>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-label-secondary"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <a href="{{ route('admin.site.destroy', ['id' => $d->id]) }}"
+                                                                class="btn btn-danger">Continuer</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endcan
                                     <div class="modal animate__animated animate__bounceInUp"
                                         id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
