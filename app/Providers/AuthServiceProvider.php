@@ -12,6 +12,7 @@ use App\Models\Enterprise;
 use App\Models\Invitation;
 use App\Models\Processes;
 use App\Models\Users;
+use App\Policies\DepartmentPolicy;
 use App\Policies\DysfunctionPolicy;
 use App\Policies\InvitationPolicy;
 use App\Policies\UserPolicy;
@@ -29,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Users::class => UserPolicy::class,
         Invitation::class => InvitationPolicy::class,
         Dysfunction::class => DysfunctionPolicy::class,
+        Department::class => DepartmentPolicy::class,
 
     ];
 

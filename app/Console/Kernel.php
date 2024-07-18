@@ -2,12 +2,8 @@
 
 namespace App\Console;
 
-use App\Models\Dysfunction;
-use App\Notifications\DysfunctionReminder;
-use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        //Perform each reminding feature periodically as specified below
         $schedule->command('app:send-dysfunction-reminders')->everyMinute();
+        $schedule->command('app:send-task-reminders')->easter_days();
+        $schedule->command('app:send-invitation-reminders')->everyMinute();
     }
 
     /**

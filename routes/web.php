@@ -70,9 +70,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/invitations', 'RQController@invitation')->name('rq.invitation');
 
     Route::get('/rq/department', 'RQController@department')->name('rq.department');
-    Route::get('/rq/department/{id}', 'DepartmentController@destroy')->name('rq.department.destroy');
-    Route::post('/rq/department', 'DepartmentController@store')->name('rq.department.store');
-    Route::post('/rq/department/{id}', 'DepartmentController@update')->name('rq.department.update');
 
     Route::get('/rq/site', 'RQController@site')->name('rq.site');
     Route::get('/rq/site/{id}', 'SiteController@destroy')->name('rq.site.destroy');

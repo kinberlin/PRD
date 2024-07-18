@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Enterprise;
-use App\Models\Service;
 use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
@@ -45,7 +44,7 @@ class DepartmentController extends Controller
                 throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
             }
             foreach ($data as $row) {
-                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($row[1])]) ) {
+                if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($row[1])])) {
                     $name = $row[2];
                     $enterprise = $row[1];
                     if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
@@ -117,18 +116,18 @@ class DepartmentController extends Controller
 
         try {
             $d = Department::find($id);
-            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($request->input('enterprise'))]) || Gate::allows('isAdmin', Auth::user()) ) {
+            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($request->input('enterprise'))]) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
 
                 $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
                 if ($d->enterprise != $request->input('enterprise')) {
                     $number = count(Users::where('department', $d->id)->get());
                     if ($number > 0) {
-                        throw new Exception("Il n'est pas possible de changer l'entreprise au quel appartient ce département. Car, nous avons trouvés " . $number . " 
+                        throw new Exception("Il n'est pas possible de changer l'entreprise au quel appartient ce département. Car, nous avons trouvés " . $number . "
                 employé(s). Pour pouvoir modifier ce département, affecter ou vider les employés de ce département.", 1);
                     }
                 }
-                $d->enterprise =  $request->input('enterprise');
+                $d->enterprise = $request->input('enterprise');
                 $d->save();
                 DB::commit();
             } else {
@@ -145,15 +144,17 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
+        $rec = Department::find($id);
         try {
-            $rec = Department::find($id);
-            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [ Enterprise::find($rec->enterprise)])) {
+            if (Gate::allows('canDelete', $rec)) {if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($rec->enterprise)])) {
                 DB::beginTransaction();
-                $rec->delete();
+                $rec->forceDelete();
                 DB::commit();
                 return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
             } else {
                 throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+            }} else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
