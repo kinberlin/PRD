@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int    $id
  * @property int    $deleted_at
+ * @property int    $created_at
  * @property int    $enterprise
  * @property string $name
  */
@@ -34,7 +35,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'deleted_at', 'enterprise', 'name'
+        'deleted_at', 'enterprise', 'name', 'created_at',
     ];
 
     /**
@@ -43,7 +44,7 @@ class Department extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -52,7 +53,7 @@ class Department extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp', 'enterprise' => 'int', 'name' => 'string'
+        'id' => 'int', 'deleted_at' => 'timestamp', 'enterprise' => 'int', 'name' => 'string', 'created_at' => 'timestamp',
     ];
 
     /**
@@ -61,7 +62,7 @@ class Department extends Model
      * @var array
      */
     protected $dates = [
-        'deleted_at'
+        'deleted_at', 'created_at',
     ];
 
     /**
@@ -80,8 +81,7 @@ class Department extends Model
     // Functions ...
 
     // Relations ...
-    public function enterprise() : BelongsTo
+    public function enterprise(): BelongsTo
     {
         return $this->belongsTo(Enterprise::class, 'enterprise');
-    }
-}
+    }}

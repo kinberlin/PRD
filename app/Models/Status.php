@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int    $id
  * @property int    $step
+ * @property int    $created_at
  * @property string $name
  */
 class Status extends Model
@@ -31,7 +32,7 @@ class Status extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'step'
+        'name', 'step', 'created_at',
     ];
 
     /**
@@ -40,7 +41,7 @@ class Status extends Model
      * @var array
      */
     protected $hidden = [
-        
+
     ];
 
     /**
@@ -49,7 +50,7 @@ class Status extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'step' => 'int', 'name' => 'string'
+        'id' => 'int', 'step' => 'int', 'name' => 'string', 'created_at' => 'timestamp',
     ];
 
     /**
@@ -58,7 +59,7 @@ class Status extends Model
      * @var array
      */
     protected $dates = [
-        
+        'created_at',
     ];
 
     /**
