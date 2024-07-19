@@ -78,7 +78,6 @@ class AuthController extends Controller
     public function NotFound404()
     {
         try {
-
             return view('404');
         } catch (Throwable $th) {
             return ['message' => 'Erreur : ' . $th->getMessage(), 'code' => 500];
