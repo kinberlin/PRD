@@ -90,10 +90,6 @@ class Users extends  Authenticatable
     // Scopes...
 
     // Functions ...
-    protected static function booted()
-    {
-        static::addGlobalScope(new YearScope());
-    }
 
     // Relations ...
     public function department()

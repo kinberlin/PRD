@@ -18,8 +18,8 @@ class AuthController extends Controller
         Session::put('currentYear', now()->year);
         try {
             $credentials = $request->only('matricule', 'password');
-
-            if (Auth::attempt($credentials)) {
+            if (Auth::attempt($credentials))
+            {
                 if (Auth::user()->access == 1) {
                     if (Auth::user()->role == 1) {
                         return redirect()->intended('/admin');

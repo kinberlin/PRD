@@ -33,8 +33,7 @@ Route::get('/appmail', function () {
 });
 Route::get('/dysmail', function () {
         $currentTimePlusOneHour = \Carbon\Carbon::now()->addHour()->toDateTimeString();
-        $invitations = App\Models\Invitation::where(DB::raw('STR_TO_DATE(CONCAT(odates, " ", begin), "%Y-%m-%d %H:%i")'), '=', $currentTimePlusOneHour)
-            ->get();
+        $invitations = App\Models\Invitation::all();
         dd($invitations);
     return view('employees.dysfunction_reminder', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
