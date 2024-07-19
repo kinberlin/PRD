@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Enterprise;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class AuthController extends Controller
@@ -18,8 +18,7 @@ class AuthController extends Controller
         Session::put('currentYear', now()->year);
         try {
             $credentials = $request->only('matricule', 'password');
-            if (Auth::attempt($credentials))
-            {
+            if (Auth::attempt($credentials)) {
                 if (Auth::user()->access == 1) {
                     if (Auth::user()->role == 1) {
                         return redirect()->intended('/admin');
@@ -39,7 +38,7 @@ class AuthController extends Controller
             } else {
                 $credentials = [
                     'email' => $request->matricule,
-                    'password' => $request->password
+                    'password' => $request->password,
                 ];
                 if (Auth::attempt($credentials)) {
                     if (Auth::user()->access == 1) {
@@ -100,6 +99,35 @@ class AuthController extends Controller
             }
         } catch (Throwable $th) {
             return ['message' => 'Erreur : ' . $th->getMessage(), 'code' => 500];
+        }
+    }
+    public function updatePassword(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'newPassword' => 'required|string|min:8',
+            'confirmPassword' => 'required|string|same:newPassword',
+        ], [
+            'newPassword.required' => 'Please enter a new password.',
+            'newPassword.min' => 'Password must be more than 8 characters.',
+            'confirmPassword.required' => 'Please confirm your new password.',
+            'confirmPassword.same' => 'The password and its confirm are not the same.',
+        ]);
+        try {
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->toJson(), 501);
+            }
+
+            // Find the user by ID
+            $user = Auth::user();
+
+            // Update the user's password
+            $user->password = bcrypt($request->newPassword);
+            $user->save();
+
+            return redirect()->back()->with('error', "Mot de Passe mis a jour avec succes");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
 }

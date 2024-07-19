@@ -46,10 +46,11 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        
+
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <a href="{{route('admin.trash.enterprise')}}" class="btn btn-warning"><i class="bx bx-trash"></i> Corbeille</a>
-                        <form action="{{route('admin.enterprise.store')}}" method="POST">
+                        <a href="{{ route('admin.trash.enterprise') }}" class="btn btn-warning"><i class="bx bx-trash"></i>
+                            Corbeille</a>
+                        <form action="{{ route('admin.enterprise.store') }}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -114,7 +115,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-label-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{route('admin.enterprise.destroy', ['id'=>$d->id])}}"
+                                                        <a href="{{ route('admin.enterprise.destroy', ['id' => $d->id]) }}"
                                                             class="btn btn-danger">Continuer</a>
                                                     </div>
                                                 </form>
@@ -123,8 +124,10 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="{{route('admin.enterprise.update', ['id'=>$d->id])}}"
+                                                <form class="modal-content"
+                                                    action="{{ route('admin.enterprise.update', ['id' => $d->id]) }}"
                                                     method="POST">
+                                                    @csrf
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel1">M.A.J
                                                             {{ $d->name }}</h5>
@@ -135,10 +138,11 @@
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col mb-6">
-                                                                <label for="nameBasic{{$d->id}}" class="form-label">Nom</label>
-                                                                <input type="text" id="nameBasic{{$d->id}}" name="name"
-                                                                    value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom">
+                                                                <label for="nameBasic{{ $d->id }}"
+                                                                    class="form-label">Nom</label>
+                                                                <input type="text" id="nameBasic{{ $d->id }}"
+                                                                    name="name" value="{{ $d->name }}"
+                                                                    class="form-control" placeholder="Entrer le nom">
                                                             </div>
                                                         </div>
                                                     </div>

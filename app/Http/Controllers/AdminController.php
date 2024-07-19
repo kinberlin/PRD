@@ -244,8 +244,7 @@ class AdminController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
-        try {
-            // Validate the request
+                    // Validate the request
             $validator = Validator::make($request->all(), [
                 'newPassword' => 'required|string|min:8',
                 'confirmPassword' => 'required|string|same:newPassword',
@@ -262,13 +261,12 @@ class AdminController extends Controller
                     ->withInput();
             }
 
+        try {
             // Find the user by ID
             $user = Users::findOrFail($id);
 
             // Update the user's password
             $user->password = bcrypt($request->newPassword);
-            // Update the access field
-            $user->access = $request->has('access') ? 1 : 0;
             $user->save();
 
             return redirect()->back()->with('error', "Mot de Passe mis a jour avec succes");

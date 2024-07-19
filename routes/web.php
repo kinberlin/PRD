@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +30,9 @@ Route::get('/appmail', function () {
     return view('employees.invitation_appMail', ['invitation' => App\Models\Invitation::find(16)]);
 });
 Route::get('/dysmail', function () {
-        $currentTimePlusOneHour = \Carbon\Carbon::now()->addHour()->toDateTimeString();
-        $invitations = App\Models\Invitation::all();
-        dd($invitations);
+    $currentTimePlusOneHour = \Carbon\Carbon::now()->addHour()->toDateTimeString();
+    $invitations = App\Models\Invitation::all();
+    dd($invitations);
     return view('employees.dysfunction_reminder', ['user' => App\Models\Users::find(53), 'dysfunction' => App\Models\Dysfunction::find(18)]);
 });
 Route::get('/excmail', function () {
@@ -47,7 +45,6 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/notfound', [AuthController::class, 'NotFound404'])->name('404');
 Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.post');
-
 
 Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
@@ -90,7 +87,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
     Route::get('/dysfunction/report/{code}', 'DysfunctionController@report')->name('dysfunction.report');
-
+    Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
@@ -190,12 +187,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/trash/enterprise', 'TrashController@enterprise')->name('admin.trash.enterprise');
     Route::post('/admin/trash/enterprise/{id}', 'EnterpriseController@restore')->name('admin.trash.enterprise.restore');
 
-
-
-
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');
 });
 /*Route::any('{any}', function () {
-    return redirect('/notfound');
+return redirect('/notfound');
 })->where('any', '.*');*/

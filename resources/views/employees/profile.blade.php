@@ -61,6 +61,45 @@
                             <i class="bx bx-user me-1"></i> Profile
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <button class="nav-link active btn-primary" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#passupdate">
+                            <i class="bx bx-key me-1"></i> Modifier mon mot de passe
+                        </button>
+                        <div class="modal animate__animated animate__bounceInUp" id="passupdate" tabindex="-1"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <form class="modal-content" action="{{ route('auth.passwordupdate') }}" method="POST">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel1">Changer le mot de passe</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col mb-6">
+                                                <label for="nameBasic" class="form-label">Nouveau mot de passe</label>
+                                                <input type="password" id="nameBasic" name="newPassword"
+                                                    class="form-control" placeholder="Entrer le nouveau dmot de passe">
+                                            </div>
+                                            <div class="col mb-6">
+                                                <label for="cfp" class="form-label">Confirmer le mot de passe</label>
+                                                <input type="password" id="cfp" name="confirmPassword"
+                                                    class="form-control" placeholder="Confirmer le mot de passe">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-label-secondary"
+                                            data-bs-dismiss="modal">Fermer</button>
+                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
