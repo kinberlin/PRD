@@ -129,4 +129,9 @@ class AuthController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    public function setyear($year)
+    {
+        if ($year > 1999 && $year < 9999) {Session::put('currentYear', $year);}
+        return back()->with(['error' => 'Données de '.session('currentYear')]);
+    }
 }

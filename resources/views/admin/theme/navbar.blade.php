@@ -43,33 +43,16 @@
                                     <i class='bx bx-calendar bx-sm'></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear())
-                                                </script>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 1)
-                                                </script>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 2)
-                                                </script>
-                                            </span>
-                                        </a>
-                                    </li>
+                                    @for ($y = now()->year; $y > (now()->year - 3); $y--)
+                                        <li>
+                                            <a class="dropdown-item @if ($y == session('currentYear')) active @endif"
+                                                href="{{ route('auth.year', ['year'=>$y])}}" data-text-direction="ltr">
+                                                <span class="align-middle">
+                                                    {{ $y }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endfor
                                 </ul>
                             </li>
                             <!-- /Année -->
