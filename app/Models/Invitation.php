@@ -96,7 +96,7 @@ class Invitation extends Model
     // Functions ...
     protected static function booted()
     {
-        static::addGlobalScope(new YearScope());
+        static::addGlobalScope(new YearScope(session('currentYear')));
     }
     // Function to get the JSON array into a Laravel array of Invites
     public function getInternalInvites()

@@ -80,7 +80,7 @@ class Enterprise extends Model
     // Functions ...
     protected static function booted()
     {
-        static::addGlobalScope(new YearScope());
+        static::addGlobalScope(new YearScope(session('currentYear')));
     }
 
     // Relations ...
