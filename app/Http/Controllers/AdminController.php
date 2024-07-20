@@ -17,12 +17,12 @@ use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\Users;
-use App\Policies\UserPolicy;
+use App\Scopes\YearScope;
 use Exception;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -107,10 +107,12 @@ class AdminController extends Controller
             $origin = Origin::all();
             $probability = Probability::all();
             $data = $dys;
-            $parentTasks = Task::select('tasks.id', 'tasks.text')
+            $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                ->select('tasks.id', 'tasks.text')
                 ->distinct()
                 ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
                 ->where('t2.dysfunction', $id)
+                ->whereYear('tasks.created_at', session('currentYear'))
                 ->get();
             $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
             $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
@@ -134,7 +136,7 @@ class AdminController extends Controller
     public function planif()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $dys =  Dysfunction::whereNotIn('status',[3,7])->get();
+        $dys = Dysfunction::whereNotIn('status', [3, 7])->get();
         $users = Users::all();
         return view('admin/planifs', compact('dys', 'users'));
     }
@@ -244,22 +246,22 @@ class AdminController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
-                    // Validate the request
-            $validator = Validator::make($request->all(), [
-                'newPassword' => 'required|string|min:8',
-                'confirmPassword' => 'required|string|same:newPassword',
-            ], [
-                'newPassword.required' => 'Please enter a new password.',
-                'newPassword.min' => 'Password must be more than 8 characters.',
-                'confirmPassword.required' => 'Please confirm your new password.',
-                'confirmPassword.same' => 'The password and its confirm are not the same.',
-            ]);
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'newPassword' => 'required|string|min:8',
+            'confirmPassword' => 'required|string|same:newPassword',
+        ], [
+            'newPassword.required' => 'Please enter a new password.',
+            'newPassword.min' => 'Password must be more than 8 characters.',
+            'confirmPassword.required' => 'Please confirm your new password.',
+            'confirmPassword.same' => 'The password and its confirm are not the same.',
+        ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         try {
             // Find the user by ID

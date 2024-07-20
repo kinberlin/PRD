@@ -18,6 +18,7 @@ use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\Users;
+use App\Scopes\YearScope;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -123,12 +124,12 @@ class DysfunctionController extends Controller
                         $newmessage = new ApiSms(
                             $a_pilotes->pluck('phone')->unique()->toArray(),
                             'Cadyst PRD App',
-                            "Bonjour cher(e) pilote ;Dysfonctionnement ".$dys->code." : Votre processus(".$nd->name.") a été identifié comme origine. Préparez-vous pour intervention. Merci."
+                            "Bonjour cher(e) pilote ;Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme origine. Préparez-vous pour intervention. Merci."
                         );
                         $newmessage->send();
                         $emails = $a_pilotes->pluck('email')->unique()->toArray();
                         $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. ". $dys->code ." - Processus concerné identifié", $content, []);
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus concerné identifié", $content, []);
                         $response = $newmail->send();
                     }
                 }
@@ -138,12 +139,12 @@ class DysfunctionController extends Controller
                         $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
                         $emails = $a_pilotes->pluck('email')->unique()->toArray();
                         $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code ." - Processus impacté identifié", $content, []);
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus impacté identifié", $content, []);
                         $response = $newmail->send();
                         $newmessage = new ApiSms(
                             $a_pilotes->pluck('phone')->unique()->toArray(),
                             'Cadyst PRD App',
-                            "Dysfonctionnement ".$dys->code." : Votre processus(".$nd->name.") a été identifié comme impacté. Préparez-vous pour intervention. Merci. "
+                            "Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme impacté. Préparez-vous pour intervention. Merci. "
                         );
                         $newmessage->send();
                     }
@@ -221,10 +222,12 @@ class DysfunctionController extends Controller
             $origin = Origin::all();
             $probability = Probability::all();
             $data = $dys;
-            $parentTasks = Task::select('tasks.id', 'tasks.text')
+            $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                ->select('tasks.id', 'tasks.text')
                 ->distinct()
                 ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
                 ->where('t2.dysfunction', $id)
+                ->whereYear('tasks.created_at', session('currentYear'))
                 ->get();
             $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
             $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
@@ -283,10 +286,12 @@ class DysfunctionController extends Controller
                         throw new Exception("Erreur de traitement.Ce dysfonctionnement est déja annulé.", 404);
                     }
                     $dys->status = 5;
-                    $parentTasks = Task::select('tasks.id', 'tasks.text')
+                    $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                    ->select('tasks.id', 'tasks.text')
                         ->distinct()
                         ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
                         ->where('t2.dysfunction', $id)
+                        ->whereYear('tasks.created_at', session('currentYear'))
                         ->get();
                     $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
                     if (!empty($corrections)) {

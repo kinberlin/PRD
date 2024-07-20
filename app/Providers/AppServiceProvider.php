@@ -40,11 +40,10 @@ class AppServiceProvider extends ServiceProvider
                     // Get the session year and the current year
                     $sessionYear = session('current_year');
                     $currentYear = Carbon::now()->year;
-                    dd($query->sql);
                     // If the session year does not match the current year, skip the query
                     if ($sessionYear != $currentYear) {
                         // Throw an exception to prevent execution (this won't stop the query but will help us handle it)
-                        throw new \Exception('Query skipped due to session year mismatch.');
+                        throw new \Exception("La requête a été ignorée en raison d'une différence d'année dans cette session.");
                     }
                 }
             });

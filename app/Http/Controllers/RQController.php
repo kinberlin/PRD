@@ -17,12 +17,12 @@ use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\Users;
+use App\Scopes\YearScope;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Throwable;
 
 class RQController extends Controller
 {
@@ -63,7 +63,7 @@ class RQController extends Controller
     public function listeSignalement()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get();;
+        $data = Dysfunction::where('emp_matricule', Auth::user()->matricule)->get();
         $status = Status::all();
         return view('rq/listesignalement', compact('data', 'status'));
     }
@@ -166,10 +166,12 @@ class RQController extends Controller
             $origin = Origin::all();
             $probability = Probability::all();
             $data = $dys;
-            $parentTasks = Task::select('tasks.id', 'tasks.text')
+            $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                ->select('tasks.id', 'tasks.text')
                 ->distinct()
                 ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
                 ->where('t2.dysfunction', $id)
+                ->whereYear('tasks.created_at', session('currentYear'))
                 ->get();
             $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
             $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
@@ -189,8 +191,8 @@ class RQController extends Controller
             throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);
         }
         /*} catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+    return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+    }*/
     }
     public function meetingProcess()
     {
@@ -216,7 +218,7 @@ class RQController extends Controller
     public function meetingClosed()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Invitation::whereNotNUll('closed_at')->get()->sortByDesc('created_at');;
+        $data = Invitation::whereNotNUll('closed_at')->get()->sortByDesc('created_at');
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites
