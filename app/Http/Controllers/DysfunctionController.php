@@ -26,6 +26,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 use Throwable;
 
 class DysfunctionController extends Controller
@@ -163,7 +164,7 @@ class DysfunctionController extends Controller
                     $task->parent = 0;
                     $task->unscheduled = 0;
                     $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
-                    $task->created_by = 'Demo User';
+                    $task->created_by = Auth::user()->firstname .' '. Auth::user()->lastname;
                     $dys->save();
                     $task->save();
                 }
@@ -209,10 +210,11 @@ class DysfunctionController extends Controller
     public function report($code)
     {
         try {
-            $dys = is_null(Dysfunction::find($code)) ? Dysfunction::where('code', $code)->get()->first() : Dysfunction::find($code);
+            $dys = is_null(Dysfunction::withoutGlobalScope(YearScope::class)->find($code)) ? Dysfunction::withoutGlobalScope(YearScope::class)->where('code', $code)->get()->first() : Dysfunction::withoutGlobalScope(YearScope::class)->find($code);
             if ($dys == null) {
                 throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
             }
+            Session::put('currentYear', Carbon::parse($dys->created_at)->year);
             $id = $dys->id;
             $status = Status::all();
             $processes = Processes::all();

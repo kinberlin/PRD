@@ -127,6 +127,99 @@
         </div>
         <!-- Project Cards -->
         <div class="row g-4 mt-6">
+            @foreach ($corrections as $co)
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-start">
+                            <div class="d-flex align-items-start">
+                                <div class="avatar me-3">
+                                    <img src="../../assets/img/icons/brands/social-label.png" alt="Avatar"
+                                        class="rounded-circle" />
+                                </div>
+                                <div class="me-2">
+                                    <h5 class="mb-1"><a href="javascript:;" class="h5">{{$co->text}}</a>
+                                    </h5>
+                                    <div class="client-info d-flex align-items-center">
+                                        <h6 class="mb-0 me-1">Processus:</h6><span>{{$processes->where('id', $co->process)->first()->surfix}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="dropdown z-2">
+                                    <button type="button" class="btn dropdown-toggle hide-arrow p-0"
+                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class="bx bx-dots-vertical-rounded"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="javascript:void(0);"></a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);"></a></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);"></a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item text-danger" href="javascript:void(0);"></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="bg-lighter p-2 rounded me-auto mb-3">
+                                <h6 class="mb-1">{!! str_replace(' ', '<br>', $co->created_by) !!} <span class="text-body fw-normal">.</span></h6>
+                                <span>RQ</span>
+                            </div>
+                            <div class="text-end mb-3">
+                                <h6 class="mb-1">Début: <span class="text-body fw-normal">{{formatDateInFrench($co->start_date, 'short')}}</span></h6>
+                                <h6 class="mb-1">Fin: <span class="text-body fw-normal">{{formatDateInFrench(\Carbon\Carbon::parse($co->start_date)->addDays($co->duration), 'short')}}</span></h6>
+                            </div>
+                        </div>
+                        <p class="mb-0" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                        title="{{$co->description}}">{{substr($co->description, 0, 100). '...'}}</p>
+                    </div>
+                    <div class="card-body border-top">
+                        <div class="d-flex align-items-center mb-3">
+                            <h6 class="mb-1">Durée: <span class="text-body fw-normal">{{$co->duration}} Jours</span></h6>
+                            <span class="badge bg-label-success ms-auto">@if (\Carbon\Carbon::parse($co->start_date)->addDays($co->duration) < now()) 0 @else {{now()->diffInDays(\Carbon\Carbon::parse($co->start_date)->addDays($co->duration))}} @endif Jours</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            @if(is_null($co->proof))
+                            <small>Aucune Preuve</small>
+                            @else
+                            <a href="{{$co->proof}}" target="_blank">Voir la Preuve</a>
+                            @endif
+                            <small>{{$co->progress * 100}}%</small>
+                        </div>
+                        <div class="progress mb-3" style="height: 8px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{$co->progress * 100}}%;" aria-valuenow="{{$co->progress * 100}}"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                                <ul class="list-unstyled d-flex align-items-center avatar-group mb-0 z-2">
+                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                        title="Vinnie Mostowy" class="avatar avatar-sm pull-up">
+                                        <img class="rounded-circle" src="../../assets/img/avatars/5.png" alt="Avatar">
+                                    </li>
+                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                        title="Allen Rieske" class="avatar avatar-sm pull-up">
+                                        <img class="rounded-circle" src="../../assets/img/avatars/12.png" alt="Avatar">
+                                    </li>
+                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                        title="Julee Rossignol" class="avatar avatar-sm pull-up me-2">
+                                        <img class="rounded-circle" src="../../assets/img/avatars/6.png" alt="Avatar">
+                                    </li>
+                                    <li><small class="text-muted">280 Members</small></li>
+                                </ul>
+                            </div>
+                            <div class="ms-auto">
+                                <a href="javascript:void(0);" class="text-body"><i class="bx bx-chat"></i> 15</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
             <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card">
                     <div class="card-header">

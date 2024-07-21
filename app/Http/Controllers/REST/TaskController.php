@@ -8,6 +8,7 @@ use App\Models\Viewby;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -30,7 +31,7 @@ class TaskController extends RoutingController
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
         $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-        $task->created_by = 'Demo User';
+        $task->created_by =  Auth::user()->firstname .' '. Auth::user()->lastname;
 
         $task->save();
 
