@@ -10,8 +10,4 @@ class Link extends Model
 {
     use HasFactory;
     //Functions
-    protected static function booted()
-    {
-        static::addGlobalScope(new YearScope(session('currentYear')));
-    }
 }

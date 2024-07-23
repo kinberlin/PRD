@@ -231,8 +231,8 @@ class DysfunctionController extends Controller
                     ->where('t2.dysfunction', $id)
                     ->whereYear('tasks.created_at', session('currentYear'))
                     ->get();
-                $invitations = Invitation::where('dysfonction', $id)->get();
-                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+                $invitations = Invitation::where('dysfonction', $id)->get()->sortByDesc('id');
+                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get()->sortByDesc('id');
                 $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
                 $matricules = collect();
                 // Iterate over each invitation and their invites

@@ -49,8 +49,8 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.pos
 Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
-    Route::get('/rq/dysfunction/report', 'DysfunctionController@report')->name('rq.dysfunction.report');
-    Route::post('/rq/dysfunction/report', 'DysfunctionController@report')->name('rq.dysfunction.report.post');
+    Route::get('/rq/dysfunction/report', 'RQController@report')->name('rq.dysfunction.report');
+    Route::post('/rq/dysfunction/report', 'RQController@report')->name('rq.dysfunction.report.post');
     Route::get('/rq/dashboard/{id}', 'RQController@index')->name('rq.index');
     Route::get('/rq/js/{id}/dashboard.js', 'DynamicJsController@rq')->name('rq.dashboardjs');
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
@@ -89,13 +89,13 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
     Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
-    Route::get('dysfunction/report', 'DysfunctionController@report')->name('emp.dysfunction.report');
-    Route::post('dysfunction/report', 'DysfunctionController@report')->name('emp.dysfunction.report.post');
+    Route::get('/dysfunctions/report', 'EmployeeController@report')->name('emp.dysfunction.report');
+    Route::post('/dysfunctions/report', 'EmployeeController@report')->name('emp.dysfunction.report.post');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
     Route::get('/invitations/delete/{id}', 'InvitationController@destroy')->name('invitation.destroy');
     Route::post('/invitation', 'InvitationController@store')->name('invitation.store');
-    Route::post('/invitation/update/{id}', 'InvitationController@update')->name('invitation.update');
+    Route::post('/invitation/update/{id}', 'InvitationController@update')->name('inv                                       itation.update');
     Route::post('/invitation/invite', 'InvitationController@inviteConfirmation')->name('invitation.invite.confirmation');
 
     Route::post('/dysfunction/new', 'DysfunctionController@init')->name('dysfunction.init');
@@ -195,6 +195,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/user/{id}/update-password', 'AdminController@updatePassword')->name('admin.user.updatePassword');
     Route::post('/user/{id}/update-profile', 'AdminController@updateProfile')->name('admin.user.updateProfile');
 });
-/*Route::any('{any}', function () {
+Route::any('{any}', function () {
 return redirect('/notfound');
-})->where('any', '.*');*/
+})->where('any', '.*');

@@ -19,9 +19,4 @@ class Task extends Model
     {
         return $this->hasMany(Evaluation::class, 'task');
     }
-    //Functions
-        protected static function booted()
-    {
-        static::addGlobalScope(new YearScope(session('currentYear')));
-    }
 }

@@ -467,8 +467,7 @@
                                                             <div class="x_WordSection1">
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour
-                                                                        M/Mm/Mme {{$user->firstname. ' ' . $user->lastname}},</span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour,</span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
@@ -488,6 +487,9 @@
                                                                         tâche :</span>
                                                                 </p>
                                                                 <ul style="margin-top:0cm" type="disc">
+                                                                <li style="margin-left:0cm; text-align:justify"
+                                                                        class="x_MsoListParagraphCxSpFirst"><span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Action : {{ $task->text}}</span></li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpFirst"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Dysfonctionnement : {{ $dysfunction->code}}</span></li>

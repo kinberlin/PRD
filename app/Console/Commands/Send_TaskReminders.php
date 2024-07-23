@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Task;
 use App\Notifications\TaskReminder;
+use App\Scopes\YearScope;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -31,12 +32,21 @@ class Send_TaskReminders extends Command
     {
         // Get the current datetime plus one hour
         $current = Carbon::now();
-        $tasks = Task::where(DB::raw('(progress * 100)'), '<', 100)
+        $parentTasks = Task::withoutGlobalScope(YearScope::class)
+            ->select('tasks.id', 'tasks.text')
+            ->distinct()
+            ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+            ->whereYear('tasks.created_at', session('currentYear'))
             ->get();
-            dd($tasks);
+
+        $tasks = Task::where(DB::raw('(progress * 100)'), '<', 100)->whereNotIn('id', $parentTasks->pluck('id')->unique())
+            ->get();
         foreach ($tasks as $task) {
             $diff = $current->diffInDays(Carbon::parse($task->start_date)->addDay($task->duration));
-            if ( $diff < 8 && $diff % 2 == 0) {
+            if ($diff < 8 && $diff % 2 == 0) {
+                $task->notify(new TaskReminder($task));
+            }
+            if ($diff == 1) {
                 $task->notify(new TaskReminder($task));
             }
         }

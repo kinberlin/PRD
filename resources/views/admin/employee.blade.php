@@ -44,17 +44,17 @@
                                         </select>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="firstname">Nom</label>
+                                        <label class="form-label" for="firstname">Prenom</label>
                                         <input type="text" class="form-control" id="firstname"
-                                            placeholder="Nom de l'employé..." name="firstname" aria-label="Cadyst">
+                                            placeholder="Prenom de l'employé..." name="firstname" aria-label="Cadyst">
                                         <div
                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         </div>
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
-                                        <label class="form-label" for="lastname">Prenom</label>
+                                        <label class="form-label" for="lastname">Nom</label>
                                         <input type="text" class="form-control" id="lastname"
-                                            placeholder="Prenom de l'employé..." name="lastname" aria-label="Cadyst">
+                                            placeholder="Nom de l'employé..." name="lastname" aria-label="Cadyst">
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="idmat">Matricule</label>

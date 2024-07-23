@@ -89,7 +89,7 @@ class InvitationController extends Controller
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
                 $newmessage = new ApiSms(
-                    array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                    $newinvites->pluck('phone')->unique()->toArray(),
                     'Cadyst PRD App',
                     'Réunion résolution ' . $dys->code . ' | Date : ' . formatDateInFrench($data->odates, 'complete') . ' | Heure : ' . $data->begin . ' - ' . $data->end . ' | Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . ' Merci de confirmer avant le ' . formatDateInFrench($data->odates, 'short')
                 );
@@ -211,7 +211,7 @@ class InvitationController extends Controller
                     $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                     $response = $newmail->send();
                     $newmessage = new ApiSms(
-                        array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                        $newinvites->pluck('phone')->unique()->toArray(),
                         'Cadyst PRD App',
                         'Réunion pour ' . $dys->code . ' MAJ : Nouvelle date : ' . formatDateInFrench($data->odates, 'short') . ' Horaire : ' . $data->begin . ' - ' . $data->end . ' Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . '. Merci de confirmer.'
                     );
@@ -235,9 +235,7 @@ class InvitationController extends Controller
                         $newmessage->send();
                     }
                 }
-
                 $data->save();
-                dd($data);
                 DB::commit();
 
                 return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");

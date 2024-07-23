@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Event::listen(QueryExecuted::class, function ($query) {
 
-            DB::listen(function ($query) {
+            /**DB::listen(function ($query) {
                 // Get the first 10 characters of the query and convert to lowercase
                 $firstTenChars = strtolower(substr($query->sql, 0, 10));
 
@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
                     stripos($firstTenChars, 'delete') !== false) {
 
                     // Get the session year and the current year
-                    $sessionYear = session('current_year');
+                    $sessionYear = session('currentYear');
                     $currentYear = Carbon::now()->year;
                     // If the session year does not match the current year, skip the query
                     if ($sessionYear != $currentYear) {
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                         throw new \Exception("La requête a été ignorée en raison d'une différence d'année dans cette session.");
                     }
                 }
-            });
+            });*/
         });
     }
 }

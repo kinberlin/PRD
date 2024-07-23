@@ -32,8 +32,8 @@ class SendDysfunctionReminders extends Command
         // Get the current date
         $currentDate = Carbon::now();
         $dysfunctions = Dysfunction::whereNull('closed_at')->whereHas('tasks', function ($query) use ($currentDate) {
-            $query->whereDate(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '<=', $currentDate->subDays(env('EVALUATION', false) ? env('MY_ENV_VARIABLE', false) : 90));
-        })->get();
+            $query->whereDate(DB::raw('DATE_ADD(start_date, INTERVAL duration DAY)'), '<=', $currentDate->subDays(0));
+        })->where('id',45)->get();
         foreach ($dysfunctions as $dys) {
             $dys->notify(new DysfunctionReminder($dys));
         }

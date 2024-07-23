@@ -6,19 +6,25 @@ use App\Models\AuthorisationPilote;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Evaluation;
+use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Origin;
+use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\Users;
 use App\Scopes\YearScope;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 use Throwable;
 
 class EmployeeController extends Controller
@@ -100,6 +106,67 @@ class EmployeeController extends Controller
             $employee->save();
             DB::commit();
             return redirect()->back()->with('error', "Insertions terminées avec succes");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+        public function report(Request $request)
+    {
+        $code = $request->input('code');
+        try {
+            $dys = is_null(Dysfunction::withoutGlobalScope(YearScope::class)->find($code)) ? Dysfunction::withoutGlobalScope(YearScope::class)->where('code', $code)->get()->first() : Dysfunction::withoutGlobalScope(YearScope::class)->find($code);
+            $data = $dys;
+            if (!is_null($dys)) {
+                Session::put('currentYear', Carbon::parse($dys->created_at)->year);
+                $id = $dys->id;
+                $status = Status::all();
+                $processes = Processes::all();
+                $ents = Enterprise::all();
+                $site = Site::all();
+                $gravity = Gravity::all();
+                $origin = Origin::all();
+                $probability = Probability::all();
+                $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                    ->select('tasks.id', 'tasks.text')
+                    ->distinct()
+                    ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                    ->where('t2.dysfunction', $id)
+                    ->whereYear('tasks.created_at', session('currentYear'))
+                    ->get();
+                $invitations = Invitation::where('dysfonction', $id)->get()->sortByDesc('id');
+                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+                $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
+                $matricules = collect();
+                // Iterate over each invitation and their invites
+                foreach ($invitations as $d) {
+                    if ($d->internal_invites) {
+                        foreach ($d->getInternalInvites() as $i) {
+                            $matricules->push($i->matricule);
+                        }
+                    }
+                }
+                // Get unique user matricules
+                $distinctMatricules = $matricules->unique();
+                $users = Users::whereIn('matricule', $distinctMatricules)->get();
+                return view('employees/dys_report', compact(
+                    'data',
+                    'status',
+                    'processes',
+                    'ents',
+                    'site',
+                    'gravity',
+                    'origin',
+                    'probability',
+                    'corrections',
+                    'evaluations',
+                    'invitations',
+                    'users'
+                ));
+            } else {
+                return view('employees/dys_report', compact(
+                    'data',
+                ));
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

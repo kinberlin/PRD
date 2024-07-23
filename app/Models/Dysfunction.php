@@ -76,10 +76,10 @@ class Dysfunction extends Model
         'created_at', 'occur_date',
     ];
     //Functions
-    protected static function booted()
+    /*protected static function booted()
     {
         static::addGlobalScope(new YearScope(session('currentYear')));
-    }
+    }*/
     public function getCProcesses(): Collection
     {
         $processes = $this->concern_processes == null ? [] : json_decode($this->concern_processes, true);

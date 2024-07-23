@@ -135,18 +135,26 @@ class AdminController extends Controller
 
     public function planif()
     {
+        try {
         Gate::authorize('isAdmin', Auth::user());
         $dys = Dysfunction::whereNotIn('status', [3, 7])->get();
         $users = Users::all();
         return view('admin/planifs', compact('dys', 'users'));
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     public function employee()
     {
-        Gate::authorize('isAdmin', Auth::user());
-        $ents = Enterprise::all();
-        $deps = Department::all();
-        $data = Users::where('role', 2)->get();
-        return view('admin/employee', compact('ents', 'deps', 'data'));
+        try {
+            Gate::authorize('isAdmin', Auth::user());
+            $ents = Enterprise::all();
+            $deps = Department::all();
+            $data = Users::where('role', 2)->get();
+            return view('admin/employee', compact('ents', 'deps', 'data'));
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
     public function rqemployee()
     {
@@ -201,16 +209,8 @@ class AdminController extends Controller
     public function updateProfile(Request $request, $id)
     {
         // Validate the form input
-        $request->validate([
-            'firstname' => 'required|string|max:20',
-            'lastname' => 'required|string|max:20',
-            'phone' => 'required|string|max:10',
-            'poste' => 'required|string|max:30',
-            'email' => 'required|string|email|max:255',
-            'department' => 'required|exists:department,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
+        try{
         // Find the user by ID
         $user = Users::findOrFail($id);
 
@@ -242,6 +242,9 @@ class AdminController extends Controller
 
         // Redirect or return a response
         return redirect()->back()->with('error', "Mis a jour de profil réussie");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
     }
 
     public function updatePassword(Request $request, $id)

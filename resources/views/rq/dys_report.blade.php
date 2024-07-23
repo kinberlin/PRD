@@ -245,12 +245,12 @@
                                             </h6>
                                         </div>
                                     </div>
-                                @else
-                                    <p class="mb-0">Pas encore évaluée.</p>
-                                @endif
                                 <h6 class="mb-1">Date d'Evaluation : <span
                                         class="text-body fw-normal">{{ formatDateInFrench($eva->created_at, 'short') }}</span>
                                 </h6>
+                                @else
+                                    <p class="mb-0">Pas encore évaluée.</p>
+                                @endif
                             </div>
                         </div>
                     </div>

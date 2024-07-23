@@ -53,6 +53,7 @@ class DysfunctionReminder extends Notification
         //rq emails
         $rqU = AuthorisationRq::where('enterprise', $this->dys->enterprise_id)->get();
         $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
+        dd($rqU);
         $newmail = new ApiMail(null, $rq->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Rappel d'Evaluation de Dysfonctionnement No. " . $this->dys->code, $content, []);
         $newmail->send();
     }

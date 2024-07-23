@@ -468,7 +468,7 @@
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
                                                                         style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour
-                                                                        M/Mm/Mme {{$user->firstname. ' ' . $user->lastname}},</span>
+                                                                         {{$user->firstname. ' ' . $user->lastname}},</span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
