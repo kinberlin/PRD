@@ -193,7 +193,7 @@
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'admin.dysfunction.report') active @endif">
+        <li class="menu-item @if (request()->route()->getName() == 'admin.dysfunction.report' || request()->route()->getName() == 'admin.dysfunction.report.post') active @endif">
             <a href="{!! route('admin.dysfunction.report') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-search-alt"></i>
                 <div class="text-truncate">Rechercher</div>

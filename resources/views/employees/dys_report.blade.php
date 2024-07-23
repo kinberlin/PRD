@@ -14,8 +14,7 @@
             <form class="input-wrapper my-3 input-group input-group-merge" method="POST"
                 action="{{ route('emp.dysfunction.report.post') }}">
                 @csrf
-                <span class="input-group-text" id="basic-addon1"><i
-                            class="text-muted"></i></span>
+                <span class="input-group-text" id="basic-addon1"><i class="text-muted"></i></span>
                 <input type="text" name="code" class="form-control form-control-lg"
                     placeholder="Entrez le code d'un dysfonctionnement" aria-label="Search"
                     aria-describedby="basic-addon1" />
@@ -81,7 +80,7 @@
                 <h5 class="card-header">Information d'Identification </h5>
                 <form class="card-body" method="POST">
                     <!--<hr class="my-4 mx-n4">
-                                                            <h6> Info Supplementaires</h6>-->
+                                                                <h6> Info Supplementaires</h6>-->
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné</label>
@@ -110,8 +109,9 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-last-name">Probabilité</label>
-                            <input type="text" value="{{ !is_null($data->probabilities) ? $data->probabilities->name : ''}}" class="form-control"
-                                readonly>
+                            <input type="text"
+                                value="{{ !is_null($data->probabilities) ? $data->probabilities->name : '' }}"
+                                class="form-control" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-last-name">Coût de non-qualité</label>
@@ -254,6 +254,7 @@
             <div class="card mb-4">
                 <h3 class="card-header text-center text-primary"> Réunions et participations</h3>
             </div>
+            <hr>
             <!--/ Invitation Cards -->
             <div class="row g-4 mt-6 mb-4">
                 @foreach ($invitations as $i)
@@ -464,7 +465,8 @@
             <!--/ Invitation Cards -->
         @else
             <div class="card mb-4">
-                <h5 class="card-header text-center text-primary">Veuillez entrer un code ou un identifiant de dysfonctionnement valide.</h5>
+                <h5 class="card-header text-center text-primary">Veuillez entrer un code ou un identifiant de
+                    dysfonctionnement valide.</h5>
             </div>
         @endif
     </div>

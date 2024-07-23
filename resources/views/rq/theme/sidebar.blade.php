@@ -38,11 +38,12 @@
                     $ents = \App\Models\Enterprise::whereIn('id', $permissions->pluck('enterprise')->unique())->get();
                 @endphp
                 @foreach ($permissions as $ar)
-                <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->enterprise) active @endif">
-                    <a href="{!! route('rq.index', ['id'=>$ar->enterprise]) !!}" class="menu-link">
-                        <div class="text-truncate" data-i18n="{{$ents->where('id', $ar->enterprise)->first()->name}}"></div>
-                    </a>
-                </li>
+                    <li class="menu-item @if (request()->route()->getName() == 'rq.index' && request()->route('id') == $ar->enterprise) active @endif">
+                        <a href="{!! route('rq.index', ['id' => $ar->enterprise]) !!}" class="menu-link">
+                            <div class="text-truncate"
+                                data-i18n="{{ $ents->where('id', $ar->enterprise)->first()->name }}"></div>
+                        </a>
+                    </li>
                 @endforeach
             </ul>
         </li>
@@ -99,26 +100,25 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.inprocess' ||
-            request()->route()->getName() == 'rq.meeting.closed') active open @endif">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons bx bx-color"></i>
-            <div class="text-truncate" data-i18n="Réunions">Réunions</div>
-            <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
-        </a>
-        <ul class="menu-sub">
-            <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.inprocess') active @endif">
-                <a href="{{route('rq.meeting.inprocess')}}" class="menu-link">
-                    <div class="text-truncate" data-i18n="En Cours">En Cours</div>
-                </a>
-            </li>
-            <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.closed') active @endif">
-                <a href="{{route('rq.meeting.closed')}}" class="menu-link">
-                    <div class="text-truncate" data-i18n="Terminé">Terminé</div>
-                </a>
-            </li>
-        </ul>
-    </li>
+        <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.inprocess' || request()->route()->getName() == 'rq.meeting.closed') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-color"></i>
+                <div class="text-truncate" data-i18n="Réunions">Réunions</div>
+                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.inprocess') active @endif">
+                    <a href="{{ route('rq.meeting.inprocess') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="En Cours">En Cours</div>
+                    </a>
+                </li>
+                <li class="menu-item @if (request()->route()->getName() == 'rq.meeting.closed') active @endif">
+                    <a href="{{ route('rq.meeting.closed') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Terminé">Terminé</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <div class="menu-inner-shadow"></div>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Autres">Autres</span>
@@ -161,16 +161,17 @@
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'rq.dysfunction.report') active @endif">
-            <a href="{!! route('rq.dysfunction.report') !!}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-search-alt"></i>
-                <div class="text-truncate">Rechercher</div>
-            </a>
-        </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.planif') active @endif">
             <a href="{!! route('rq.planif') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-timer"></i>
                 <div class="text-truncate">Planifications</div>
+            </a>
+        </li>
+        <li class="menu-item @if (request()->route()->getName() == 'rq.dysfunction.report' ||
+                request()->route()->getName() == 'rq.dysfunction.report.post') active @endif">
+            <a href="{!! route('rq.dysfunction.report') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-search-alt"></i>
+                <div class="text-truncate">Rechercher</div>
             </a>
         </li>
         <li class="menu-item">

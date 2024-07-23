@@ -84,7 +84,7 @@
         </li>
         <ul class="menu-inner py-1">
             @can('isPilote', Auth::user())
-                <li class="menu-item @if (request()->route()->getName() == 'emp.dysfunction.report') active @endif">
+                <li class="menu-item @if (request()->route()->getName() == 'emp.dysfunction.report' || request()->route()->getName() == 'emp.dysfunction.report.post') active @endif">
                     <a href="{!! route('emp.dysfunction.report') !!}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-search-alt"></i>
                         <div class="text-truncate">Rechercher</div>

@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         aoColumnDefs: [{
             bSortable: false,
             aTargets: [-1]
-        }]
+        }],
+        "order": [] // Disable initial sorting
     });
 });
