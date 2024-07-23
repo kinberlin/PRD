@@ -42,11 +42,11 @@
                     <a href="{!! route('rq.index', ['id'=>$ar->enterprise]) !!}" class="menu-link">
                         <div class="text-truncate" data-i18n="{{$ents->where('id', $ar->enterprise)->first()->name}}"></div>
                     </a>
-                </li>                    
+                </li>
                 @endforeach
             </ul>
         </li>
-        
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
         </li>
@@ -161,7 +161,12 @@
                 <div class="text-truncate">Signaler</div>
             </a>
         </li>
-
+        <li class="menu-item @if (request()->route()->getName() == 'rq.dysfunction.report') active @endif">
+            <a href="{!! route('rq.dysfunction.report') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-search-alt"></i>
+                <div class="text-truncate">Rechercher</div>
+            </a>
+        </li>
         <li class="menu-item @if (request()->route()->getName() == 'rq.planif') active @endif">
             <a href="{!! route('rq.planif') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-timer"></i>

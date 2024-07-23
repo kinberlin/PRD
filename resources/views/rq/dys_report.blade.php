@@ -1,4 +1,4 @@
-@extends('admin.theme.main')
+@extends('rq.theme.main')
 @section('title')
     Rapport complet sur un dysfonctionnement
 @endsection
@@ -12,7 +12,7 @@
             <img src="{{ url('assets/img/pages/header.png') }}" class="scaleX-n1-rtl faq-banner-img" alt="background image" />
             <h3 class="text-center">Plus d'info sur un Dysfonctionnement signalé ?</h3>
             <form class="input-wrapper my-3 input-group input-group-merge" method="POST"
-                action="{{ route('admin.dysfunction.report.post') }}">
+                action="{{ route('rq.dysfunction.report.post') }}">
                 @csrf
                 <span class="input-group-text" id="basic-addon1"><i
                             class="text-muted"></i></span>

@@ -158,7 +158,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if (request()->route()->getName() == 'admin.gravity' || 
+        <li class="menu-item @if (request()->route()->getName() == 'admin.gravity' ||
         request()->route()->getName() == 'admin.probability' ||
         request()->route()->getName() == 'admin.origin' ) active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -191,6 +191,12 @@
             <a href="{!! route('admin.dysfonction') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div class="text-truncate">Signaler</div>
+            </a>
+        </li>
+        <li class="menu-item @if (request()->route()->getName() == 'admin.dysfunction.report') active @endif">
+            <a href="{!! route('admin.dysfunction.report') !!}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-search-alt"></i>
+                <div class="text-truncate">Rechercher</div>
             </a>
         </li>
         <li class="menu-item">

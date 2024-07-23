@@ -25,28 +25,28 @@
     </div>
     <ul class="menu-inner py-1 overflow-auto">
         @can('isPilote', Auth::user())
-        <!-- Dashboards -->
-        <li class="menu-item @if (request()->route()->getName() == 'employee.index') active open @endif">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div class="text-truncate" data-i18n="Accueil">Accueil</div>
-                <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
-            </a>
-            <ul class="menu-sub">
-                @php
-                    $permissions = \App\Models\AuthorisationPilote::where('user', Auth::user()->id)->get();
-                    $procs = \App\Models\Processes::whereIn('id', $permissions->pluck('process')->unique())->get();
-                @endphp
-                @foreach ($permissions as $ar)
-                    <li class="menu-item @if (request()->route()->getName() == 'employee.index' && request()->route('id') == $ar->process) active @endif">
-                        <a href="{!! route('employee.index', ['id' => $ar->process]) !!}" class="menu-link">
-                            <div class="text-truncate"
-                                data-i18n="{{ $procs->where('id', $ar->process)->first()->name }}"></div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </li>
+            <!-- Dashboards -->
+            <li class="menu-item @if (request()->route()->getName() == 'employee.index') active open @endif">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <div class="text-truncate" data-i18n="Accueil">Accueil</div>
+                    <!--<span class="badge badge-center rounded-pill bg-danger ms-auto"></span>-->
+                </a>
+                <ul class="menu-sub">
+                    @php
+                        $permissions = \App\Models\AuthorisationPilote::where('user', Auth::user()->id)->get();
+                        $procs = \App\Models\Processes::whereIn('id', $permissions->pluck('process')->unique())->get();
+                    @endphp
+                    @foreach ($permissions as $ar)
+                        <li class="menu-item @if (request()->route()->getName() == 'employee.index' && request()->route('id') == $ar->process) active @endif">
+                            <a href="{!! route('employee.index', ['id' => $ar->process]) !!}" class="menu-link">
+                                <div class="text-truncate"
+                                    data-i18n="{{ $procs->where('id', $ar->process)->first()->name }}"></div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
         @endcan
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Gestion">Gestion</span>
@@ -79,11 +79,18 @@
             </li>
         @endcan
 
-
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Autres">Autres</span>
         </li>
         <ul class="menu-inner py-1">
+            @can('isPilote', Auth::user())
+                <li class="menu-item @if (request()->route()->getName() == 'emp.dysfunction.report') active @endif">
+                    <a href="{!! route('emp.dysfunction.report') !!}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-search-alt"></i>
+                        <div class="text-truncate">Rechercher</div>
+                    </a>
+                </li>
+            @endcan
             <li class="menu-item">
                 <a href="#" target="_blank" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-file"></i>

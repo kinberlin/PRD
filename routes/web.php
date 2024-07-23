@@ -49,6 +49,8 @@ Route::post('/notfound', [AuthController::class, 'NotFound404P'])->name('404.pos
 Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('/dys/data', 'GanttController@get');
 
+    Route::get('/rq/dysfunction/report', 'DysfunctionController@report')->name('rq.dysfunction.report');
+    Route::post('/rq/dysfunction/report', 'DysfunctionController@report')->name('rq.dysfunction.report.post');
     Route::get('/rq/dashboard/{id}', 'RQController@index')->name('rq.index');
     Route::get('/rq/js/{id}/dashboard.js', 'DynamicJsController@rq')->name('rq.dashboardjs');
     Route::get('/employee/dysfonctionnement', 'EmployeeController@dysfunction')->name('employees.dysfunction');
@@ -86,9 +88,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
-    Route::post('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
     Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
-
+    Route::get('dysfunction/report', 'DysfunctionController@report')->name('emp.dysfunction.report');
+    Route::post('dysfunction/report', 'DysfunctionController@report')->name('emp.dysfunction.report.post');
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');
     Route::get('/invitations/show/{id}', 'InvitationController@show')->name('invitation.show');
     Route::get('/invitations/delete/{id}', 'InvitationController@destroy')->name('invitation.destroy');
@@ -106,14 +108,6 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::get('/dysfunction/evaluation/launch/{id}', 'DysfunctionController@launchEvaluation')->name('dysfunction.evaluation.launch');
     Route::get('/dysfunction/evaluation/cancel/{id}', 'DysfunctionController@cancelEvaluation')->name('dysfunction.evaluation.cancel');
 
-    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
-    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
-    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
-
-    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
-    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
-    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
-
     Route::get('/meeting/{id}/close', 'InvitationController@close')->name('invitation.close');
     Route::post('/meeting/{id}/participation', 'InvitationController@participation')->name('invitation.participation');
     Route::get('/actif/year/{year}', 'AuthController@setyear')->name('auth.year');
@@ -121,6 +115,8 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
 
+    Route::get('/admin/dysfunction/report', 'DysfunctionController@report')->name('admin.dysfunction.report');
+    Route::post('/admin/dysfunction/report', 'DysfunctionController@report')->name('admin.dysfunction.report.post');
     Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
     Route::get('/admin/planner/{id}', 'GanttController@adminplanner')->name('admin.planner');
     Route::get('/admin/js/dashboard.js', 'DynamicJsController@admin')->name('admin.dashboardjs');
@@ -158,6 +154,14 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::post('/admin/processes/{id}', 'ProcessesController@update')->name('admin.processes.update');
 
     Route::get('/admin/signal', 'AdminController@signals')->name('admin.signals'); /*to be done */
+    Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
+    Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
+    Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
+
+    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
+    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
+    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
+
     /*Route::get('/admin/signal/{id}', 'SignalController@destroy')->name('admin.signal.destroy');
     Route::post('/admin/signal', 'SignalController@store')->name('admin.signal.store');
     Route::post('/admin/signal/{id}', 'SignalController@update')->name('admin.signal.update');*/
