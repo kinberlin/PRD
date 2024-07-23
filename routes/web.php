@@ -86,7 +86,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
     //users
-    Route::get('/dysfunction/report/{code}', 'DysfunctionController@report')->name('dysfunction.report');
+    Route::post('/dysfunction/report', 'DysfunctionController@report')->name('dysfunction.report');
     Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
 
     Route::get('/invitations/index', 'InvitationController@index')->name('invitation.index');

@@ -208,59 +208,63 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-    public function report($code)
+    public function report(Request $request)
     {
+        $code = $request->input('code');
         try {
             $dys = is_null(Dysfunction::withoutGlobalScope(YearScope::class)->find($code)) ? Dysfunction::withoutGlobalScope(YearScope::class)->where('code', $code)->get()->first() : Dysfunction::withoutGlobalScope(YearScope::class)->find($code);
-            if ($dys == null) {
-                throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
-            }
-            Session::put('currentYear', Carbon::parse($dys->created_at)->year);
-            $id = $dys->id;
-            $status = Status::all();
-            $processes = Processes::all();
-            $ents = Enterprise::all();
-            $site = Site::all();
-            $gravity = Gravity::all();
-            $origin = Origin::all();
-            $probability = Probability::all();
             $data = $dys;
-            $parentTasks = Task::withoutGlobalScope(YearScope::class)
-                ->select('tasks.id', 'tasks.text')
-                ->distinct()
-                ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
-                ->where('t2.dysfunction', $id)
-                ->whereYear('tasks.created_at', session('currentYear'))
-                ->get();
-            $invitations = Invitation::where('dysfonction', $id)->get();
-            $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
-            $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
-            $matricules = collect();
-            // Iterate over each invitation and their invites
-            foreach ($invitations as $d) {
-                if ($d->internal_invites) {
-                    foreach ($d->getInternalInvites() as $i) {
-                        $matricules->push($i->matricule);
+            if (!is_null($dys)) {
+                Session::put('currentYear', Carbon::parse($dys->created_at)->year);
+                $id = $dys->id;
+                $status = Status::all();
+                $processes = Processes::all();
+                $ents = Enterprise::all();
+                $site = Site::all();
+                $gravity = Gravity::all();
+                $origin = Origin::all();
+                $probability = Probability::all();
+                $parentTasks = Task::withoutGlobalScope(YearScope::class)
+                    ->select('tasks.id', 'tasks.text')
+                    ->distinct()
+                    ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
+                    ->where('t2.dysfunction', $id)
+                    ->whereYear('tasks.created_at', session('currentYear'))
+                    ->get();
+                $invitations = Invitation::where('dysfonction', $id)->get();
+                $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get();
+                $evaluations = Evaluation::whereIn('task', $corrections->pluck('id')->unique())->get();
+                $matricules = collect();
+                // Iterate over each invitation and their invites
+                foreach ($invitations as $d) {
+                    if ($d->internal_invites) {
+                        foreach ($d->getInternalInvites() as $i) {
+                            $matricules->push($i->matricule);
+                        }
                     }
                 }
+                // Get unique user matricules
+                $distinctMatricules = $matricules->unique();
+                $users = Users::whereIn('matricule', $distinctMatricules)->get();
+                return view('admin/dys_report', compact(
+                    'data',
+                    'status',
+                    'processes',
+                    'ents',
+                    'site',
+                    'gravity',
+                    'origin',
+                    'probability',
+                    'corrections',
+                    'evaluations',
+                    'invitations',
+                    'users'
+                ));
+            } else {
+                return view('admin/dys_report', compact(
+                    'data',
+                ));
             }
-            // Get unique user matricules
-            $distinctMatricules = $matricules->unique();
-            $users = Users::whereIn('matricule', $distinctMatricules)->get();
-            return view('admin/dys_report', compact(
-                'data',
-                'status',
-                'processes',
-                'ents',
-                'site',
-                'gravity',
-                'origin',
-                'probability',
-                'corrections',
-                'evaluations',
-                'invitations',
-                'users'
-            ));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
