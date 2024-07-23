@@ -12,7 +12,7 @@
                 <h5 class="card-header">Mes Signalements</h5>
                 <div class="card-body">
                     <div class="demo-inline-spacing">
-                        
+
                     </div>
                 </div>
                 <hr class="m-0">
@@ -46,7 +46,7 @@
                                     <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
                                     <td>
-                                        <a href="/rq/detail/dysfonctionnement/{{ $d->id }}" target="_blank"
+                                        <a href="{{ route('rq.n1dysfonction', ['id'=>$d->id]) }}" target="_blank"
                                             class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>
                                         </a>

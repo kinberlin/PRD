@@ -71,7 +71,14 @@
                             <div class="col-md-12">
                                 <h4 class="form-label text-center" style="font-size: 18px" for="basic-default-message">
                                     Status :
-                                    <span class="text-primary">{{ $data->status_id->name }}</span></h2>
+                                    @if ($data->status == 6)
+                                        <span class="text-primary">{{ $data->status_id->name }}</span> | Le :
+                                            {{ formatDateInFrench($data->closed_at, 'short') }} | Par :
+                                            <span class="text-primary">{{ $data->closed_by }}</span>
+                                    @else
+                                        <span class="text-primary">{{ $data->status_id->name }} </span>
+                                    @endif
+                                </h4>
                             </div>
                     </form>
                 </div>
@@ -80,7 +87,7 @@
                 <h5 class="card-header">Information d'Identification </h5>
                 <form class="card-body" method="POST">
                     <!--<hr class="my-4 mx-n4">
-                                                                <h6> Info Supplementaires</h6>-->
+                                                                        <h6> Info Supplementaires</h6>-->
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné</label>

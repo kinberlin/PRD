@@ -89,7 +89,7 @@
                                                 </div>
                                             </div>
                                         @endcan
-                                            <a href="/rq/detail/dysfonctionnement/{{ $d->id }}" target="_blank"
+                                            <a href="{{ route('rq.n1dysfonction', ['id'=>$d->id]) }}" target="_blank"
                                                 class="btn rounded-pill btn-icon btn-success">
                                                 <span class="tf-icons bx bx-info-circle"></span>
                                             </a>
