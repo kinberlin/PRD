@@ -28,7 +28,7 @@
                                 <th>Horraire</th>
                                 <th>Lieu &<br>Lien</th>
                                 <th>Initiateur</th>
-                                <th>Status</th>
+                                <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

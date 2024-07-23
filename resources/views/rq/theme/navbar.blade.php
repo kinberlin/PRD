@@ -146,7 +146,7 @@
                                     <li>
                                         <a class="dropdown-item" href="{{ route('rq.profile') }}">
                                             <i class="bx bx-user me-2"></i>
-                                            <span class="align-middle">Mon Profile</span>
+                                            <span class="align-middle">Mon Profil</span>
                                         </a>
                                     </li>
                                     <li>

@@ -1,6 +1,6 @@
 @extends('rq.theme.main')
 @section('title')
-    Mon Profile
+    Mon Profil
 @endsection
 @section('manualstyle')
     <link rel="stylesheet" href="{!! url('assets/vendor/css/pages/page-profile.css') !!}">

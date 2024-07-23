@@ -89,7 +89,7 @@
                                 <th>Id</th>
                                 <th>Detail du<br>Constat</th>
                                 <th>Dépense</th>
-                                <th>Status</th>
+                                <th>Statut</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

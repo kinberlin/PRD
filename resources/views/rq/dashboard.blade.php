@@ -13,7 +13,7 @@
                         <div class="col-8">
                             <div class="card-body">
                                 <h6 class="card-title mb-1 text-nowrap">
-                                    Salut, M. {{ Auth::user()->firstname }}!
+                                    Salut, {{ Auth::user()->firstname }}!
                                 </h6>
                                 <small class="d-block mb-3 text-nowrap">RQ PRD</small>
 
