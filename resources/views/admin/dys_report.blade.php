@@ -21,13 +21,13 @@
                 ou alors contacter le DQ si difficulté survient
             </p>
         </div>
+        <div class="card mb-4">
+            <h5 class="card-header text-center text-primary"> Dysfonctionnement No.{{ $data->code }}</h5>
+        </div>
         <div class="row">
             <div class="card mb-4" style="margin-bottom: 25px;">
                 <h5 class="card-header">Information sur la déclaration</h5>
                 <form class="card-body">
-                    <!--<hr class="my-4 mx-n4">
-                                                                                                <h6> Info Supplementaires</h6>-->
-                    @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label" for="basic-default-fullname">Noms</label>
@@ -74,7 +74,7 @@
             <h5 class="card-header">Information d'Identification </h5>
             <form class="card-body" method="POST">
                 <!--<hr class="my-4 mx-n4">
-                            <h6> Info Supplementaires</h6>-->
+                                                <h6> Info Supplementaires</h6>-->
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-last-name">Entreprise & Site Concerné</label>
@@ -121,8 +121,8 @@
         <div class="card mb-4">
             <h3 class="card-header text-center text-primary"> Actions Correctives mise en place & Evaluations</h3>
         </div>
-        <!-- Project Cards -->
-        <div class="row g-4 mt-6">
+        <!-- Task Cards -->
+        <div class="row g-4 mt-6 mb-4">
             @foreach ($corrections as $co)
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="card">
@@ -234,102 +234,200 @@
                     </div>
                 </div>
             @endforeach
-            @foreach ( as )
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-start">
+        </div>
+        <!--/ Task Cards -->
+        <div class="card mb-4">
+            <h3 class="card-header text-center text-primary"> Réunions et participations</h3>
+        </div>
+        <!--/ Invitation Cards -->
+        <div class="row g-4 mt-6 mb-4">
+            @foreach ($invitations as $i)
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="card-header">
                             <div class="d-flex align-items-start">
-                                <div class="avatar me-3">
-                                    <img src="../../assets/img/icons/brands/social-label.png" alt="Avatar"
-                                        class="rounded-circle" />
+                                <div class="d-flex align-items-start">
+                                    <div class="avatar me-3">
+                                        <img src="../../assets/img/icons/brands/team.png" alt="Teams"
+                                            class="rounded-circle" />
+                                    </div>
+                                    <div class="me-2">
+                                        <h5 class="mb-1"><a href="javascript:;"
+                                                class="h5">{{ $i->object }}(No.{{ $i->id }})</a>
+                                        </h5>
+                                        <div class="client-info d-flex align-items-center">
+                                            <h6 class="mb-0 me-1">Date :</h6>
+                                            <span>{{ formatDateInFrench($i->created_at, 'short') }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="me-2">
-                                    <h5 class="mb-1"><a href="javascript:;" class="h5 stretched-link">Social
-                                            Banners</a>
-                                    </h5>
-                                    <div class="client-info d-flex align-items-center">
-                                        <h6 class="mb-0 me-1">Client:</h6><span>Christian Jimenez</span>
+                                <div class="ms-auto">
+                                    <div class="dropdown z-2">
+                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0"
+                                            data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                class="bx bx-dots-vertical-rounded"></i></button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="javascript:void(0);"></a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);"></a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);"></a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item text-danger" href="javascript:void(0);"></a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            <div class="ms-auto">
-                                <div class="dropdown z-2">
-                                    <button type="button" class="btn dropdown-toggle hide-arrow p-0"
-                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                            class="bx bx-dots-vertical-rounded"></i></button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Rename project</a></li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);">View details</a></li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);">Add to favorites</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item text-danger" href="javascript:void(0);">Leave
-                                                Project</a></li>
-                                    </ul>
+                        </div>
+                        @php
+                            $_internali = $i->getInternalInvites();
+                            $_externali = json_decode($i->external_invites, true);
+                            $_participation = $i->getParticipants();
+                        @endphp
+                        <div class="card-body">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="bg-lighter p-2 rounded me-auto mb-3">
+                                    <h6 class="mb-1">{{ count($_internali) }} <span class="text-body fw-normal">|
+                                            {{ count($_externali) }}</span></h6>
+                                    <span>Interne | Externe</span>
+                                </div>
+                                <div class="text-end mb-3">
+                                    <h6 class="mb-1">Début : <span
+                                            class="text-body fw-normal">{{ $i->begin }}</span></h6>
+                                    <h6 class="mb-1">Fin : <span class="text-body fw-normal">{{ $i->end }}</span>
+                                    </h6>
                                 </div>
                             </div>
+                            <p class="mb-0">Description : {{ $i->description }}<br>Motif : {{ $i->motif }}</p>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center flex-wrap">
-                            <div class="bg-lighter p-2 rounded me-auto mb-3">
-                                <h6 class="mb-1">$24.8k <span class="text-body fw-normal">/ $18.2k</span></h6>
-                                <span>Total Budget</span>
+                        <div class="card-body border-top">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <h6 class="mb-1">All Hours: <span class="text-body fw-normal">380/244</span></h6>
+                                <span class="badge bg-label-success ms-auto">28 Days left</span>
                             </div>
-                            <div class="text-end mb-3">
-                                <h6 class="mb-1">Start Date: <span class="text-body fw-normal">14/2/21</span></h6>
-                                <h6 class="mb-1">Deadline: <span class="text-body fw-normal">28/2/22</span></h6>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small>Invités / Participants: {{count($_internali) + count($externali)}}/{{count($_participation)}}</small>
                             </div>
-                        </div>
-                        <p class="mb-0">We are Consulting, Software Development and Web Development Services.</p>
-                    </div>
-                    <div class="card-body border-top">
-                        <div class="d-flex align-items-center mb-3">
-                            <h6 class="mb-1">All Hours: <span class="text-body fw-normal">380/244</span></h6>
-                            <span class="badge bg-label-success ms-auto">28 Days left</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small>Task: 290/344</small>
-                            <small>95% Completed</small>
-                        </div>
-                        <div class="progress mb-3" style="height: 8px;">
-                            <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="d-flex align-items-center">
-                                <ul class="list-unstyled d-flex align-items-center avatar-group mb-0 z-2">
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        title="Vinnie Mostowy" class="avatar avatar-sm pull-up">
-                                        <img class="rounded-circle" src="../../assets/img/avatars/5.png" alt="Avatar">
-                                    </li>
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        title="Allen Rieske" class="avatar avatar-sm pull-up">
-                                        <img class="rounded-circle" src="../../assets/img/avatars/12.png" alt="Avatar">
-                                    </li>
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        title="Julee Rossignol" class="avatar avatar-sm pull-up me-2">
-                                        <img class="rounded-circle" src="../../assets/img/avatars/6.png" alt="Avatar">
-                                    </li>
-                                    <li><small class="text-muted">280 Members</small></li>
-                                </ul>
-                            </div>
-                            <div class="ms-auto">
-                                <a href="javascript:void(0);" class="text-body"><i class="bx bx-chat"></i> 15</a>
+                            <button type="button" class="mb-0 mt-3 btn btn-info" type="button"
+                                class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#invitedetail{{ $i->id }}">
+                                Données sur les invités
+                            </button>
+                            <div class="modal fade" id="invitedetail{{ $i->id }}" tabindex="-1"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <form method="POST" class="modal-content"
+                                        action="{{ route('invitation.participation', $i->id) }}">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
+                                                No. #{{ $i->id }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @csrf
+                                            <div class="table-responsive">
+                                                <table class="table border-top table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-nowrap">Invités</th>
+                                                            <th class="text-nowrap text-center">✅ Accepté
+                                                            </th>
+                                                            <th class="text-nowrap text-center">❌ Rejeté
+                                                            </th>
+                                                            <th class="text-nowrap text-center">👩🏻‍💻
+                                                                Présent</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($_internali as $inn)
+                                                            @php
+                                                                $u = $users
+                                                                    ->where('matricule', $inn->matricule)
+                                                                    ->first();
+                                                                $p = $i->findParticipantByMatricule($inn->matricule);
+                                                            @endphp
+                                                            <tr>
+                                                                <td class="text-nowrap">
+                                                                    {{ $u != null ? $u->firstname . ' (' . $u->matricule . ')' : 'Utilisateur Introuvable.' }}
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            @if ($inn->decision == 'Confirmer') checked @endif
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            @if ($inn->decision == 'Rejeté') checked @endif
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="participant[]"
+                                                                            value="{{ $inn->matricule }}"
+                                                                            @if ($p != null) checked @endif
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        @foreach ($_externali as $e)
+                                                            @php
+                                                                $p = $i->findParticipantByMatricule($e);
+                                                            @endphp
+                                                            <tr>
+                                                                <td class="text-nowrap">{{ $e }}
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="participantext[]"
+                                                                            value="{{ $e }}"
+                                                                            @if ($p != null) checked @endif
+                                                                            disabled />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-label-secondary"
+                                                data-bs-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
-                <div class="card mb-4">
-            <h3 class="card-header text-center text-primary"> Réunions et participations</h3>
-        </div>
-        <!--/ Project Cards -->
+        <!--/ Invitation Cards -->
     </div>
 @endsection
 @section('scriptContent')
+    <script src="{!! url('assets/js/ui-popover.js') !!}"></script>
 @endsection

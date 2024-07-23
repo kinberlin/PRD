@@ -99,7 +99,7 @@ class Invitation extends Model
         static::addGlobalScope(new YearScope(session('currentYear')));
     }
     // Function to get the JSON array into a Laravel array of Invites
-    public function getInternalInvites()
+    public function getInternalInvites() : array
     {
         $invites = $this->internal_invites == null ? [] : json_decode($this->internal_invites, true);
         $inviteObjects = [];
@@ -111,7 +111,7 @@ class Invitation extends Model
         return $inviteObjects;
     }
     // Function to get the JSON array into a Laravel array of Participants
-    public function getParticipants()
+    public function getParticipants() : array
     {
         $participants = $this->participation == null ? [] : json_decode($this->participation, true);
         $participantObjects = [];
