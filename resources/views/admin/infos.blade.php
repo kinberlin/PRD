@@ -231,7 +231,7 @@
                                         @if ($data->status != 3)
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <form action="{!! route('rq.planner', ['id' => $data->id]) !!}" method="GET">
+                                                    <form action="{!! route('admin.planner', ['id' => $data->id]) !!}" method="GET">
                                                         <div>
                                                             <button type="submit" id="saveActionsBtn"
                                                                 class="btn btn-success me-sm-3 me-1">Aller à la page de
@@ -397,7 +397,7 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        @can('DysEvaluation')
+                                        @can('DysEvaluation', $data)
                                             <div class="mb-0">
                                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#dysCompleteModal">

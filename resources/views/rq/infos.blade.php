@@ -397,7 +397,7 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        @can('DysEvaluation')
+                                        @can('DysEvaluation', $data)
                                             <div class="mb-0">
                                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#dysCompleteModal">
