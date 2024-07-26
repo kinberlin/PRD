@@ -28,25 +28,25 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Event::listen(QueryExecuted::class, function ($query) {
 
-            /**DB::listen(function ($query) {
+            DB::listen(function ($query) {
                 // Get the first 10 characters of the query and convert to lowercase
                 $firstTenChars = strtolower(substr($query->sql, 0, 10));
 
-                // Check if the query is an update, insert, or delete
+                 //Check if the query is an update, insert, or delete
                 if (stripos($firstTenChars, 'update') !== false ||
                     stripos($firstTenChars, 'insert') !== false ||
                     stripos($firstTenChars, 'delete') !== false) {
 
                     // Get the session year and the current year
-                    $sessionYear = session('currentYear');
+                    /*$sessionYear = session('currentYear');
                     $currentYear = Carbon::now()->year;
                     // If the session year does not match the current year, skip the query
                     if ($sessionYear != $currentYear) {
                         // Throw an exception to prevent execution (this won't stop the query but will help us handle it)
                         throw new \Exception("La requête a été ignorée en raison d'une différence d'année dans cette session.");
-                    }
+                    }*/
                 }
-            });*/
+            });
         });
     }
 }

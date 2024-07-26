@@ -75,10 +75,10 @@ class Processes extends Model
     // Scopes...
 
     // Functions ...
-    /*protected static function booted()
+    protected static function booted()
     {
         static::addGlobalScope(new YearScope(session('currentYear')));
-    }*/
+    }
 
     // Relations ...
     public function dysfunctions()

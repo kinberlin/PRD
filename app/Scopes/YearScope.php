@@ -2,18 +2,21 @@
 // app/Scopes/YearScope.php
 namespace App\Scopes;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\Session;
 
 class YearScope implements Scope
 {
     protected $year;
 
-    public function __construct( $year = 2024 )
+    public function __construct($year = 2024)
     {
-        $this->year = $year;
+        if ($year > 2000) {$this->year = $year;} else {
+            Session::put('currentYear', now()->year);
+            $this->year = now()->year;
+        }
     }
 
     public function apply(Builder $builder, Model $model)
