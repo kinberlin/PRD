@@ -239,7 +239,6 @@ class RQController extends Controller
                     ->distinct()
                     ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
                     ->where('t2.dysfunction', $id)
-                    ->whereYear('tasks.created_at', session('currentYear'))
                     ->get();
                 $invitations = Invitation::where('dysfonction', $id)->get()->sortByDesc('id');
                 $corrections = Task::where('dysfunction', $id)->whereNotIn('id', $parentTasks->pluck('id')->unique())->get()->sortByDesc('id');

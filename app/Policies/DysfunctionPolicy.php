@@ -3,7 +3,10 @@
 namespace App\Policies;
 
 use App\Models\Dysfunction;
+use App\Models\Task;
 use App\Models\Users;
+use App\Scopes\YearScope;
+use Illuminate\Support\Facades\DB;
 
 class DysfunctionPolicy
 {
@@ -58,6 +61,16 @@ class DysfunctionPolicy
         if (!is_null($dysfunction->closed_at)) {
             return false;
         }
+        $parentTasks = Task::withoutGlobalScope(YearScope::class)
+            ->select(
+                'id',
+                'start_date',
+                'duration',
+                DB::raw('DATE_ADD(start_date, INTERVAL duration DAY) AS end')
+            )
+            ->where('dysfunction', $dysfunction->id)
+            ->get();
+        dd($parentTasks->max('end'));
         return $dysfunction->status == 7;
     }
     public function DysRunning(Users $users, Dysfunction $dysfunction): bool
