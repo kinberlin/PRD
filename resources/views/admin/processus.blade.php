@@ -86,15 +86,14 @@
                                     <td>{{$d->id}}</td>
                                     <td>{{$d->name}}</td>
                                     <td>{{$d->surfix}}</td>
-                                    <td>
                                     <td>  <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majprocessus{{ $d->id }}">
                                             M.A.J
                                         </button>
                                         @can('canProcessDelete', $d)
-                                            <button class="btn btn-danger " data-bs-toggle="modal"
-                                                data-bs-target="#deldepartment{{ $d->id }}">Supprimer</button>
-                                            <div class="modal modal-top fade" id="deldepartment{{ $d->id }}"
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#delprocess{{ $d->id }}">Supprimer</button>
+                                            <div class="modal modal-top fade" id="delprocess{{ $d->id }}"
                                                 tabindex="-1">
                                                 <div class="modal-dialog">
                                                     <form class="modal-content">
@@ -117,7 +116,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-label-secondary"
                                                                 data-bs-dismiss="modal">Fermer</button>
-                                                            <a href="{{ route('admin.department.destroy', ['id' => $d->id]) }}"
+                                                            <a href="{{ route('admin.processes.destroy', ['id' => $d->id]) }}"
                                                                 class="btn btn-danger">Continuer</a>
                                                         </div>
                                                     </form>
@@ -148,7 +147,7 @@
                                                         <div class="row">
                                                             <div class="col mb-3">
                                                                 <label for="abbrevBasic" class="form-label">Abbréviation</label>
-                                                                 <input type="text" name="name" id="abbrevBasic"
+                                                                 <input type="text" id="abbrevBasic"
                                                                     value="{{ $d->surfix }}" name="surfix" class="form-control"
                                                                     placeholder="Entrer le surfix">
                                                             </div>

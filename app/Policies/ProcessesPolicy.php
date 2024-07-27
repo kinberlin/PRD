@@ -17,6 +17,6 @@ class ProcessesPolicy
         if(is_null($processes)){
             return false;
         }
-         return ($processes->dysfunctions()->exists() ? false : true) && ($processes->tasks()->exists() ? false : true) && ($processes->authorisationPilote()->exists() ? false : true);
+         return ($processes->dysfunctions()->count() > 0 ? false : true) && ($processes->tasks()->exists() ? false : true) && ($processes->authorisationPilote()->exists() ? false : true);
     }
 }

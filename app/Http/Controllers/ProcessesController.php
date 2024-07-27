@@ -98,7 +98,7 @@ class ProcessesController extends Controller
         $rec = Processes::find($id);
         Gate::authorize('isAdmin', Auth::user());
         try {
-            if (Gate::allows('canSiteDelete', $rec)) {
+            if (Gate::allows('canProcessDelete', $rec)) {
                 if (Gate::allows('isAdmin', Auth::user())) {
                     DB::beginTransaction();
                     $rec->forceDelete();
