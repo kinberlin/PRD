@@ -89,4 +89,8 @@ class Processes extends Model
     {
         return $this->hasMany(Task::class, 'process', 'id');
     }
+    public function authorisationPilote()
+    {
+        return $this->hasMany(AuthorisationPilote::class, 'process', 'id');
+    }
 }

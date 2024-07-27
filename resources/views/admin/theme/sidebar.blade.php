@@ -119,7 +119,7 @@
 
                 <li class="menu-item @if (request()->route()->getName() == 'admin.planif') active @endif">
                     <a href="{!! route('admin.planif') !!}" class="menu-link">
-                        <div class="text-truncate" data-i18n="planification">Planifications</div>
+                        <div class="text-truncate" data-i18n="Planifications">Planifications</div>
                     </a>
                 </li>
 

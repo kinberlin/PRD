@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        
+
                         <input type="file" style="visibility: hidden" id="excelFileInput">
                         <form action="/admin/processes" method="POST">
                             @csrf
@@ -77,7 +77,6 @@
                                 <th>Id</th>
                                 <th>Nom du Processus</th>
                                 <th>Abbrév.</th>
-                                <th>Pilote(s)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -87,8 +86,84 @@
                                     <td>{{$d->id}}</td>
                                     <td>{{$d->name}}</td>
                                     <td>{{$d->surfix}}</td>
-                                    <td>Non définies</td>
-                                    <td>Les actions ne sont pas encore définies</td>
+                                    <td>
+                                    <td>  <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#majprocessus{{ $d->id }}">
+                                            M.A.J
+                                        </button>
+                                        @can('canProcessDelete', $d)
+                                            <button class="btn btn-danger " data-bs-toggle="modal"
+                                                data-bs-target="#deldepartment{{ $d->id }}">Supprimer</button>
+                                            <div class="modal modal-top fade" id="deldepartment{{ $d->id }}"
+                                                tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <form class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                                                Suppression!</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card-body">
+                                                                <p class="card-text">
+                                                                    Souhaitez vous vraiment supprimer le Processus :
+                                                                    {{ $d->name }} ?
+                                                                    <b>Notez que cela reviens a supprimer celui-ci
+                                                                        et que vous ne serez pas capable de le restaurer.</b>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-label-secondary"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <a href="{{ route('admin.department.destroy', ['id' => $d->id]) }}"
+                                                                class="btn btn-danger">Continuer</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endcan
+                                        <div class="modal animate__animated animate__bounceInUp"
+                                            id="majprocessus{{ $d->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <form class="modal-content" action="{{route('admin.processes.update', ['id'=>$d->id])}}"
+                                                    method="POST">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">M.A.J
+                                                            {{ $d->name }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <label for="nameBasic" class="form-label">Nom</label>
+                                                                <input type="text" name="name" id="nameBasic"
+                                                                    value="{{ $d->name }}" class="form-control"
+                                                                    placeholder="Entrer le nom">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <label for="abbrevBasic" class="form-label">Abbréviation</label>
+                                                                 <input type="text" name="name" id="abbrevBasic"
+                                                                    value="{{ $d->surfix }}" name="surfix" class="form-control"
+                                                                    placeholder="Entrer le surfix">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-label-secondary"
+                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button type="submit"
+                                                            class="btn btn-primary">Enregistrer</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

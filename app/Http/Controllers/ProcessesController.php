@@ -45,7 +45,7 @@ class ProcessesController extends Controller
                 Processes::create([
                     //'id' => $id,
                     'name' => $row[1],
-                    'surfix' => $row[2]
+                    'surfix' => $row[2],
                 ]);
             }
             DB::commit();
@@ -74,7 +74,7 @@ class ProcessesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             Gate::authorize('isAdmin', Auth::user());
@@ -93,15 +93,23 @@ public function update(Request $request, $id)
     /**
      * Remove the specified resource from storage.
      */
-public function destroy($id)
+    public function destroy($id)
     {
+        $rec = Processes::find($id);
+        Gate::authorize('isAdmin', Auth::user());
         try {
-            Gate::authorize('isAdmin', Auth::user());
-            DB::beginTransaction();
-            $rec = Processes::find($id);
-            $rec->delete();
-            DB::commit();
-            return redirect()->back()->with('error', "Cette entreprise a été ajouté dans la corbeille.");
+            if (Gate::allows('canSiteDelete', $rec)) {
+                if (Gate::allows('isAdmin', Auth::user())) {
+                    DB::beginTransaction();
+                    $rec->forceDelete();
+                    DB::commit();
+                    return redirect()->back()->with('error', "Ce processus a été supprimé avec succès.");
+                } else {
+                    throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                }
+            } else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }

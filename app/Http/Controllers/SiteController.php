@@ -133,6 +133,7 @@ class SiteController extends Controller
     public function destroy($id)
     {
         $rec = Site::find($id);
+        Gate::authorize('isAdmin', Auth::user());
         try {
             if (Gate::allows('canSiteDelete', $rec)) {
                 if (Gate::allows('isAdmin', Auth::user())) {
