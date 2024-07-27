@@ -362,7 +362,7 @@
                 </div>
             </div>
         @endif
-        @if ($data->status == 7)
+        @if ($data->status >= 6)
             <div class="row my-4">
                 <div class="col">
                     <h6> Evaluation du Dysfonctionnement</h6>

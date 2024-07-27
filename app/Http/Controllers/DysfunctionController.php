@@ -449,7 +449,7 @@ class DysfunctionController extends Controller
                 DB::beginTransaction();
                 $dys->satisfaction_description = $request->input('satisfaction_description');
                 $dys->solved = $request->has('solved') ? 1 : 0;
-                $dys->status = 7;
+                $dys->status = 6;
                 $dys->closed_at = Carbon::now();
                 $dys->closed_by = Auth::user()->firstname . '('. Auth::user()->matricule .')';
                 $dys->save();

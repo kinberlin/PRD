@@ -6,6 +6,7 @@ use App\Models\Dysfunction;
 use App\Models\Task;
 use App\Models\Users;
 use App\Scopes\YearScope;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DysfunctionPolicy
@@ -61,7 +62,7 @@ class DysfunctionPolicy
         if (!is_null($dysfunction->closed_at)) {
             return false;
         }
-        $parentTasks = Task::withoutGlobalScope(YearScope::class)
+        $tasks = Task::withoutGlobalScope(YearScope::class)
             ->select(
                 'id',
                 'start_date',
@@ -70,8 +71,7 @@ class DysfunctionPolicy
             )
             ->where('dysfunction', $dysfunction->id)
             ->get();
-        dd($parentTasks->max('end'));
-        return $dysfunction->status == 7;
+        return $dysfunction->status == 7 && now()->diffInDays(Carbon::parse($tasks->max('end'))) > 30;
     }
     public function DysRunning(Users $users, Dysfunction $dysfunction): bool
     {
