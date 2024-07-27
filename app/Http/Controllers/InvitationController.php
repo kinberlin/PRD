@@ -144,7 +144,7 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //try {
+        try {
         $data = Invitation::find($id);
         if (Gate::allows('isInvitationOpen', $data)) {
             if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
@@ -247,9 +247,9 @@ class InvitationController extends Controller
             // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
             abort(403, 'Unauthorized action. Invitation is closed');
         }
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }*/
+        }
     }
     public function appMail()
     {
