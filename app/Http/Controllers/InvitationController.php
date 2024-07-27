@@ -310,7 +310,7 @@ class InvitationController extends Controller
 
         try {
             $data = Invitation::find($id);
-            if (Gate::allows('isInvitationOpen', $data)) {
+            if (Gate::allows('isInvitationOpen', $data) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'élément à Mettre à jour", 404);
@@ -346,7 +346,7 @@ class InvitationController extends Controller
                 DB::commit();
                 return redirect()->back()->with('error', 'Participation pour la Réunion No. #' . $data->id . ' a été mise à jour.');
             } else {
-                throw new Exception("cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
+                throw new Exception("Cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

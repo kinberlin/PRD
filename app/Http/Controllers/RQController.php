@@ -154,7 +154,7 @@ class RQController extends Controller
     public function show($id)
     {
         Gate::authorize('isRq', Auth::user());
-        //try {
+        try {
         $dys = Dysfunction::find($id);
         if ($dys == null) {
             throw new Exception("Nous ne trouvons pas la ressource auquel vous essayez d'accéder.", 1);
@@ -193,9 +193,9 @@ class RQController extends Controller
         } else {
             throw new Exception("« Il est impossible d'afficher cette page. Il se peut que vous n'ayez pas les autorisations nécessaires pour manipuler ces données ou que certaines informations aient été mises à jour, rendant cette page accessible uniquement au Directeur Qualité. »", 401);
         }
-        /*} catch (Throwable $th) {
+        } catch (Throwable $th) {
     return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-    }*/
+    }
     }
     public function meetingProcess()
     {
