@@ -68,78 +68,6 @@
                                                     data-bs-target="#majInviteR{{ $invite->matricule }}">
                                                     Désister
                                                 </button>
-
-                                                <div class="modal modal-top fade" id="majInviteC{{ $invite->matricule }}"
-                                                    tabindex="-1">
-                                                    <div class="modal-dialog">
-                                                        <form class="modal-content" method="POST"
-                                                            action="{{ route('invitation.invite.confirmation') }}">
-                                                            @csrf
-                                                            <input type="hidden" name="invitation"
-                                                                value="{{ $d->id }}" />
-                                                            <input type="hidden" name="matricule"
-                                                                value="{{ $invite->matricule }}" />
-                                                            <input type="hidden" name="decision" value="Accept" />
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                                    Présence!</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="card-body">
-                                                                    <p class="card-text">
-                                                                        En continuant, vous confirmer votre présence. Voulez
-                                                                        vous Continuer ?
-                                                                        <b>Notez que cette action est irréversible!</b>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-label-secondary"
-                                                                    data-bs-dismiss="modal">Fermer</button>
-                                                                <button type="submit"
-                                                                    class="btn btn-label-success">Confirmer ma
-                                                                    Présence</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="modal modal-top fade" id="majInviteR{{ $invite->matricule }}"
-                                                    tabindex="-1">
-                                                    <div class="modal-dialog">
-                                                        <form class="modal-content" method="POST"
-                                                            action="{{ route('invitation.invite.confirmation') }}">
-                                                            @csrf
-                                                            <input type="hidden" name="invitation"
-                                                                value="{{ $d->id }}" />
-                                                            <input type="hidden" name="matricule"
-                                                                value="{{ $invite->matricule }}" />
-                                                            <input type="hidden" name="decision" value="Reject" />
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="modalTopTitle">Décliner
-                                                                    l'Invitation!</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="card-body">
-                                                                    <p class="card-text">
-                                                                        En continuant, vous décliner votre présence. Voulez
-                                                                        vous Continuer ?
-                                                                        <b>Notez que cette action est irréversible!</b>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-label-secondary"
-                                                                    data-bs-dismiss="modal">Fermer</button>
-                                                                <button type="submit"
-                                                                    class="btn btn-label-danger">Décliner</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
                                     </td>
                                 @else
                                     Aucune action requise
@@ -155,6 +83,66 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        <div class="modal modal-top fade" id="majInviteC{{ $invite->matricule }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content" method="POST" action="{{ route('invitation.invite.confirmation') }}">
+                    @csrf
+                    <input type="hidden" name="invitation" value="{{ $d->id }}" />
+                    <input type="hidden" name="matricule" value="{{ $invite->matricule }}" />
+                    <input type="hidden" name="decision" value="Accept" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                            Présence!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                En continuant, vous confirmer votre présence. Voulez
+                                vous Continuer ?
+                                <b>Notez que cette action est irréversible!</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-label-success">Confirmer ma
+                            Présence</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal modal-top fade" id="majInviteR{{ $invite->matricule }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content" method="POST" action="{{ route('invitation.invite.confirmation') }}">
+                    @csrf
+                    <input type="hidden" name="invitation" value="{{ $d->id }}" />
+                    <input type="hidden" name="matricule" value="{{ $invite->matricule }}" />
+                    <input type="hidden" name="decision" value="Reject" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Décliner
+                            l'Invitation!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                En continuant, vous décliner votre présence. Voulez
+                                vous Continuer ?
+                                <b>Notez que cette action est irréversible!</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-label-danger">Décliner</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>

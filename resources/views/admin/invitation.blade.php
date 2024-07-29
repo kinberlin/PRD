@@ -148,12 +148,10 @@
                         </form>
                     </div>
                 </div>
-                </td>
             @else
                 Aucune action requise
             @endif
         @endif
-        </td>
     @endforeach
     <!--End with datatable Modals -->
 @endsection

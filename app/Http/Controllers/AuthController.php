@@ -59,7 +59,7 @@ class AuthController extends Controller
                     }
                 }
             }
-            return back()->with(['error' => 'Nous ne trouvons pas votre compte']);
+            return redirect()->back()->with(['error' => 'Nous ne trouvons pas votre compte']);
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

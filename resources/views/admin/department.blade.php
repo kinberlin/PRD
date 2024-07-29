@@ -87,84 +87,7 @@
                                         @can('canDepDelete', $d)
                                             <button class="btn btn-danger " data-bs-toggle="modal"
                                                 data-bs-target="#deldepartment{{ $d->id }}">Supprimer</button>
-                                            <div class="modal modal-top fade" id="deldepartment{{ $d->id }}"
-                                                tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <form class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                                Suppression!</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card-body">
-                                                                <p class="card-text">
-                                                                    Souhaitez vous vraiment supprimer le Département :
-                                                                    {{ $d->name }} ?
-                                                                    <b>Notez que cela reviens a supprimer celui-ci
-                                                                        et que vous ne serez pas capable de le restaurer.</b>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-label-secondary"
-                                                                data-bs-dismiss="modal">Fermer</button>
-                                                            <a href="{{ route('admin.department.destroy', ['id' => $d->id]) }}"
-                                                                class="btn btn-danger">Continuer</a>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
                                         @endcan
-                                        <div class="modal animate__animated animate__bounceInUp"
-                                            id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="/admin/department/{{ $d->id }}"
-                                                    method="POST">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">M.A.J
-                                                            {{ $d->name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @csrf
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Nom</label>
-                                                                <input type="text" name="name"
-                                                                    value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Choisissez
-                                                                    l'Entreprise</label>
-                                                                <select name="enterprise" class="form-select" required>
-                                                                    @foreach ($ents as $e)
-                                                                        @if ($d->enterprise == $e->id)
-                                                                            <option value="{{ $e->id }}" selected>
-                                                                                {{ $e->name }}</option>
-                                                                        @else
-                                                                            <option value="{{ $e->id }}">
-                                                                                {{ $e->name }}</option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary">Enregistrer</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -175,6 +98,81 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        @can('canDepDelete', $d)
+            <div class="modal modal-top fade" id="deldepartment{{ $d->id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                Suppression!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Souhaitez vous vraiment supprimer le Département :
+                                    {{ $d->name }} ?
+                                    <b>Notez que cela reviens a supprimer celui-ci
+                                        et que vous ne serez pas capable de le restaurer.</b>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <a href="{{ route('admin.department.destroy', ['id' => $d->id]) }}"
+                                class="btn btn-danger">Continuer</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endcan
+        <div class="modal animate__animated animate__bounceInUp" id="majentreprise{{ $d->id }}" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" action="/admin/department/{{ $d->id }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">M.A.J
+                            {{ $d->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Nom</label>
+                                <input type="text" name="name" value="{{ $d->name }}" class="form-control"
+                                    placeholder="Entrer le nom">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Choisissez
+                                    l'Entreprise</label>
+                                <select name="enterprise" class="form-select" required>
+                                    @foreach ($ents as $e)
+                                        @if ($d->enterprise == $e->id)
+                                            <option value="{{ $e->id }}" selected>
+                                                {{ $e->name }}</option>
+                                        @else
+                                            <option value="{{ $e->id }}">
+                                                {{ $e->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
