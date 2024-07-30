@@ -17,6 +17,6 @@ class GravityPolicy
         if(is_null($gravity)){
             return false;
         }
-         return $gravity->users()->exists() ? false : true;
+         return $gravity->dysfunctions()->exists() ? false : true;
     }
 }

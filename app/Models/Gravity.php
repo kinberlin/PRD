@@ -84,6 +84,6 @@ class Gravity extends Model
     // Relations ...
     public function dysfunctions()
     {
-        return $this->hasMany(Dysfunction::class, 'gravity', 'id');
+        return $this->hasMany(Dysfunction::class, 'gravity_id', 'id');
     }
 }

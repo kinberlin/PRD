@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
 
  * @property int $enterprise_id
  * @property int $site_id
+ * @property int $gravity_id
  * @property int $origin
  * @property string $enterprise
  * @property string $site
@@ -60,7 +61,7 @@ class Dysfunction extends Model
      * @var array
      */
 
-    protected $fillable = ['enterprise', 'enterprise_id', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'probability', 'corrective_acts', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
+    protected $fillable = ['enterprise', 'enterprise_id', 'site', 'site_id', 'emp_signaling', 'emp_matricule', 'emp_email', 'code', 'description', 'concern_processes', 'impact_processes', 'gravity', 'gravity_id', 'probability', 'corrective_acts', 'status', 'progression', 'pj', 'created_at', 'deleted_at', 'occur_date', 'cause', 'rej_reasons', 'type', 'solved', 'cost', 'satisfaction_description', 'closed_by', 'closed_at', 'origin'];
     public $timestamps = false;
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:i',
@@ -113,7 +114,7 @@ class Dysfunction extends Model
     // Define the relationship with the Gravity model
     public function gravities()
     {
-        return $this->belongsTo(Gravity::class, 'name', 'gravity');
+        return $this->belongsTo(Gravity::class, 'id', 'gravity_id');
     }
 
     // Define the relationship with the Origin model
