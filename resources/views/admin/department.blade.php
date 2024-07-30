@@ -80,7 +80,8 @@
                                     <td>{{ $ents->where('id', $d->enterprise)->first()->name }} (ID : {{ $d->enterprise }})
                                     </td>
                                     <td>{{ $d->name }}</td>
-                                    <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">
                                             M.A.J
                                         </button>

@@ -9,13 +9,17 @@ use App\Models\AuthorisationRq;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
+use App\Models\Gravity;
 use App\Models\Invitation;
+use App\Models\Probability;
 use App\Models\Processes;
 use App\Models\Site;
 use App\Models\Users;
 use App\Policies\DepartmentPolicy;
 use App\Policies\DysfunctionPolicy;
+use App\Policies\GravityPolicy;
 use App\Policies\InvitationPolicy;
+use App\Policies\ProbabilityPolicy;
 use App\Policies\SitePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -34,6 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         Dysfunction::class => DysfunctionPolicy::class,
         Department::class => DepartmentPolicy::class,
         Site::class => SitePolicy::class,
+        Gravity::class => GravityPolicy::class,
+        Probability::class => ProbabilityPolicy::class,
     ];
 
     /**

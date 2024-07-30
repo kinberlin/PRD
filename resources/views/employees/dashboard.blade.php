@@ -85,9 +85,9 @@
                                         $critics = $alldys
                                             ->sortByDesc(function ($k) use ($allgravity, $allprobability) {
                                                 $value =
-                                                    ($allgravity->where('name', $k->gravity)->first() == null
+                                                    ($allgravity->where('id', $k->gravity_id)->first() == null
                                                         ? 0
-                                                        : $allgravity->where('name', $k->gravity)->first()->note) *
+                                                        : $allgravity->where('id', $k->gravity_id)->first()->note) *
                                                     ($allprobability->where('id', $k->probability)->first() == null
                                                         ? 0
                                                         : $allprobability->where('id', $k->probability)->first()->note);
@@ -98,9 +98,9 @@
                                         $criticaldys = $alldys
                                             ->sortByDesc(function ($k) use ($allgravity, $allprobability) {
                                                 $value =
-                                                    $allgravity->where('name', $k->gravity)->first() == null
+                                                    $allgravity->where('id', $k->gravity_id)->first() == null
                                                         ? 0
-                                                        : $allgravity->where('name', $k->gravity)->first()->note;
+                                                        : $allgravity->where('id', $k->gravity_id)->first()->note;
                                                 $k->setAttribute('cal_gravity', $value);
                                                 return $k;
                                             })

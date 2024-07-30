@@ -90,12 +90,14 @@
                                     <td style="text-align: center">{{ $d->note }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
-                                        <button class="btn btn-danger " data-bs-toggle="modal"
-                                            data-bs-target="#delprobability{{ $d->id }}">Désactiver</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majprobability{{ $d->id }}">
                                             M.A.J
                                         </button>
+                                        @can('canProbDelete', $d)
+                                            <button class="btn btn-danger " data-bs-toggle="modal"
+                                                data-bs-target="#delprobability{{ $d->id }}">Suppression</button>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -108,20 +110,21 @@
     </div>
     <!--Begin with datatable Modals -->
     @foreach ($data as $d)
+    @can('canProbDelete', $d)
         <div class="modal modal-top fade" id="delprobability{{ $d->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                            Désactivation!</h5>
+                            Suppression!</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="card-body">
                             <p class="card-text">
-                                Souhaitez vous vraiment désactiver :
+                                Souhaitez vous vraiment supprimer :
                                 {{ $d->name }} ?
-                                <b>Notez que cela reviens a supprimer partiellement celle-ci
+                                <b>Notez que cela reviens a supprimer celle-ci
                                     et que vous ne serez pas capable de le restaurer
                                     sur cette interface.</b>
                             </p>
@@ -135,6 +138,7 @@
                 </form>
             </div>
         </div>
+    @endcan
         <div class="modal animate__animated animate__bounceInUp" id="majprobability{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">

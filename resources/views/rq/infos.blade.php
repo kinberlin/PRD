@@ -139,7 +139,7 @@
                         <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
                         <select class="form-control" name="gravity" data-allow-clear="true" required>
                             @foreach ($gravity as $g)
-                                <option value="{{ $g->name }}" @if ($g->name == $data->gravity) selected @endif>
+                                <option value="{{ $g->id }}" @if ($g->id == $data->gravity_id) selected @endif>
                                     {{ $g->name }} (Note : {{ $g->note }})</option>
                             @endforeach
                         </select>

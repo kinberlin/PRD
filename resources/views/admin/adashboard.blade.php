@@ -90,9 +90,9 @@
                                                     ($allgravity->where('id', $k->gravity_id)->first() == null
                                                         ? 0
                                                         : $allgravity->where('id', $k->gravity_id)->first()->note) *
-                                                    ($allprobability->where('id', $k->probability_id)->first() == null
+                                                    ($allprobability->where('id', $k->probability)->first() == null
                                                         ? 0
-                                                        : $allprobability->where('id', $k->probability_id)->first()->note);
+                                                        : $allprobability->where('id', $k->probability)->first()->note);
                                                 $k->setAttribute('critic', $value);
                                                 return $k;
                                             })
