@@ -89,80 +89,6 @@
                                             data-bs-target="#majorigin{{ $d->id }}">
                                             M.A.J
                                         </button>
-                                        <div class="modal modal-top fade" id="delorigin{{ $d->id }}"
-                                            tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <form class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                            Désactivation!</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                Souhaitez vous vraiment désactiver :
-                                                                {{ $d->name }} ?
-                                                                <b>Notez que cela reviens a supprimer partiellement celle-ci
-                                                                    et que vous ne serez pas capable de le restaurer
-                                                                    sur cette interface.</b>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.origin.destroy', ['id' => $d->id]) }}"
-                                                            class="btn btn-danger">Continuer</a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="modal animate__animated animate__bounceInUp"
-                                            id="majorigin{{ $d->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <form class="modal-content"
-                                                    action="{{ route('admin.origin.update', ['id' => $d->id]) }}"
-                                                    method="POST">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel1">M.A.J
-                                                            {{ $d->name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @csrf
-                                                        <div class="row">
-                                                            <div class="col mb-12">
-                                                                <label for="nameBasic{{ $d->id }}"
-                                                                    class="form-label">Nom</label>
-                                                                <input type="text" maxlength="50"
-                                                                    id="nameBasic{{ $d->id }}" name="name"
-                                                                    value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom" required>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="note{{ $d->id }}"
-                                                                    class="form-label">Description</label>
-                                                                <textarea rows="2" id="note{{ $d->id }}"
-                                                                    name="description" class="form-control"
-                                                                    required>{{$d->description}}</textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary">Enregistrer</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -173,6 +99,72 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        <div class="modal modal-top fade" id="delorigin{{ $d->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                            Désactivation!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                Souhaitez vous vraiment désactiver :
+                                {{ $d->name }} ?
+                                <b>Notez que cela reviens a supprimer partiellement celle-ci
+                                    et que vous ne serez pas capable de le restaurer
+                                    sur cette interface.</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <a href="{{ route('admin.origin.destroy', ['id' => $d->id]) }}"
+                            class="btn btn-danger">Continuer</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal animate__animated animate__bounceInUp" id="majorigin{{ $d->id }}" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" action="{{ route('admin.origin.update', ['id' => $d->id]) }}"
+                    method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">M.A.J
+                            {{ $d->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col mb-12">
+                                <label for="nameBasic{{ $d->id }}" class="form-label">Nom</label>
+                                <input type="text" maxlength="50" id="nameBasic{{ $d->id }}" name="name"
+                                    value="{{ $d->name }}" class="form-control" placeholder="Entrer le nom"
+                                    required>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="note{{ $d->id }}" class="form-label">Description</label>
+                                <textarea rows="2" id="note{{ $d->id }}" name="description" class="form-control" required>{{ $d->description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>

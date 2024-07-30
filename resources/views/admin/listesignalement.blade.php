@@ -46,7 +46,7 @@
                                     <td>{{ $d->enterprise . ' (' . $d->site . ')' }}</td>
                                     <td>{{ $status->where('id', $d->status)->first()->name }}</td>
                                     <td>
-                                        <a href="{{ route('rq.n1dysfonction', ['id'=>$d->id]) }}" target="_blank"
+                                        <a href="{{ route('admin.dysfunction.show', ['id'=>$d->id]) }}" target="_blank"
                                             class="btn rounded-pill btn-icon btn-info">
                                             <span class="tf-icons bx bx-info-circle"></span>
                                         </a>

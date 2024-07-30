@@ -102,95 +102,6 @@
                                             data-bs-target="#majgravity{{ $d->id }}">
                                             M.A.J
                                         </button>
-                                        <div class="modal modal-top fade" id="delgravity{{ $d->id }}"
-                                            tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <form class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                            Désactivation!</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                Souhaitez vous vraiment désactiver :
-                                                                {{ $d->name }} ?
-                                                                <b>Notez que cela reviens a supprimer partiellement celle-ci
-                                                                    et que vous ne serez pas capable de le restaurer
-                                                                    sur cette interface.</b>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.gravity.destroy', ['id' => $d->id]) }}"
-                                                            class="btn btn-danger">Continuer</a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="modal animate__animated animate__bounceInUp"
-                                            id="majgravity{{ $d->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <form class="modal-content"
-                                                    action="{{ route('admin.gravity.update', ['id' => $d->id]) }}"
-                                                    method="POST">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel1">M.A.J
-                                                            {{ $d->name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @csrf
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="nameBasic{{ $d->id }}"
-                                                                    class="form-label">Nom</label>
-                                                                <input type="text" maxlength="50"
-                                                                    id="nameBasic{{ $d->id }}" name="name"
-                                                                    value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom" required>
-                                                            </div>
-                                                            <div class="col mb-3">
-                                                                <label for="leastloss{{ $d->id }}"
-                                                                    class="form-label">Perte Minimal en XAF</label>
-                                                                <input type="number" id="leastloss{{ $d->id }}"
-                                                                    name="minloss" value="{{ $d->least_price }}"
-                                                                    min="0" class="form-control" placeholder="XAF"
-                                                                    required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="maxloss{{ $d->id }}"
-                                                                    class="form-label">Perte Maximal en XAF</label>
-                                                                <input type="number" id="maxloss{{ $d->id }}"
-                                                                    name="maxloss" value="{{ $d->max_price }}"
-                                                                    min="0" class="form-control" placeholder="XAF"
-                                                                    required>
-                                                            </div>
-                                                            <div class="col mb-3">
-                                                                <label for="no{{ $d->id }}"
-                                                                    class="form-label">Note de la gravité</label>
-                                                                <input type="number" id="no{{ $d->id }}"
-                                                                    name="note" value="{{ $d->note }}"
-                                                                    class="form-control" placeholder="XAF" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary">Enregistrer</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -202,6 +113,84 @@
 
     </div>
 @endsection
+<!--Begin with datatable Modals -->
+@foreach ($data as $d)
+    <div class="modal modal-top fade" id="delgravity{{ $d->id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                        Désactivation!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <p class="card-text">
+                            Souhaitez vous vraiment désactiver :
+                            {{ $d->name }} ?
+                            <b>Notez que cela reviens a supprimer partiellement celle-ci
+                                et que vous ne serez pas capable de le restaurer
+                                sur cette interface.</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <a href="{{ route('admin.gravity.destroy', ['id' => $d->id]) }}"
+                        class="btn btn-danger">Continuer</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal animate__animated animate__bounceInUp" id="majgravity{{ $d->id }}" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" action="{{ route('admin.gravity.update', ['id' => $d->id]) }}"
+                method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">M.A.J
+                        {{ $d->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameBasic{{ $d->id }}" class="form-label">Nom</label>
+                            <input type="text" maxlength="50" id="nameBasic{{ $d->id }}" name="name"
+                                value="{{ $d->name }}" class="form-control" placeholder="Entrer le nom"
+                                required>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="leastloss{{ $d->id }}" class="form-label">Perte Minimal en XAF</label>
+                            <input type="number" id="leastloss{{ $d->id }}" name="minloss"
+                                value="{{ $d->least_price }}" min="0" class="form-control" placeholder="XAF"
+                                required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="maxloss{{ $d->id }}" class="form-label">Perte Maximal en XAF</label>
+                            <input type="number" id="maxloss{{ $d->id }}" name="maxloss"
+                                value="{{ $d->max_price }}" min="0" class="form-control" placeholder="XAF"
+                                required>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="no{{ $d->id }}" class="form-label">Note de la gravité</label>
+                            <input type="number" id="no{{ $d->id }}" name="note"
+                                value="{{ $d->note }}" class="form-control" placeholder="XAF" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
+<!--End with datatable Modals -->
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
