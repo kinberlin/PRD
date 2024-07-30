@@ -152,8 +152,7 @@
                 Aucune action requise
             @endif
         @endif
-    @endforeach
-    <!--End with datatable Modals -->
+
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>

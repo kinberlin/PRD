@@ -24,7 +24,7 @@
                             </div>
                             @livewire('addplt-employee-form')
                         </div>
-                        
+
                     </div>
                 </div>
                 <hr class="m-0">
@@ -53,11 +53,13 @@
                                         Entreprise :
                                         <b>{{ $ents->where('id', $users->where('id', $d->user)->first()->enterprise)->first()->name }}</b>
                                         <br>Noms :
-                                        <b>{{ $users->where('id', $d->user)->first()->firstname .' '. $users->where('id', $d->user)->first()->lastname }}</b>
+                                        <b>{{ $users->where('id', $d->user)->first()->firstname . ' ' . $users->where('id', $d->user)->first()->lastname }}</b>
                                         <br>Email : <b>{{ $users->where('id', $d->user)->first()->email }}</b>
-                                        <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }} | {{ $users->where('id', $d->user)->first()->matricule }}</b>
+                                        <br>Tel. <b>{{ $users->where('id', $d->user)->first()->phone }} |
+                                            {{ $users->where('id', $d->user)->first()->matricule }}</b>
                                     </td>
-                                    <td>Processus : {{ $processes->where('id', $d->process)->first()->name . ' ('.$processes->where('id', $d->process)->first()->surfix.')' }}
+                                    <td>Processus :
+                                        {{ $processes->where('id', $d->process)->first()->name . ' (' . $processes->where('id', $d->process)->first()->surfix . ')' }}
                                         <br> Rôle : Pilote @if ($d->interim == 1)
                                             en Intérim
                                         @else
@@ -68,33 +70,7 @@
                                             data-bs-target="#delauthRQ{{ $d->id }}">
                                             Retirer l'authorisation
                                         </button>
-                                        <div class="modal modal-top fade" id="delauthRQ{{ $d->id }}"
-                                            tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <form class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                                                            supression!</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                En continuant, vous allez supprimer l'authorisation RQ possèdé par cet utilisateur. Voulez vous Continuer ?
-                                                                <b>Notez que cette action est irréversible!</b>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <a href="{{ route('admin.authplt.destroy', ['id'=>$d->id]) }}"
-                                                            class="btn btn-danger">Continuer</a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div></td>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -104,9 +80,37 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        <div class="modal modal-top fade" id="delauthRQ{{ $d->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                            supression!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                En continuant, vous allez supprimer l'authorisation RQ possèdé par cet utilisateur. Voulez
+                                vous Continuer ?
+                                <b>Notez que cette action est irréversible!</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <a href="{{ route('admin.authplt.destroy', ['id' => $d->id]) }}" class="btn btn-danger">Continuer</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
-@livewireScripts
+    @livewireScripts
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/bootstrap5.js') !!}"></script>
