@@ -60,7 +60,7 @@
                             <div class="col-md-10">
                                 <select id="selsite" name="site" class="form-select" required>
                                     @foreach ($site as $d)
-                                        <option value="{{ $d->name }}, {{ $d->location }}"
+                                        <option value="{{ $d->id }}"
                                             data-extra-info="{{ $d->enterprise }}">
                                             {{ $d->name }} ({{ $d->location }})</option>
                                     @endforeach

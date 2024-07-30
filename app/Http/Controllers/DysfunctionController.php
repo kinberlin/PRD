@@ -58,13 +58,18 @@ class DysfunctionController extends Controller
             DB::beginTransaction();
             $dys = new Dysfunction();
             $ents = Enterprise::where('name', $request->input('enterprise'))->get()->first();
-            if (empty($ents)) {
+            if (is_null($ents)) {
+                throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
+            }
+            $site = Site::find($request->input('site'));
+            if (is_null($site)) {
                 throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
             }
             $dys->occur_date = $request->input('occur_date');
             $dys->enterprise = $request->input('enterprise');
             $dys->enterprise_id = $ents->id;
-            $dys->site = $request->input('site');
+            $dys->site = $site->name . ' ,' .$site->location;
+            $dys->site_id = $site->id;
             $dys->description = $request->input('description');
             $dys->emp_signaling = Auth::user()->firstname . ' ' . Auth::user()->lastname;
             $dys->emp_matricule = Auth::user()->matricule;
@@ -112,10 +117,14 @@ class DysfunctionController extends Controller
                 if ($dys == null) {
                     throw new Exception("Impossible de trouver la ressource demandée.", 404);
                 }
+            $gra = Gravity::find($request->input('gravity'));
+            if (is_null($gra)) {
+                throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
+            }
                 $dys->impact_processes = json_encode($request->input('impact_processes'));
                 $dys->concern_processes = json_encode($request->input('concern_processes'));
-                $dys->gravity = $request->input('gravity');
-                $dys->gravity = $request->input('gravity');
+                $dys->gravity = $gra->name;
+                $dys->gravity_id = $gra->id;
                 $dys->origin = $request->input('origin');
                 $dys->probability = $request->input('probability');
                 $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
