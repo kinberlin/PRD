@@ -45,7 +45,7 @@ class OriginController extends Controller
                 Origin::create([
                     //'id' => $id,
                     'name' => $row[1],
-                    'description' =>  $row[2],
+                    'description' => $row[2],
                 ]);
             }
             DB::commit();
@@ -82,7 +82,7 @@ class OriginController extends Controller
         ]);
         try {
             Gate::authorize('isAdmin', Auth::user());
-            
+
             DB::beginTransaction();
             $d = Origin::find($id);
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
@@ -100,13 +100,17 @@ class OriginController extends Controller
      */
     public function destroy($id)
     {
+        $rec = Origin::find($id);
+        Gate::authorize('isAdmin', Auth::user());
         try {
-            Gate::authorize('isAdmin', Auth::user());
-            DB::beginTransaction();
-            $rec = Origin::find($id);
-            $rec->delete();
-            DB::commit();
-            return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            if (Gate::allows('canOriginDelete', $rec)) {
+                DB::beginTransaction();
+                $rec->forcedelete();
+                DB::commit();
+                return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            } else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }

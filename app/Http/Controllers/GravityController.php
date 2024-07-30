@@ -9,12 +9,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class GravityController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -47,9 +46,9 @@ class GravityController extends Controller
                 Gravity::create([
                     //'id' => $id,
                     'name' => $row[1],
-                    'least_price' =>  $row[2],
+                    'least_price' => $row[2],
                     'max_price' => $row[3],
-                    'note' => $row[4]
+                    'note' => $row[4],
                 ]);
             }
             DB::commit();
@@ -87,15 +86,15 @@ class GravityController extends Controller
         ]);
         try {
             Gate::authorize('isAdmin', Auth::user());
-            
+
             DB::beginTransaction();
             $d = Gravity::find($id);
-    
+
             $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
             $d->least_price = empty($request->input('minloss')) ? $d->least_price : $request->input('minloss');
             $d->max_price = empty($request->input('maxloss')) ? $d->name : $request->input('maxloss');
             $d->note = empty($request->input('note')) ? $d->note : $request->input('note');
-            
+
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");
@@ -109,15 +108,20 @@ class GravityController extends Controller
      */
     public function destroy($id)
     {
+        $rec = Gravity::find($id);
+        Gate::authorize('isAdmin', Auth::user());
         try {
-            Gate::authorize('isAdmin', Auth::user());
-            DB::beginTransaction();
-            $rec = Gravity::find($id);
-            $rec->delete();
-            DB::commit();
-            return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            if (Gate::allows('canGravityDelete', $rec)) {
+                DB::beginTransaction();
+                $rec->forcedelete();
+                DB::commit();
+                return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            } else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
+
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Origin;
 use App\Models\Probability;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,7 +45,7 @@ class ProbabilityController extends Controller
                 Probability::create([
                     //'id' => $id,
                     'name' => $row[1],
-                    'note' =>  $row[2],
+                    'note' => $row[2],
                     'description' => $row[3],
                 ]);
             }
@@ -103,15 +102,20 @@ class ProbabilityController extends Controller
      */
     public function destroy($id)
     {
+        $rec = Probability::find($id);
+        Gate::authorize('isAdmin', Auth::user());
         try {
-            Gate::authorize('isAdmin', Auth::user());
-            DB::beginTransaction();
-            $rec = Probability::find($id);
-            $rec->delete();
-            DB::commit();
-            return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            if (Gate::allows('canOriginDelete', $rec)) {
+                DB::beginTransaction();
+                $rec->forcedelete();
+                DB::commit();
+                return redirect()->back()->with('error', "Element envoyé dans la corbeille.");
+            } else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
+            }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
+
 }

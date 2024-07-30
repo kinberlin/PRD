@@ -83,12 +83,14 @@
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->description }}</td>
                                     <td>
-                                        <button class="btn btn-danger " data-bs-toggle="modal"
-                                            data-bs-target="#delorigin{{ $d->id }}">Désactiver</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majorigin{{ $d->id }}">
                                             M.A.J
                                         </button>
+                                        @can('canOriginDelete', $d)
+                                            <button class="btn btn-danger " data-bs-toggle="modal"
+                                                data-bs-target="#delorigin{{ $d->id }}">Supprimer</button>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -101,33 +103,35 @@
     </div>
     <!--Begin with datatable Modals -->
     @foreach ($data as $d)
-        <div class="modal modal-top fade" id="delorigin{{ $d->id }}" tabindex="-1">
-            <div class="modal-dialog">
-                <form class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                            Désactivation!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card-body">
-                            <p class="card-text">
-                                Souhaitez vous vraiment désactiver :
-                                {{ $d->name }} ?
-                                <b>Notez que cela reviens a supprimer partiellement celle-ci
-                                    et que vous ne serez pas capable de le restaurer
-                                    sur cette interface.</b>
-                            </p>
+        @can('canOriginDelete', $d)
+            <div class="modal modal-top fade" id="delorigin{{ $d->id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                Suppression!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <a href="{{ route('admin.origin.destroy', ['id' => $d->id]) }}"
-                            class="btn btn-danger">Continuer</a>
-                    </div>
-                </form>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Souhaitez vous vraiment supprimer :
+                                    {{ $d->name }} ?
+                                    <b>Notez que cela reviens a supprimer celle-ci
+                                        et que vous ne serez pas capable de le restaurer
+                                        sur cette interface.</b>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <a href="{{ route('admin.origin.destroy', ['id' => $d->id]) }}"
+                                class="btn btn-danger">Continuer</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endcan
         <div class="modal animate__animated animate__bounceInUp" id="majorigin{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
