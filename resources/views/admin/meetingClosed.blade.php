@@ -60,122 +60,6 @@
                                             data-bs-target="#majsecureemp{{ $d->id }}">
                                             Participants
                                         </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1"
-                                            aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <form method="POST" class="modal-content"
-                                                    action="{{ route('invitation.participation', $d->id) }}">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
-                                                            No. #{{ $d->id }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @csrf
-                                                        <div class="table-responsive">
-                                                            <table class="table border-top table-striped">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="text-nowrap">Invités</th>
-                                                                        <th class="text-nowrap text-center">✅ Accepté
-                                                                        </th>
-                                                                        <th class="text-nowrap text-center">❌ Rejeté
-                                                                        </th>
-                                                                        <th class="text-nowrap text-center">👩🏻‍💻
-                                                                            Présent</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach ($d->getInternalInvites() as $i)
-                                                                        @php
-                                                                            $u = $users
-                                                                                ->where('matricule', $i->matricule)
-                                                                                ->first();
-                                                                            $p = $d->findParticipantByMatricule(
-                                                                                $i->matricule,
-                                                                            );
-                                                                        @endphp
-                                                                        <tr>
-                                                                            <td class="text-nowrap">
-                                                                                {{ $u != null ? $u->firstname . ' (' . $u->matricule . ')' : 'Utilisateur Introuvable.' }}
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox"
-                                                                                        @if ($i->decision == 'Confirmer') checked @endif
-                                                                                        disabled />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox"
-                                                                                        @if ($i->decision == 'Rejeté') checked @endif
-                                                                                        disabled />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox" name="participant[]"
-                                                                                        value="{{ $i->matricule }}"
-                                                                                        @if ($p != null) checked @endif />
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    @foreach (json_decode($d->external_invites, true) as $e)
-                                                                        @php
-                                                                            $p = $d->findParticipantByMatricule($e);
-                                                                        @endphp
-                                                                        <tr>
-                                                                            <td class="text-nowrap">{{ $e }}
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox" disabled />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox" disabled />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div
-                                                                                    class="form-check d-flex justify-content-center">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox"
-                                                                                        name="participantext[]"
-                                                                                        value="{{ $e }}"
-                                                                                        @if ($p != null) checked @endif />
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary"
-                                                            data-bs-dismiss="modal">Soumettre</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -186,6 +70,101 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <form method="POST" class="modal-content" action="{{ route('invitation.participation', $d->id) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Invitations Reunion :
+                            No. #{{ $d->id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="table-responsive">
+                            <table class="table border-top table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-nowrap">Invités</th>
+                                        <th class="text-nowrap text-center">✅ Accepté
+                                        </th>
+                                        <th class="text-nowrap text-center">❌ Rejeté
+                                        </th>
+                                        <th class="text-nowrap text-center">👩🏻‍💻
+                                            Présent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($d->getInternalInvites() as $i)
+                                        @php
+                                            $u = $users->where('matricule', $i->matricule)->first();
+                                            $p = $d->findParticipantByMatricule($i->matricule);
+                                        @endphp
+                                        <tr>
+                                            <td class="text-nowrap">
+                                                {{ $u != null ? $u->firstname . ' (' . $u->matricule . ')' : 'Utilisateur Introuvable.' }}
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        @if ($i->decision == 'Confirmer') checked @endif disabled />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        @if ($i->decision == 'Rejeté') checked @endif disabled />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox" name="participant[]"
+                                                        value="{{ $i->matricule }}"
+                                                        @if ($p != null) checked @endif />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @foreach (json_decode($d->external_invites, true) as $e)
+                                        @php
+                                            $p = $d->findParticipantByMatricule($e);
+                                        @endphp
+                                        <tr>
+                                            <td class="text-nowrap">{{ $e }}
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox" disabled />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox" disabled />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox" name="participantext[]"
+                                                        value="{{ $e }}"
+                                                        @if ($p != null) checked @endif />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Soumettre</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
