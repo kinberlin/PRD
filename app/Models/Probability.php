@@ -83,4 +83,8 @@ class Probability extends Model
     }
 
     // Relations ...
+        public function dysfunctions()
+    {
+        return $this->hasMany(Dysfunction::class, 'probability', 'id');
+    }
 }

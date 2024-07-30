@@ -83,7 +83,7 @@ class ProbabilityController extends Controller
         ]);
         try {
             Gate::authorize('isAdmin', Auth::user());
-            
+
             DB::beginTransaction();
             $d = Probability::find($id);
 
