@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-                        
+
                         <input type="file" style="visibility: hidden" id="excelFileInput">
 
                         <form action="/admin/department" method="POST">
@@ -87,60 +87,13 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{$ents->where('id', $d->enterprise)->first()->name}} (ID : {{ $d->enterprise }})</td>
+                                    <td>{{ $ents->where('id', $d->enterprise)->first()->name }} (ID : {{ $d->enterprise }})
+                                    </td>
                                     <td>{{ $d->name }}</td>
                                     <td> <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#majentreprise{{ $d->id }}">
+                                            data-bs-target="#majdepartment{{ $d->id }}">
                                             M.A.J
                                         </button>
-                                        <div class="modal animate__animated animate__bounceInUp"
-                                            id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="/admin/department/{{ $d->id }}"
-                                                    method="POST">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">M.A.J
-                                                            {{ $d->name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @csrf
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Nom</label>
-                                                                <input type="text" name="name"
-                                                                    value="{{ $d->name }}" class="form-control"
-                                                                    placeholder="Entrer le nom">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col mb-3">
-                                                                <label for="nameBasic" class="form-label">Choisissez
-                                                                    l'Entreprise</label>
-                                                                <select name="enterprise" class="form-select" required>
-                                                                    @foreach ($ents as $e)
-                                                                        @if ($d->enterprise == $e->id)
-                                                                            <option value="{{ $e->id }}" selected>
-                                                                                {{ $e->name }}</option>
-                                                                        @else
-                                                                            <option value="{{ $e->id }}">
-                                                                                {{ $e->name }}</option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-label-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary">Enregistrer</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -151,6 +104,53 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        <div class="modal animate__animated animate__bounceInUp" id="majdepartment{{ $d->id }}" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" action="/admin/department/{{ $d->id }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">M.A.J
+                            {{ $d->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Nom</label>
+                                <input type="text" name="name" value="{{ $d->name }}" class="form-control"
+                                    placeholder="Entrer le nom">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Choisissez
+                                    l'Entreprise</label>
+                                <select name="enterprise" class="form-select" required>
+                                    @foreach ($ents as $e)
+                                        @if ($d->enterprise == $e->id)
+                                            <option value="{{ $e->id }}" selected>
+                                                {{ $e->name }}</option>
+                                        @else
+                                            <option value="{{ $e->id }}">
+                                                {{ $e->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
