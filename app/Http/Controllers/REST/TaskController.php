@@ -31,7 +31,7 @@ class TaskController extends RoutingController
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
         $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-        $task->created_by =  Auth::user()->firstname .' '. Auth::user()->lastname;
+        $task->created_by = Auth::user()->firstname . ' ' . Auth::user()->lastname;
 
         $task->save();
 
@@ -141,8 +141,8 @@ class TaskController extends RoutingController
             }
             if ($pj->isValid()) {
                 $filename = time() . '_' . $pj->getClientOriginalName();
-                $pj->move(public_path('/uploads/tasks'), $filename);
-                $url = asset('/uploads/tasks/' . $filename);
+                // Store the file and get the path
+                $url = $pj->storeAs('uploads/tasks', $filename);
             }
             if ($url == null) {
                 throw new Exception("Impossible de récuperer l'URL de la ressource", 501);

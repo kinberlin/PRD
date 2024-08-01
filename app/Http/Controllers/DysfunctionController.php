@@ -68,25 +68,25 @@ class DysfunctionController extends Controller
             $dys->occur_date = $request->input('occur_date');
             $dys->enterprise = $request->input('enterprise');
             $dys->enterprise_id = $ents->id;
-            $dys->site = $site->name . ' ,' .$site->location;
+            $dys->site = $site->name . ' ,' . $site->location;
             $dys->site_id = $site->id;
             $dys->description = $request->input('description');
             $dys->emp_signaling = Auth::user()->firstname . ' ' . Auth::user()->lastname;
             $dys->emp_matricule = Auth::user()->matricule;
             $dys->emp_email = Auth::user()->email;
             $urls = [];
-            if ($request->hasFile('group-a')) {
-                foreach ($request->file('group-a') as $key => $fileData) {
-                    if (isset($fileData['pj']) && $fileData['pj']->isValid()) {
-                        $pj = $fileData['pj'];
-                        $filename = time() . '_' . $pj->getClientOriginalName();
-                        $pj->move(public_path('/uploads/dysfonction'), $filename);
-                        $url = asset('/uploads/dysfonction/' . $filename);
-                        $urls[] = $url;
-                    }
+            //dd($request);
+            foreach ($request->file('group-a') as $key => $fileData) {
+                if (isset($fileData['pj']) && $fileData['pj']->isValid()) {
+                    $pj = $fileData['pj'];
+                    $filename = time() . '_' . $pj->getClientOriginalName();
+                    // Store the file and get the path
+                    $path = $pj->storeAs('uploads/dysfunction', $filename);
+                    $urls[] = $path;
                 }
             }
             $dys->pj = json_encode($urls);
+            dd($dys->pj);
             $dys->save();
             DB::commit();
             $dys->code = 'D' . Carbon::now()->year . date('m') . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
@@ -117,10 +117,10 @@ class DysfunctionController extends Controller
                 if ($dys == null) {
                     throw new Exception("Impossible de trouver la ressource demandée.", 404);
                 }
-            $gra = Gravity::find($request->input('gravity'));
-            if (is_null($gra)) {
-                throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
-            }
+                $gra = Gravity::find($request->input('gravity'));
+                if (is_null($gra)) {
+                    throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
+                }
                 $dys->impact_processes = json_encode($request->input('impact_processes'));
                 $dys->concern_processes = json_encode($request->input('concern_processes'));
                 $dys->gravity = $gra->name;
@@ -461,7 +461,7 @@ class DysfunctionController extends Controller
                 $dys->solved = $request->has('solved') ? 1 : 0;
                 $dys->status = 6;
                 $dys->closed_at = Carbon::now();
-                $dys->closed_by = Auth::user()->firstname . '('. Auth::user()->matricule .')';
+                $dys->closed_by = Auth::user()->firstname . '(' . Auth::user()->matricule . ')';
                 $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");

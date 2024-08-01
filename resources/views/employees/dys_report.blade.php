@@ -216,7 +216,7 @@
                                     @if (is_null($co->proof))
                                         <small>Aucune Preuve</small>
                                     @else
-                                        <a href="{{ $co->proof }}" target="_blank">Voir la Preuve</a>
+                                        <a href="{{ Storage::url($co->proof) }}" target="_blank">Voir la Preuve</a>
                                     @endif
                                     <small>{{ $co->progress * 100 }}%</small>
                                 </div>

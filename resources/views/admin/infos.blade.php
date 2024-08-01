@@ -69,7 +69,7 @@
                                 @if (count(json_decode($data->pj)) < 8)
                                     @foreach (json_decode($data->pj) as $index => $item)
                                         <div class="d-flex mt-3">
-                                            <a href="{{ $item }}" target="_blank"
+                                            <a href="{{ Storage::url($item) }}" target="_blank"
                                                 class="d-flex align-items-center me-3">
                                                 <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="46"
                                                     class="me-2">
@@ -80,7 +80,7 @@
                                 @else
                                     @foreach (json_decode($data->pj) as $index => $item)
                                         <div class="d-flex mt-3">
-                                            <a href="{{ $item }}" target="_blank"
+                                            <a href="{{ Storage::url($item) }}" target="_blank"
                                                 class="d-flex align-items-center me-3">
                                                 <img src="{!! url('assets/img/icons/misc/pdf.png') !!}" alt="Documents" width="23"
                                                     class="me-2">

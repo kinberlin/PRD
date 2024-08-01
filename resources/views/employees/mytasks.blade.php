@@ -20,7 +20,7 @@
                 @if (!is_null($_p))
                     @php
                     $tasks = $data->where('process', $_p->id);
-                    $fildys = $dys->whereIn('id', $tasks->pluck('dysfunction')->unique()); 
+                    $fildys = $dys->whereIn('id', $tasks->pluck('dysfunction')->unique());
                         /*$fildys = $dys->filter(function ($x) use ($_p) {
                             // Decode the JSON string into a PHP array
                             $s = json_decode($x->impact_processes, true);
@@ -79,7 +79,7 @@
                                                                     Jours
                                                                 </div>
                                                                 @if ($d->proof != null)
-                                                                    <a href="{{ $d->proof }}">
+                                                                    <a href="{{ Storage::url($d->proof) }}">
                                                                         <i class="bx bx-link"></i>
                                                                         Voir la preuve de complétude de la tâche.
                                                                     </a>
