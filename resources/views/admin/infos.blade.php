@@ -450,7 +450,7 @@
                                                         <div class="card-body">
                                                             <p class="card-text">
                                                                 Souhaitez vous vraiment terminer l'évaluation de ce
-                                                                dysfonctionnement ?
+                                                                dysfonctionnement ? Pensez à ajouter le coût de non qualité avant de clôturer.
                                                                 <b>Notez que ceci clôturera définitivement ce
                                                                     dysfonctionnement.</b>
                                                             </p>

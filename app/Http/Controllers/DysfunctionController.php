@@ -75,7 +75,6 @@ class DysfunctionController extends Controller
             $dys->emp_matricule = Auth::user()->matricule;
             $dys->emp_email = Auth::user()->email;
             $urls = [];
-            //dd($request);
             foreach ($request->file('group-a') as $key => $fileData) {
                 if (isset($fileData['pj']) && $fileData['pj']->isValid()) {
                     $pj = $fileData['pj'];
@@ -86,7 +85,6 @@ class DysfunctionController extends Controller
                 }
             }
             $dys->pj = json_encode($urls);
-            dd($dys->pj);
             $dys->save();
             DB::commit();
             $dys->code = 'D' . Carbon::now()->year . date('m') . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
@@ -398,7 +396,6 @@ class DysfunctionController extends Controller
                 }
                 $corrective_acts = json_encode($corrections);
                 $dys->corrective_acts = $corrective_acts;
-                //dd($corrective_acts);
                 if ($dys->status == 1) {
                     $dys->status = 2;
                 }
