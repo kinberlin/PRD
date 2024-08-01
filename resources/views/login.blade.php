@@ -75,7 +75,7 @@
                         <h4 class="mb-2">Bienvenue à vous! 👋</h4>
                         <p class="mb-4">Entrez vos informations pour continuer...</p>
 
-                        <form id="formAuthentication" class="mb-3" action="/login" method="POST"
+                        <form id="formAuthentication" class="mb-3" action="{{ route("auth")}}" method="POST"
                            >
                             @csrf
                             <div class="mb-3">

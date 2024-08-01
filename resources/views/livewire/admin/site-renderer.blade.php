@@ -81,7 +81,7 @@
                     <button type="button" class="btn btn-info" id="importBtn">Importer depuis un
                         fichier</button>
                     <input type="file" style="visibility: hidden" id="excelFileInput">
-                    <form action="/admin/site" method="POST">
+                    <form action="{{ route('admin.site.store') }}" method="POST">
                         @csrf
                         <table id="dataTable" class="display" style="width:100%">
                         </table>

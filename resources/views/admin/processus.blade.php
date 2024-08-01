@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="/admin/processes" method="POST">
+                                    novalidate="novalidate" action="{{ route('admin.processes.store')}}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Processus</label>
@@ -52,7 +52,7 @@
                         <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
 
                         <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="/admin/processes" method="POST">
+                        <form action="{{ route('admin.processes.store')}}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>

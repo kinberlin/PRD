@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    novalidate="novalidate" action="/admin/enterprise" method="POST">
+                                    novalidate="novalidate" action="{{ route('admin.enterprise.store') }}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom de l'Entreprise</label>

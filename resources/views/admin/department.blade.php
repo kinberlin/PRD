@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="/admin/department" method="POST">
+                                    action="{{route('admin.department.store')}}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Département</label>
@@ -131,7 +131,7 @@
         <div class="modal animate__animated animate__bounceInUp" id="majentreprise{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form class="modal-content" action="/admin/department/{{ $d->id }}" method="POST">
+                <form class="modal-content" action="{{ route('admin.department.update', ['id'=>$d->id ])}}" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">M.A.J
                             {{ $d->name }}</h5>
