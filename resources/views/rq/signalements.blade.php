@@ -51,45 +51,13 @@
                                             \App\Models\Enterprise::where('name', $d->enterprise)->get()->first(),
                                             Auth::user(),
                                             ])
-                                        @can('DysRunning', $d)
-                                            <button type="button" class="btn btn-info rounded-pill btn-icon"
-                                                data-bs-toggle="modal" data-bs-target="#dys_cost{{ $d->id }}">
-                                                <span class="tf-icons bx bx-dollar"></span>
-                                            </button>
-
-                                            <div class="modal animate__animated animate__bounceInUp"
-                                                id="dys_cost{{ $d->id }}" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <form class="modal-content"
-                                                        action="{{ route('dysfunction.cost', ['id' => $d->id]) }}"
-                                                        method="POST">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel1">Dépense non Qualité
-                                                                pour [{{ $d->code }}] </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            @csrf
-                                                            <div class="row">
-                                                                <div class="col mb-6">
-                                                                    <label for="nameBasic" class="form-label">Montant</label>
-                                                                    <input type="number" id="nameBasic" name="cost"
-                                                                        value="{{ $d->cost }}" class="form-control"
-                                                                        placeholder="Entrer le montant" min="0">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-label-secondary"
-                                                                data-bs-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        @endcan
-                                            <a href="{{ route('rq.n1dysfonction', ['id'=>$d->id]) }}" target="_blank"
+                                            @can('DysRunning', $d)
+                                                <button type="button" class="btn btn-info rounded-pill btn-icon"
+                                                    data-bs-toggle="modal" data-bs-target="#dys_cost{{ $d->id }}">
+                                                    <span class="tf-icons bx bx-dollar"></span>
+                                                </button>
+                                            @endcan
+                                            <a href="{{ route('rq.n1dysfonction', ['id' => $d->id]) }}" target="_blank"
                                                 class="btn rounded-pill btn-icon btn-success">
                                                 <span class="tf-icons bx bx-info-circle"></span>
                                             </a>
@@ -107,6 +75,44 @@
         </div>
 
     </div>
+    <!--Begin with datatable Modals -->
+    @foreach ($data as $d)
+        @canany(['isEnterpriseRQ', 'isAdmin'],
+            [
+            \App\Models\Enterprise::where('name', $d->enterprise)->get()->first(),
+            Auth::user(),
+            ])
+            @can('DysRunning', $d)
+                <div class="modal animate__animated animate__bounceInUp" id="dys_cost{{ $d->id }}" tabindex="-1"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form class="modal-content" action="{{ route('dysfunction.cost', ['id' => $d->id]) }}" method="POST">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Dépense non Qualité
+                                    pour [{{ $d->code }}] </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @csrf
+                                <div class="row">
+                                    <div class="col mb-6">
+                                        <label for="nameBasic" class="form-label">Montant</label>
+                                        <input type="number" id="nameBasic" name="cost" value="{{ $d->cost }}"
+                                            class="form-control" placeholder="Entrer le montant" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endcan
+        @endcanany
+    @endforeach
+    <!--End with datatable Modals -->
 @endsection
 @section('scriptContent')
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>

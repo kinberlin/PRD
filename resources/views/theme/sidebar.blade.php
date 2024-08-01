@@ -516,7 +516,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="pages-account-settings-account.html" class="menu-link">
+                            <a href="{{ route('rq.profile') }}" class="menu-link">
                                 <div class="text-truncate" data-i18n="Account">Account</div>
                             </a>
                         </li>
