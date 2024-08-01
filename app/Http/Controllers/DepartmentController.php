@@ -65,33 +65,6 @@ class DepartmentController extends Controller
         }
     }
 
-    public function rqstore(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-            $data = $request->input('data');
-            if (!is_array($data)) {
-                throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
-            }
-            foreach ($data as $row) {
-
-                $name = $row[2];
-                $enterprise = $row[1];
-                if (Department::where('name', $name)->where('enterprise', $enterprise)->get()->first() != null) {
-                    throw new Exception("DUPLICATA!!!! Il existe déja un departement avec le nom : " . $name . " dans l'entreprise dont l'ID est : " . $enterprise, 1);
-                }
-                $department = new Department();
-                $department->name = $name;
-                $department->enterprise = $enterprise;
-                $department->save();
-            }
-            DB::commit();
-            return redirect()->back()->with('error', "Insertions terminées avec succes");
-        } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
-    }
-
     /**
      * Display the specified resource.
      */

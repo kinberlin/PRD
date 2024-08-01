@@ -87,7 +87,7 @@
                                         <div class="modal animate__animated animate__bounceInUp"
                                             id="majentreprise{{ $d->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form class="modal-content" action="{{ route('admin.department.update'), ['id'=>$d->id] }}"
+                                                <form class="modal-content" action="{{ route('admin.department.update', ['id'=>$d->id]) }}"
                                                     method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">M.A.J

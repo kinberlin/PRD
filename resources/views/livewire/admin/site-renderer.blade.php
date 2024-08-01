@@ -81,7 +81,7 @@
                     <button type="button" class="btn btn-info" id="importBtn">Importer depuis un
                         fichier</button>
                     <input type="file" style="visibility: hidden" id="excelFileInput">
-                    <form action="{{ route('admin.site.store') }}" method="POST">
+                    <form action="{{ route('site.store') }}" method="POST">
                         @csrf
                         <table id="dataTable" class="display" style="width:100%">
                         </table>
@@ -98,7 +98,7 @@
         <div class="card-body">
             <!-- Modals -->
             @foreach ($data as $d)
-                @can('canSiteDelete', $d)
+                @can(['canSiteDelete', 'isAdmin'], $d)
                     <div class="modal modal-top fade" id="delsite{{ $d->id }}" tabindex="-1">
                         <div class="modal-dialog">
                             <form class="modal-content">
@@ -121,7 +121,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-label-secondary"
                                         data-bs-dismiss="modal">Fermer</button>
-                                    <a href="{{ route('admin.site.destroy', ['id' => $d->id]) }}"
+                                    <a href="{{ route('site.destroy', ['id' => $d->id]) }}"
                                         class="btn btn-danger">Continuer</a>
                                 </div>
                             </form>
@@ -131,7 +131,7 @@
                 <div class="modal animate__animated animate__bounceInUp" id="majsite{{ $d->id }}"
                     tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <form class="modal-content" action="{{ route('admin.site.destroy',['id'=>$d->id])}}" method="POST">
+                        <form class="modal-content" action="{{ route('site.update',['id'=>$d->id])}}" method="POST">
                             <div class="modal-header">
                                 <h5 class="modal-title">M.A.J
                                     {{ $d->name }}</h5>
@@ -212,10 +212,10 @@
                                         data-bs-target="#majsite{{ $d->id }}">
                                         M.A.J
                                     </button>
-                                    @can('canSiteDelete', $d)
+                                    @can(['canSiteDelete','isAdmin'], $d)
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delsite{{ $d->id }}">Supprimer</button>
-                                    @endcan
+                                    @endcanany
                                 </td>
                             </tr>
                         @endforeach

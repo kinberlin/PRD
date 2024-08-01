@@ -61,33 +61,7 @@ class SiteController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-
-    public function rqstore(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-            $data = $request->input('data');
-            if (!is_array($data)) {
-                throw new Exception("Vous n'avez pas soumis de données a sauvegarder", 1);
-            }
-            foreach ($data as $row) {
-
-                $name = $row[2];
-                $enterprise = $row[1];
-                $location = $row[3];
-                $site = new Site();
-                $site->name = $name;
-                $site->enterprise = $enterprise;
-                $site->location = $location;
-                $site->save();
-            }
-            DB::commit();
-            return redirect()->back()->with('error', "Insertions terminées avec succes");
-        } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
-        }
-    }
-
+    
     /**
      * Display the specified resource.
      */

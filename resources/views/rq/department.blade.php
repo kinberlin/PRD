@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="/admin/department" method="POST">
+                                    action="{{ route('rq.department.store')}}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Département</label>
@@ -56,7 +56,7 @@
 
                         <input type="file" style="visibility: hidden" id="excelFileInput">
 
-                        <form action="/admin/department" method="POST">
+                        <form action="{{ route('rq.department.store')}}" method="POST">
                             @csrf
                             <table id="dataTable" class="display" style="width:100%">
                             </table>
@@ -109,7 +109,7 @@
         <div class="modal animate__animated animate__bounceInUp" id="majdepartment{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form class="modal-content" action="/admin/department/{{ $d->id }}" method="POST">
+                <form class="modal-content" action="{{ route('rq.department.update', ['id'=>$d->id]) }}" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">M.A.J
                             {{ $d->name }}</h5>

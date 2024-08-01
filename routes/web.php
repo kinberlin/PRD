@@ -68,6 +68,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/rq/invitations', 'RQController@invitation')->name('rq.invitation');
 
     Route::get('/rq/department', 'RQController@department')->name('rq.department');
+    Route::get('/rq/department/{id}', 'DepartmentController@destroy')->name('rq.department.destroy');
+    Route::post('/rq/department', 'DepartmentController@store')->name('rq.department.store');
+    Route::post('/rq/department/{id}', 'DepartmentController@update')->name('rq.department.update');
 
     Route::get('/rq/site', 'RQController@site')->name('rq.site');
 
@@ -87,6 +90,10 @@ Route::group(['middleware' => ['web', 'auth', 'role:2'], 'namespace' => 'App\Htt
     Route::get('/employee/empty', 'EmployeeController@empty')->name('emp.empty');
 });
 Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers'], function () {
+    //site
+    Route::get('/site/{id}', 'SiteController@destroy')->name('site.destroy');
+    Route::post('/site', 'SiteController@store')->name('site.store');
+    Route::post('/site/{id}', 'SiteController@update')->name('site.update');
     //users
     Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
     Route::get('/dysfunctions/report', 'EmployeeController@report')->name('emp.dysfunction.report');
@@ -157,10 +164,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
     Route::get('/admin/department/{id}', 'DepartmentController@destroy')->name('admin.department.destroy');
     Route::post('/admin/department', 'DepartmentController@store')->name('admin.department.store');
     Route::post('/admin/department/{id}', 'DepartmentController@update')->name('admin.department.update');
-
-    Route::get('/admin/site/{id}', 'SiteController@destroy')->name('admin.site.destroy');
-    Route::post('/admin/site', 'SiteController@store')->name('admin.site.store');
-    Route::post('/admin/site/{id}', 'SiteController@update')->name('admin.site.update');
 
     /*Route::get('/admin/signal/{id}', 'SignalController@destroy')->name('admin.signal.destroy');
     Route::post('/admin/signal', 'SignalController@store')->name('admin.signal.store');
