@@ -123,7 +123,7 @@ class RQController extends Controller
         $deps = Department::all();
         $data = AuthorisationPilote::all();
         $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
-        return view('rq/pltemployee', compact('ents', 'processes', 'deps', 'data'));
+        return view('rq/pltemployee', compact('ents', 'processes', 'deps', 'data', 'users'));
     }
     public function invitation()
     {

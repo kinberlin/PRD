@@ -59,12 +59,12 @@
                                         @if ($d->closed_at == null)
                                             <button class="btn btn-success btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#closemeeting{{ $d->id }}">Terminer</button>
-                                        @endif
-                                        <br>
+<br>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#majsecureemp{{ $d->id }}">
                                             Participants
                                         </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -103,7 +103,6 @@
                     </form>
                 </div>
             </div>
-        @endif
         <div class="modal fade" id="majsecureemp{{ $d->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <form method="POST" class="modal-content" action="{{ route('invitation.participation', $d->id) }}">
@@ -195,6 +194,7 @@
                 </form>
             </div>
         </div>
+        @endif
     @endforeach
     <!--End with datatable Modals -->
 @endsection
