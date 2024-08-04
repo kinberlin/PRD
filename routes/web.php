@@ -94,6 +94,12 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
     Route::get('/site/{id}', 'SiteController@destroy')->name('site.destroy');
     Route::post('/site', 'SiteController@store')->name('site.store');
     Route::post('/site/{id}', 'SiteController@update')->name('site.update');
+
+    Route::post('/visible/enterprise/{id}', 'EnterpriseController@visible')->name('enterprise.visible');
+    Route::post('/visible/site/{id}', 'SiteController@visible')->name('site.visible');
+    Route::post('/visible/probability/{id}', 'ProbabilityController@visible')->name('probability.visible');
+    Route::post('/visible/gravity/{id}', 'GravityController@visible')->name('gravity.visible');
+    Route::post('/visible/origin/{id}', 'OriginController@visible')->name('origin.visible');
     //users
     Route::post('/password/update', 'AuthController@updatePassword')->name('auth.passwordupdate');
     Route::get('/dysfunctions/report', 'EmployeeController@report')->name('emp.dysfunction.report');

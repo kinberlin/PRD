@@ -96,6 +96,23 @@ class OriginController extends Controller
     }
 
     /**
+     * Update the visibility attribute of this resource in storage.
+     */
+    public function visible(Request $request, $id)
+    {
+        try {
+            Gate::authorize('isAdmin', Auth::user());
+            DB::beginTransaction();
+            $d = Origin::find($id);
+            $d->visible = $d->visible == 1 ? 0 : 1;
+            $d->save();
+            DB::commit();
+            return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
