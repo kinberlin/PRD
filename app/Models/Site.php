@@ -54,7 +54,7 @@ class Site extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'visible' => 'int', 'name' => 'string', 'enterprise' => 'int', 'location' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'id' => 'int', 'visible' => 'boolean', 'name' => 'string', 'enterprise' => 'int', 'location' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
     ];
 
     /**
