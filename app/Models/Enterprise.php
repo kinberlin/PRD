@@ -58,7 +58,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'visible' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix' => 'string', 'created_at' => 'timestamp',
+        'id' => 'int', 'visible' => 'boolean', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix' => 'string', 'created_at' => 'timestamp',
     ];
 
     /**

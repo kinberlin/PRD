@@ -75,6 +75,7 @@
                                 <th>Id</th>
                                 <th>Entreprise</th>
                                 <th>Abbréviation</th>
+                                <th>Visible</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -84,12 +85,17 @@
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->surfix }}</td>
+                                    <td>@if ($d->visible) Oui @else Non @endif</td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delentreprise{{ $d->id }}">Désactiver</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majentreprise{{ $d->id }}">
                                             M.A.J
+                                        </button>
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#entrepriseVisibility{{ $d->id }}">
+                                            Visibilité
                                         </button>
                                     </td>
                                 </tr>
@@ -148,6 +154,49 @@
                                 <label for="nameBasic{{ $d->id }}" class="form-label">Nom</label>
                                 <input type="text" id="nameBasic{{ $d->id }}" name="name"
                                     value="{{ $d->name }}" class="form-control" placeholder="Entrer le nom">
+                            </div>
+                            <div class="form-check form-check-success">
+                                <input class="form-check-input" type="checkbox" name="visible"
+                                    @if ($d->visible == 1) checked @endif id="visCheckEnt{{ $d->id }}"
+                                    checked="">
+                                <label class="form-check-label" for="customCheckSuccess">Success</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal animate__animated animate__bounceInUp" id="entrepriseVisibility{{ $d->id }}"
+            tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" action="{{ route('enterprise.visible', ['id' => $d->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="entvisible{{ $d->id }}">M.A.J Visibilité
+                            {{ $d->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <p class="card-text">
+                                Souhaitez-vous vraiment mettre à jour la visibilité de la ressource :
+                                {{ $d->name }} ?
+                                <b>Notez que dans ce cas de figure, si la visibilité est désactivée, les données (site)
+                                    liées à cette ressource ne seront pas affichées sur la page de signalement de
+                                    dysfonctionnement.</b>
+                            </p>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="form-check-success">
+                                <label class="form-check-label" for="visCheckEnt{{ $d->id }}">Cocher pour rendre visible.</label>
+                                <input class="form-check-input" type="checkbox" name="visibility" value="1"
+                                    @if ($d->visible) checked @endif id="visCheckEnt{{ $d->id }}">
                             </div>
                         </div>
                     </div>
