@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $deleted_at
  * @property int    $manager
  * @property int    $vice-manager
+ * @property int    $visible
  * @property string $name
  * @property string $surfix
  */

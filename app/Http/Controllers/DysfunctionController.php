@@ -459,6 +459,9 @@ class DysfunctionController extends Controller
                 $dys->status = 6;
                 $dys->closed_at = Carbon::now();
                 $dys->closed_by = Auth::user()->firstname . '(' . Auth::user()->matricule . ')';
+                if(is_null($dys->cost)){
+                    throw new Exception("Vous n'avez pas encore renseigné de coût de non-qualité lié à ce dysfonctionnement. Pour cette raison, l'opération de clôturation a été interrompue.", 401);
+                }
                 $dys->save();
                 DB::commit();
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");

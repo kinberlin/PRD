@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $created_at
  * @property int    $deleted_at
  * @property string $name
+ * @property int    $visible
  * @property string $location
  */
 class Site extends Model

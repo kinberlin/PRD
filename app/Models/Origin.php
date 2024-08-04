@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $id
  * @property int    $created_at
  * @property int    $deleted_at
+ * @property int    $visible
  * @property string $description
  * @property string $name
  */

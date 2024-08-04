@@ -183,7 +183,7 @@
                                             <option data-avatar="{{ $u->image }}" value="{{ $u->id }}"
                                                 data-extra-info="{{ $u->email }}"
                                                 @if (!empty($u->internal_invites)) @if (in_array($u->email, array_column(json_decode($u->internal_invites), 'email'), true)) selected @endif
-                                                @endif>
+                                                @endif> 
                                                 {{ $u->firstname . ' ' . $u->lastname }} ({{ $u->matricule }})
                                             </option>
                                         @endforeach

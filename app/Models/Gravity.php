@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int    $least_price
  * @property int    $max_price
  * @property int    $note
+ * @property int    $visible
  * @property string $name
  */
 class Gravity extends Model
