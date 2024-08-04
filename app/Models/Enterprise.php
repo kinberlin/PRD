@@ -40,7 +40,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $fillable = [
-        'deleted_at', 'manager', 'name', 'vice-manager', 'surfix', 'created_at',
+        'deleted_at', 'manager', 'name', 'vice-manager', 'surfix', 'created_at', 'visible',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Enterprise extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix' => 'string', 'created_at' => 'timestamp',
+        'id' => 'int', 'visible' => 'int', 'deleted_at' => 'timestamp', 'manager' => 'int', 'name' => 'string', 'vice-manager' => 'int', 'surfix' => 'string', 'created_at' => 'timestamp',
     ];
 
     /**

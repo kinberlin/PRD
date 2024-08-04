@@ -39,7 +39,7 @@ class Gravity extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'least_price', 'max_price', 'name', 'note',
+        'created_at', 'deleted_at', 'least_price', 'max_price', 'name', 'note', 'visible',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int',
+        'id' => 'int', 'visible' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int',
     ];
 
     /**

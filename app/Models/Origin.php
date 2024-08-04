@@ -36,7 +36,7 @@ class Origin extends Model
      * @var array
      */
     protected $fillable = [
-        'deleted_at', 'created_at', 'description', 'name'
+        'deleted_at', 'created_at', 'description', 'name', 'visible',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Origin extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'deleted_at' => 'timestamp','created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
+        'id' => 'int', 'visible' => 'int', 'deleted_at' => 'timestamp','created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
     ];
 
     /**

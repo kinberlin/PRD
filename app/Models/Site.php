@@ -38,7 +38,7 @@ class Site extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'enterprise', 'location', 'created_at', 'deleted_at'
+        'name', 'enterprise', 'location', 'created_at', 'deleted_at', 'visible',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Site extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'name' => 'string', 'enterprise' => 'int', 'location' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
+        'id' => 'int', 'visible' => 'int', 'name' => 'string', 'enterprise' => 'int', 'location' => 'string', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp'
     ];
 
     /**

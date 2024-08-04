@@ -38,7 +38,7 @@ class Probability extends Model
      * @var array
      */
     protected $fillable = [
-        'created_at', 'deleted_at', 'description', 'name', 'note',
+        'created_at', 'deleted_at', 'description', 'name', 'note', 'visible'
     ];
 
     /**
@@ -56,7 +56,7 @@ class Probability extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int',
+        'id' => 'int', 'visible' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int',
     ];
 
     /**
