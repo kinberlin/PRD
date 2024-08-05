@@ -73,6 +73,7 @@
                                 <th>Id</th>
                                 <th>Catégories</th>
                                 <th>Description</th>
+                                <th>Visible</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,6 +83,7 @@
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->description }}</td>
+                                    <td>@if ($d->visible) Oui @else Non @endif</td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majorigin{{ $d->id }}">

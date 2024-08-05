@@ -79,6 +79,7 @@
                                 <th>Probabilité</th>
                                 <th style="text-align: center">Note</th>
                                 <th>Description</th>
+                                <th>Visible</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -89,6 +90,7 @@
                                     <td>{{ $d->name }}</td>
                                     <td style="text-align: center">{{ $d->note }}</td>
                                     <td>{{ $d->description }}</td>
+                                    <td>@if ($d->visible) Oui @else Non @endif</td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majprobability{{ $d->id }}">
@@ -114,35 +116,35 @@
     </div>
     <!--Begin with datatable Modals -->
     @foreach ($data as $d)
-    @can('canProbDelete', $d)
-        <div class="modal modal-top fade" id="delprobability{{ $d->id }}" tabindex="-1">
-            <div class="modal-dialog">
-                <form class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
-                            Suppression!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card-body">
-                            <p class="card-text">
-                                Souhaitez vous vraiment supprimer :
-                                {{ $d->name }} ?
-                                <b>Notez que cela reviens a supprimer celle-ci
-                                    et que vous ne serez pas capable de le restaurer
-                                    sur cette interface.</b>
-                            </p>
+        @can('canProbDelete', $d)
+            <div class="modal modal-top fade" id="delprobability{{ $d->id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                                Suppression!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <a href="{{ route('admin.probability.destroy', ['id' => $d->id]) }}"
-                            class="btn btn-danger">Continuer</a>
-                    </div>
-                </form>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Souhaitez vous vraiment supprimer :
+                                    {{ $d->name }} ?
+                                    <b>Notez que cela reviens a supprimer celle-ci
+                                        et que vous ne serez pas capable de le restaurer
+                                        sur cette interface.</b>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <a href="{{ route('admin.probability.destroy', ['id' => $d->id]) }}"
+                                class="btn btn-danger">Continuer</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    @endcan
+        @endcan
         <div class="modal animate__animated animate__bounceInUp" id="majprobability{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -182,10 +184,11 @@
                 </form>
             </div>
         </div>
-                <div class="modal animate__animated animate__bounceInUp" id="probVisibility{{ $d->id }}" tabindex="-1"
+        <div class="modal animate__animated animate__bounceInUp" id="probVisibility{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form class="modal-content" action="{{ route('probability.visible', ['id' => $d->id]) }}" method="POST">
+                <form class="modal-content" action="{{ route('probability.visible', ['id' => $d->id]) }}"
+                    method="POST">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="provisible{{ $d->id }}">M.A.J Visibilité

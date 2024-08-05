@@ -85,6 +85,7 @@
                                 <th>Gravité</th>
                                 <th>Intervalle en FCFA</th>
                                 <th>Note</th>
+                                <th>Visible</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -95,6 +96,7 @@
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->least_price . ' < Perte en XAF ≤ ' . $d->max_price }}</td>
                                     <td>{{ $d->note }}</td>
+                                    <td>@if ($d->visible) Oui @else Non @endif</td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#majgravity{{ $d->id }}">

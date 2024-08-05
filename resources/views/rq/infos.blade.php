@@ -139,8 +139,10 @@
                         <label class="form-label">Gravité (<span style="color: red">*</span>)</label>
                         <select class="form-control" name="gravity" data-allow-clear="true" required>
                             @foreach ($gravity as $g)
-                                <option value="{{ $g->id }}" @if ($g->id == $data->gravity_id) selected @endif>
-                                    {{ $g->name }} (Note : {{ $g->note }})</option>
+                                @can('isGravityVisible', $g)
+                                    <option value="{{ $g->id }}" @if ($g->id == $data->gravity_id) selected @endif>
+                                        {{ $g->name }} (Note : {{ $g->note }})</option>
+                                @endcan
                             @endforeach
                         </select>
                     </div>
@@ -148,8 +150,10 @@
                         <label class="form-label">Catégorie (<span style="color: red">*</span>)</label>
                         <select class="form-control" name="origin" data-allow-clear="true" required>
                             @foreach ($origin as $o)
-                                <option value="{{ $o->id }}" @if ($o->name == $data->origin) selected @endif>
-                                    {{ $o->name }}</option>
+                                @can('isOriginVisible', $o)
+                                    <option value="{{ $o->id }}" @if ($o->name == $data->origin) selected @endif>
+                                        {{ $o->name }}</option>
+                                @endcan
                             @endforeach
                         </select>
                     </div>
@@ -158,8 +162,10 @@
                                 style="color: red">*</span>)</label>
                         <select class="form-control" name="probability" data-allow-clear="true" required>
                             @foreach ($probability as $p)
-                                <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
-                                    {{ $p->name }} (Note : {{ $p->note }})</option>
+                                @can('isProbabilityVisible', $p)
+                                    <option value="{{ $p->id }}" @if ($p->id == $data->probability) selected @endif>
+                                        {{ $p->name }} (Note : {{ $p->note }})</option>
+                                @endcan
                             @endforeach
                         </select>
                     </div>
