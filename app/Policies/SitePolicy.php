@@ -27,6 +27,6 @@ class SitePolicy
         if(is_null($site)){
             return false;
         }
-         return ($site->dysfunctions()->exists() ? false : true);
+        return $site->visible;
     }
 }

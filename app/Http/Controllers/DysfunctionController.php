@@ -65,6 +65,13 @@ class DysfunctionController extends Controller
             if (is_null($site)) {
                 throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
             }
+            if ($ents->visible) {
+                throw new Exception("Erreur sur la ressource 'Entreprise'.", 501);
+            }
+            if ($site->visible) {
+                throw new Exception("Erreur sur la ressource 'Site'.", 401);
+            }
+
             $dys->occur_date = $request->input('occur_date');
             $dys->enterprise = $request->input('enterprise');
             $dys->enterprise_id = $ents->id;
@@ -117,68 +124,80 @@ class DysfunctionController extends Controller
                 }
                 $gra = Gravity::find($request->input('gravity'));
                 if (is_null($gra)) {
-                    throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
+                    throw new Exception("La ressource 'Gravité' est introuvable.", 401);
                 }
-                $dys->impact_processes = json_encode($request->input('impact_processes'));
-                $dys->concern_processes = json_encode($request->input('concern_processes'));
-                $dys->gravity = $gra->name;
-                $dys->gravity_id = $gra->id;
-                $dys->origin = $request->input('origin');
-                $dys->probability = $request->input('probability');
-                $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
-                //alert pilotes
-                foreach ($dys->getCProcesses() as $nd) {
-                    if (is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())) {
-                        $ap = AuthorisationPilote::where('process', $nd->id)->get();
-                        $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
-                        $newmessage = new ApiSms(
-                            $a_pilotes->pluck('phone')->unique()->toArray(),
-                            'Cadyst PRD App',
-                            "Bonjour cher(e) pilote ;Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme origine. Préparez-vous pour intervention. Merci."
-                        );
-                        $newmessage->send();
-                        $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                        $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus concerné identifié", $content, []);
-                        $response = $newmail->send();
+                $probability = Probability::find($request->input('probability'));
+                if (is_null($probability)) {
+                    throw new Exception("La ressource 'Probabilité' est introuvable.", 401);
+                }
+                $origin = Origin::find($request->input('origin'));
+                if (is_null($origin)) {
+                    throw new Exception("La ressource 'Origine' est introuvable.", 401);
+                }
+                if (Gate::allows('isGravityVisible', $gra) && Gate::allows('isProbabilityVisible', $probability) && Gate::allows('isOriginVisible', $origin)) {
+                    $dys->impact_processes = json_encode($request->input('impact_processes'));
+                    $dys->concern_processes = json_encode($request->input('concern_processes'));
+                    $dys->gravity = $gra->name;
+                    $dys->gravity_id = $gra->id;
+                    $dys->origin = $request->input('origin');
+                    $dys->probability = $request->input('probability');
+                    $dys->cause = empty($request->input('cause')) ? null : $request->input('cause');
+                    //alert pilotes
+                    foreach ($dys->getCProcesses() as $nd) {
+                        if (is_null($old_dys->getCprocesses()->where('id', $nd->id)->first())) {
+                            $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                            $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                            $newmessage = new ApiSms(
+                                $a_pilotes->pluck('phone')->unique()->toArray(),
+                                'Cadyst PRD App',
+                                "Bonjour cher(e) pilote ;Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme origine. Préparez-vous pour intervention. Merci."
+                            );
+                            $newmessage->send();
+                            $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                            $content = view('employees.dysfunctionCpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
+                            $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus concerné identifié", $content, []);
+                            $response = $newmail->send();
+                        }
                     }
-                }
-                foreach ($dys->getIProcesses() as $nd) {
-                    if (is_null($old_dys->getIProcesses()->where('id', $nd->id)->first())) {
-                        $ap = AuthorisationPilote::where('process', $nd->id)->get();
-                        $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
-                        $emails = $a_pilotes->pluck('email')->unique()->toArray();
-                        $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
-                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus impacté identifié", $content, []);
-                        $response = $newmail->send();
-                        $newmessage = new ApiSms(
-                            $a_pilotes->pluck('phone')->unique()->toArray(),
-                            'Cadyst PRD App',
-                            "Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme impacté. Préparez-vous pour intervention. Merci. "
-                        );
-                        $newmessage->send();
+                    foreach ($dys->getIProcesses() as $nd) {
+                        if (is_null($old_dys->getIProcesses()->where('id', $nd->id)->first())) {
+                            $ap = AuthorisationPilote::where('process', $nd->id)->get();
+                            $a_pilotes = Users::whereIn('id', $ap->pluck('user')->unique());
+                            $emails = $a_pilotes->pluck('email')->unique()->toArray();
+                            $content = view('employees.dysfunctionIpilote_appMail', ['dysfunction' => $dys, 'name' => $nd->name])->render();
+                            $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Signalement de dysfonctionnement No. " . $dys->code . " - Processus impacté identifié", $content, []);
+                            $response = $newmail->send();
+                            $newmessage = new ApiSms(
+                                $a_pilotes->pluck('phone')->unique()->toArray(),
+                                'Cadyst PRD App',
+                                "Dysfonctionnement " . $dys->code . " : Votre processus(" . $nd->name . ") a été identifié comme impacté. Préparez-vous pour intervention. Merci. "
+                            );
+                            $newmessage->send();
+                        }
                     }
-                }
-                $dys->save();
-                DB::commit();
-
-                if ($dys->status == 1) {
-                    $dys->status = 2;
-                    $task = new Task();
-                    $task->dysfunction = $dys->id;
-                    $task->text = 'Dysfonctionnement ' . $dys->code;
-                    $task->duration = 1;
-                    $task->progress = 0.01;
-                    $task->start_date = Carbon::now();
-                    $task->parent = 0;
-                    $task->unscheduled = 0;
-                    $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
-                    $task->created_by = Auth::user()->firstname . ' ' . Auth::user()->lastname;
                     $dys->save();
-                    $task->save();
-                }
+                    DB::commit();
 
-                return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+                    if ($dys->status == 1) {
+                        $dys->status = 2;
+                        $task = new Task();
+                        $task->dysfunction = $dys->id;
+                        $task->text = 'Dysfonctionnement ' . $dys->code;
+                        $task->duration = 1;
+                        $task->progress = 0.01;
+                        $task->start_date = Carbon::now();
+                        $task->parent = 0;
+                        $task->unscheduled = 0;
+                        $task->process = Processes::where('name', $request->input('concern_processes'))->get()->first()->id;
+                        $task->created_by = Auth::user()->firstname . ' ' . Auth::user()->lastname;
+                        $dys->save();
+                        $task->save();
+                    }
+
+                    return redirect()->back()->with('error', "Le signalement a été mis a Jour.");
+                } else {
+                    throw new Exception("« Certaines ressources ne sont pas disponibles actuellement. »", 401);
+                }
             } else {
                 throw new Exception("« Il est impossible vu le statut actuel de ce dysfonctionnement, de le re-identifier de nouveau. »", 401);
             }
@@ -459,7 +478,7 @@ class DysfunctionController extends Controller
                 $dys->status = 6;
                 $dys->closed_at = Carbon::now();
                 $dys->closed_by = Auth::user()->firstname . '(' . Auth::user()->matricule . ')';
-                if(is_null($dys->cost)){
+                if (is_null($dys->cost)) {
                     throw new Exception("Vous n'avez pas encore renseigné de coût de non-qualité lié à ce dysfonctionnement. Pour cette raison, l'opération de clôturation a été interrompue.", 401);
                 }
                 $dys->save();

@@ -14,26 +14,26 @@
                     @csrf
                     <!--<div class="mb-3 row">
 
-                                                                <div class="col-md-8">
-                                                                    <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
-                                                                        data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
-                                                                        data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
-                                                                        aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
-                                                                        ?</label>
-                                                                    <div class="col-md-9">
-                                                                        <select id="pmetype" name="type" class="form-select" required>
-                                                                            <option value="0" data-extra-info="0" selected>
-                                                                                Achat</option>
-                                                                        </select>
+                                                                    <div class="col-md-8">
+                                                                        <label for="html5-text-input" class="col-md-3 col-form-label" data-bs-toggle="tooltip"
+                                                                            data-bs-offset="0,6" data-bs-placement="right" data-bs-html="true"
+                                                                            data-bs-original-title="<i class='bx bx-trending-up bx-xs' ></i> <span>Si vous ne trouvez pas ci-dessous, le motif qui vous concerne, alors il ne s'agit peut-être pas d'une Permission Exceptionelle.</span>"
+                                                                            aria-describedby="tooltip732616">Processus Affecté (<span style="color: red">*</span>)
+                                                                            ?</label>
+                                                                        <div class="col-md-9">
+                                                                            <select id="pmetype" name="type" class="form-select" required>
+                                                                                <option value="0" data-extra-info="0" selected>
+                                                                                    Achat</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>-->
+                                                                </div>-->
                     <div class="mb-3 row">
                         <label for="html5-tel-input" class="col-md-3 col-form-label">Date de Constat ? (<span
                                 style="color: red">*</span>)</label>
                         <div class="col-md-9">
                             <input class="form-control" type="date" name="occur_date" id="occur_date"
-                                placeholder="Renseigner la date a laquelle vous avez effectuer le constat" required>
+                                placeholder="Renseigner la date à laquelle vous avez effectué le constat." required>
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -47,29 +47,34 @@
                             <div class="col-md-10">
                                 <select id="selents" name="enterprise" class="form-select" required>
                                     @foreach ($ents as $e)
-                                        <option value="{{ $e->name }}" data-extra-info="{{ $e->id }}">
-                                            {{ $e->name }}</option>
+                                        @if ($e->visible)
+                                            <option value="{{ $e->name }}" data-extra-info="{{ $e->id }}">
+                                                {{ $e->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <label for="html5-text-input" class="col-md-4 col-form-label">Site : (<span
                                     style="color: red">*</span>)</label>
                             <div class="col-md-10">
                                 <select id="selsite" name="site" class="form-select" required>
                                     @foreach ($site as $d)
-                                        <option value="{{ $d->id }}"
-                                            data-extra-info="{{ $d->enterprise }}">
-                                            {{ $d->name }} ({{ $d->location }})</option>
+                                        @if ($ents->where('id', $d->enterprise)->first()->visible)
+                                            @can('isSiteVisible', $d)
+                                                <option value="{{ $d->id }}" data-extra-info="{{ $d->enterprise }}">
+                                                    {{ $d->name }} ({{ $d->location }})</option>
+                                            @endcan
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description du Dysfonctionnement(<span style="color: red">*</span>)</label>
+                        <label class="form-label">Description du Dysfonctionnement(<span
+                                style="color: red">*</span>)</label>
                         <textarea class="form-control" name="description" rows="4" required></textarea>
                     </div>
                     <div class="mb-3">
