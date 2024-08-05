@@ -364,22 +364,25 @@ class InvitationController extends Controller
             if (is_null($dys)) {
                 throw new Exception("Nous ne retrouvons pas la ressource.", 404);
             }
-            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($dys->enterprise)])) {
+            if (Gate::allows('isAdmin', Auth::user()) || Gate::allows('isEnterpriseRQ', [Enterprise::find($dys->enterprise_id)])) {
                 DB::beginTransaction();
                 $invites = collect($rec->getInternalInvites());
                 $content = view('employees.invitation_cancelMail', ['invitation' => $rec, 'dysfunction' => $dys])->render();
-                $newmail = new ApiMail(null, $invites->pluck('email')->unique()->toArray(), 'Cadyst PRD App', "Annulation de la réunion de résolution du dysfonctionnement No." . $dys->code, $content, []);
+                $_externali = json_decode($rec->external_invites, true);
+                //Mails of internal and external users.
+                $allmails = array_merge($_externali, $invites->pluck('email')->unique()->toArray());
+                $newmail = new ApiMail(null, $allmails, 'Cadyst PRD App', "Annulation de la réunion de résolution du dysfonctionnement No." . $dys->code, $content, []);
                 $response = $newmail->send();
                 $internalusers = Users::whereIn('matricule', $invites->pluck('matricule'))->get();
                 $newmessage = new ApiSms(
-                    array_fill(0, 1, $internalusers->pluck('phone')->unique()->toArray()),
+                    $internalusers->pluck('phone')->unique()->toArray(),
                     'Cadyst PRD App',
                     "Réunion " . $dys->code . " le " . formatDateInFrench($rec->odates) . " à " . $rec->begin . " est annulée. Merci pour votre compréhension. "
                 );
                 $newmessage->send();
                 $rec->forceDelete();
                 DB::commit();
-                // return redirect()->back()->with('error', "Suppression Effectuée.");
+                return redirect()->back()->with('error', "Suppression Effectuée.");
             } else {
                 throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
             }

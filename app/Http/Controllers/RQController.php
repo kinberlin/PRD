@@ -200,7 +200,9 @@ class RQController extends Controller
     public function meetingProcess()
     {
         Gate::authorize('isRq', Auth::user());
-        $data = Invitation::whereNUll('closed_at')->get()->sortByDesc('created_at');
+        $rqU = AuthorisationRq::where('user', Auth::user()->id)->get();
+        $dys = Dysfunction::whereIn('enterprise_id', $rqU->pluck('enterprise'))->get();
+        $data = Invitation::whereNUll('closed_at')->whereIn('dysfonction', $dys->pluck('id'))->get()->sortByDesc('created_at');
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites

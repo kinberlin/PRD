@@ -157,12 +157,12 @@
                                 <div class="mb-3">
                                     <label for="flatpickr-begintime" class="form-label">Heure de Début</label>
                                     <input type="text" class="form-control" placeholder="HH:MM" name="begin"
-                                        id="flatpickr-begintime" placeholder="Heure de Début de la réunion" />
+                                        id="flatpickr-begintime" placeholder="Heure de Début de la réunion" required/>
                                 </div>
                                 <div class="mb-3">
                                     <label for="flatpickr-endtime" class="form-label">Heure de Fin</label>
                                     <input type="text" class="form-control" placeholder="HH:MM"
-                                        id="flatpickr-endtime" name="end" placeholder="Heure de Fin de la réunion" />
+                                        id="flatpickr-endtime" name="end" placeholder="Heure de Fin de la réunion" required/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="eventLocation">Lieu</label>

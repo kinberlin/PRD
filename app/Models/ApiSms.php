@@ -24,7 +24,7 @@ class ApiSms
     }
     public function send()
     {
-        $response = Http::post('https://smsvas.com/bulk/public/index.php/api/v1/send', $this);
+        $response = Http::timeout(30)->post('https://smsvas.com/bulk/public/index.php/api/v1/send', $this);
         // Check for a successful response
         if ($response->successful()) {
             return response()->json([

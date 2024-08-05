@@ -33,7 +33,7 @@ class ApiMail
     {
         $url = 'https://mail-api.cadyst-app.com/api/v1/simplemail'; // Replace with your target URL
 
-        $response = Http::post($url, $this);
+        $response = Http::timeout(30)->post($url, $this);
 
         // Check for a successful response
         if ($response->successful()) {
