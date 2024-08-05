@@ -112,7 +112,7 @@ class GravityController extends Controller
             Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Gravity::find($id);
-            $d->visible = $d->visible == 1 ? 0 : 1;
+            $d->visible = $request->boolean('visibility');
             $d->save();
             DB::commit();
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");

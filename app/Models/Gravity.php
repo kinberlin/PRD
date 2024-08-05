@@ -55,7 +55,7 @@ class Gravity extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'visible' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int',
+        'id' => 'int', 'visible' => 'boolean', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'least_price' => 'int', 'max_price' => 'int', 'name' => 'string', 'note' => 'int',
     ];
 
     /**

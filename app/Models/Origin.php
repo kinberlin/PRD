@@ -54,7 +54,7 @@ class Origin extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'visible' => 'int', 'deleted_at' => 'timestamp','created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
+        'id' => 'int', 'visible' => 'boolean', 'deleted_at' => 'timestamp','created_at' => 'timestamp', 'description' => 'string', 'name' => 'string'
     ];
 
     /**

@@ -56,7 +56,7 @@ class Probability extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'int', 'visible' => 'int', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int',
+        'id' => 'int', 'visible' => 'boolean', 'created_at' => 'timestamp', 'deleted_at' => 'timestamp', 'description' => 'string', 'name' => 'string', 'note' => 'int',
     ];
 
     /**
