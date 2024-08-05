@@ -91,7 +91,7 @@
                                             <button class="btn btn-danger " data-bs-toggle="modal"
                                                 data-bs-target="#delorigin{{ $d->id }}">Supprimer</button>
                                         @endcan
-                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#originVisibility{{ $d->id }}">
                                             Visibilité
                                         </button>
@@ -171,13 +171,13 @@
                 </form>
             </div>
         </div>
-                <div class="modal animate__animated animate__bounceInUp" id="originVisibility{{ $d->id }}"
-            tabindex="-1" aria-hidden="true">
+        <div class="modal animate__animated animate__bounceInUp" id="originVisibility{{ $d->id }}" tabindex="-1"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <form class="modal-content" action="{{ route('origin.visible', ['id' => $d->id]) }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="entvisible{{ $d->id }}">M.A.J Visibilité
+                        <h5 class="modal-title" id="orivisible{{ $d->id }}">M.A.J Visibilité
                             {{ $d->name }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -188,15 +188,17 @@
                                 Souhaitez-vous vraiment mettre à jour la visibilité de la ressource :
                                 {{ $d->name }} ?
                                 <b>Notez que dans ce cas de figure, si la visibilité est désactivée,
-                                    la ressource ne sera pas affichée sur la page d'identification des dysfonctionnements réservée aux RQ.</b>
+                                    la ressource ne sera pas affichée sur la page d'identification des dysfonctionnements
+                                    réservée aux RQ.</b>
                             </p>
                         </div>
                         <br>
                         <div class="row">
                             <div class="form-check-success">
-                                <label class="form-check-label" for="visCheckEnt{{ $d->id }}">Cocher pour rendre visible.</label>
+                                <label class="form-check-label" for="visCheckOri{{ $d->id }}">Cocher pour rendre
+                                    visible.</label>
                                 <input class="form-check-input" type="checkbox" name="visibility" value="1"
-                                    @if ($d->visible) checked @endif id="visCheckEnt{{ $d->id }}">
+                                    @if ($d->visible) checked @endif id="visCheckOri{{ $d->id }}">
                             </div>
                         </div>
                     </div>
