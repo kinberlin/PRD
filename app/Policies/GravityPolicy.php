@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Users;
-use App\Models\gravity;
+use App\Models\Gravity;
 use Illuminate\Auth\Access\Response;
 
 class GravityPolicy
@@ -18,5 +18,16 @@ class GravityPolicy
             return false;
         }
          return $gravity->dysfunctions()->exists() ? false : true;
+    }
+
+    /**
+     * Determine whether the Gravity is visible on dysfunction identification form.
+     */
+    public function isGravityVisible(Users $users, Gravity $gravity): bool
+    {
+        if(is_null($gravity)){
+            return false;
+        }
+         return ($gravity->dysfunctions()->exists() ? false : true);
     }
 }

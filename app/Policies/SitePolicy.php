@@ -19,7 +19,7 @@ class SitePolicy
         }
          return ($site->dysfunctions()->exists() ? false : true);
     }
-        /**
+    /**
      * Determine whether the Site is is visible on signal form.
      */
     public function isSiteVisible(Users $users, Site $site): bool

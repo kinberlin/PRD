@@ -104,6 +104,10 @@
                                             <button class="btn btn-danger " data-bs-toggle="modal"
                                                 data-bs-target="#delgravity{{ $d->id }}">Suppression</button>
                                         @endcan
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#gravityVisibility{{ $d->id }}">
+                                            Visibilité
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -193,6 +197,42 @@
             </form>
         </div>
     </div>
+            <div class="modal animate__animated animate__bounceInUp" id="gravityVisibility{{ $d->id }}"
+            tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" action="{{ route('gravity.visible', ['id' => $d->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="gvtvisible{{ $d->id }}">M.A.J Visibilité
+                            {{ $d->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="row">
+                            <p class="card-text">
+                                Souhaitez-vous vraiment mettre à jour la visibilité de la ressource :
+                                {{ $d->name }} ?
+                                <b>Notez que dans ce cas de figure, si la visibilité est désactivée,
+                                    la ressource ne sera pas affichée sur la page d'identification des dysfonctionnements réservée aux RQ.</b>
+                            </p>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="form-check-success">
+                                <label class="form-check-label" for="visCheckGra{{ $d->id }}">Cocher pour rendre visible.</label>
+                                <input class="form-check-input" type="checkbox" name="visibility" value="1"
+                                    @if ($d->visible) checked @endif id="visCheckGra{{ $d->id }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 @endforeach
 <!--End with datatable Modals -->
 @section('scriptContent')
