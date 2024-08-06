@@ -61,7 +61,7 @@ class SiteController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -107,7 +107,7 @@ class SiteController extends Controller
     public function visible(Request $request, $id)
     {
         try {
-            Gate::authorize('isAdmin', Auth::user());
+            //Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Site::find($id);
             $d->visible = $request->boolean('visibility');

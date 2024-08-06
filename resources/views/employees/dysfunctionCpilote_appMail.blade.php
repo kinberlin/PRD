@@ -498,11 +498,7 @@
                                                                         dysfonctionnement et y apporter des solutions
                                                                         rapides. Veuillez préparer les informations
                                                                         nécessaires pour une prochaine réunion de
-                                                                        résolution.
-
-                                                                        Si vous avez des questions ou des points à
-                                                                        discuter, n'hésitez pas à contacter le
-                                                                        Responsable Qualité. </span>
+                                                                        résolution. </span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
@@ -529,7 +525,7 @@
                                                                         class="x_MsoListParagraphCxSpMiddle"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
                                                                             et heure du signalement :
-                                                                            {{ $dysfunction->created_at->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</span>
+                                                                            {{ formatDateInFrench($dysfunction->created_at, 'full')}}</span>
                                                                     </li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpMiddle"><span

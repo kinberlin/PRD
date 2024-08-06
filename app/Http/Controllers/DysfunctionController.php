@@ -65,10 +65,10 @@ class DysfunctionController extends Controller
             if (is_null($site)) {
                 throw new Exception("Nous ne trouvons pas la ressource demandée.", 401);
             }
-            if ($ents->visible) {
+            if (!$ents->visible) {
                 throw new Exception("Erreur sur la ressource 'Entreprise'.", 501);
             }
-            if ($site->visible) {
+            if (!$site->visible) {
                 throw new Exception("Erreur sur la ressource 'Site'.", 401);
             }
 
@@ -107,7 +107,7 @@ class DysfunctionController extends Controller
 
                 $result = $newmail->send();
             }
-            return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais. (" . $result->getData()->code . ')');
+            return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }

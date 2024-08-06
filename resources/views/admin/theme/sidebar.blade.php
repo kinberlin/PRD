@@ -186,7 +186,7 @@
         </li>
 
         <!-- Misc -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Autre">Autre</span></li>
         <li class="menu-item @if (request()->route()->getName() == 'admin.dysfonction') active @endif">
             <a href="{!! route('admin.dysfonction') !!}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-support"></i>

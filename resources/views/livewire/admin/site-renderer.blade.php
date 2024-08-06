@@ -185,7 +185,7 @@
                         </form>
                     </div>
                 </div>
-                @can('isAdmin', Auth::user())
+
                     <div class="modal animate__animated animate__bounceInUp" id="siteVisibility{{ $d->id }}"
                         tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -228,7 +228,6 @@
                             </form>
                         </div>
                     </div>
-                @endcan
             @endforeach
             <!--End Modals -->
             <h5 class="card-title">Liste des Sites sur PRD</h5>
@@ -269,12 +268,11 @@
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delsite{{ $d->id }}">Supprimer</button>
                                     @endcanany
-                                    @can('isAdmin', Auth::user())
+
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#siteVisibility{{ $d->id }}">
                                             Visibilité
                                         </button>
-                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
