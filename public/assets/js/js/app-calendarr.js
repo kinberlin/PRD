@@ -317,7 +317,7 @@ function executeAfterAjax() {
                         var emails = internalInvites.map(function (item) {
                             return item.email;
                         });
-                        console.log(emails);
+                        //console.log(emails);
                         // Unselect all options
                         var selectElement = $("#eventGuests");
                         // Unselect all options
