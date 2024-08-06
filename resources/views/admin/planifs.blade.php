@@ -121,15 +121,15 @@
                                     <input type="text" class="form-control" id="eventTitle" name="object"
                                         placeholder="Objet de Réunion" required />
                                 </div>
-                                <div class="mb-3">
+                               <div class="mb-3">
                                     <label for="dysfunctionList" class="form-label">Signalement /
                                         Dysfonctionnement</label>
-                                    <select id="dysfunctionList" class="select2-searching form-select form-select-lg"
+                                    <select id="dysfunctionList" class="select2 form-select form-select-lg"
                                         data-allow-clear="true" name="dysfunction" required>
                                         @foreach ($dys as $_d)
                                             <option value="{{ $_d->id }}">
                                                 ID : {{ $_d->id }} | Emp. :
-                                                {{ $_d->enterprise . ' (' . $_d->site . ')' }}
+                                                {{ $_d->enterprise . ' (' . $_d->code . ')' }}
                                             </option>
                                         @endforeach
 

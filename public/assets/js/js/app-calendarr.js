@@ -24,6 +24,7 @@ function executeAfterAjax() {
         x = document.querySelector("#eventURL"),
         q = $("#eventLabel"),
         D = $("#eventGuests"),
+        Dy = $("#dysfunctionList"),
         P = document.querySelector("#eventLocation"),
         M = document.querySelector("#eventDescription"),
         T = document.querySelector(".allDay-switch"),
@@ -44,6 +45,8 @@ function executeAfterAjax() {
             // Redirect to another URL
             window.location.href = $("#destroyRoute").val().replace(/0$/, $("#invit_id").val())
     });
+    $("#dysfunctionList").find("option").prop("selected", true).trigger("change");
+
     $(".btn-toggle-sidebar").click(function (event) {
         console.log("test toggle");
         L.classList.remove("d-none");
@@ -55,7 +58,7 @@ function executeAfterAjax() {
             m.classList.remove("show"),
             f.classList.remove("show");
         $("#eventTitle").val("");
-        $("#dysfunctionList").val("");
+        $("#dysfunctionList").val(null).trigger("change");
         $("#eventLabel").val("");
         $("#eventStartDate").val("");
         $("#flatpickr-begintime").val("");
@@ -71,9 +74,9 @@ function executeAfterAjax() {
     function t(e) {
         return e.id
             ? "<span class='badge badge-dot bg-" +
-                  $(e.element).data("label") +
-                  " me-2'> </span>" +
-                  e.text
+            $(e.element).data("label") +
+            " me-2'> </span>" +
+            e.text
             : e.text;
     }
     A &&
@@ -81,18 +84,18 @@ function executeAfterAjax() {
             console.log("clicked");
             e.currentTarget.checked
                 ? document
-                      .querySelectorAll(".input-filter")
-                      .forEach((e) => (e.checked = 1))
+                    .querySelectorAll(".input-filter")
+                    .forEach((e) => (e.checked = 1))
                 : document
-                      .querySelectorAll(".input-filter")
-                      .forEach((e) => (e.checked = 0)),
+                    .querySelectorAll(".input-filter")
+                    .forEach((e) => (e.checked = 0)),
                 i.refetchEvents();
         });
     F &&
         F.forEach((e) => {
             e.addEventListener("click", () => {
                 document.querySelectorAll(".input-filter:checked").length <
-                document.querySelectorAll(".input-filter").length
+                    document.querySelectorAll(".input-filter").length
                     ? (A.checked = !1)
                     : (A.checked = !0),
                     i.refetchEvents();
@@ -101,11 +104,18 @@ function executeAfterAjax() {
     function n(e) {
         return e.id
             ? "<div class='d-flex flex-wrap align-items-center'><div class='avatar avatar-xs me-2'><img src='" +
-                  assetsPath +
-                  $(e.element).data("avatar") +
-                  "' alt='#' class='rounded-circle' /></div>" +
-                  e.text +
-                  "</div>"
+            assetsPath +
+            $(e.element).data("avatar") +
+            "' alt='#' class='rounded-circle' /></div>" +
+            e.text +
+            "</div>"
+            : e.text;
+    }
+    function ny(e) {
+        return e.id
+            ? "<div class='d-flex flex-wrap align-items-center'>" +
+            e.text +
+            "</div>"
             : e.text;
     }
     var d, o;
@@ -113,7 +123,7 @@ function executeAfterAjax() {
         var e = document.querySelector(".fc-sidebarToggle-button");
         for (
             e.classList.remove("fc-button-primary"),
-                e.classList.add("d-lg-none", "d-inline-block", "ps-0");
+            e.classList.add("d-lg-none", "d-inline-block", "ps-0");
             e.firstChild;
 
         )
@@ -138,38 +148,49 @@ function executeAfterAjax() {
             },
         }),
         D.length &&
-            D.wrap('<div class="position-relative"></div>').select2({
-                placeholder: "Select value",
-                dropdownParent: D.parent(),
-                closeOnSelect: !1,
-                templateResult: n,
-                templateSelection: n,
-                escapeMarkup: function (e) {
-                    return e;
-                },
-            }),
+        D.wrap('<div class="position-relative"></div>').select2({
+            placeholder: "Select value",
+            dropdownParent: D.parent(),
+            closeOnSelect: !1,
+            templateResult: n,
+            templateSelection: n,
+            escapeMarkup: function (e) {
+                return e;
+            },
+        }),
+        Dy.length &&
+        Dy.wrap('<div class="position-relative"></div>').select2({
+            placeholder: "Select value",
+            dropdownParent: Dy.parent(),
+            closeOnSelect: !1,
+            templateResult: ny,
+            templateSelection: ny,
+            escapeMarkup: function (e) {
+                return e;
+            },
+        }),
         k &&
-            (d = k.flatpickr({
-                enableTime: !0,
-                altFormat: "Y-m-dTH:i:S",
-                minDate: "today",
-                onReady: function (e, t, n) {
-                    n.isMobile && n.mobileInput.setAttribute("step", null);
-                },
-            })),
+        (d = k.flatpickr({
+            enableTime: !0,
+            altFormat: "Y-m-dTH:i:S",
+            minDate: "today",
+            onReady: function (e, t, n) {
+                n.isMobile && n.mobileInput.setAttribute("step", null);
+            },
+        })),
         w &&
-            (o = w.flatpickr({
-                enableTime: !0,
-                altFormat: "Y-m-dTH:i:S",
-                onReady: function (e, t, n) {
-                    n.isMobile && n.mobileInput.setAttribute("step", null);
-                },
-            })),
+        (o = w.flatpickr({
+            enableTime: !0,
+            altFormat: "Y-m-dTH:i:S",
+            onReady: function (e, t, n) {
+                n.isMobile && n.mobileInput.setAttribute("step", null);
+            },
+        })),
         Y &&
-            (e = Y.flatpickr({
-                monthSelectorType: "static",
-                inline: !0,
-            }));
+        (e = Y.flatpickr({
+            monthSelectorType: "static",
+            inline: !0,
+        }));
     let i = new Calendar(v, {
         initialView: "dayGridMonth",
         events: function (e, t) {
@@ -220,7 +241,7 @@ function executeAfterAjax() {
                     y.classList.add("btn-add-event"),
                     S.classList.add("d-none"),
                     $("#eventTitle").val(""),
-                    $("#dysfunctionList").val("1"),
+                    $("#dysfunctionList").val("1").trigger("change"),
                     $("#eventLabel").val(""),
                     $("#eventStartDate").val(""),
                     $("#flatpickr-begintime").val(""),
@@ -236,7 +257,7 @@ function executeAfterAjax() {
         eventClick: function (e) {
             (e = e),
                 (a = e.event).url &&
-                    (e.jsEvent.preventDefault(), window.open(a.url, "_blank")),
+                (e.jsEvent.preventDefault(), window.open(a.url, "_blank")),
                 C.show(),
                 b && (b.innerHTML = "Mettre à jour"),
                 (y.innerHTML = "MAJ"),
@@ -251,11 +272,11 @@ function executeAfterAjax() {
                     : o.setDate(a.start, !0, "Y-m-d"),*/
                 q.val(a.extendedProps.calendar).trigger("change"),
                 void 0 !== a.extendedProps.location &&
-                    (P.value = a.extendedProps.location),
+                (P.value = a.extendedProps.location),
                 void 0 !== a.extendedProps.guests &&
-                    D.val(a.extendedProps.guests).trigger("change"),
+                D.val(a.extendedProps.guests).trigger("change"),
                 void 0 !== a.extendedProps.description &&
-                    (M.value = a.extendedProps.description);
+                (M.value = a.extendedProps.description);
             console.log("Click evenement");
             $.ajax({
                 url: "/invitations/show/" + a.id,
@@ -273,7 +294,7 @@ function executeAfterAjax() {
                         }
                         $("#invit_id").val(eventData.id);
                         $("#eventTitle").val(eventData.object);
-                        $("#dysfunctionList").val(eventData.dysfonction);
+                        Dy.val(eventData.dysfonction).trigger("change");
                         $("#eventLabel").val(eventData.motif);
                         $("#eventStartDate").val(eventData.odates);
                         $("#flatpickr-begintime").val(eventData.begin);
@@ -328,7 +349,7 @@ function executeAfterAjax() {
                         if (emailsNotFound.length > 0) {
                             var spanElement = $("<span>").text(
                                 "Emails not found in select: " +
-                                    emailsNotFound.join(", ")
+                                emailsNotFound.join(", ")
                             );
                             selectElement.after(spanElement);
                         }
@@ -365,14 +386,14 @@ function executeAfterAjax() {
                         } else if ($(".ext_invites1").length) {
                             $(".ext_invites1").html(
                                 '<div data-repeater-item class="ext_invites2">' +
-                                    newItem +
-                                    "</div>"
+                                newItem +
+                                "</div>"
                             );
                         } else if ($(".ext_invites").length) {
                             $(".ext_invites").html(
                                 '<div data-repeater-list="group-a" class="ext_invites1"><div data-repeater-item class="ext_invites2">' +
-                                    newItem +
-                                    "</div></div>"
+                                newItem +
+                                "</div></div>"
                             );
                         }
                     });
@@ -397,6 +418,7 @@ function executeAfterAjax() {
             (E.value = ""),
             (P.value = ""),
             D.val("").trigger("change"),
+            Dy.val("").trigger("change"),
             (M.value = "");
         console.log("Im in");
     }
@@ -468,9 +490,9 @@ function executeAfterAjax() {
             r = !1;
         }),
         h &&
-            h.addEventListener("click", (e) => {
-                L.classList.remove("d-none");
-            }),
+        h.addEventListener("click", (e) => {
+            L.classList.remove("d-none");
+        }),
         S.addEventListener("click", (e) => {
             var t;
             (t = parseInt(a.id)),
