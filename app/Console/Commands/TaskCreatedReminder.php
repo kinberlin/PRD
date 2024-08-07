@@ -3,27 +3,26 @@
 namespace App\Console\Commands;
 
 use App\Models\Task;
-use App\Notifications\TaskReminder;
+use App\Notifications\TaskCreated;
 use App\Scopes\YearScope;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
-class Send_TaskReminders extends Command
+class TaskCreatedReminder extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:send-task-reminders';
+    protected $signature = 'app:task-created-reminder';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send Mails every 2 days When Task is left with less than 8 days to end date and task is not yet completed.';
+    protected $description = 'Send Mails When Task is created since almost 5 minutes.';
 
     /**
      * Execute the console command.
@@ -39,15 +38,15 @@ class Send_TaskReminders extends Command
             ->whereYear('tasks.created_at', session('currentYear'))
             ->get();
 
-        $tasks = Task::withoutGlobalScope(YearScope::class)->where(DB::raw('(progress * 100)'), '<', 100)->whereNotIn('id', $parentTasks->pluck('id')->unique())
+        $tasks = Task::withoutGlobalScope(YearScope::class)->whereNotIn('id', $parentTasks->pluck('id')->unique())
             ->get();
         foreach ($tasks as $task) {
             $diff = $current->diffInDays(Carbon::parse($task->start_date)->addDay($task->duration));
             if ($diff < 8 && $diff % 2 == 0) {
-                $task->notify(new TaskReminder($task));
+                $task->notify(new TaskCreated($task));
             }
             if ($diff == 1) {
-                $task->notify(new TaskReminder($task));
+                $task->notify(new TaskCreated($task));
             }
         }
     }

@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         //Perform each reminding feature periodically as specified below
         $schedule->command('app:send-dysfunction-reminders')->everyMinute();
-        $schedule->command('app:send-task-reminders')->easter_days();
+        $schedule->command('app:send-task-reminders')->daily();
         $schedule->command('app:send-invitation-reminders')->everyMinute();
     }
 

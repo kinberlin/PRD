@@ -475,7 +475,11 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous tenons à vous informer que la tâche n° #{{$task->id}} expire le {{formatDateInFrench(\Carbon\Carbon::parse($task->start_date)->addDay($task->duration), 'complete')}}. Ci-dessous, les détails :</span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
+                                                                        tenons à vous informer que suite à l'incident n°
+                                                                        : {{ $dysfunction->code }}, vous avez été
+                                                                        assigné une action corrective (n°
+                                                                        #{{ $task->id }}). Ci-dessous, les détails :</span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
@@ -483,25 +487,40 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Informations sur la
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Informations
+                                                                        sur la
                                                                         tâche :</span>
                                                                 </p>
                                                                 <ul style="margin-top:0cm" type="disc">
-                                                                <li style="margin-left:0cm; text-align:justify"
-                                                                        class="x_MsoListParagraphCxSpFirst"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Action : {{ $task->text}}</span></li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpFirst"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Dysfonctionnement : {{ $dysfunction->code}}</span></li>
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Action
+                                                                            : {{ $task->text }}</span></li>
+                                                                    <li style="margin-left:0cm; text-align:justify"
+                                                                        class="x_MsoListParagraphCxSpFirst"><span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Dysfonctionnement
+                                                                            : {{ $dysfunction->code }}</span></li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpMiddle"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Date d'attribution : {{formatDateInFrench($task->created_at, 'long')}}</span></li>
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
+                                                                            d'attribution :
+                                                                            {{ formatDateInFrench($task->created_at, 'long') }}</span>
+                                                                    </li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpMiddle"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Durée : {{$task->duration}} Jours</span></li>
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Durée
+                                                                            : {{ $task->duration }} Jours</span></li>
+                                                                    <li style="margin-left:0cm; text-align:justify"
+                                                                        class="x_MsoListParagraphCxSpMiddle"><span
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Délai
+                                                                            :
+                                                                            {{ formatDateInFrench(\Carbon\Carbon::parse($task->start_date)->addDay($task->duration), 'complete') }}</span>
+                                                                    </li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpLast"><span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Processus assigné : {{$processes->name}} ({{$processes->surfix}})</span></li>
+                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">Processus
+                                                                            assigné : {{ $processes->name }}
+                                                                            ({{ $processes->surfix }})</span></li>
                                                                 </ul>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span

@@ -2,20 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Models\ApiMail;
-use App\Models\AuthorisationPilote;
-use App\Models\AuthorisationRq;
 use App\Models\Dysfunction;
-use App\Models\Processes;
 use App\Models\Task;
-use App\Models\Users;
-use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskReminder extends Notification
+class TaskCreated extends Notification
 {
     use Queueable;
     protected Task $task;
@@ -45,13 +37,13 @@ class TaskReminder extends Notification
     public function toMail(object $notifiable)
     {
         //pilote emails
-        if(is_null($this->dysfunction)){
+        if (is_null($this->dysfunction)) {
             throw new Exception("Dysfunction Ressource Not Found", 501);
         }
         $pltu = AuthorisationPilote::where('process', $this->task->process)->get();
         $plt = Users::whereIn('id', $pltu->pluck('user'))->where('role', '<>', 1)->get();
         $content = view('employees.task_reminder', ['task' => $this->task, 'dysfunction' => $this->dysfunction, 'processes' => Processes::find($this->task->process)])->render();
-        $newmail = new ApiMail(null, $plt->pluck('email')->toArray(), 'Cadyst PRD App', "Rappel sur le délai de livraison d'action corrective intitulée : ".$this->task->text. ".", $content, []);
+        $newmail = new ApiMail(null, $plt->pluck('email')->toArray(), 'Cadyst PRD App', "Rappel sur le délai de livraison d'action corrective intitulée : " . $this->task->text . ".", $content, []);
         $newmail->send();
     }
 
@@ -63,7 +55,7 @@ class TaskReminder extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-
+            //
         ];
     }
 }
