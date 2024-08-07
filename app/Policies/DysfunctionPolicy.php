@@ -71,6 +71,7 @@ class DysfunctionPolicy
             )
             ->where('dysfunction', $dysfunction->id)
             ->get();
+
         return $dysfunction->status == 7 && now()->diffInDays(Carbon::parse($tasks->max('end'))) > 30;
     }
     public function DysRunning(Users $users, Dysfunction $dysfunction): bool

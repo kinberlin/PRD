@@ -31,7 +31,7 @@ class TaskController extends RoutingController
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
         $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-        $task->created_by = Auth::user()->firstname . ' ' . Auth::user()->lastname;
+        $task->created_by = 'Responsable Qualité';//Auth::user()->firstname . ' ' . Auth::user()->lastname;
 
         $task->save();
 

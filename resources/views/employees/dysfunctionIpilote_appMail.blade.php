@@ -475,19 +475,13 @@
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous vous informons qu'un dysfonctionnement a été signalé sur la plateforme PRD sous le numéro No. {{$dysfunction->code}}.  </span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
+                                                                        vous informons qu'un dysfonctionnement a été
+                                                                        signalé sur la plateforme PRD sous le numéro No.
+                                                                        {{ $dysfunction->code }}. </span>
+                                                                </p>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
-                                                                </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">À l’identification, il a été déterminé que votre processus({{$name}}) est impacté par ce dysfonctionnement.
-
-                                                                        Votre collaboration est essentielle pour évaluer l'impact et élaborer des solutions appropriées. Veuillez préparer les informations nécessaires pour une prochaine réunion de résolution. </span>
-                                                                </p>
-                                                                                                                                <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
                                                                         style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
                                                                         de l'incident :</span>
@@ -496,23 +490,49 @@
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpFirst"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Employé
-                                                                            ayant rapporté l'incident : {{ $dysfunction->emp_signaling}}[{{$dysfunction->emp_matricule}}]</span></li>
+                                                                            ayant rapporté l'incident :
+                                                                            {{ $dysfunction->emp_signaling }}[{{ $dysfunction->emp_matricule }}]</span>
+                                                                    </li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpMiddle"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                                                                            et heure du signalement : {{formatDateInFrench($dysfunction->created_at, 'full')}}</span></li>
+                                                                            et heure du signalement :
+                                                                            {{ formatDateInFrench($dysfunction->created_at, 'full') }}</span>
+                                                                    </li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpMiddle"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Description
-                                                                            de l'incident : {{$dysfunction->description}}</span></li>
+                                                                            de l'incident :
+                                                                            {{ $dysfunction->description }}</span></li>
                                                                     <li style="margin-left:0cm; text-align:justify"
                                                                         class="x_MsoListParagraphCxSpLast"><span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Filiale
-                                                                            et Site concerné : {{$dysfunction->enterprise. ' ('.$dysfunction->site.')'}}</span></li>
+                                                                            et Site concerné :
+                                                                            {{ $dysfunction->enterprise . ' (' . $dysfunction->site . ')' }}</span>
+                                                                    </li>
                                                                 </ul>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Si vous avez des questions ou des points à discuter, n'hésitez pas à contacter le Responsable Qualité.  </span>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                </p>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">À
+                                                                        l’identification, il a été déterminé que votre
+                                                                        processus({{ $name }}) est impacté par
+                                                                        ce dysfonctionnement.
+
+                                                                        Votre collaboration est essentielle pour évaluer
+                                                                        l'impact et élaborer des solutions appropriées.
+                                                                        Veuillez préparer les informations nécessaires
+                                                                        pour une prochaine réunion de résolution.
+                                                                    </span>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Si
+                                                                        vous avez des questions ou des points à
+                                                                        discuter, n'hésitez pas à contacter le
+                                                                        Responsable Qualité. </span>
                                                                 </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span

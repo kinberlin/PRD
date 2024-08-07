@@ -87,7 +87,7 @@ class DysfunctionController extends Controller
                     $pj = $fileData['pj'];
                     $filename = time() . '_' . $pj->getClientOriginalName();
                     // Store the file and get the path
-                    $path = $pj->storeAs('uploads/dysfunction', $filename);
+                    $path = $pj->storeAs('public/uploads/dysfunction', $filename);
                     $urls[] = $path;
                 }
             }

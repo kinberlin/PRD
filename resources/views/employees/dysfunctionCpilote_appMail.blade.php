@@ -480,35 +480,7 @@
                                                                         signalé sur la plateforme PRD sous le numéro No.
                                                                         {{ $dysfunction->code }}</span>
                                                                 </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
-                                                                </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">À
-                                                                        l’identification, il a été déterminé que votre
-                                                                        processus({{ $name }}) est à l'origine
-                                                                        de ce dysfonctionnement. </span>
-                                                                </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
-                                                                        collaboration est essentielle pour analyser ce
-                                                                        dysfonctionnement et y apporter des solutions
-                                                                        rapides. Veuillez préparer les informations
-                                                                        nécessaires pour une prochaine réunion de
-                                                                        résolution. </span>
-                                                                </p>
-                                                                <p style="text-align:justify" class="x_MsoNormal">
-                                                                    <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Si
-                                                                        vous avez des questions ou des points à
-                                                                        discuter, n'hésitez pas à contacter le
-                                                                        Responsable Qualité.
 
-                                                                        Merci pour votre diligence. </span>
-                                                                </p>
                                                                 <p style="text-align:justify" class="x_MsoNormal">
                                                                     <span
                                                                         style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
@@ -539,6 +511,35 @@
                                                                             {{ $dysfunction->enterprise . ' (' . $dysfunction->site . ')' }}</span>
                                                                     </li>
                                                                 </ul>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
+                                                                </p>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">À
+                                                                        l’identification, il a été déterminé que votre
+                                                                        processus({{ $name }}) est à l'origine
+                                                                        de ce dysfonctionnement. </span>
+                                                                </p>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Votre
+                                                                        collaboration est essentielle pour analyser ce
+                                                                        dysfonctionnement et y apporter des solutions
+                                                                        rapides. Veuillez préparer les informations
+                                                                        nécessaires pour une prochaine réunion de
+                                                                        résolution. </span>
+                                                                </p>
+                                                                <p style="text-align:justify" class="x_MsoNormal">
+                                                                    <span
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Si
+                                                                        vous avez des questions ou des points à
+                                                                        discuter, n'hésitez pas à contacter le
+                                                                        Responsable Qualité.
+
+                                                                        Merci pour votre diligence. </span>
+                                                                </p>
                                                             </div>
                                                         </table>
                                                     </td>
