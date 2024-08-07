@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: host.docker.internal:3306
--- Generation Time: Jun 20, 2024 at 11:16 AM
--- Server version: 8.0.36-2ubuntu3
--- PHP Version: 8.2.8
+-- Hôte : 127.0.0.1:3306
+-- Généré le : mar. 06 août 2024 à 16:16
+-- Version du serveur : 8.0.31
+-- Version de PHP : 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,92 +18,77 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `prd`
+-- Base de données : `prd`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `authorisation_pilote`
+-- Structure de la table `authorisation_pilote`
 --
 
-CREATE TABLE `authorisation_pilote` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `authorisation_pilote`;
+CREATE TABLE IF NOT EXISTS `authorisation_pilote` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `user` int NOT NULL,
   `process` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `interim` tinyint DEFAULT '0',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `authorisation_pilote`
---
-
-INSERT INTO `authorisation_pilote` (`id`, `user`, `process`, `created_at`, `deleted_at`, `interim`, `updated_at`) VALUES
-(3, 52, 1, '2024-06-07 11:15:08', NULL, 0, '2024-06-07 11:15:08');
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `processus` (`process`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `authorisation_rq`
+-- Structure de la table `authorisation_rq`
 --
 
-CREATE TABLE `authorisation_rq` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `authorisation_rq`;
+CREATE TABLE IF NOT EXISTS `authorisation_rq` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `user` int NOT NULL,
   `enterprise` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `interim` tinyint(1) DEFAULT '0',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`),
+  KEY `enterprise` (`enterprise`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `authorisation_rq`
+-- Structure de la table `department`
 --
 
-INSERT INTO `authorisation_rq` (`id`, `user`, `enterprise`, `created_at`, `deleted_at`, `interim`, `updated_at`) VALUES
-(2, 51, 1, '2024-05-29 16:00:48', NULL, 0, '2024-06-08 12:45:13'),
-(7, 61, 1, '2024-06-08 13:01:15', NULL, 1, '2024-06-18 09:47:07'),
-(9, 54, 1, '2024-06-08 13:01:15', NULL, 1, '2024-06-18 09:47:07');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `department`
---
-
-CREATE TABLE `department` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `department`;
+CREATE TABLE IF NOT EXISTS `department` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `enterprise` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `department`
---
-
-INSERT INTO `department` (`id`, `name`, `created_at`, `deleted_at`, `enterprise`) VALUES
-(1, 'Direction Qualité Hygiène Sécurité Environnement (DQHSE)', '2024-05-02 10:40:05', NULL, 1),
-(2, 'Administration (DA)', '2024-05-24 11:41:10', NULL, 1),
-(3, 'Direction Audit et Contrôle Interne (DACI)', '2024-05-24 11:41:10', NULL, 1),
-(4, 'Direction Achat et Logistique (DAL)', '2024-05-24 11:41:10', NULL, 1),
-(5, 'testcsdcsc', '2024-06-08 12:48:33', NULL, 1);
+  `enterprise` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `enterprise` (`enterprise`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dysfunction`
+-- Structure de la table `dysfunction`
 --
 
-CREATE TABLE `dysfunction` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `dysfunction`;
+CREATE TABLE IF NOT EXISTS `dysfunction` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `enterprise` varchar(100) NOT NULL,
+  `enterprise_id` int NOT NULL,
   `site` varchar(100) NOT NULL,
+  `site_id` int DEFAULT NULL,
   `emp_signaling` varchar(100) NOT NULL,
   `emp_matricule` varchar(100) NOT NULL,
   `emp_email` varchar(100) DEFAULT NULL,
@@ -111,9 +96,9 @@ CREATE TABLE `dysfunction` (
   `concern_processes` json DEFAULT NULL,
   `impact_processes` json DEFAULT NULL,
   `gravity` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `gravity_id` int DEFAULT NULL,
   `probability` int DEFAULT NULL,
   `corrective_acts` json DEFAULT NULL,
-  `invitations` json DEFAULT NULL,
   `status` int DEFAULT '1',
   `progression` int DEFAULT '0',
   `pj` json DEFAULT NULL,
@@ -122,107 +107,91 @@ CREATE TABLE `dysfunction` (
   `occur_date` date NOT NULL,
   `cause` varchar(100) DEFAULT NULL,
   `rej_reasons` varchar(100) DEFAULT NULL,
-  `code` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `dysfunction`
---
-
-INSERT INTO `dysfunction` (`id`, `enterprise`, `site`, `emp_signaling`, `emp_matricule`, `emp_email`, `description`, `concern_processes`, `impact_processes`, `gravity`, `probability`, `corrective_acts`, `invitations`, `status`, `progression`, `pj`, `created_at`, `deleted_at`, `occur_date`, `cause`, `rej_reasons`, `code`) VALUES
-(1, 'Panzani', 'Usine Pâtes', 'Test First', 'PZN0130', 't@t.t', '...', '[\"Manager l\'Amélioration Continu (MAC)\"]', '[\"Piloter l\'Entreprise (PEN)\", \"Produire les Farines et Semoules (PES)\"]', 'Négligeable', 1, NULL, NULL, 7, 0, '[\"http://localhost:8001/uploads/dysfonction/1715029881_MEETING RECAP cadyst.docx\", \"http://localhost:8001/uploads/dysfonction/1715029881_ctem-flyers-lait_sod-longrich.jpg\"]', '2024-05-06 21:11:21', NULL, '2024-04-30', 'Aucun Responsable Identifier', NULL, NULL),
-(2, 'La Pasta', 'Usine Minoterie Semoulerie (UMS), Carrefour Mitzig', 'Test First', 'PZN0001', 't@t.t', 'Test reunion', '[\"Produire les Pâtes alimentaires\"]', '[\"Manager l\'Amélioration Continu\", \"Produire les Farines et Semoules\"]', 'Négligeable', 2, NULL, NULL, 2, 0, '[\"http://localhost:8001/uploads/dysfonction/1716032993_Configuring VLANs Instructions.pdf\"]', '2024-05-18 11:49:53', NULL, '2024-05-17', 'Aucun Responsable Identifier', NULL, NULL),
-(4, 'Panzani', 'Usine Pâtes, Bassa', 'Test First', 'YU14AS', 't@t.t', 'popups', '[\"Produire les Farines et Semoules\"]', '[\"Produire les Pâtes alimentaires\"]', 'Négligeable', 2, NULL, NULL, 5, 0, '[]', '2024-05-23 11:41:43', NULL, '2024-05-16', 'Aucun Responsable Identifier', NULL, 'D20245PZN4'),
-(5, 'Panzani', 'Usine Pâtes, Bassa', 'HINO BRUNO', 'PZN0130', 'andersontchamba@gmail.com', 'test 5', NULL, NULL, NULL, NULL, NULL, NULL, 3, 0, '[]', '2024-06-13 14:56:27', NULL, '2024-06-12', NULL, NULL, 'D20246PZN5'),
-(6, 'Panzani', 'Usine Pâtes, Bassa', 'HINO BRUNO', 'PZN0130', 'andersontchamba@gmail.com', 'test6', '[\"Piloter l\'Entreprise\"]', '[\"Manager l\'Amélioration Continu\"]', 'Négligeable', 2, NULL, NULL, 4, 0, '[]', '2024-06-13 15:00:48', NULL, '2024-06-13', 'Aucun Responsable Identifier', NULL, 'D20246PZN6'),
-(7, 'Panzani', 'Magasin Pâtes, Bassa', 'THOMO LYSETTE', 'SAE0186', 'thlysette@yahoo.fr', 'Ceci est une simulation avec envoie de mails.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '[]', '2024-06-18 10:47:18', NULL, '2024-06-17', NULL, NULL, 'D20246PZN7'),
-(8, 'Panzani', 'Magasin, Ndogsimbi', 'THOMO LYSETTE', 'SAE0186', 'thlysette@yahoo.fr', 'Ceci est une simulation de signalement et d\'envoie de mails.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '[]', '2024-06-18 10:50:21', NULL, '2024-06-17', NULL, NULL, 'D20246PZN8'),
-(9, 'Panzani', 'Magasin Grand Hangar, Bonabéri', 'THOMO LYSETTE', 'SAE0186', 'thlysette@yahoo.fr', 'Ceci est le 2em test de simulation de signalement de dysfonctionnement', '[\"Produire les Pâtes alimentaires\"]', '[\"Produire les Farines et Semoules\"]', 'Négligeable', 3, NULL, NULL, 4, 0, '[]', '2024-06-18 11:35:54', NULL, '2024-06-09', 'Aucun Responsable Identifier', NULL, 'D202406PZN9');
+  `code` varchar(50) DEFAULT NULL,
+  `solved` tinyint DEFAULT '0',
+  `cost` int DEFAULT '0',
+  `satisfaction_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `closed_by` varchar(100) DEFAULT NULL,
+  `closed_at` timestamp NULL DEFAULT NULL,
+  `origin` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `probability` (`probability`),
+  KEY `site_id` (`site_id`),
+  KEY `origin` (`origin`),
+  KEY `enterprise_id` (`enterprise_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `enterprise`
+-- Structure de la table `enterprise`
 --
 
-CREATE TABLE `enterprise` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `enterprise`;
+CREATE TABLE IF NOT EXISTS `enterprise` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `surfix` varchar(50) DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `logo` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `enterprise`
---
-
-INSERT INTO `enterprise` (`id`, `name`, `surfix`, `deleted_at`, `created_at`, `logo`) VALUES
-(1, 'Panzani', 'PZN', NULL, '2024-05-02 09:57:06', NULL),
-(2, 'La Pasta', 'LPT', NULL, '2024-05-04 06:01:10', NULL),
-(3, 'Société Agro-alimentaire Equatoriale', 'SAE', NULL, '2024-05-24 11:55:37', NULL),
-(5, 'Cadyst Group', 'CAG', NULL, '2024-06-08 12:21:16', NULL),
-(6, 'Cadyst Retail', 'DAILY', NULL, '2024-06-08 12:22:41', NULL);
+  `visible` tinyint(1) DEFAULT '1',
+  `logo` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `evaluation`
+-- Structure de la table `evaluation`
 --
 
-CREATE TABLE `evaluation` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `evaluation`;
+CREATE TABLE IF NOT EXISTS `evaluation` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `task` int UNSIGNED NOT NULL,
   `satisfaction` int NOT NULL,
   `completion` int NOT NULL,
   `evaluation_criteria` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `evaluation`
---
-
-INSERT INTO `evaluation` (`id`, `task`, `satisfaction`, `completion`, `evaluation_criteria`, `created_at`) VALUES
-(13, 10, 100, 100, 'Ponctualite, Assiduite', '2024-06-15 12:42:15'),
-(14, 29, 80, 100, 'Ponctualite, Assiduite', '2024-06-15 12:42:15');
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `task` (`task`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gravity`
+-- Structure de la table `gravity`
 --
 
-CREATE TABLE `gravity` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `gravity`;
+CREATE TABLE IF NOT EXISTS `gravity` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
+  `visible` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `note` int NOT NULL,
   `least_price` int NOT NULL DEFAULT '0',
-  `max_price` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `gravity`
---
-
-INSERT INTO `gravity` (`id`, `name`, `created_at`, `deleted_at`, `note`, `least_price`, `max_price`) VALUES
-(1, 'Négligeable', '2024-05-07 15:13:44', NULL, 1, 1, 100000),
-(2, 'Légère', '2024-06-20 09:11:44', NULL, 2, 100000, 1000000);
+  `max_price` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invitation`
+-- Structure de la table `invitation`
 --
 
-CREATE TABLE `invitation` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `invitation`;
+CREATE TABLE IF NOT EXISTS `invitation` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `dysfonction` int NOT NULL,
   `object` varchar(150) NOT NULL,
-  `dates` timestamp NOT NULL,
+  `odates` timestamp NOT NULL,
   `place` text,
   `link` text,
   `description` text,
@@ -235,70 +204,55 @@ CREATE TABLE `invitation` (
   `begin` varchar(10) NOT NULL,
   `end` varchar(10) NOT NULL,
   `participation` json DEFAULT NULL,
-  `closed_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `invitation`
---
-
-INSERT INTO `invitation` (`id`, `dysfonction`, `object`, `dates`, `place`, `link`, `description`, `rq`, `created_at`, `deleted_at`, `motif`, `internal_invites`, `external_invites`, `begin`, `end`, `participation`, `closed_at`) VALUES
-(1, 1, 'sss', '2024-05-17 11:00:00', 'lieu 1', 'http://localhost:8001/rq/plans', 'vvvv', 'Test RQ Mtricule 35258', '2024-05-14 10:32:32', '2024-05-14 10:32:32', 'Résolution de Dysfonctionnement', '[]', '[\"TT@rr.ss\"]', '12:00', '15:00', '[{\"names\": \"Invites externe.\", \"marked_by\": \"Ardo Alkassoum\", \"matricule\": \"TT@rr.ss\", \"created_at\": \"2024-06-13T10:12:55.805441Z\", \"marked_matricule\": \"PZN0001\"}]', '2024-06-12 14:29:48'),
-(2, 1, 'sss', '2024-06-13 09:47:51', 'lieu 1', NULL, 'vvvv', 'Test RQ Matricule 35258', '2024-05-16 19:35:40', '2024-05-16 19:35:40', 'Autres', '[{\"email\": \"paulnintcheu6@gmail.fr\", \"reasons\": \"Je confirme ma présence\", \"decision\": \"Confirmer\", \"matricule\": \"PZN0131\", \"created_at\": \"2024-05-30T11:31:29.416503Z\", \"deleted_at\": null, \"department\": 1, \"enterprise\": 1}, {\"email\": \"florentinbertrandn@gmail.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"LPT0143\", \"created_at\": \"2024-05-30T11:31:29.417612Z\", \"deleted_at\": null, \"department\": 2, \"enterprise\": 2}]', '[\"andersont@gmail.com\", \"sups@ss.ss\"]', '12:00', '15:00', '[{\"names\": \"Invites externe.\", \"marked_by\": \"Ardo Alkassoum\", \"matricule\": \"andersont@gmail.com\", \"created_at\": \"2024-06-13T10:21:34.909525Z\", \"marked_matricule\": \"PZN0001\"}, {\"names\": \"Invites externe.\", \"marked_by\": \"Ardo Alkassoum\", \"matricule\": \"sups@ss.ss\", \"created_at\": \"2024-06-13T10:21:34.909779Z\", \"marked_matricule\": \"PZN0001\"}, {\"names\": \"NINTCHEU\", \"marked_by\": \"Ardo Alkassoum\", \"matricule\": \"PZN0131\", \"created_at\": \"2024-06-13T10:21:34.920376Z\", \"marked_matricule\": \"PZN0001\"}, {\"names\": \"NGOUNA\", \"marked_by\": \"Ardo Alkassoum\", \"matricule\": \"LPT0143\", \"created_at\": \"2024-06-13T10:21:34.925863Z\", \"marked_matricule\": \"PZN0001\"}]', '2024-06-12 14:30:40'),
-(4, 1, 'test new', '2024-05-31 23:00:00', 'Saint Tropez', NULL, 'test new', 'Test RQ Matricule 35258', '2024-05-17 09:44:38', '2024-05-17 09:44:38', 'Evaluation de Dysfonctionnement', '[]', '[\"googs@google.com\"]', '08:00', '10:00', '[{\"names\": \"Invites externe.\", \"marked_by\": \"HINO BRUNO\", \"matricule\": \"googs@google.com\", \"created_at\": \"2024-06-13T14:25:11.390333Z\", \"marked_matricule\": \"PZN0130\"}]', '2024-06-13 13:25:24'),
-(6, 1, 'test reunion', '2024-05-21 06:10:00', 'Saint Tropez', NULL, 'test', 'Test RQ Matricule 35258', '2024-05-18 14:04:24', '2024-05-18 14:04:24', 'Autres', '[]', '[\"test@test.com\"]', '08:15', '12:00', NULL, NULL),
-(7, 1, 'Simula testing', '2024-06-12 23:00:00', 'Ndogsimbi 2', NULL, 'simulations', 'Test RQ Matricule 35258', '2024-06-08 13:57:39', '2024-06-08 13:57:39', 'Evaluation de Dysfonctionnement', '[{\"email\": \"andersontchamba@gmail.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"PZN0130\", \"created_at\": \"2024-06-08T13:57:39.774937Z\", \"deleted_at\": null, \"department\": 1, \"enterprise\": 1}]', '[\"anders@ddd.d\"]', '09:00', '12:00', NULL, NULL),
-(10, 9, 'Simul 2 pour les reunions.', '2024-06-18 23:00:00', 'Krystal Hotel', NULL, '2nd test mail', 'HINO BRUNO(Matricule : PZN0130)', '2024-06-18 15:07:05', NULL, 'Résolution de Dysfonctionnement', '[{\"email\": \"andersontchamba@gmail.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"PZN0130\", \"created_at\": \"2024-06-18T15:07:05.215157Z\", \"deleted_at\": null, \"department\": 1, \"enterprise\": 1}, {\"email\": \"aalkassoum@cadyst.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"LPT0143\", \"created_at\": \"2024-06-18T15:07:05.220354Z\", \"deleted_at\": null, \"department\": 2, \"enterprise\": 2}]', '[\"kgutest@gmail.com\"]', '14:00', '16:00', NULL, NULL),
-(11, 9, 'Simulation mail 3', '2024-06-19 23:00:00', 'Krystal Hotel', NULL, 'simul mail 3', 'HINO BRUNO(Matricule : PZN0130)', '2024-06-18 16:37:47', NULL, 'Résolution de Dysfonctionnement', '[{\"email\": \"andersontchamba@gmail.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"PZN0130\", \"created_at\": \"2024-06-18T16:37:47.283478Z\", \"deleted_at\": null, \"department\": 1, \"enterprise\": 1}]', '[\"landrynem7@gmail.com\"]', '08:00', '10:00', NULL, NULL),
-(12, 9, 'Simulation mail 4', '2024-06-18 23:00:00', 'Krystal Hotel', NULL, 'Simul 04', 'HINO BRUNO(Matricule : PZN0130)', '2024-06-18 16:54:00', NULL, 'Evaluation de Dysfonctionnement', '[{\"email\": \"aalkassoum@cadyst.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"LPT0143\", \"created_at\": \"2024-06-18T16:54:00.452697Z\", \"deleted_at\": null, \"department\": 2, \"enterprise\": 2}]', '[\"kinberlintchamba2003@gmail.com\"]', '13:00', '14:45', NULL, NULL),
-(13, 8, 'Simulation mail 5', '2024-06-26 11:00:00', 'Krystal Hotel', NULL, 'Ceci est le 5em mail de simulation.', 'HINO BRUNO(Matricule : PZN0130)', '2024-06-19 08:48:33', NULL, 'Evaluation de Dysfonctionnement', '[{\"email\": \"andersontchamba@gmail.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"PZN0130\", \"created_at\": \"2024-06-19T08:48:33.202976Z\", \"deleted_at\": null, \"department\": 1, \"enterprise\": 1}, {\"email\": \"aalkassoum@cadyst.com\", \"reasons\": null, \"decision\": \"En attente de Validation\", \"matricule\": \"LPT0143\", \"created_at\": \"2024-06-19T08:48:33.203459Z\", \"deleted_at\": null, \"department\": 2, \"enterprise\": 2}]', '[]', '08:00', '10:00', NULL, NULL);
+  `closed_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dysfonction` (`dysfonction`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `links`
+-- Structure de la table `links`
 --
 
-CREATE TABLE `links` (
-  `id` int UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `links`;
+CREATE TABLE IF NOT EXISTS `links` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `dysfunction` int DEFAULT NULL,
   `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` int NOT NULL,
   `target` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `migrations`
+-- Structure de la table `origin`
 --
 
-CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(2, '2024_05_10_084657_create_tasks_table', 1),
-(3, '2024_05_10_084717_create_links_table', 1),
-(4, '2024_05_10_103224_add_sortorder_to_tasks_table', 2);
+DROP TABLE IF EXISTS `origin`;
+CREATE TABLE IF NOT EXISTS `origin` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `visible` tinyint(1) DEFAULT '1',
+  `description` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `personal_access_tokens`
+-- Structure de la table `personal_access_tokens`
 --
 
-CREATE TABLE `personal_access_tokens` (
-  `id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `personal_access_tokens`;
+CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint UNSIGNED NOT NULL,
   `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -307,139 +261,127 @@ CREATE TABLE `personal_access_tokens` (
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `probability`
+-- Structure de la table `probability`
 --
 
-CREATE TABLE `probability` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `probability`;
+CREATE TABLE IF NOT EXISTS `probability` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `description` text NOT NULL,
   `note` int NOT NULL,
   `name` varchar(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `probability`
---
-
-INSERT INTO `probability` (`id`, `description`, `note`, `name`, `created_at`, `deleted_at`) VALUES
-(1, 'Au plus une fois tous les 3 ans..', 1, 'Extrêmement rare', '2024-06-20 11:09:43', NULL);
+  `visible` tinyint(1) DEFAULT '1',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `processes`
+-- Structure de la table `processes`
 --
 
-CREATE TABLE `processes` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `processes`;
+CREATE TABLE IF NOT EXISTS `processes` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `surfix` varchar(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `processes`
---
-
-INSERT INTO `processes` (`id`, `name`, `surfix`, `created_at`, `deleted_at`) VALUES
-(1, 'Piloter l\'Entreprise', 'PEN', '2024-05-04 04:34:10', '2024-05-04 04:34:10'),
-(2, 'Manager l\'Amélioration Continu', 'MAC', '2024-05-08 09:24:24', '2024-05-08 09:24:24'),
-(3, 'Produire les Farines et Semoules', 'PES', '2024-05-08 09:25:06', '2024-05-08 09:25:06'),
-(4, 'Produire les Pâtes alimentaires', 'PPA', '2024-05-23 08:36:40', '2024-05-23 08:36:40');
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Structure de la table `role`
 --
 
-CREATE TABLE `role` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE IF NOT EXISTS `role` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL,
-  `deleted_at` timestamp NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `deleted_at` timestamp NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `role`
+-- Déchargement des données de la table `role`
 --
 
 INSERT INTO `role` (`id`, `name`, `created_at`, `deleted_at`) VALUES
 (1, 'admin', '2024-05-23 18:59:07', '2024-05-23 18:59:07'),
-(2, 'Emlpoyé', '2024-05-23 18:59:07', '2024-05-23 18:59:07'),
+(2, 'Employé', '2024-05-23 18:59:07', '2024-05-23 18:59:07'),
 (3, 'Responsable Qualité', '2024-05-23 18:59:35', '2024-05-23 18:59:35'),
 (4, 'Pilote', '2024-05-23 18:59:35', '2024-05-23 18:59:35');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site`
+-- Structure de la table `site`
 --
 
-CREATE TABLE `site` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `site`;
+CREATE TABLE IF NOT EXISTS `site` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `enterprise` int NOT NULL,
   `location` varchar(100) DEFAULT NULL,
+  `visible` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `site`
---
-
-INSERT INTO `site` (`id`, `name`, `enterprise`, `location`, `created_at`, `deleted_at`) VALUES
-(1, 'Usine Pâtes', 2, 'Bassa', '2024-05-02 11:32:22', NULL),
-(2, 'Magasin Pâtes', 1, 'Bassa', '2024-05-02 11:52:17', NULL),
-(3, 'Magasin', 1, 'Ndogsimbi', '2024-05-03 15:40:27', NULL),
-(4, 'Magasin Grand Hangar', 1, 'Bonabéri', '2024-05-03 15:47:14', NULL),
-(5, 'Usine Minoterie Semoulerie (UMS)', 2, 'Carrefour Mitzig', '2024-05-18 11:22:36', NULL),
-(6, 'Usine Minoteries', 2, 'Kribi', '2024-05-28 14:32:03', NULL),
-(7, 'te', 2, 'sa', '2024-06-06 09:16:11', NULL);
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `enterprise` (`enterprise`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `status`
+-- Structure de la table `status`
 --
 
-CREATE TABLE `status` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `status`;
+CREATE TABLE IF NOT EXISTS `status` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `step` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `step` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `status`
+-- Déchargement des données de la table `status`
 --
 
-INSERT INTO `status` (`id`, `name`, `step`) VALUES
-(1, 'Initialisation...', 1),
-(2, 'Dysfonctionnement Identifier.', 2),
-(3, 'Rejeter', NULL),
-(4, 'En cours de traitement', NULL),
-(5, 'En cours d\'évaluation', NULL),
-(6, 'Terminé', NULL),
-(7, 'Evaluation Terminé', NULL);
+INSERT INTO `status` (`id`, `name`, `step`, `created_at`) VALUES
+(1, 'Initialisation...', 1, '2024-07-18 16:06:23'),
+(2, 'Dysfonctionnement Identifier.', 2, '2024-07-18 16:06:23'),
+(3, 'Rejeter', 6, '2024-07-18 16:06:23'),
+(4, 'En cours de traitement', 3, '2024-07-18 16:06:23'),
+(5, 'En cours d\'évaluation', 4, '2024-07-18 16:06:23'),
+(6, 'Terminé', 6, '2024-07-18 16:06:23'),
+(7, 'Evaluation Terminé', 5, '2024-07-18 16:06:23');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tasks`
+-- Structure de la table `tasks`
 --
 
-CREATE TABLE `tasks` (
-  `id` int UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tasks`;
+CREATE TABLE IF NOT EXISTS `tasks` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `dysfunction` int DEFAULT NULL,
   `text` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `duration` int NOT NULL,
@@ -455,33 +397,20 @@ CREATE TABLE `tasks` (
   `open` tinyint(1) DEFAULT '1',
   `proof` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `view_by` json DEFAULT NULL,
-  `created_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `tasks`
---
-
-INSERT INTO `tasks` (`id`, `dysfunction`, `text`, `duration`, `progress`, `start_date`, `parent`, `created_at`, `updated_at`, `sortorder`, `unscheduled`, `process`, `description`, `open`, `proof`, `view_by`, `created_by`) VALUES
-(9, 1, 'Dys 1', -23, 0.83, '2024-06-15 00:00:00', 0, '2024-05-10 09:43:43', '2024-06-15 10:28:24', 28, 0, '1', NULL, 1, NULL, NULL, NULL),
-(10, 1, 'Nettoyage', 3, 0.50, '2024-05-08 00:00:00', 9, '2024-05-10 09:49:44', '2024-05-21 14:52:52', 5, 0, '2', 'Lundi Matin', 1, NULL, NULL, NULL),
-(29, 1, 'Nouvelle tâche', 6, 1.00, '2024-05-07 00:00:00', 9, '2024-05-21 13:39:03', '2024-05-21 14:50:12', 9, 0, '1', NULL, 1, 'http://localhost:8001/uploads/tasks/1716306612_gantt.pdf', NULL, 'Demo User'),
-(31, 2, 'Dysfonctionnement', 17, 0.00, '2024-05-22 00:00:00', 0, '2024-05-23 10:13:07', '2024-06-15 10:38:33', 0, 0, '4', NULL, 1, NULL, NULL, 'Demo User'),
-(32, 2, 'Nouvelle tâche', 2, 0.41, '2024-05-22 00:00:00', 31, '2024-05-23 10:16:23', '2024-05-23 10:16:34', 29, 0, '1', 't2', 0, NULL, NULL, 'Demo User'),
-(34, 6, 'Dysfonctionnement D20246PZN6', 1, 0.00, '2024-06-13 00:00:00', 0, '2024-06-13 14:01:49', '2024-06-13 14:49:12', 0, 0, '1', NULL, 1, NULL, NULL, 'Demo User'),
-(39, 2, 'Nouvelle tâche', 3, 0.00, '2024-06-11 00:00:00', 31, '2024-06-15 10:37:27', '2024-06-15 10:38:21', 30, 0, '1', NULL, 0, NULL, NULL, 'Demo User'),
-(40, 4, 'Dysfonctionnement D20245PZN4', 2, 0.00, '2024-06-15 00:00:00', 0, '2024-06-15 18:30:46', '2024-06-15 18:44:29', 0, 0, '3', NULL, 1, NULL, NULL, 'Demo User'),
-(45, 4, 'Nouvelle tâche', 2, 0.00, '2024-06-15 00:00:00', 40, '2024-06-15 18:44:29', '2024-06-15 18:44:29', 31, 0, '1', NULL, 1, NULL, NULL, 'Demo User'),
-(46, 9, 'Dysfonctionnement D202406PZN9', 1, 0.01, '2024-06-18 14:39:12', 0, '2024-06-18 13:39:13', '2024-06-18 13:39:13', 0, 0, '4', NULL, 1, NULL, NULL, 'Demo User');
+  `created_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -497,300 +426,75 @@ CREATE TABLE `users` (
   `department` int DEFAULT NULL,
   `role` int DEFAULT '2',
   `poste` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `access` tinyint(1) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `access` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `matricule` (`matricule`),
+  KEY `department` (`department`),
+  KEY `enterprise` (`enterprise`),
+  KEY `role` (`role`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `users`
+-- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `deleted_at`, `phone`, `image`, `matricule`, `enterprise`, `department`, `role`, `poste`, `access`) VALUES
-(1, 'Ardo', 'Alkassoum', 'tdrytan@yahoo.com', NULL, '$2y$12$WoODfnA58I2fvkMLl6mQi..W7wK6jAB.rEPngOquIJM9TUcMnHBQS', NULL, NULL, NULL, '673955909', NULL, 'PZN0001', 1, NULL, 1, 'DQ', 1),
-(51, 'HINO', 'BRUNO', 'andersontchamba@gmail.com', NULL, '$2y$12$ZLedVFq0hZWI/qYBneux9.tlzbXJKwi/GINrKmBp7Kt2/8SOPBPdG', NULL, NULL, NULL, '673955909', 'profile_images/bpqrONls0AB0P0eNDh3LMP272nPLdWeyWUHUXjTn.jpg', 'PZN0130', 1, 1, 2, 'OPERATEUR MOULE', 1),
-(52, 'NINTCHEU', 'PAUL', 'paulnintcheu6@gmail.fr', NULL, '$2y$12$UrNq66gqknGh9HxFIDO/5.wRGn6uLJz6ooR2rBJ4X9LLyr.J4kDwC', NULL, NULL, NULL, '673955909', NULL, 'PZN0131', 1, 1, 2, 'SUPERVISEUR SILO', 1),
-(53, 'TANZI TCHAPTCHET', 'ARMAND BOZARD', 'atanzib@yahoo.fr', NULL, '$2y$12$cHGRcBr9f.4XoYQugGvvZO/HYoJm1DzbF6yJ99SZuZ6kK5KDwVWjK', NULL, NULL, NULL, '673955909', NULL, 'PZN0137', 1, 2, 2, 'SUPERVISEUR MAGASIN', 1),
-(54, 'NGOUNA', 'FLORENTIN B.', 'aalkassoum@cadyst.com', NULL, '$2y$12$jt6qkRMnjLUSVCD45MhWt.w9V5ML9zOvzO617UvzCeWuTDrr5OxNO', NULL, NULL, NULL, '673955909', NULL, 'LPT0143', 2, 2, 2, 'MAGASINIER MPC & CARBURANT', 1),
-(55, 'TJOMBE', 'HENRI MATHURIN', 'henrimathurintjombe@gmail.com', NULL, '$2y$12$q5chtXV3cYEn4ZzNuCxkaeCHgjKYLBDze0EWW5hq6iyiogHHZOvrO', NULL, NULL, NULL, '673955909', NULL, 'LPT0156', 2, 3, 2, 'Chef d\'Equipe Hygiène', 1),
-(56, 'KESSENG', 'PIERRE', 'kinberlintchamba2003@gmail.com', NULL, '$2y$12$Zim8EcNlgDJc1mwe9Qeom.LvD7/Pgi8hpqQ.l9z806U9plY8fMHym', NULL, NULL, NULL, '673955909', NULL, 'LPT0174', 2, 3, 2, 'CARISTE', 1),
-(57, 'THOMO', 'LYSETTE', 'thlysette@yahoo.fr', NULL, '$2y$12$7hByixry7kMFfNoWLX6q4.qZXTPGA.hmIS5QPZOroZYavhX.kbUy6', NULL, NULL, NULL, '673955909', NULL, 'SAE0186', 3, 4, 2, 'RESP. REMUNERATION/P- SOCIAL E', 1),
-(58, 'YAKANA', 'LUC', 'drystantchamba@outlook.com', NULL, '$2y$12$LT8E2h8VLwL/7kI8Juv4tO66IjXUkTSrmQYS0lv4xhbj22htQaFxC', NULL, NULL, NULL, '673955909', NULL, 'SAE0187', 3, 4, 2, 'EMBALLEUR', 1),
-(59, 'NZOGO', 'AUGUSTIN', 'anzogo@yahoo.com', NULL, '$2y$12$UBp.b6RPdUkjU2GkCOhdT.dwXaWoMR0QZghB3eiD0s7t9wokBdI2G', NULL, NULL, NULL, '673955909', NULL, 'SAE0191', 3, 1, 2, 'MAGASINIER', 1),
-(60, 'MOTASSI DUME', 'BRUNOE', 'Bruno.motassidume@yahoo.com', NULL, '$2y$12$CVdoATZhDX9uURyA08tV0ON1Qwjqy4IUlRxYtjaC6W3M0OJ0dBhvu', NULL, NULL, NULL, '673955909', NULL, 'PZN0192', 1, 2, 2, 'CHEF FABRICATION', 1),
-(61, 'SATEKE', 'FRANCIS', 'ndongmomarco@gmail.com', NULL, '$2y$12$i04SUswCJ6kIS/ULeRhGOeb8dB.sFc93vSxW7/U5aENqjMApj5UR2', NULL, NULL, NULL, '673955909', NULL, 'LPT0193', 2, 3, 2, 'SUPERVISEUR CONDITIONNEMENT', 1);
+(1, 'Ardo', 'Alkassoum', 'alkassoum.adama@gmail.com', NULL, '$2y$12$wW7a8Zqz3oDMkYGpiDx5leE9dTXC5jMIrorTnsIkoKJtHPXoXT4Bm', NULL, NULL, NULL, '698502910', NULL, 'PZN0001', 1, NULL, 1, 'DQ', 1);
 
 --
--- Indexes for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Indexes for table `authorisation_pilote`
---
-ALTER TABLE `authorisation_pilote`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `processus` (`process`),
-  ADD KEY `user` (`user`);
-
---
--- Indexes for table `authorisation_rq`
---
-ALTER TABLE `authorisation_rq`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user` (`user`),
-  ADD KEY `enterprise` (`enterprise`);
-
---
--- Indexes for table `department`
---
-ALTER TABLE `department`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `enterprise` (`enterprise`);
-
---
--- Indexes for table `dysfunction`
---
-ALTER TABLE `dysfunction`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`status`);
-
---
--- Indexes for table `enterprise`
---
-ALTER TABLE `enterprise`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `evaluation`
---
-ALTER TABLE `evaluation`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `task` (`task`);
-
---
--- Indexes for table `gravity`
---
-ALTER TABLE `gravity`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `invitation`
---
-ALTER TABLE `invitation`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `links`
---
-ALTER TABLE `links`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
-
---
--- Indexes for table `probability`
---
-ALTER TABLE `probability`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `processes`
---
-ALTER TABLE `processes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `site`
---
-ALTER TABLE `site`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `enterprise` (`enterprise`);
-
---
--- Indexes for table `status`
---
-ALTER TABLE `status`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tasks`
---
-ALTER TABLE `tasks`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `matricule` (`matricule`),
-  ADD KEY `department` (`department`),
-  ADD KEY `enterprise` (`enterprise`),
-  ADD KEY `role` (`role`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `authorisation_pilote`
---
-ALTER TABLE `authorisation_pilote`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `authorisation_rq`
---
-ALTER TABLE `authorisation_rq`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `department`
---
-ALTER TABLE `department`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `dysfunction`
---
-ALTER TABLE `dysfunction`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `enterprise`
---
-ALTER TABLE `enterprise`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `evaluation`
---
-ALTER TABLE `evaluation`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `gravity`
---
-ALTER TABLE `gravity`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `invitation`
---
-ALTER TABLE `invitation`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `links`
---
-ALTER TABLE `links`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `probability`
---
-ALTER TABLE `probability`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `processes`
---
-ALTER TABLE `processes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `role`
---
-ALTER TABLE `role`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `site`
---
-ALTER TABLE `site`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `status`
---
-ALTER TABLE `status`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `tasks`
---
-ALTER TABLE `tasks`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `authorisation_pilote`
+-- Contraintes pour la table `authorisation_pilote`
 --
 ALTER TABLE `authorisation_pilote`
   ADD CONSTRAINT `authorisation_pilote_ibfk_1` FOREIGN KEY (`process`) REFERENCES `processes` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `authorisation_pilote_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `authorisation_rq`
+-- Contraintes pour la table `authorisation_rq`
 --
 ALTER TABLE `authorisation_rq`
   ADD CONSTRAINT `authorisation_rq_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `authorisation_rq_ibfk_2` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `evaluation`
+-- Contraintes pour la table `department`
+--
+ALTER TABLE `department`
+  ADD CONSTRAINT `department_ibfk_1` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `dysfunction`
+--
+ALTER TABLE `dysfunction`
+  ADD CONSTRAINT `dysfunction_ibfk_2` FOREIGN KEY (`probability`) REFERENCES `probability` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `dysfunction_ibfk_3` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `dysfunction_ibfk_4` FOREIGN KEY (`origin`) REFERENCES `origin` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `dysfunction_ibfk_5` FOREIGN KEY (`enterprise_id`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `evaluation`
 --
 ALTER TABLE `evaluation`
   ADD CONSTRAINT `evaluation_ibfk_1` FOREIGN KEY (`task`) REFERENCES `tasks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `site`
+-- Contraintes pour la table `invitation`
+--
+ALTER TABLE `invitation`
+  ADD CONSTRAINT `invitation_ibfk_1` FOREIGN KEY (`dysfonction`) REFERENCES `dysfunction` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `site`
 --
 ALTER TABLE `site`
   ADD CONSTRAINT `site_ibfk_1` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `users`
+-- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
