@@ -2,8 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Models\ApiMail;
+use App\Models\ApiSms;
+use App\Models\AuthorisationPilote;
 use App\Models\Dysfunction;
+use App\Models\Processes;
 use App\Models\Task;
+use App\Models\Users;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -42,9 +48,14 @@ class TaskCreated extends Notification
         }
         $pltu = AuthorisationPilote::where('process', $this->task->process)->get();
         $plt = Users::whereIn('id', $pltu->pluck('user'))->where('role', '<>', 1)->get();
-        $content = view('employees.task_reminder', ['task' => $this->task, 'dysfunction' => $this->dysfunction, 'processes' => Processes::find($this->task->process)])->render();
-        $newmail = new ApiMail(null, $plt->pluck('email')->toArray(), 'Cadyst PRD App', "Rappel sur le délai de livraison d'action corrective intitulée : " . $this->task->text . ".", $content, []);
+        $content = view('employees.task_created', ['task' => $this->task, 'dysfunction' => $this->dysfunction, 'processes' => Processes::find($this->task->process)])->render();
+        $newmail = new ApiMail(null, $plt->pluck('email')->toArray(), 'Cadyst PRD App', "Nouvelle action corrective : " . $this->task->text . ".", $content, []);
         $newmail->send();
+        $newmessage = new ApiSms(
+            $plt->pluck('phone')->unique()->toArray(),
+            'Cadyst PRD App',
+            "Nouvelle Action. Vous avez été assigné une nouvelle tâche sur le projet PRD. Il s'agit de la n° : " . $this->task->id . " concernant le dysfonctionnement " . $this->dysfunction->code . ".");
+        $newmessage->send();
     }
 
     /**

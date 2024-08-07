@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         //Perform each reminding feature periodically as specified below
-        $schedule->command('app:send-dysfunction-reminders')->everyMinute();
+        $schedule->command('app:send-dysfunction-reminders')->weekly()
+              ->mondays()
+              ->fridays();
+        $schedule->command('app:task-created-reminder')->everyMinute();
         $schedule->command('app:send-task-reminders')->daily();
         $schedule->command('app:send-invitation-reminders')->everyMinute();
     }

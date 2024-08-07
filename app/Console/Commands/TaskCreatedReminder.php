@@ -41,11 +41,8 @@ class TaskCreatedReminder extends Command
         $tasks = Task::withoutGlobalScope(YearScope::class)->whereNotIn('id', $parentTasks->pluck('id')->unique())
             ->get();
         foreach ($tasks as $task) {
-            $diff = $current->diffInDays(Carbon::parse($task->start_date)->addDay($task->duration));
-            if ($diff < 8 && $diff % 2 == 0) {
-                $task->notify(new TaskCreated($task));
-            }
-            if ($diff == 1) {
+            $diff = $current->diffInMinutes(Carbon::parse($task->created_at)->addDay($task->duration));
+            if ($diff == 5) {
                 $task->notify(new TaskCreated($task));
             }
         }
