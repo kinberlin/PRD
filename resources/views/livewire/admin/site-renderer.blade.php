@@ -264,11 +264,11 @@
                                         data-bs-target="#majsite{{ $d->id }}">
                                         M.A.J
                                     </button>
-                                    @can(['canSiteDelete', 'isAdmin'], $d)
+
+                                    @can(['canSiteDelete'], $d)
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delsite{{ $d->id }}">Supprimer</button>
                                     @endcanany
-
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#siteVisibility{{ $d->id }}">
                                             Visibilité

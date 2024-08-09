@@ -155,11 +155,10 @@
                                 <input type="text" id="nameBasic{{ $d->id }}" name="name"
                                     value="{{ $d->name }}" class="form-control" placeholder="Entrer le nom">
                             </div>
-                            <div class="form-check form-check-success">
-                                <input class="form-check-input" type="checkbox" name="visible"
-                                    @if ($d->visible == 1) checked @endif id="visCheckEnt{{ $d->id }}"
-                                    checked="">
-                                <label class="form-check-label" for="customCheckSuccess">Success</label>
+                            <div class="col mb-6">
+                                <label for="surBasic{{ $d->id }}" class="form-label">Abbreviation.</label>
+                                <input type="text" id="surBasic{{ $d->id }}" name="surfix"
+                                    value="{{ $d->surfix }}" class="form-control" placeholder="Abbrev.">
                             </div>
                         </div>
                     </div>
