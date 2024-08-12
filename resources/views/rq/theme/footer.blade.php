@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Message (Systeme)</h5>
+                    <h5 class="modal-title" id="modalCenterTitle">Message (système)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeModal()"
                         aria-label="Close"></button>
                 </div>

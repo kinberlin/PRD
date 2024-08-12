@@ -45,7 +45,7 @@ class UserImport implements ToModel, WithValidation, WithHeadingRow
     public function customValidationMessages()
     {
         return [
-            'entreprise.required' => 'Entrez un identifiant entreprise du systeme PRD.',
+            'entreprise.required' => 'Entrez un identifiant entreprise du système PRD.',
             'nom.required' => 'Un nom est requis',
             'prenom.required' => 'Un prenom est requis',
             'telephone.required' => 'Un no. de téléphone est requis',

@@ -34,7 +34,7 @@ class DepartmentImport implements  ToModel, WithValidation, WithHeadingRow
         public function customValidationMessages()
     {
         return [
-            'entreprise.required' => 'Entrez un identifiant entreprise du systeme PRD.',
+            'entreprise.required' => 'Entrez un identifiant entreprise du système PRD.',
             'nom.required' => 'Un nom est requis',
             'nom.unique' => 'Ce nom existe déja.',
         ];

@@ -89,11 +89,11 @@ class EmployeeController extends Controller
             $enterp = Enterprise::find($request->input('enterprise'));
             if ($enterp == null) {
                 throw new Exception("Nous ne parvenons pas a trouver l'entreprise dont l'ID est égal
-                a : " . $request->input('enterprise') . ' dans notre systeme. Veuillez consulter la liste des entreprises et entrer un Identifiant valide.', 404);
+                a : " . $request->input('enterprise') . ' dans notre système. Veuillez consulter la liste des entreprises et entrer un Identifiant valide.', 404);
             }
             if (Department::where('id', $request->input('department'))->where('enterprise', $request->input('enterprise')) == null) {
                 throw new Exception("Nous ne parvenons pas a trouver le Département dont l'ID est égal
-                a : " . $request->input('department') . ' dans notre systeme. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $request->input('enterprise') . ' et entrer un Identifiant valide.', 404);
+                a : " . $request->input('department') . ' dans notre système. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $request->input('enterprise') . ' et entrer un Identifiant valide.', 404);
             }
             if (strtolower($request->input('phone')) == "null") {
                 $employee->phone = null;
@@ -198,11 +198,11 @@ class EmployeeController extends Controller
                 $enterp = Enterprise::find($row[1]);
                 if ($enterp == null) {
                     throw new Exception("Nous ne parvenons pas a trouver l'entreprise dont l'ID est égal
-                a : " . $row[1] . ' dans notre systeme. Veuillez consulter la liste des entreprises et entrer un Identifiant valide.', 404);
+                a : " . $row[1] . ' dans notre système. Veuillez consulter la liste des entreprises et entrer un Identifiant valide.', 404);
                 }
                 if (Department::where('id', $row[2])->where('enterprise', $row[1]) == null) {
                     throw new Exception("Nous ne parvenons pas a trouver le Département dont l'ID est égal
-                a : " . $row[2] . ' dans notre systeme. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $row[1] . ' et entrer un Identifiant valide.', 404);
+                a : " . $row[2] . ' dans notre système. Veuillez consulter la liste des Départements dans l\'entreprise dont l\'ID est : ' . $row[1] . ' et entrer un Identifiant valide.', 404);
                 }
                 if (strtolower($row[7]) == "null") {
                     $employee->phone = null;
