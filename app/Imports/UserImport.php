@@ -34,12 +34,12 @@ class UserImport implements ToModel, WithValidation, WithHeadingRow
     {
         return [
             '*.nom' => 'required|string|max:50',
-            '*.telephone' => 'required|string|max:15',
-            '*.mot_de_passe' => 'required|string|max:50',
+            '*.telephone' => 'required|max:15',
+            '*.mot_de_passe' => 'required|max:50',
             '*.poste_occupe' => 'required|string|max:50',
             '*.matricule' => 'required|string|max:50',
             '*.email' => ['required', 'string', 'max:50', 'unique:users,email'],
-            '*.entreprise' => ['required', 'string', 'max:50', Rule::exists('enterprise', 'name')],
+            '*.entreprise' => ['required', 'max:50', Rule::exists('enterprise', 'id')],
         ];
     }
     public function customValidationMessages()

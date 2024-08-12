@@ -16,7 +16,7 @@
                             <br>
                             @if (session()->has('file'))
                                 @php
-                                    $failures = session('fileContact');
+                                    $failures = session('file');
                                 @endphp
                                 <span class="text-danger">
                                     @foreach ($failures as $failure)
