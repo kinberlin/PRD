@@ -23,7 +23,7 @@
                             </div>
                             <div class="offcanvas-body mx-0 flex-grow-0">
                                 <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework"
-                                    action="{{route('admin.department.store')}}" method="POST">
+                                    action="{{ route('admin.department.store') }}" method="POST">
                                     @csrf
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="name">Nom du Département</label>
@@ -52,7 +52,13 @@
                                 </form>
                             </div>
                         </div>
-
+                        <label class="btn btn-info" for="excelFileInput">Importer depuis un fichier</label>
+                        <a href="{!! url('assets/extras/cadyst_liste_department_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
+                        <form action="{!! route('admin.department.import') !!}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
+                            <button type="submit">Soumettre</button>
+                        </form>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -77,7 +83,8 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{ $ents->where('id', $d->enterprise)->first()->name }} (ID : {{ $d->enterprise }})</td>
+                                    <td>{{ $ents->where('id', $d->enterprise)->first()->name }} (ID : {{ $d->enterprise }})
+                                    </td>
                                     <td>{{ $d->name }}</td>
                                     <td>
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
@@ -131,7 +138,8 @@
         <div class="modal animate__animated animate__bounceInUp" id="majentreprise{{ $d->id }}" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form class="modal-content" action="{{ route('admin.department.update', ['id'=>$d->id ])}}" method="POST">
+                <form class="modal-content" action="{{ route('admin.department.update', ['id' => $d->id]) }}"
+                    method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">M.A.J
                             {{ $d->name }}</h5>
