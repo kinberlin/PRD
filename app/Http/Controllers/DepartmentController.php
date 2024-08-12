@@ -153,7 +153,7 @@ class DepartmentController extends Controller
             session()->flash('file', $failures);
             return redirect()->back()->with('error', "Une erreur s'est produite.");
         } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Une erreur s'est produite.L'erreur indique : " . $th->getMessage());
+            return redirect()->back()->with('error', "Une erreur s'est produite. L'erreur indique : " . $th->getMessage());
         }
 
     }

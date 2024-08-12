@@ -45,17 +45,12 @@
                                 </form>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <a href="{{ route('admin.trash.enterprise') }}" class="btn btn-warning"><i class="bx bx-trash"></i>
-                            Corbeille</a>
-                        <form action="{{ route('admin.enterprise.store') }}" method="POST">
+                        <label class="btn btn-info" for="excelFileInput">Importer depuis un fichier</label>
+                        <a href="{!! url('assets/extras/cadyst_liste_enterprise_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
+                        <form action="{!! route('admin.enterprise.import') !!}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
+                            <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
+                            <button type="submit">Soumettre</button>
                         </form>
 
                     </div>
@@ -85,7 +80,13 @@
                                     <td>{{ $d->id }}</td>
                                     <td>{{ $d->name }}</td>
                                     <td>{{ $d->surfix }}</td>
-                                    <td>@if ($d->visible) Oui @else Non @endif</td>
+                                    <td>
+                                        @if ($d->visible)
+                                            Oui
+                                        @else
+                                            Non
+                                        @endif
+                                    </td>
                                     <td>
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delentreprise{{ $d->id }}">Désactiver</button>
@@ -193,7 +194,8 @@
                         <br>
                         <div class="row">
                             <div class="form-check-success">
-                                <label class="form-check-label" for="visCheckEnt{{ $d->id }}">Cocher pour rendre visible.</label>
+                                <label class="form-check-label" for="visCheckEnt{{ $d->id }}">Cocher pour rendre
+                                    visible.</label>
                                 <input class="form-check-input" type="checkbox" name="visibility" value="1"
                                     @if ($d->visible) checked @endif id="visCheckEnt{{ $d->id }}">
                             </div>

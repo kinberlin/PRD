@@ -37,7 +37,7 @@ class UserImport implements ToModel, WithValidation, WithHeadingRow
             '*.telephone' => 'required|max:15',
             '*.mot_de_passe' => 'required|max:50',
             '*.poste_occupe' => 'required|string|max:50',
-            '*.matricule' => 'required|string|max:50',
+            '*.matricule' => 'required|string|max:50|unique:users,matricule',
             '*.email' => ['required', 'string', 'max:50', 'unique:users,email'],
             '*.entreprise' => ['required', 'max:50', Rule::exists('enterprise', 'id')],
         ];

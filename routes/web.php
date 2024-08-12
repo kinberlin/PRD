@@ -128,6 +128,7 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
 
+    Route::post('/admin/enterprise/import', 'EnterpriseController@import')->name('admin.enterprise.import');
     Route::post('/admin/user/import', 'EmployeeController@import')->name('admin.user.import');
     Route::post('/admin/department/import', 'DepartmentController@import')->name('admin.department.import');
 

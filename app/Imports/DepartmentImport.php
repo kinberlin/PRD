@@ -26,7 +26,7 @@ class DepartmentImport implements  ToModel, WithValidation, WithHeadingRow
         public function rules(): array
     {
         return [
-            '*.nom' => 'required|string|max:50',
+            '*.nom' => 'required|string|max:50|unique:department,name',
             '*.entreprise' => ['required', 'max:50', Rule::exists('enterprise', 'id')],
         ];
     }

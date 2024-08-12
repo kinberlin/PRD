@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\EnterpriseImport;
 use App\Models\Department;
 use App\Models\Dysfunction;
 use App\Models\Enterprise;
@@ -13,6 +14,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Throwable;
 
 class EnterpriseController extends Controller
@@ -259,5 +262,24 @@ class EnterpriseController extends Controller
         }
 
         return redirect()->back()->with('error', "L'élément à restaurer n'a peut-être pas pu être restauré.");
+    }
+
+        public function import(Request $request)
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+        try {
+            Excel::import(new EnterpriseImport, $request->file('file'));
+            return redirect()->back()->with('error', 'Insertions terminées avec succes!');
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            session()->flash('file', $failures);
+            return redirect()->back()->with('error', "Une erreur s'est produite.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Une erreur s'est produite.L'erreur indique : " . $th->getMessage());
+        }
+
     }
 }
