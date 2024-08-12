@@ -5,8 +5,10 @@ namespace App\Imports;
 use App\Models\Users;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class UserImport implements ToModel
+class UserImport implements ToModel, WithValidation, WithHeadingRow
 {
     /**
      * @param array $row
@@ -16,42 +18,42 @@ class UserImport implements ToModel
     public function model(array $row)
     {
         return new Users([
-            'enterprise' => $row['ENTREPRISE'],
-            'firstname' => $row['NOM'], // Adjust the keys to match your Excel column headers
-            'lastname' => $row['PRENOM'],
-            'email' => $row['EMAIL'],
-            'phone' => $row['TÉLÉPHONE'],
-            'department' => $row['DÉPARTEMENT'],
-            'poste' => $row['POSTE OCCUPÉ'],
-            'matricule' => $row['MATRICULE'],
-            'password' => bcrypt($row['MOT DE PASSE']),
+            'enterprise' => $row['entreprise'],
+            'firstname' => $row['nom'], // Adjust the keys to match your Excel column headers
+            'lastname' => $row['prenom'],
+            'email' => $row['email'],
+            'phone' => $row['telephone'],
+            'department' => $row['departement'],
+            'poste' => $row['poste_occupe'],
+            'matricule' => $row['matricule'],
+            'password' => bcrypt($row['mot_de_passe']),
         ]);
     }
 
     public function rules(): array
     {
         return [
-            '*.NOM' => 'required|string|max:50',
-            '*.TÉLÉPHONE' => 'required|string|max:15',
-            '*.MOT DE PASSE' => 'required|string|max:50',
-            '*.POSTE OCCUPÉ' => 'required|string|max:50',
-            '*.MATRICULE' => 'required|string|max:50',
-            '*.EMAIL' => ['required', 'string', 'max:50', 'unique:users,email'],
-            '*.ENTREPRISE' => ['required', 'string', 'max:50', Rule::exists('enterprise', 'name')],
+            '*.nom' => 'required|string|max:50',
+            '*.telephone' => 'required|string|max:15',
+            '*.mot_de_passe' => 'required|string|max:50',
+            '*.poste_occupe' => 'required|string|max:50',
+            '*.matricule' => 'required|string|max:50',
+            '*.email' => ['required', 'string', 'max:50', 'unique:users,email'],
+            '*.entreprise' => ['required', 'string', 'max:50', Rule::exists('enterprise', 'name')],
         ];
     }
     public function customValidationMessages()
     {
         return [
-            'ENTREPRISE.required' => 'Entrez un identifiant entreprise du systeme PRD.',
-            'NOM.required' => 'Un nom est requis',
-            'PRENOM.required' => 'Un prenom est requis',
-            'TÉLÉPHONE.required' => 'Un no. de téléphone est requis',
-            'EMAIL.required' => 'Un email est requis',
-            'EMAIL.unique' => 'Cette addresse mail est déja prise',
-            'MOT DE PASSE.required' => 'Un mot de passe est requis',
-            'MATRICULE.required' => 'Un matricule est requis',
-            'MATRICULE.unique' => 'Ce matricule est déja pris',
+            'entreprise.required' => 'Entrez un identifiant entreprise du systeme PRD.',
+            'nom.required' => 'Un nom est requis',
+            'prenom.required' => 'Un prenom est requis',
+            'telephone.required' => 'Un no. de téléphone est requis',
+            'email.required' => 'Un email est requis',
+            'email.unique' => 'Cette addresse mail est déja prise',
+            'mot_de_passe.required' => 'Un mot de passe est requis',
+            'matricule.required' => 'Un matricule est requis',
+            'matricule.unique' => 'Ce matricule est déja pris',
         ];
     }
 }

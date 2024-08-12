@@ -1,10 +1,11 @@
 @if (session('error'))
-    <div class="modal fade" id="myModal" tabindex="-1" >
+    <div class="modal fade" id="myModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalCenterTitle">Message (Systeme)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeModal()" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeModal()"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -12,11 +13,30 @@
                             <p class="card-text">
                                 {{ session('error') }}
                             </p>
+                            <br>
+                            @if (session()->has('file'))
+                                @php
+                                    $failures = session('fileContact');
+                                @endphp
+                                <span class="text-danger">
+                                    @foreach ($failures as $failure)
+                                        <p>Erreur à la ligne : {{ $failure->row() }} colonne :
+                                            {{ $failure->attribute() }}
+                                        </p>
+                                        <ul>
+                                            @foreach ($failure->errors() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endforeach
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" onclick="closeModal()" >Fermer</button>
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                        onclick="closeModal()">Fermer</button>
 
                 </div>
             </div>

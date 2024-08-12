@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UserImport;
 use App\Models\AuthorisationPilote;
 use App\Models\Department;
 use App\Models\Dysfunction;
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Throwable;
 
 class EmployeeController extends Controller
@@ -110,7 +113,7 @@ class EmployeeController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-        public function report(Request $request)
+    public function report(Request $request)
     {
         $code = $request->input('code');
         try {
@@ -227,5 +230,27 @@ class EmployeeController extends Controller
         $data = Invitation::whereRaw('JSON_CONTAINS(internal_invites, \'{"matricule": "' . Auth::user()->matricule . '"}\', \'$\')')->get()->sortByDesc('created_at');
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
         return view('employees/invitation', compact('data', 'dys'));
+    }
+    public function import(Request $request)
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+        try {
+        // Load the file using Excel and read the first row
+                /*$path = $request->file('file')->getRealPath();
+        $headings = Excel::toArray([], $path, null, \Maatwebsite\Excel\Excel::XLSX)[0][0];
+            dd($headings);*/
+            Excel::import(new UserImport, $request->file('file'));
+            return redirect()->back()->with('error', 'Insertions terminées avec succes!');
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            session()->flash('file', $failures);
+            return redirect()->back()->with('error', "Une erreur s'est produite.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Une erreur s'est produite.");
+        }
+
     }
 }

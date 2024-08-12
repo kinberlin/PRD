@@ -410,7 +410,7 @@ function executeAfterAjax() {
             s();
         },
     });
-    i.render(), s();
+    i.render(), i.setOption('locale', 'fr'), s();
     var c = document.getElementById("eventForm");
     function u() {
         (x.value = ""),

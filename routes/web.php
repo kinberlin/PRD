@@ -128,6 +128,8 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
     //admins
 
+    Route::post('/admin/user/import', 'EmployeeController@import')->name('admin.user.import');
+
     Route::get('/admin/dysfunction/report', 'DysfunctionController@report')->name('admin.dysfunction.report');
     Route::post('/admin/dysfunction/report', 'DysfunctionController@report')->name('admin.dysfunction.report.post');
     Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');

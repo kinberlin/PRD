@@ -89,13 +89,10 @@
                         </div>
                         <label class="btn btn-info" for="excelFileInput">Importer depuis un fichier</label>
                         <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="{!! route('admin.employee.store') !!}" method="POST">
+                        <form action="{!! route('admin.user.import') !!}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
+                        <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
+                        <button type="submit">Soumettre</button>
                         </form>
                     </div>
                 </div>
