@@ -98,6 +98,10 @@
                                             data-bs-target="#entrepriseVisibility{{ $d->id }}">
                                             Visibilité
                                         </button>
+                                        @can('canEnterpriseDelete', $d)
+                                            <button class="btn btn-danger " data-bs-toggle="modal"
+                                                data-bs-target="#delgravity{{ $d->id }}">Suppression</button>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -110,6 +114,35 @@
     </div>
     <!--Begin with datatable Modals -->
     @foreach ($data as $d)
+        @can('canEnterpriseDelete', $d)
+        <div class="modal modal-top fade" id="delgravity{{ $d->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTopTitle">Confirmation de
+                            Suppression!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <p class="card-text">
+                                Souhaitez vous vraiment supprimer :
+                                {{ $d->name }} ?
+                                <b>Notez que cela reviens a supprimer définitivement celle-ci
+                                    et que vous ne serez pas capable de le restaurer
+                                    sur cette interface.</b>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <a href="{{ route('admin.enterprise.delete', ['id' => $d->id]) }}"
+                            class="btn btn-danger">Continuer</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endcan
         <div class="modal modal-top fade" id="delentreprise{{ $d->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-content">

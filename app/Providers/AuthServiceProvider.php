@@ -18,6 +18,7 @@ use App\Models\Site;
 use App\Models\Users;
 use App\Policies\DepartmentPolicy;
 use App\Policies\DysfunctionPolicy;
+use App\Policies\EnterprisePolicy;
 use App\Policies\GravityPolicy;
 use App\Policies\InvitationPolicy;
 use App\Policies\OriginPolicy;
@@ -43,6 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         Gravity::class => GravityPolicy::class,
         Probability::class => ProbabilityPolicy::class,
         Origin::class => OriginPolicy::class,
+        Enterprise::class => EnterprisePolicy::class,
     ];
 
     /**

@@ -144,6 +144,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
 
     Route::get('/admin/enterprise', 'AdminController@enterprise')->name('admin.enterprise');
     Route::get('/admin/enterprise/{id}', 'EnterpriseController@destroy')->name('admin.enterprise.destroy');
+    Route::get('/admin/delete/enterprise/{id}', 'EnterpriseController@delete')->name('admin.enterprise.delete');
     Route::post('/admin/enterprise', 'EnterpriseController@store')->name('admin.enterprise.store');
     Route::post('/admin/enterprise/{id}', 'EnterpriseController@update')->name('admin.enterprise.update');
 

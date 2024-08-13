@@ -117,7 +117,7 @@ class EnterpriseController extends Controller
         }
     }
     /**
-     * Remove the specified resource from storage.
+     * Soft delete the specified resource from storage.
      */
     public function destroy($id)
     {
@@ -281,5 +281,29 @@ class EnterpriseController extends Controller
             return redirect()->back()->with('error', "Une erreur s'est produite.L'erreur indique : " . $th->getMessage());
         }
 
+    }
+
+        /**
+     * Remove the specified resource from storage.
+     */
+    public function delete($id)
+    {
+        $rec = Enterprise::find($id);
+        try {
+            if (Gate::allows('canEnterpriseDelete', $rec)) {
+                if (Gate::allows('isAdmin', Auth::user()) ) {
+                    DB::beginTransaction();
+                    $rec->forceDelete();
+                    DB::commit();
+                    return redirect()->back()->with('error', "Entreprise supprimée avec succès.");
+                } else {
+                    throw new Exception("Arrêt inattendu du processus suite a une tentative de suppression/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+                }
+            } else {
+                throw new Exception("Présence d'une dépendance fonctionnelle. Cette ressource ne peut être supprimée.", 401);
+            }
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
+        }
     }
 }
