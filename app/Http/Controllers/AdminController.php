@@ -37,7 +37,9 @@ class AdminController extends Controller
         Gate::authorize('isAdmin', Auth::user());
         return view('admin/adashboard');
     }
-
+    /**
+     * Display admin enterprise view
+     */
     public function enterprise()
     {
         Gate::authorize('isAdmin', Auth::user());

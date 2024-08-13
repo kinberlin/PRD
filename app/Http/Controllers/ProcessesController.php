@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProcessImport;
 use App\Models\Processes;
 use Exception;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Throwable;
 
 class ProcessesController extends Controller
@@ -113,5 +116,24 @@ class ProcessesController extends Controller
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
+    }
+
+        public function import(Request $request)
+    {
+        Gate::authorize('isAdmin', Auth::user());
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+        try {
+            Excel::import(new ProcessImport, $request->file('file'));
+            return redirect()->back()->with('error', 'Insertions terminées avec succes!');
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            session()->flash('file', $failures);
+            return redirect()->back()->with('error', "Une erreur s'est produite.");
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Une erreur s'est produite.L'erreur indique : " . $th->getMessage());
+        }
+
     }
 }

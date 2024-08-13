@@ -49,15 +49,12 @@
                                 </form>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-info" id="importBtn">Importer depuis un fichier</button>
-
-                        <input type="file" style="visibility: hidden" id="excelFileInput">
-                        <form action="{{ route('admin.processes.store')}}" method="POST">
+                        <label class="btn btn-info" for="excelFileInput">Importer depuis un fichier</label>
+                        <a href="{!! url('assets/extras/cadyst_liste_enterprise_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
+                        <form action="{!! route('admin.process.import') !!}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <table id="dataTable" class="display" style="width:100%">
-                            </table>
-                            <button id="checkAllBtn" class="secondary-btn">Vérifier</button>
-                            <button id="submitBtn" type="submit">Soumettre</button>
+                            <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
+                            <button type="submit">Soumettre</button>
                         </form>
 
                     </div>

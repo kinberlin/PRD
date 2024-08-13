@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\EnterpriseImport;
-use App\Models\Department;
-use App\Models\Dysfunction;
 use App\Models\Enterprise;
-use App\Models\Service;
 use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
@@ -264,7 +261,7 @@ class EnterpriseController extends Controller
         return redirect()->back()->with('error', "L'élément à restaurer n'a peut-être pas pu être restauré.");
     }
 
-        public function import(Request $request)
+    public function import(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());
         $request->validate([
@@ -283,7 +280,7 @@ class EnterpriseController extends Controller
 
     }
 
-        /**
+    /**
      * Remove the specified resource from storage.
      */
     public function delete($id)
@@ -291,7 +288,7 @@ class EnterpriseController extends Controller
         $rec = Enterprise::find($id);
         try {
             if (Gate::allows('canEnterpriseDelete', $rec)) {
-                if (Gate::allows('isAdmin', Auth::user()) ) {
+                if (Gate::allows('isAdmin', Auth::user())) {
                     DB::beginTransaction();
                     $rec->forceDelete();
                     DB::commit();
