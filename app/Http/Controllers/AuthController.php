@@ -146,8 +146,22 @@ class AuthController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Enable authenticated users to set system year
+     * for displaying datas using get request
+     */
     public function setyear($year)
     {
+        if ($year > 1999 && $year < 9999) {Session::put('currentYear', $year);}
+        return back()->with(['error' => 'Données de ' . session('currentYear')]);
+    }
+    /**
+     * Enable authenticated users to set system year
+     * for displaying datas using post request
+     */
+    public function setyearPost(Request $request)
+    {
+        $year = $request->has('year') ? $request->input('year') : now()->year;
         if ($year > 1999 && $year < 9999) {Session::put('currentYear', $year);}
         return back()->with(['error' => 'Données de ' . session('currentYear')]);
     }

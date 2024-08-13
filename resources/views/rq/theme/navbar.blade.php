@@ -43,32 +43,29 @@
                                     <i class='bx bx-calendar bx-sm'></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
+                                    @for ($y = now()->year; $y > now()->year - 3; $y--)
+                                        <li>
+                                            <a class="dropdown-item @if ($y == session('currentYear')) active @endif"
+                                                href="{{ route('auth.year', ['year' => $y]) }}"
+                                                data-text-direction="ltr">
+                                                <span class="align-middle">
+                                                    {{ $y }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endfor
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear())
-                                                </script>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 1)
-                                                </script>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);" data-text-direction="ltr">
-                                            <span class="align-middle">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 2)
-                                                </script>
-                                            </span>
-                                        </a>
+                                        <form class="mb-3" action="{{ route('auth.year.post', ['year' => '']) }}"
+                                            method="POST">
+                                            @csrf
+                                            <input type="number" class="form-control me-sm-3 me-1" name="year"
+                                                value="{{ session('currentYear') }}" aria-describedby="helpId"
+                                                placeholder="{{ now()->year }}" />
+                                            <button type="submit" class="btn btn-primary"> <i
+                                                    class='bx bx-send bx-sm'></i></button>
+                                            <p id="helpId" class="form-text text-muted">Année des données que vous
+                                                souhaitez afficher</p>
+                                        </form>
                                     </li>
                                 </ul>
                             </li>
