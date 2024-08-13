@@ -30,7 +30,7 @@ class NotificationController extends Controller
             DB::commit();
             return redirect()->back();
         } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : ".$th->getMessage());
+            return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
 }

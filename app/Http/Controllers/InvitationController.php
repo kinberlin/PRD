@@ -145,117 +145,115 @@ class InvitationController extends Controller
     public function update(Request $request, $id)
     {
         try {
-        $data = Invitation::find($id);
-        if (Gate::allows('isInvitationOpen', $data)) {
-            if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
-                DB::beginTransaction();
-                //old invite collection
-                $olddatas = $data;
-                $old_invits = collect($data->getInternalInvites());
-                if ($data == null) {
-                    throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
-                }
-                if (Carbon::now() > $data->odates) {
-                    throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
-                }
-                $dys = Dysfunction::find($request->input('dysfunction'));
-                if (empty($dys)) {
-                    throw new Exception("Nous ne retrouvons pas la ressource.", 404);
-                }
-                $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
-                $data->object = $request->has('object') ? $request->input('object') : $data->object;
-                $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
-                $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
-                $data->odates = $request->has('dates') ? $request->input('dates') : $data->odates;
-                $data->place = $request->has('place') ? $request->input('place') : $data->place;
-                $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
-                $data->description = $request->has('description') ? $request->input('description') : $data->description;
-                $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
-                $data->end = $request->has('end') ? $request->input('end') : $data->end;
-                $i_v = $request->input('internal_invites', []);
-                $newinvites = Users::whereIn('id', $i_v)->get();
-                $internal_invites = [];
-                //if date or begin or end properties are updated, reinitialise participation array to make participants confirm thier participation back.
-                if ($data->end != $olddatas->end || $data->start != $olddatas->start || $data->odates != $olddatas->odates) {
-                    $data->participation = null;
-                }
-                //conserving all invite old datas
-                if (!empty($i_v)) {
-                    foreach ($i_v as $option) {
-                        $old = $old_invits->where('matricule', Users::find($option)->matricule)->first();
-                        if (is_null($old)) {
-                            $internal_invites[] = new Invites($newinvites->where('id', $option)->first());
-                        } else {
-                            $internal_invites[] = new Invites(null, $old);
+            $data = Invitation::find($id);
+            if (Gate::allows('isInvitationOpen', $data)) {
+                if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
+                    DB::beginTransaction();
+                    //old invite collection
+                    $olddatas = $data;
+                    $old_invits = collect($data->getInternalInvites());
+                    if ($data == null) {
+                        throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
+                    }
+                    if (Carbon::now() > $data->odates) {
+                        throw new Exception("Il n'est plus possible de modifier cette réunion car la date est dépassée.", 401);
+                    }
+                    $dys = Dysfunction::find($request->input('dysfunction'));
+                    if (empty($dys)) {
+                        throw new Exception("Nous ne retrouvons pas la ressource.", 404);
+                    }
+                    $data->rq = Auth::user()->firstname . ' ' . Auth::user()->lastname . '(Matricule : ' . Auth::user()->matricule . ')';
+                    $data->object = $request->has('object') ? $request->input('object') : $data->object;
+                    $data->dysfonction = $request->has('dysfunction') ? $request->input('dysfunction') : $data->dysfonction;
+                    $data->motif = $request->has('motif') ? $request->input('motif') : $data->motif;
+                    $data->odates = $request->has('dates') ? $request->input('dates') : $data->odates;
+                    $data->place = $request->has('place') ? $request->input('place') : $data->place;
+                    $data->link = isEmpty($request->has('link')) ? null : $request->input('link');
+                    $data->description = $request->has('description') ? $request->input('description') : $data->description;
+                    $data->begin = $request->has('begin') ? $request->input('begin') : $data->begin;
+                    $data->end = $request->has('end') ? $request->input('end') : $data->end;
+                    $i_v = $request->input('internal_invites', []);
+                    $newinvites = Users::whereIn('id', $i_v)->get();
+                    $internal_invites = [];
+                    //if date or begin or end properties are updated, reinitialise participation array to make participants confirm thier participation back.
+                    if ($data->end != $olddatas->end || $data->start != $olddatas->start || $data->odates != $olddatas->odates) {
+                        $data->participation = null;
+                    }
+                    //conserving all invite old datas
+                    if (!empty($i_v)) {
+                        foreach ($i_v as $option) {
+                            $old = $old_invits->where('matricule', Users::find($option)->matricule)->first();
+                            if (is_null($old)) {
+                                $internal_invites[] = new Invites($newinvites->where('id', $option)->first());
+                            } else {
+                                $internal_invites[] = new Invites(null, $old);
+                            }
                         }
                     }
-                }
-                //new invite collection
-                $new_invits = collect($internal_invites);
-                $data->internal_invites = json_encode($internal_invites);
-                $ext_u = [];
-                if ($request->has('extuser') && !empty($request->extuser)) {
-                    for ($i = 0; $i < count($request->extuser); $i++) {
-                        // Create a new Person object for each row and add it to the array
-                        $ext_u[] = $request->extuser[$i];
+                    //new invite collection
+                    $new_invits = collect($internal_invites);
+                    $data->internal_invites = json_encode($internal_invites);
+                    $ext_u = [];
+                    if ($request->has('extuser') && !empty($request->extuser)) {
+                        for ($i = 0; $i < count($request->extuser); $i++) {
+                            // Create a new Person object for each row and add it to the array
+                            $ext_u[] = $request->extuser[$i];
+                        }
                     }
-                }
-                $data->external_invites = json_encode($ext_u);
+                    $data->external_invites = json_encode($ext_u);
 
-                $is_updated = $data->isInvitationUpdated();
-                //inform internal and external invites about modification
-                if ($is_updated) {
-                    $message = $data->getUpdateMessage();
-                    $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
-                    $content = view('employees.invitation_updateMail', ['invitation' => $data, 'message' => $message])->render();
-                    $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
-                    $response = $newmail->send();
-                    $newmessage = new ApiSms(
-                        $newinvites->pluck('phone')->unique()->toArray(),
-                        'Cadyst PRD App',
-                        'Réunion pour ' . $dys->code . ' MAJ : Nouvelle date : ' . formatDateInFrench($data->odates, 'short') . ' Horaire : ' . $data->begin . ' - ' . $data->end . ' Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . '. Merci de confirmer.'
-                    );
-                    $newmessage->send();
-                    $jsonResponse = json_decode($response->getContent(), true);
-                    if ($jsonResponse['code'] != 200) {
-                        throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
-                    }
-                }
-                //mails for removed users
-                foreach ($old_invits as $oi) {
-                    if (is_null($new_invits->where('matricule', $oi->matricule)->first()) && !in_array($oi->email, $ext_u)) {
-                        $content = view('employees.invitation_excludeMail')->render();
-                        $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                    $is_updated = $data->isInvitationUpdated();
+                    //inform internal and external invites about modification
+                    if ($is_updated) {
+                        $message = $data->getUpdateMessage();
+                        $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
+                        $content = view('employees.invitation_updateMail', ['invitation' => $data, 'message' => $message])->render();
+                        $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                         $response = $newmail->send();
                         $newmessage = new ApiSms(
-                            array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                            $newinvites->pluck('phone')->unique()->toArray(),
                             'Cadyst PRD App',
-                            "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. " . $dys->code . " du " . formatDateInFrench($data->odates, 'short') . " à " . $data->end . ". Merci de votre compréhension. "
+                            'Réunion pour ' . $dys->code . ' MAJ : Nouvelle date : ' . formatDateInFrench($data->odates, 'short') . ' Horaire : ' . $data->begin . ' - ' . $data->end . ' Lieu : ' . (is_null($data->place) ? 'Aucun lieu Fourni. Consulter vos mails' : $data->place) . '. Merci de confirmer.'
                         );
                         $newmessage->send();
+                        $jsonResponse = json_decode($response->getContent(), true);
+                        if ($jsonResponse['code'] != 200) {
+                            throw new Exception("Une erreur est survenue lors de l'envoi des mails : (" . $jsonResponse['error'] . ")", 500);
+                        }
                     }
-                }
-                $data->save();
-                DB::commit();
+                    //mails for removed users
+                    foreach ($old_invits as $oi) {
+                        if (is_null($new_invits->where('matricule', $oi->matricule)->first()) && !in_array($oi->email, $ext_u)) {
+                            $content = view('employees.invitation_excludeMail')->render();
+                            $newmail = new ApiMail(null, array_fill(0, 1, $oi->email), 'Cadyst PRD App', "Mise à jour de la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                            $response = $newmail->send();
+                            $newmessage = new ApiSms(
+                                array_fill(0, 1, $newinvites->pluck('phone')->unique()->toArray()),
+                                'Cadyst PRD App',
+                                "Bonjour ; Votre présence n'est plus requise pour la réunion concernant l'incident No. " . $dys->code . " du " . formatDateInFrench($data->odates, 'short') . " à " . $data->end . ". Merci de votre compréhension. "
+                            );
+                            $newmessage->send();
+                        }
+                    }
+                    $data->save();
+                    DB::commit();
 
-                return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
+                    return redirect()->back()->with('error', "La réunion a été Mise a Jour avec succes.");
+                } else {
+                    // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
+                    abort(403, 'Unauthorized action.');
+                }
             } else {
                 // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
-                abort(403, 'Unauthorized action.');
+                abort(403, 'Unauthorized action. Invitation is closed');
             }
-        } else {
-            // The user is neither an (rq or  a super admin) or the inviation is not edistabled any more
-            abort(403, 'Unauthorized action. Invitation is closed');
-        }
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-    public function appMail()
-    {
-        $data = Invitation::find(10);
-        return view('employees.invitation_appMail', ['invitation' => $data, 'description' => 'ascasdasdasd']);
-    }
+    /**
+     * Registers a user availability to a particular meeting.
+     */
     public function inviteConfirmation(Request $request)
     {
         try {
@@ -304,7 +302,9 @@ class InvitationController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-
+    /**
+     * Updates list of attendnace to a meeting.
+     */
     public function participation(Request $request, $id)
     {
 
