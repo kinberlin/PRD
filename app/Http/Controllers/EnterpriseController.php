@@ -261,6 +261,9 @@ class EnterpriseController extends Controller
         return redirect()->back()->with('error', "L'élément à restaurer n'a peut-être pas pu être restauré.");
     }
 
+    /**
+     * Import datas from the excel file, checks them and save to database
+     */
     public function import(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());

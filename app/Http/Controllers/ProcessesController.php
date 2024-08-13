@@ -118,7 +118,10 @@ class ProcessesController extends Controller
         }
     }
 
-        public function import(Request $request)
+        /**
+     * Import datas from the excel file, checks them and save to database
+     */
+    public function import(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());
         $request->validate([

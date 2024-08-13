@@ -9,12 +9,16 @@ use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 
 class DynamicJsController extends Controller
 {
+    /**
+     * Generating admin dashboard javascript script
+     * to display admin stats
+     */
+
     public function admin(Request $request)
     {
         //visitor chart
@@ -439,6 +443,10 @@ class DynamicJsController extends Controller
             'Content-Type' => 'application/javascript',
         ]);
     }
+    /**
+     * Generating rq dashboard javascript script
+     * to display rq stats
+     */
     public function rq(Request $request, $e_)
     {
         $globEnt = Enterprise::find($e_);
@@ -875,6 +883,10 @@ class DynamicJsController extends Controller
             'Content-Type' => 'application/javascript',
         ]);
     }
+    /**
+     * Generating pilote dashboard javascript script
+     * to display pilote stats
+     */
     public function pilote(Request $request, $e_)
     {
         $globProc = Processes::find($e_);
@@ -1345,7 +1357,7 @@ class DynamicJsController extends Controller
         }
 
         // Return the array of counts (Monday to Sunday)
-        return   ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
+        return ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
     }
     public function rqdysAddedLastWeekByDay($ents)
     {
@@ -1366,7 +1378,7 @@ class DynamicJsController extends Controller
         }
 
         // Return the array of counts (Monday to Sunday)
-        return   ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
+        return ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
     }
     public function pilotedysAddedLastWeekByDay($globProc)
     {
@@ -1386,23 +1398,23 @@ class DynamicJsController extends Controller
         }
 
         // Return the array of counts (Monday to Sunday)
-        return   ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
+        return ['dystring' => '[' . implode(', ', $dysCounts) . ']', 'dysarray' => $dysCounts];
     }
     /*public function admin(Request $request)
-    {
-        // Path to your original JavaScript file
-        $pathToJsFile = public_path('js/original.js');
-        
-        // Read the content of the JavaScript file
-        $jsContent = file_get_contents($pathToJsFile);
+{
+// Path to your original JavaScript file
+$pathToJsFile = public_path('js/original.js');
 
-        // Example dynamic modification: Inject Laravel variables or any other logic
-        $dynamicVariable = 'Some dynamic value';
-        $jsContent = str_replace('PLACEHOLDER', $dynamicVariable, $jsContent);
+// Read the content of the JavaScript file
+$jsContent = file_get_contents($pathToJsFile);
 
-        // Set the appropriate headers for JavaScript content
-        return Response::make($jsContent, 200, [
-            'Content-Type' => 'application/javascript',
-        ]);
-    }*/
+// Example dynamic modification: Inject Laravel variables or any other logic
+$dynamicVariable = 'Some dynamic value';
+$jsContent = str_replace('PLACEHOLDER', $dynamicVariable, $jsContent);
+
+// Set the appropriate headers for JavaScript content
+return Response::make($jsContent, 200, [
+'Content-Type' => 'application/javascript',
+]);
+}*/
 }

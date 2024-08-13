@@ -220,7 +220,10 @@ class RQController extends Controller
 
         return view('rq/meetingProcess', compact('data', 'dys', 'users'));
     }
-        public function report(Request $request)
+            /**
+     * Display a detailed report about a dysfunction.
+     */
+    public function report(Request $request)
     {
         $code = $request->input('code');
         try {

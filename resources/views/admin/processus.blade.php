@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <label class="btn btn-info" for="excelFileInput">Importer depuis un fichier</label>
-                        <a href="{!! url('assets/extras/cadyst_liste_enterprise_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
+                        <a href="{!! url('assets/extras/cadyst_liste_processus_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
                         <form action="{!! route('admin.process.import') !!}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="file" name="file" style="visibility: hidden" id="excelFileInput">

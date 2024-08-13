@@ -46,31 +46,45 @@ class AdminController extends Controller
         $data = Enterprise::all();
         return view('admin/enterprise', compact('data'));
     }
+    /**
+     * Display admin gravitye view
+     */
     public function gravity()
     {
         Gate::authorize('isAdmin', Auth::user());
         $data = Gravity::all();
         return view('admin/gravity', compact('data'));
     }
+    /**
+     * Display admin probability view
+     */
     public function probability()
     {
         Gate::authorize('isAdmin', Auth::user());
         $data = Probability::all();
         return view('admin/probability', compact('data'));
     }
+    /**
+     * Display admin origin view
+     */
     public function origin()
     {
         Gate::authorize('isAdmin', Auth::user());
         $data = Origin::all();
         return view('admin/origin', compact('data'));
     }
-
+    /**
+     * Display admin process view
+     */
     public function processes()
     {
         Gate::authorize('isAdmin', Auth::user());
         $data = Processes::all();
         return view('admin/processus', compact('data'));
     }
+    /**
+     * Display admin department view
+     */
     public function department()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -78,6 +92,9 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         return view('admin/department', compact("data", "ents"));
     }
+    /**
+     * Display admin site view
+     */
     public function site()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -85,6 +102,9 @@ class AdminController extends Controller
         $ents = Enterprise::all();
         return view('admin/site', compact("data", "ents"));
     }
+    /**
+     * Display admin all dysfunction signal view
+     */
     public function signals()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -93,6 +113,9 @@ class AdminController extends Controller
         $complainant = Dysfunction::distinct('emp_matricule')->count('matricule');
         return view('admin/signal', compact('data', 'complainant'));
     }
+    /**
+     * Display admin detail view about a dysfunction
+     */
     public function showDysfunction($id)
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -134,18 +157,23 @@ class AdminController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-
+    /**
+     * Display admin meeting planner view
+     */
     public function planif()
     {
         try {
-        Gate::authorize('isAdmin', Auth::user());
-        $dys = Dysfunction::whereNotIn('status', [3, 7])->get();
-        $users = Users::all();
-        return view('admin/planifs', compact('dys', 'users'));
+            Gate::authorize('isAdmin', Auth::user());
+            $dys = Dysfunction::whereNotIn('status', [3, 7])->get();
+            $users = Users::all();
+            return view('admin/planifs', compact('dys', 'users'));
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Display admin all s view
+     */
     public function employee()
     {
         try {
@@ -158,6 +186,9 @@ class AdminController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Display admin view on all rq employee permission
+     */
     public function rqemployee()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -167,6 +198,9 @@ class AdminController extends Controller
         $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('admin/rqemployee', compact('ents', 'deps', 'data', 'users'));
     }
+    /**
+     * Display admin view on all pilote employee permission
+     */
     public function pltemployee()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -177,7 +211,9 @@ class AdminController extends Controller
         $users = Users::whereIn('id', $data->pluck('user')->unique())->get();
         return view('admin/pltemployee', compact('ents', 'processes', 'deps', 'data', 'users'));
     }
-
+    /**
+     * Display admin personal invitation view
+     */
     public function invitation()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -186,6 +222,9 @@ class AdminController extends Controller
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
         return view('admin/invitation', compact('data', 'dys'));
     }
+    /**
+     * Display view with signals made by the admin
+     */
     public function listeSignalement()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -193,6 +232,9 @@ class AdminController extends Controller
         $status = Status::all();
         return view('admin/listesignalement', compact('data', 'status'));
     }
+    /**
+     * Display admin dysfunction signal form
+     */
     public function dysfonction()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -200,6 +242,9 @@ class AdminController extends Controller
         $site = Site::all();
         return view('admin/dysfonction', compact('ents', 'site'));
     }
+    /**
+     * Displays admin profile page
+     */
     public function profile()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -207,48 +252,52 @@ class AdminController extends Controller
         $deps = Department::all();
         return view('admin/profile', compact('ents', 'deps'));
     }
-
+    /**
+     * Update informations about an employee profile
+     */
     public function updateProfile(Request $request, $id)
     {
         // Validate the form input
 
-        try{
-        // Find the user by ID
-        $user = Users::findOrFail($id);
+        try {
+            // Find the user by ID
+            $user = Users::findOrFail($id);
 
-        // Update user's basic info
-        $user->firstname = $request->input('firstname');
-        $user->lastname = $request->input('lastname');
-        $user->phone = $request->input('phone');
-        $user->poste = $request->input('poste');
-        $user->email = $request->input('email');
-        $user->department = $request->input('department');
+            // Update user's basic info
+            $user->firstname = $request->input('firstname');
+            $user->lastname = $request->input('lastname');
+            $user->phone = $request->input('phone');
+            $user->poste = $request->input('poste');
+            $user->email = $request->input('email');
+            $user->department = $request->input('department');
 
-        // Check if an image file is provided
-        if ($request->hasFile('image')) {
-            // Handle the new image upload
-            $image = $request->file('image');
-            $imagePath = $image->store('profile_images', 'public'); // Save image to 'storage/app/public/profile_images'
+            // Check if an image file is provided
+            if ($request->hasFile('image')) {
+                // Handle the new image upload
+                $image = $request->file('image');
+                $imagePath = $image->store('profile_images', 'public'); // Save image to 'storage/app/public/profile_images'
 
-            // Delete the old image if it exists
-            if ($user->image) {
-                Storage::disk('public')->delete($user->image);
+                // Delete the old image if it exists
+                if ($user->image) {
+                    Storage::disk('public')->delete($user->image);
+                }
+
+                // Update the user's image path
+                $user->image = $imagePath;
             }
 
-            // Update the user's image path
-            $user->image = $imagePath;
-        }
+            // Save the updated user
+            $user->save();
 
-        // Save the updated user
-        $user->save();
-
-        // Redirect or return a response
-        return redirect()->back()->with('error', "Mis a jour de profil réussie");
+            // Redirect or return a response
+            return redirect()->back()->with('error', "Mis a jour de profil réussie");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-
+    /**
+     * Updates a particular employee password
+     */
     public function updatePassword(Request $request, $id)
     {
         // Validate the request
@@ -281,6 +330,10 @@ class AdminController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Display to admin all meetings which are not yet
+     * closed and are therefore still in process.
+     */
     public function meetingProcess()
     {
         Gate::authorize('isAdmin', Auth::user());
@@ -302,10 +355,13 @@ class AdminController extends Controller
 
         return view('admin/meetingProcess', compact('data', 'dys', 'users'));
     }
+    /**
+     * Display to admin all meeting which are closed
+     */
     public function meetingClosed()
     {
         Gate::authorize('isAdmin', Auth::user());
-        $data = Invitation::whereNotNUll('closed_at')->get()->sortByDesc('created_at');;
+        $data = Invitation::whereNotNUll('closed_at')->get()->sortByDesc('created_at');
         // Initialize an empty collection to store user matricules
         $matricules = collect();
         // Iterate over each invitation and their invites

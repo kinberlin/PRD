@@ -13,6 +13,10 @@ use Throwable;
 
 class AuthController extends Controller
 {
+    /**
+     * Function to authenticate any user with
+     * known matricule or email address.
+     */
     public function auth(Request $request)
     {
         Session::put('currentYear', now()->year);
@@ -64,17 +68,27 @@ class AuthController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Log a user out.
+     */
     public function logout()
     {
         Session::put('currentYear', now()->year);
         Auth::logout();
         return redirect('/login');
     }
+    /**
+     * Display login form and sets currentYear data to current year.
+     */
     public function login()
     {
         Session::put('currentYear', now()->year);
         return view('login');
     }
+    /**
+     * Display custom not found page to unkmown routes or
+     * unathorised information fetching
+     */
     public function NotFound404()
     {
         try {
@@ -100,6 +114,9 @@ class AuthController extends Controller
             return ['message' => 'Erreur : ' . $th->getMessage(), 'code' => 500];
         }
     }
+    /**
+     * Enable authenticated users to update thier passwords
+     */
     public function updatePassword(Request $request)
     {
         // Validate the request
@@ -132,6 +149,6 @@ class AuthController extends Controller
     public function setyear($year)
     {
         if ($year > 1999 && $year < 9999) {Session::put('currentYear', $year);}
-        return back()->with(['error' => 'Données de '.session('currentYear')]);
+        return back()->with(['error' => 'Données de ' . session('currentYear')]);
     }
 }

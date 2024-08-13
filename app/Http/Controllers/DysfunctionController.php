@@ -49,7 +49,7 @@ class DysfunctionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Initialises a dysfunction in system.
      */
 
     public function init(Request $request)
@@ -112,6 +112,10 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Identifies or update identification infos
+     * about a dysfunction signaled in the system.
+     */
     public function store(Request $request, $id)
     {
         try {
@@ -205,7 +209,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
-
+    /**
+     * Closes up a dysfunction by rejecting it.
+     */
     public function cancel($id)
     {
         try {
@@ -235,6 +241,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Display a detailed report about a dysfunction.
+     */
     public function report(Request $request)
     {
         $code = $request->input('code');
@@ -295,6 +304,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Updates a dysfunction by setting it cost attribute.
+     */
     public function cost(Request $request, $id)
     {
         try {
@@ -320,6 +332,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Sets a dysfunction in evaluation state.
+     */
     public function launchEvaluation($id)
     {
         $dys = Dysfunction::find($id);
@@ -363,6 +378,10 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Cancel up valuation state of a dysfunction
+     * and sets it back to planication state.
+     */
     public function cancelEvaluation($id)
     {
         try {
@@ -390,6 +409,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * probably a useless function
+     */
     public function action(Request $request, $id)
     {
         try {
@@ -428,6 +450,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Saves up task evaluation for each prescribed task.
+     */
     public function evaluation(Request $request, $id)
     {
         try {
@@ -465,6 +490,9 @@ class DysfunctionController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Closes up a dysfunction after saving the dysfunction evaluation.
+     */
     public function close(Request $request, $id)
     {
         try {

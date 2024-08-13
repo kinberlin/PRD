@@ -113,6 +113,9 @@ class EmployeeController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+        /**
+     * Display a detailed report about a dysfunction.
+     */
     public function report(Request $request)
     {
         $code = $request->input('code');
@@ -231,6 +234,9 @@ class EmployeeController extends Controller
         $dys = Dysfunction::whereIn('id', $data->pluck('dysfonction')->unique())->get();
         return view('employees/invitation', compact('data', 'dys'));
     }
+    /**
+     * Import datas from the excel file, checks them and save to database
+     */
     public function import(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());

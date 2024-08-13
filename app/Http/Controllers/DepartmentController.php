@@ -138,7 +138,9 @@ class DepartmentController extends Controller
             return redirect()->back()->with('error', "Echec lors de la surpression. L'erreur indique : " . $th->getMessage());
         }
     }
-
+    /**
+     * Import datas from the excel file, checks them and save to database
+     */
     public function import(Request $request)
     {
         Gate::authorize('isAdmin', Auth::user());
