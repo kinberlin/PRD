@@ -24,7 +24,7 @@ class ProcessImport implements ToModel, WithValidation, WithHeadingRow
     public function rules(): array
     {
         return [
-            '*.nom' => 'required|string|max:50|unique:enterprise,name',
+            '*.nom' => 'required|string|max:150|unique:enterprise,name',
             '*.abbreviation' => ['required', 'max:10', 'unique:enterprise,surfix'],
         ];
     }

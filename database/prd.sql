@@ -142,7 +142,8 @@ CREATE TABLE IF NOT EXISTS `enterprise` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
-
+INSERT INTO `enterprise` (`id`, `name`, `surfix`, `deleted_at`, `created_at`, `visible`, `logo`) VALUES
+(1, 'Panzani', 'PZN', NULL, NULL, 1, NULL);
 --
 -- Structure de la table `evaluation`
 --

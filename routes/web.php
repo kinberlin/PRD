@@ -121,7 +121,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Htt
         Route::post('/admin/enterprise/import', 'EnterpriseController@import')->name('admin.enterprise.import');
         Route::post('/admin/user/import', 'EmployeeController@import')->name('admin.user.import');
         Route::post('/admin/department/import', 'DepartmentController@import')->name('admin.department.import');
-        Route::post('/admin/department/import', 'ProcessesController@import')->name('admin.process.import');
+        Route::post('/admin/process/import', 'ProcessesController@import')->name('admin.process.import');
 
     //most of  dysfunction related admin routes
         Route::get('/admin/dysfunction/report', 'DysfunctionController@report')->name('admin.dysfunction.report');

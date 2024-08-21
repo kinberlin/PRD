@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
-use App\Models\Process;
 use App\Models\Processes;
 use App\Models\Users;
 use Livewire\Component;
@@ -29,7 +28,7 @@ class AddpltEmployeeForm extends Component
         $rqU = AuthorisationRq::where('interim', 0)->get();
         $this->users = Users::whereNotIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
         $this->selectedProcess = $this->processes[0]->id;
-        $this->selectedUser = $this->users[0]->id;
+        if (count($this->users) > 0) {$this->selectedUser = $this->users[0]->id;}
         $this->checkUserInProcess();
         $this->checkFormReady();
     }

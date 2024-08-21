@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Models\AuthorisationPilote;
 use App\Models\AuthorisationRq;
-use Livewire\Component;
 use App\Models\Enterprise;
 use App\Models\Users;
+use Livewire\Component;
 
 class AddRQEmployeeForm extends Component
 {
@@ -28,7 +28,7 @@ class AddRQEmployeeForm extends Component
         $pltU = AuthorisationPilote::where('interim', 0)->get();
         $this->users = Users::whereNotIn('id', $pltU->pluck('user'))->where('role', '<>', 1)->get();
         $this->selectedEnterprise = $this->enterprises[0]->id;
-        $this->selectedUser = $this->users[0]->id;
+        if (count($this->users) > 0) {$this->selectedUser = $this->users[0]->id;}
         $this->checkUserInProcess();
         $this->checkFormReady();
     }
