@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Enterprise;
 use App\Models\Users;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -25,7 +26,7 @@ class UserImport implements ToModel, WithValidation, WithHeadingRow
             'phone' => $row['telephone'],
             'department' => $row['departement'],
             'poste' => $row['poste_occupe'],
-            'matricule' => $row['matricule'],
+            'matricule' => Enterprise::find($row['entreprise'])->code.$row['matricule'],
             'password' => bcrypt($row['mot_de_passe']),
         ]);
     }
