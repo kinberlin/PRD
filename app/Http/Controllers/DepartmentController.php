@@ -123,7 +123,7 @@ class DepartmentController extends Controller
         $rec = Department::find($id);
         try {
             if (Gate::allows('canDepDelete', $rec)) {
-                if (Gate::allows('isAdmin', Auth::user()) ) {
+                if (Gate::allows('isEnterpriseRQ', [Enterprise::find($rec->enterprise)]) || Gate::allows('isAdmin', Auth::user())) {
                     DB::beginTransaction();
                     $rec->forceDelete();
                     DB::commit();

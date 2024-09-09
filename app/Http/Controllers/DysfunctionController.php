@@ -99,7 +99,7 @@ class DysfunctionController extends Controller
             $dys->code = 'D' . Carbon::now()->year . date('m') . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
             $dys->save();
             //alert rq on dysfunction alert
-            /*$rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
+            $rqU = AuthorisationRq::where('enterprise', $ents->id)->get();
             $rq = Users::whereIn('id', $rqU->pluck('user'))->where('role', '<>', 1)->get();
             foreach ($rq as $user) {
                 $newmessage = new ApiSms(array_fill(0, 1, $user->phone), 'Cadyst PRD App', "Nous tenons à vous informer qu'un incident a été signalé par un employé via notre plateforme de résolution des incidents. Il s'agit du No." . $dys->code);
@@ -108,7 +108,7 @@ class DysfunctionController extends Controller
                 $newmail = new ApiMail(null, array_fill(0, 1, $user->email), 'Cadyst PRD App', "Notification d'Incident - Code de l'incident : [" . $dys->code . "]", $content, []);
 
                 $result = $newmail->send();
-            }*/
+            }
             return redirect()->back()->with('error', "Merci d'avoir fait ce signalement. Nous le traiterons dans les plus bref délais.");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());

@@ -98,7 +98,7 @@
         <div class="card-body">
             <!-- Modals -->
             @foreach ($data as $d)
-                @can(['canSiteDelete', 'isAdmin'], $d)
+                @can(['canSiteDelete'], $d)
                     <div class="modal modal-top fade" id="delsite{{ $d->id }}" tabindex="-1">
                         <div class="modal-dialog">
                             <form class="modal-content">
@@ -268,7 +268,7 @@
                                     @can(['canSiteDelete'], $d)
                                         <button class="btn btn-danger " data-bs-toggle="modal"
                                             data-bs-target="#delsite{{ $d->id }}">Supprimer</button>
-                                    @endcanany
+                                    @endcan
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#siteVisibility{{ $d->id }}">
                                             Visibilité

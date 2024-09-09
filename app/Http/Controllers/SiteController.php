@@ -110,9 +110,13 @@ class SiteController extends Controller
             //Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Site::find($id);
-            $d->visible = $request->boolean('visibility');
-            $d->save();
-            DB::commit();
+            if (Gate::allows('isEnterpriseRQ', [Enterprise::find($d->enterprise)]) || Gate::allows('isAdmin', Auth::user())) {
+                $d->visible = $request->boolean('visibility');
+                $d->save();
+                DB::commit();
+            } else {
+                throw new Exception("Arrêt inattendu du processus suite a une tentative de mise a jour/de manipulation de donnée sans detention des privileges requis pour l'operation.", 501);
+            }
             return redirect()->back()->with('error', "Mis a Jour effectuer avec succes. ");
         } catch (Throwable $th) {
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
@@ -124,10 +128,10 @@ class SiteController extends Controller
     public function destroy($id)
     {
         $rec = Site::find($id);
-        Gate::authorize('isAdmin', Auth::user());
+        //Gate::authorize('isAdmin', Auth::user());
         try {
             if (Gate::allows('canSiteDelete', $rec)) {
-                if (Gate::allows('isAdmin', Auth::user())) {
+                if (Gate::allows('isEnterpriseRQ', [Enterprise::find($rec->enterprise)]) || Gate::allows('isAdmin', Auth::user())) {
                     DB::beginTransaction();
                     $rec->forceDelete();
                     DB::commit();
