@@ -15,7 +15,7 @@
                     <div class="demo-inline-spacing">
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd"
                             aria-controls="offcanvasEnd">Ajouter un Responsable Qualité</button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd"
+                        <div class="offcanvas offcanvas-end"  style="height : 100%" tabindex="-1" id="offcanvasEnd"
                             aria-labelledby="offcanvasEndLabel" aria-modal="true" role="dialog">
                             <div class="offcanvas-header">
                                 <h5 id="offcanvasEndLabel" class="offcanvas-title">Formulaire d'Ajout de RQ</h5>

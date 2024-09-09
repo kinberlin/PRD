@@ -1,4 +1,4 @@
-<div class="offcanvas-body mx-0 flex-grow-0">
+<div class="offcanvas-body mx-0 flex-grow-0" style ="height : 100%">
     <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" action="{{ route('admin.authrq.store') }}"
         method="POST">
         @csrf
