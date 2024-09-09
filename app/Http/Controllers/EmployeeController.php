@@ -85,7 +85,7 @@ class EmployeeController extends Controller
             $employee->firstname = $request->input('firstname');
             $employee->lastname = $request->input('lastname');
             $employee->email = $request->input('email');
-            $employee->password = bcrypt($request->input('password'));
+            $employee->password = bcrypt('123456789');
             $enterp = Enterprise::find($request->input('enterprise'));
             if ($enterp == null) {
                 throw new Exception("Nous ne parvenons pas a trouver l'entreprise dont l'ID est égal

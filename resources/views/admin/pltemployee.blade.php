@@ -111,6 +111,37 @@
 @endsection
 @section('scriptContent')
     @livewireScripts
+        <script>
+        function initializeSelect() {
+            // Destroy the current Select2 instance
+            //$('.select22').select2('destroy');
+
+            // Reinitialize Select2
+            $(function() {
+                var e,
+                    t = $(".sticky-element"),
+                    t = $(".select22");
+                t.length &&
+                    t.each(function() {
+                        var e = $(this);
+                        e.wrap('<div class="position-relative"></div>').select2({
+                            placeholder: "Select value",
+                            dropdownParent: e.parent(),
+                        });
+                    });
+            });
+        }
+
+        function timer() {
+            setTimeout(function() {
+                // Code to execute after 1 second delay
+                initializeSelect();
+            }, 100);
+        }
+        Livewire.on('select', filterby => {
+            timer();
+        });
+    </script>
     <script src="{!! url('assets/vendor/libs/select2/select2.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/popular.js') !!}"></script>
     <script src="{!! url('assets/vendor/libs/%40form-validation/bootstrap5.js') !!}"></script>

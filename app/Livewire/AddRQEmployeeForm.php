@@ -88,6 +88,7 @@ class AddRQEmployeeForm extends Component
 
     public function render()
     {
+        $this->dispatch('select');
         return view('livewire.admin.add-r-q-employee-form');
     }
 }

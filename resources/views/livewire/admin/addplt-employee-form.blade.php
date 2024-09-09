@@ -1,27 +1,18 @@
 <div class="offcanvas-body mx-0 flex-grow-0">
-    <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" action="{{ route('admin.authplt.store') }}" method="POST">
+    <form class="add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" action="{{ route('admin.authplt.store') }}"
+        method="POST">
         @csrf
         @if ($message != null)
-        <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" style="color : yellow">{{$message}}</label>
-        </div>
+            <div class="mb-3 fv-plugins-icon-container">
+                <label class="form-label" style="color : yellow">{{ $message }}</label>
+            </div>
         @endif
         <div class="mb-3 fv-plugins-icon-container">
             <label class="form-label" for="selents">Processus d'action</label>
             <select id="selents" name="process" class="form-select" wire:model.live="selectedProcess" required>
                 @foreach ($processes as $index => $e)
-                    <option value="{{ $e->id }}" {{ $index == 0 ? 'selected' : '' }}>{{ $e->name .' ('.$e->surfix.')'}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-3 fv-plugins-icon-container">
-            <label class="form-label" for="firstname">Employé a Pourvoir</label>
-            <select class="select2 select-event-guests form-select" id="eventGuests" name="user"
-                wire:model.live="selectedUser" required>
-                @foreach ($users as $index => $u)
-                    <option value="{{ $u->id }}" {{ $index == 0 ? 'selected' : '' }}>
-                        Matricule : ({{ $u->matricule }}) {{ $u->firstname . ' ' . $u->lastname }}
-                    </option>
+                    <option value="{{ $e->id }}" {{ $index == 0 ? 'selected' : '' }}>
+                        {{ $e->name . ' (' . $e->surfix . ')' }}</option>
                 @endforeach
             </select>
         </div>
@@ -39,6 +30,17 @@
                     <label class="form-check-label" for="inlineRadio2">Non</label>
                 </div>
             </div>
+        </div>
+        <div class="mb-3 fv-plugins-icon-container">
+            <label class="form-label" for="firstname">Employé a Pourvoir</label>
+            <select class="select22 form-select" id="eventGuests" name="user"
+                wire:model.live="selectedUser" required>
+                @foreach ($users as $index => $u)
+                    <option value="{{ $u->id }}" {{ $index == 0 ? 'selected' : '' }}>
+                        Matricule : ({{ $u->matricule }}) {{ $u->firstname . ' ' . $u->lastname }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <button type="submit" class="btn btn-primary me-sm-3 me-1"
             style="{{ $disableSubmit ? 'background-color: grey;' : '' }}"

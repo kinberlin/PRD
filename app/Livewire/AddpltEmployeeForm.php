@@ -83,6 +83,7 @@ class AddpltEmployeeForm extends Component
     }
     public function render()
     {
+        $this->dispatch('select');
         return view('livewire.admin.addplt-employee-form');
     }
 }
