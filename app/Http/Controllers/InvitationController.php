@@ -16,6 +16,7 @@ use function PHPUnit\Framework\isEmpty;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Throwable;
@@ -84,7 +85,30 @@ class InvitationController extends Controller
                 $data->external_invites = json_encode($ext_u);
                 $data->save();
                 DB::commit();
-                $emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
+                //$emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
+                $emails = $ext_u;
+                //Mails for PRD Users with accounts
+                foreach ($newinvites as $value) {
+                    // Data to encode (user ID and meeting ID)
+                    $confirm_infos = [
+                        'matricule' => $value->matricule,
+                        'invitation' => $data->id,
+                        'decision' => 1,
+                    ];
+                    $cancel_infos = [
+                        'matricule' => $value->matricule,
+                        'invitation' => $data->id,
+                        'decision' => 0,
+                    ];
+
+                    // Generate the confirmation URL
+                    $cancelUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($confirm_infos))]);
+                    $confirmationUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($cancel_infos))]);
+                    $content = view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl])->render();
+                    $newmail = new ApiMail(null, [$value->email], 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                    $newmail->send();
+                }
+
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
@@ -286,6 +310,53 @@ class InvitationController extends Controller
             return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
         }
     }
+    /**
+     * Registers a user availability to a particular meeting from encoded url
+     * in mail
+     */
+    public function confirmAttendance($encodedData)
+    {
+        try {
+            // Decode the encoded data
+            $decodedData = json_decode(Crypt::decryptString($encodedData), true);
+
+            // Retrieve the user and meeting
+            $user = Users::where('matricule', $decodedData['matricule']);
+            $data = Invitation::find($decodedData['invitation']);
+            $decision = $decodedData['decision'];
+            if (Gate::allows('isInvitationOpen', $data)) {
+                DB::beginTransaction();
+                if ($data == null) {
+                    throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
+                }
+                $invites = $data->findInviteByMatricule($user->matricule);
+                if ($invites) {
+                    if ($decision == 1) // 1 for accept
+                    {
+                        $invites = $invites->confirm();
+                        $data->updateInviteByMatricule($invites);
+                        //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                        $data->save();
+                    } elseif ($decision == 0) //0 for rejected
+                    {
+                        $invites = $invites->cancel();
+                        $data->updateInviteByMatricule($invites);
+                        //$data->internal_invites = $data->updateInviteByMatricule($invites) != null ? $data->updateInviteByMatricule($invites)->internal_invites : $data->internal_invites;
+                        $data->save();
+                    }
+                }
+                DB::commit();
+                return redirect()->back()->with('error', 'Mise à jour de la disponibilité terminée.');
+            } else {
+                throw new Exception("cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
+            }
+        } catch (Throwable $th) {
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+    /**
+     * Closes up the meeting by giving current datetime to closeat property
+     */
     public function close($id)
     {
         try {

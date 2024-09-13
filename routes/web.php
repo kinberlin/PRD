@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
-
+Route::get('/employee', function () {
+    return view('employees.invitation_appMail', ['invitation' => $data,]);
+});
 Route::get('/', function () {
     return redirect('/login');
 });
