@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::get('/rq', function () {
 Route::get('/employee', function () {
     return redirect('/employee/dysfonctionnement');
 });
+Route::get('/confirm-attendance/{encodedData}', [InvitationController::class, 'confirmAttendance'])
+    ->name('confirm.attendance');
 //auth routes
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth');
