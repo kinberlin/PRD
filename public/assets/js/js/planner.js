@@ -41,7 +41,7 @@ deferred.promise().then(function (valuesArray) {
     gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
     gantt.config.order_branch = true;
     gantt.config.order_branch_free = true;
-        gantt.config.scrollable = true;
+    gantt.config.scrollable = true;
     gantt.config.smooth_scroll = true;
 
     gantt.i18n.setLocale("fr");
@@ -119,31 +119,31 @@ deferred.promise().then(function (valuesArray) {
     gantt.templates.grid_row_class =
         gantt.templates.task_row_class =
         gantt.templates.task_class =
-            function (start, end, task) {
-                var css = [];
-                if (task.$virtual || task.type == gantt.config.types.project)
-                    css.push("summary-bar");
+        function (start, end, task) {
+            var css = [];
+            if (task.$virtual || task.type == gantt.config.types.project)
+                css.push("summary-bar");
 
-                if (task.process) {
-                    css.push(
-                        "gantt_resource_task gantt_resource_" + task.process
-                    );
-                }
-                if (task.dysfunction) {
-                    css.push(
-                        "gantt_resource_task gantt_resource_" + task.dysfunction
-                    );
-                }
-                if (task.type == gantt.config.types.project) {
-                    return "hide_project_progress_drag";
-                }
-                if (task.progress == 1) {
-                    return "completed_task";
-                } else {
-                    return "";
-                }
-                return css.join(" ");
-            };
+            if (task.process) {
+                css.push(
+                    "gantt_resource_task gantt_resource_" + task.process
+                );
+            }
+            if (task.dysfunction) {
+                css.push(
+                    "gantt_resource_task gantt_resource_" + task.dysfunction
+                );
+            }
+            if (task.type == gantt.config.types.project) {
+                return "hide_project_progress_drag";
+            }
+            if (task.progress == 1) {
+                return "completed_task";
+            } else {
+                return "";
+            }
+            return css.join(" ");
+        };
 
     gantt.attachEvent("onLightbox", function (taskId) {
         var task = gantt.getTask(taskId);
@@ -190,16 +190,14 @@ deferred.promise().then(function (valuesArray) {
         let html = `
                 <div class='gantt_info'>
             <div class='gantt_info_title'>
-            ${
-                task.description ? `${task.description}` : "Aucune description"
+            ${task.description ? `${task.description}` : "Aucune description"
             } </div> </div>
         <div class='gantt_info_buttons'>
             <div class='gantt_info_btn_set'>
-                ${
-                    task.proof
-                        ? `<a class='gantt_info_btn' href='/all/task/proof/${task.id}' target='_blank'>Voir la Preuve d'Achevement</a>`
-                        : ""
-                }
+                ${task.proof
+                ? `<a class='gantt_info_btn' href='/all/task/proof/${task.id}' target='_blank'>Voir la Preuve d'Achevement</a>`
+                : ""
+            }
             </div>
         </div>
     `;

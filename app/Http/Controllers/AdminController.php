@@ -164,7 +164,7 @@ class AdminController extends Controller
     {
         try {
             Gate::authorize('isAdmin', Auth::user());
-            $dys = Dysfunction::whereNotIn('status', [3, 7])->get();
+            $dys = Dysfunction::whereNotIn('status', [3, 6])->get();
             $users = Users::all();
             return view('admin/planifs', compact('dys', 'users'));
         } catch (Throwable $th) {
