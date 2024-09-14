@@ -1,6 +1,6 @@
 @extends('employees.theme.main')
 @section('title')
-    Tableau de Bord | RQ
+    Tableau de Bord | Pilote de Processus
 @endsection
 @section('manualstyle')
 @endsection

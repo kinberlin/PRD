@@ -35,6 +35,56 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i" rel="stylesheet" />
     <!--<![endif]-->
     <style type="text/css">
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.2rem;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .btn-success:focus,
+        .btn-success.focus {
+            color: #fff;
+            background-color: #218838;
+            border-color: #1e7e34;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+        }
+
+        .btn-success:active,
+        .btn-success.active,
+        .show>.btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
         .rollover:hover .rollover-first {
             max-height: 0px !important;
             display: none !important;
@@ -641,7 +691,8 @@
                                                                 <td style="padding: 0; margin: 0">
 
                                                                     <span
-                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour,</span></p>
+                                                                        style="font-family:&quot;Century Gothic&quot;,sans-serif">Bonjour,</span>
+                                                                    </p>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
@@ -651,35 +702,50 @@
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Nous
                                                                             vous informons qu'une réunion de résolution
                                                                             d’incidents a été programmée avec pour motif
-                                                                            : <span style="background-color: yellow">{{$invitation->motif}}</span>. Cette
+                                                                            : <span
+                                                                                style="background-color: yellow">{{ $invitation->motif }}</span>.
+                                                                            Cette
                                                                             réunion concerne le dysfonctionnement No.
-                                                                            <b>{{$invitation->dysfunction->code}}</b> dont la gravité a été noté :
-                                                                            <b>{{$invitation->dysfunction->gravity}}</b></span></p>
+                                                                            <b>{{ $invitation->dysfunction->code }}</b>
+                                                                            dont la gravité a été noté :
+                                                                            <b>{{ $invitation->dysfunction->gravity }}</b></span>
+                                                                    </p>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Détails
-                                                                            de la réunion :</span></p>
+                                                                            de la réunion :</span>
+                                                                    </p>
                                                                     <ul style="margin-top:0cm" type="disc">
                                                                         <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpFirst"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Objet
-                                                                                : {{$invitation->object}}</span></li>
+                                                                                : {{ $invitation->object }}</span></li>
                                                                         <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpFirst"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Date
-                                                                                : {{$invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</span></li>
+                                                                                :
+                                                                                {{ $invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</span>
+                                                                        </li>
                                                                         <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpMiddle"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Horaire
-                                                                                : {{$invitation->begin}} - {{$invitation->end}}</span></li>
+                                                                                : {{ $invitation->begin }} -
+                                                                                {{ $invitation->end }}</span></li>
                                                                         <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpLast"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Lieu
-                                                                                : [{{$invitation->place}}/@if(empty($invitation->link) )Aucun lien fourni @else <a href="{{$invitation->link}}">Lien de visioconférence</a>@endif ]</span></li>
-                                                                                <li style="margin-left:0cm; text-align:justify"
+                                                                                : [{{ $invitation->place }}/@if (empty($invitation->link))
+                                                                                    Aucun lien fourni
+                                                                                @else
+                                                                                    <a href="{{ $invitation->link }}">Lien
+                                                                                        de visioconférence</a>
+                                                                                @endif ]</span>
+                                                                        </li>
+                                                                        <li style="margin-left:0cm; text-align:justify"
                                                                             class="x_MsoListParagraphCxSpFirst"><span
                                                                                 style="font-family:&quot;Century Gothic&quot;,sans-serif">Extras
-                                                                                : {{$invitation->description}}</span></li>
+                                                                                : {{ $invitation->description }}</span>
+                                                                        </li>
                                                                     </ul>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
@@ -695,18 +761,29 @@
                                                                             tout document ou information pertinente que
                                                                             vous pourriez partager. Veuillez confirmer
                                                                             votre présence en acceptant l’invitation
-                                                                            avant le <b>{{$invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY')}}</b> Si
+                                                                            avant le
+                                                                            <b>{{ $invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</b>
+                                                                            Si
                                                                             vous avez des questions ou des
                                                                             préoccupations, n'hésitez pas à en faire
-                                                                            part au Responsable Qualité.</span></p>
+                                                                            part au Responsable Qualité.</span>
+                                                                    </p>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
                                                                     </p>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
+                                                                        Serez vous présent à cette réunion ? <a
+                                                                            href=""
+                                                                            class="btn btn-sm btn-success">Oui</a>
+                                                                        <a href="">Non</a>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Merci
                                                                             d’avance pour votre collaboration.</span>
+                                                                    <p style="text-align:justify" class="x_MsoNormal">
+                                                                        <a href="">Confirm</a>
+                                                                        <a href="">Desister</a>
                                                                 </td>
                                                             </tr>
                                                         </table>

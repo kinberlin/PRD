@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvitationController;
+use App\Models\Invitation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
-Route::get('/employee', function () {
-    return view('employees.invitation_appMail', ['invitation' => $data,]);
+Route::get('/evi', function () {
+    return view('employees.invitation_appMail', ['invitation' => Invitation::find(19),]);
 });
 Route::get('/', function () {
     return redirect('/login');
