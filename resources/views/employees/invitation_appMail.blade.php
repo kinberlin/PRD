@@ -85,6 +85,34 @@
             border-color: #1c7430;
         }
 
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            color: #fff;
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-danger:focus,
+        .btn-danger.focus {
+            color: #fff;
+            background-color: #c82333;
+            border-color: #bd2130;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+        }
+
+        .btn-danger:active,
+        .btn-danger.active,
+        .show>.btn-danger.dropdown-toggle {
+            color: #fff;
+            background-color: #bd2130;
+            border-color: #b21f2d;
+        }
+
         .rollover:hover .rollover-first {
             max-height: 0px !important;
             display: none !important;
@@ -762,28 +790,25 @@
                                                                             vous pourriez partager. Veuillez confirmer
                                                                             votre présence en acceptant l’invitation
                                                                             avant le
-                                                                            <b>{{ $invitation->odates->locale('fr')->isoFormat('dddd, D MMMM YYYY') }}</b>
+                                                                            <b>{{ formatDateInFrench($invitation->odates, 'complete') }}</b>
                                                                             Si
                                                                             vous avez des questions ou des
                                                                             préoccupations, n'hésitez pas à en faire
                                                                             part au Responsable Qualité.</span>
                                                                     </p>
+
                                                                     <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <span
-                                                                            style="font-family:&quot;Century Gothic&quot;,sans-serif">&nbsp;</span>
-                                                                    </p>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        Serez vous présent à cette réunion ? <a
+                                                                        Pourrez vous être présent à cette réunion ? <a
                                                                             href=""
                                                                             class="btn btn-sm btn-success">Oui</a>
-                                                                        <a href="">Non</a>
+                                                                        <a href=""
+                                                                            class="btn btn-sm btn-danger">Non</a>
+                                                                    </p> <br>
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Merci
                                                                             d’avance pour votre collaboration.</span>
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        <a href="">Confirm</a>
-                                                                        <a href="">Desister</a>
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                         </table>

@@ -30,7 +30,7 @@ if (!function_exists('formatDateInFrench')) {
             'day_month' => 'j F',       // Day and Month: 10 juillet
             'month_year' => 'F Y',      // Month and Year: juillet 2024
             'time' => 'H:i',            // Time format: 14:30
-            'complete' => 'l j F Y',    // Complete format: mercredi 10 juillet 2024
+            'complete' => 'l, j F Y',    // Complete format: mercredi 10 juillet 2024
             'full' => 'l j F Y H:i:s',  // Full format: mercredi 10 juillet 2024 14:30:00
         ];
         // Retrieve the date format from the predefined array
