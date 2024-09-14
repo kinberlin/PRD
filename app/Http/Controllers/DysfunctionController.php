@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class DysfunctionController extends Controller
@@ -516,6 +517,26 @@ class DysfunctionController extends Controller
                 return redirect()->back()->with('error', "Évaluations enregistrées avec succès.");
             } else {
                 throw new Exception("« Vous ne disposez pas des accréditations nécessaires pour effectuer l'action que vous avez tenté de réaliser sur les données concernées par cette action. »", 401);
+            }
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+        }
+    }
+    /**
+     * Returns task file submission proof for planner gantt API use
+     */
+    public function showproof($id)
+    {
+        try {
+            if (Gate::allows('isRq', Auth::user()) || Gate::allows('isAdmin', Auth::user())) {
+                $task = Task::find($id);
+                if (is_null($task)) {
+                    throw new Exception("La ressource demandée est introuvable.", 401);
+                }
+                return redirect(Storage::url($task->proof));
+            } else {
+                throw new Exception("Malheureusement, vous ne disposez pas des acreditations necessaires pour programmer une réunion.", 401);
             }
         } catch (Throwable $th) {
             DB::rollBack();

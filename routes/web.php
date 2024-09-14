@@ -119,6 +119,8 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
         Route::post('/meeting/{id}/participation', 'InvitationController@participation')->name('invitation.participation');
         Route::get('/actif/year/{year}', 'AuthController@setyear')->name('auth.year');
         Route::post('/actif/year', 'AuthController@setyearPost')->name('auth.year.post');
+//task
+ Route::get('/all/task/proof/{id}', 'DysfunctionController@showproof')->name('task.showproof');
 });
 Route::group(['middleware' => ['web', 'auth', 'role:1'], 'namespace' => 'App\Http\Controllers'], function () {
 //admins

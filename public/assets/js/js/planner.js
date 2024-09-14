@@ -41,6 +41,9 @@ deferred.promise().then(function (valuesArray) {
     gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
     gantt.config.order_branch = true;
     gantt.config.order_branch_free = true;
+        gantt.config.scrollable = true;
+    gantt.config.smooth_scroll = true;
+
     gantt.i18n.setLocale("fr");
     gantt.plugins({});
 
@@ -194,7 +197,7 @@ deferred.promise().then(function (valuesArray) {
             <div class='gantt_info_btn_set'>
                 ${
                     task.proof
-                        ? `<a class='gantt_info_btn' href='${task.proof}' target='_blank'>Voir la Preuve d'Achevement</a>`
+                        ? `<a class='gantt_info_btn' href='/all/task/proof/${task.id}' target='_blank'>Voir la Preuve d'Achevement</a>`
                         : ""
                 }
             </div>

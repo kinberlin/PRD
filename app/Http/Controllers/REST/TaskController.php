@@ -8,8 +8,8 @@ use App\Models\Viewby;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class TaskController extends RoutingController
@@ -31,7 +31,7 @@ class TaskController extends RoutingController
         $task->description = $request->has('description') ? $request->description : null;
         $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
         $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-        $task->created_by = 'Responsable Qualité';//Auth::user()->firstname . ' ' . Auth::user()->lastname;
+        $task->created_by = 'Responsable Qualité'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
 
         $task->save();
 
@@ -109,14 +109,16 @@ class TaskController extends RoutingController
             if ($task == null) {
                 throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
             }
+            /*if ($task->proof != null) {
+            $state = $this->deleteImage($task->proof, '/uploads/tasks/');
+            if ($state->getStatusCode() != 200) {
+            throw new Exception("Impossible de supprimer cette tâche.", 500);
+            }
+            }*/
             if ($task->proof != null) {
-                $state = $this->deleteImage($task->proof, '/uploads/tasks/');
-                if ($state->getStatusCode() != 200) {
-                    throw new Exception("Impossible de supprimer cette tâche.", 500);
-                }
+                Storage::disk('public')->delete($task->proof);
             }
             $task->delete();
-
             return response()->json([
                 "action" => "deleted",
             ]);
@@ -142,7 +144,7 @@ class TaskController extends RoutingController
             if ($pj->isValid()) {
                 $filename = time() . '_' . $pj->getClientOriginalName();
                 // Store the file and get the path
-                $url = $pj->storeAs('uploads/tasks', $filename);
+                $url = $pj->store('tasks', 'public'); // Save image to 'storage/app/public/tasks'
             }
             if ($url == null) {
                 throw new Exception("Impossible de récuperer l'URL de la ressource", 501);
@@ -182,6 +184,7 @@ class TaskController extends RoutingController
             return response()->json(['message' => 'File not found.'], 404);
         }
     }
+
     public function viewBy_store(Request $request)
     {
         try {
