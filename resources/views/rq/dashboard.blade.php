@@ -237,7 +237,7 @@
                             </div>
                             <div class="card-body" style="height:420px; overflow-y: auto;">
                                 <ul class="p-0 m-0">
-                                    @foreach ($critics->where('critic', '<', 4) as $cri)
+                                    @foreach ($critics->where('critic', '<=', 4) as $cri)
                                         <li class="d-flex mb-4 pb-1">
                                             <div class="avatar flex-shrink-0 me-3">
                                                 <i class="bx bx-fast-forward"></i>

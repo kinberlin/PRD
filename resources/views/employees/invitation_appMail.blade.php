@@ -796,14 +796,16 @@
                                                                             préoccupations, n'hésitez pas à en faire
                                                                             part au Responsable Qualité.</span>
                                                                     </p>
-
-                                                                    <p style="text-align:justify" class="x_MsoNormal">
-                                                                        Pourrez vous être présent à cette réunion ? <a
-                                                                            href=""
-                                                                            class="btn btn-sm btn-success">Oui</a>
-                                                                        <a href=""
-                                                                            class="btn btn-sm btn-danger">Non</a>
-                                                                    </p> <br>
+                                                                    @if (!empty($confirm) && !empty($cancel))
+                                                                        <p style="text-align:justify"
+                                                                            class="x_MsoNormal">
+                                                                            Pourrez vous être présent à cette réunion ?
+                                                                            <a href="{{ $confirm }}"
+                                                                                class="btn btn-sm btn-success">Oui</a>
+                                                                            <a href="{{ $cancel }}"
+                                                                                class="btn btn-sm btn-danger">Non</a>
+                                                                        </p> <br>
+                                                                    @endif
                                                                     <p style="text-align:justify" class="x_MsoNormal">
                                                                         <span
                                                                             style="font-family:&quot;Century Gothic&quot;,sans-serif">Merci

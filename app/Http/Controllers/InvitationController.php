@@ -105,8 +105,9 @@ class InvitationController extends Controller
                     $cancelUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($confirm_infos))]);
                     $confirmationUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($cancel_infos))]);
                     $content = view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl])->render();
-                    $newmail = new ApiMail(null, [$value->email], 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
-                    $newmail->send();
+                    return view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl]);
+                    //$newmail = new ApiMail(null, [$value->email], 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
+                    //$newmail->send();
                 }
 
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
