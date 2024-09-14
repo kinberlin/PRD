@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 Route::get('/evi', function () {
-    return view('employees.invitation_appMail', ['invitation' => Invitation::find(19),]);
+    return view('inviteConfirm', ['invitation' => Invitation::find(19), 'decision'=>1]);
 });
 Route::get('/', function () {
     return redirect('/login');

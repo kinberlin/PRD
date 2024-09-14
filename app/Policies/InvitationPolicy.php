@@ -27,6 +27,6 @@ class InvitationPolicy
         if ($invitation == null) {
             return false;
         }
-        return Carbon::parse($invitation->odates)->greaterThan(Carbon::now());
+        return Carbon::parse($invitation->odates)->lessThan(Carbon::now());
     }
 }

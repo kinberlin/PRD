@@ -102,14 +102,13 @@ class InvitationController extends Controller
                     ];
 
                     // Generate the confirmation URL
-                    $cancelUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($confirm_infos))]);
-                    $confirmationUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($cancel_infos))]);
-                    $content = view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl])->render();
-                    return view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl]);
-                    //$newmail = new ApiMail(null, [$value->email], 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
-                    //$newmail->send();
+                    $cancelUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($cancel_infos))]);
+                    $confirmationUrl = route('confirm.attendance', ['encodedData' => Crypt::encryptString(json_encode($confirm_infos))]);
+                    $icontent = view('employees.invitation_appMail', ['invitation' => $data, 'confirm' => $confirmationUrl, 'cancel' => $cancelUrl])->render();
+                    $inewmail = new ApiMail(null, [$value->email], 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $icontent, []);
+                    $inewmail->send();
                 }
-
+//Mails for Non PRD Users(those with no accounts)
                 $content = view('employees.invitation_appMail', ['invitation' => $data])->render();
                 $newmail = new ApiMail(null, $emails, 'Cadyst PRD App', "Invitation à la Réunion No #" . $data->id . " du : " . $data->odates, $content, []);
                 $response = $newmail->send();
@@ -320,12 +319,12 @@ class InvitationController extends Controller
         try {
             // Decode the encoded data
             $decodedData = json_decode(Crypt::decryptString($encodedData), true);
-
             // Retrieve the user and meeting
-            $user = Users::where('matricule', $decodedData['matricule']);
+            $user = Users::where('matricule', $decodedData['matricule'])->get()->first();
             $data = Invitation::find($decodedData['invitation']);
             $decision = $decodedData['decision'];
-            if (Gate::allows('isInvitationOpen', $data)) {
+
+            if (Gate::allows('isInvitationOpen', $data) &&  !Gate::allows('isInvitationPast', $data)) {
                 DB::beginTransaction();
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);
@@ -347,12 +346,12 @@ class InvitationController extends Controller
                     }
                 }
                 DB::commit();
-                return redirect()->back()->with('error', 'Mise à jour de la disponibilité terminée.');
+                return view('inviteConfirm', ['invitation'=>$data, 'decision'=>$decision]);
             } else {
                 throw new Exception("cette réunion est déja terminée. Il n'est plus possible de l'éditer, confirmer ou désister.", 401);
             }
         } catch (Throwable $th) {
-            return redirect()->back()->with('error', "Erreur : " . $th->getMessage());
+            return redirect('/login')->with('error', "Erreur : " . $th->getMessage());
         }
     }
     /**
