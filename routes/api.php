@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::resource('task', TaskController::class);
+Route::resource('task', TaskController::class); 
 Route::resource('link', LinkController::class);
 Route::get('/data/{id}', [GanttController::class, 'get']);
 Route::post('/task/proof', [TaskController::class, 'proof']);
