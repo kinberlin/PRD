@@ -36,10 +36,10 @@
                                     </div>
                                     <div class="mb-3 fv-plugins-icon-container">
                                         <label class="form-label" for="seldep">Département</label>
-                                        <select id="seldep" name="department" class="form-select" required>
+                                        <select id="seldep" name="department" class="form-select select22" required>
                                             @foreach ($deps as $d)
                                                 <option value="{{ $d->id }}" data-extra-info="{{ $d->enterprise }}">
-                                                    {{ $d->name }}</option>
+                                                    {{ $d->name }} ({{$ents->where('id', $d->enterprise)->first()->name}})</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -91,8 +91,8 @@
                         <a href="{!! url('assets/extras/cadyst_liste_employee_modele.xlsx') !!}" class="btn btn-secondary">Télécharger le Modele</a>
                         <form action="{!! route('admin.user.import') !!}" method="POST" enctype="multipart/form-data">
                             @csrf
-                        <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
-                        <button type="submit">Soumettre</button>
+                            <input type="file" name="file" style="visibility: hidden" id="excelFileInput">
+                            <button type="submit">Soumettre</button>
                         </form>
                     </div>
                 </div>
@@ -298,7 +298,7 @@
                                         <div class="mb-3">
                                             <label for="departmentmaj{{ $d->id }}"
                                                 class="form-label">Département</label>
-                                            <select class="form-select" tabindex="0" name="department"
+                                            <select class="form-select select22" tabindex="0" name="department"
                                                 id="departmentmaj{{ $d->id }}">
                                                 @foreach ($deps->where('enterprise', $d->enterprise) as $_d)
                                                     <option value="{{ $_d->id }}"
@@ -352,6 +352,19 @@
     <script src="{!! url('assets/js/js/accessory.js') !!}"></script>
     <script src="{!! url('assets/js/js/app-user-view-security.js') !!}"></script>
     <script>
+        $(function() {
+            var e,
+                t = $(".sticky-element"),
+                t = $(".select22");
+            t.length &&
+                t.each(function() {
+                    var e = $(this);
+                    e.wrap('<div class="position-relative"></div>').select2({
+                        placeholder: "Select value",
+                        dropdownParent: e.parent(),
+                    });
+                });
+        });
         $(document).ready(function() {
             $('#selents').change(function() {
                 var selectedOption = $(this).find(':selected');
