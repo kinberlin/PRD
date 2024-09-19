@@ -222,7 +222,7 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 404);
             }
-            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('name', $dys->enterprise)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('id', $dys->enterprise_id)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
 
                 if ($dys->status == 3) {
@@ -321,7 +321,7 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 404);
             }
-            if (Gate::allows('isEnterpriseRQ', Enterprise::where('name', $dys->enterprise)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+            if (Gate::allows('isEnterpriseRQ', Enterprise::where('id', $dys->enterprise_id)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
                 Gate::authorize('DysRunning', $dys);
                 $dys->cost = $request->input('cost');
                 $dys->save();
@@ -419,7 +419,7 @@ class DysfunctionController extends Controller
     {
         try {
             $dys = Dysfunction::find($id);
-            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            $ents = Enterprise::where('id', $dys->enterprise_id)->get()->first();
             if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
 
@@ -461,7 +461,7 @@ class DysfunctionController extends Controller
         try {
             $dys = Dysfunction::find($id);
             Gate::authorize('DysInEvaluation', $dys);
-            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            $ents = Enterprise::where('id', $dys->enterprise_id)->get()->first();
             if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
                 $ids = $request->input('id');
                 $satisfactions = $request->input('satisfaction');
@@ -501,7 +501,7 @@ class DysfunctionController extends Controller
         try {
             $dys = Dysfunction::find($id);
             Gate::authorize('DysEvaluation', $dys);
-            $ents = Enterprise::where('name', $dys->enterprise)->get()->first();
+            $ents = Enterprise::where('id', $dys->enterprise_id)->get()->first();
             if (Gate::allows('isEnterpriseRQ', [$ents != null ? $ents : null]) || Gate::allows('isAdmin', Auth::user())) {
                 DB::beginTransaction();
                 $dys->satisfaction_description = $request->input('satisfaction_description');

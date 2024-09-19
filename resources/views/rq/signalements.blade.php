@@ -48,7 +48,7 @@
                                     <td>
                                         @canany(['isEnterpriseRQ', 'isAdmin'],
                                             [
-                                            \App\Models\Enterprise::where('name', $d->enterprise)->get()->first(),
+                                            \App\Models\Enterprise::where('id', $d->enterprise_id)->get()->first(),
                                             Auth::user(),
                                             ])
                                             @can('DysRunning', $d)
@@ -79,7 +79,7 @@
     @foreach ($data as $d)
         @canany(['isEnterpriseRQ', 'isAdmin'],
             [
-            \App\Models\Enterprise::where('name', $d->enterprise)->get()->first(),
+            \App\Models\Enterprise::where('id', $d->enterprise_id)->get()->first(),
             Auth::user(),
             ])
             @can('DysRunning', $d)
