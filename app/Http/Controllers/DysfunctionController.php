@@ -222,7 +222,7 @@ class DysfunctionController extends Controller
             if ($dys == null) {
                 throw new Exception("La ressource spécifié est introuvable.", 404);
             }
-            if (Gate::authorize('isEnterpriseRQ', Enterprise::where('id', $dys->enterprise_id)->get()->first()) || Gate::allows('isAdmin', Auth::user())) {
+            if (Gate::allows('isEnterpriseRQ', Enterprise::where('id', $dys->enterprise_id)->get()->first()) || Gate::allows('isAdmin', Auth::user()) ) {
                 DB::beginTransaction();
 
                 if ($dys->status == 3) {
