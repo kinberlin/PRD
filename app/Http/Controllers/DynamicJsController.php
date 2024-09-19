@@ -70,8 +70,8 @@ class DynamicJsController extends Controller
         $entStatv = [];
         $entStatc = [];
         foreach ($ents as $e) {
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
+            $entStatv[] = $alldys->where('enterprise_id', $e->id)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise_id', $e->id)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -510,8 +510,8 @@ class DynamicJsController extends Controller
         $entStatv = [];
         $entStatc = [];
         foreach ($ents as $e) {
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
+            $entStatv[] = $alldys->where('enterprise_id', $e->id)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise_id', $e->id)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -948,8 +948,8 @@ class DynamicJsController extends Controller
         $entStatv = [];
         $entStatc = [];
         foreach ($ents as $e) {
-            $entStatv[] = $alldys->where('enterprise', $e->name)->whereIN('status', [3, 6])->count();
-            $entStatc[] = $alldys->where('enterprise', $e->name)->whereNotIN('status', [3, 6])->count();
+            $entStatv[] = $alldys->where('enterprise_id', $e->id)->whereIN('status', [3, 6])->count();
+            $entStatc[] = $alldys->where('enterprise_id', $e->id)->whereNotIN('status', [3, 6])->count();
         }
         $entDysV = '[' . implode(', ', $entStatv) . ']';
         $entDysC = '[' . implode(', ', $entStatc) . ']';
@@ -1369,7 +1369,7 @@ class DynamicJsController extends Controller
         $endDate = Carbon::now()->subWeek()->endOfWeek()->addDay(); // End of last week (Sunday)
 
         // Query to fetch all dyss added last week
-        $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->where('enterprise', $ents->name)->get();
+        $dyss = Dysfunction::whereBetween('created_at', [$startDate, $endDate])->where('enterprise_id', $ents->id)->get();
 
         // Loop through the dyss collection to count dyss for each day
         foreach ($dyss as $dys) {
