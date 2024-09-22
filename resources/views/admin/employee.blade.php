@@ -303,7 +303,7 @@
                                                 @foreach ($deps->where('enterprise', $d->enterprise) as $_d)
                                                     <option value="{{ $_d->id }}"
                                                         @if ($_d->id == $d->department) selected @endif>
-                                                        {{ $_d->name }}</option>
+                                                        {{ $_d->name }}  {{ $d->name }} ({{$ents->where('id', $_d->enterprise)->first()->name}})</option>
                                                 @endforeach
                                             </select>
                                         </div>

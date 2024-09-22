@@ -45,7 +45,7 @@ class DysfunctionPolicy
         return $dysfunction->status == 4;
     }
     /**
-     * Determine whether the Dysfunction can be Evaluated.
+     * Determine whether the Dysfunction is in Evaluation.
      */
     public function DysInEvaluation(Users $users, Dysfunction $dysfunction): bool
     {

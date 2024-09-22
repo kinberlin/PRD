@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -18,9 +19,10 @@ class TaskController extends RoutingController
     {
         $task = new Task();
         $dyst = Dysfunction::find($request->dysfunction);
-        if ($dyst == null) {
+        if (is_null($dyst)) {
             throw new Exception('Ce dysfonctionnement est introuvable: ' . $request->dysfunction, 404);
         }
+        Gate::authorize('DysCanPlanify', $dyst);
         $task->text = $request->text;
         $task->start_date = $request->start_date;
         $task->duration = $request->duration;
@@ -46,9 +48,13 @@ class TaskController extends RoutingController
         try {
             $task = Task::find($id);
             $dyst = Dysfunction::find($request->dysfunction);
-            if ($dyst == null) {
+            if (is_null($task)) {
+                throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
+            }
+            if (is_null($dyst)) {
                 throw new Exception('Ce dysfonctionnement est introuvable : ' . $request->dysfunction, 404);
             }
+            Gate::authorize('DysCanPlanify', $dyst);
             $task->text = $request->text;
             $task->start_date = $request->start_date;
             $task->duration = $request->duration;
@@ -106,9 +112,10 @@ class TaskController extends RoutingController
     {
         try {
             $task = Task::find($id);
-            if ($task == null) {
+            if (is_null($task)) {
                 throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
             }
+            Gate::authorize('DysCanPlanify', Dysfunction::find($task->dysfunction));
             /*if ($task->proof != null) {
             $state = $this->deleteImage($task->proof, '/uploads/tasks/');
             if ($state->getStatusCode() != 200) {
