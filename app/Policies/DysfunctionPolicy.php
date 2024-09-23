@@ -30,7 +30,7 @@ class DysfunctionPolicy
         if (!is_null($dysfunction->closed_at)) {
             return false;
         }
-        return $dysfunction->status == 3;
+        return $dysfunction->status == 4;
     }
     /**
      * Determine whether the Dysfunction can be Evaluated.
@@ -40,7 +40,6 @@ class DysfunctionPolicy
         if (!is_null($dysfunction->closed_at)) {
             return false;
         }
-        //if($card->has('products'))
         if ($dysfunction->tasks->count() > 1) {return true;}
         return $dysfunction->status == 4;
     }

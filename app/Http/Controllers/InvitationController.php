@@ -324,7 +324,7 @@ class InvitationController extends Controller
             $data = Invitation::find($decodedData['invitation']);
             $decision = $decodedData['decision'];
 
-            if (Gate::allows('isInvitationOpen', $data) &&  !Gate::allows('isInvitationPast', $data)) {
+            if (is_null($data->closed_at) &&  !Carbon::parse($data->odates)->lessThanOrEqualTo(Carbon::now())) {
                 DB::beginTransaction();
                 if ($data == null) {
                     throw new Exception("Impossible de trouver l'element a Mettre à jour", 404);

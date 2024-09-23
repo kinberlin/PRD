@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -22,25 +21,30 @@ class TaskController extends RoutingController
         if (is_null($dyst)) {
             throw new Exception('Ce dysfonctionnement est introuvable: ' . $request->dysfunction, 404);
         }
-        Gate::authorize('DysCanPlanify', $dyst);
-        $task->text = $request->text;
-        $task->start_date = $request->start_date;
-        $task->duration = $request->duration;
-        $task->progress = $request->has("progress") ? $request->progress : 0;
-        $task->parent = $request->parent;
-        $task->process = $request->has('process') ? $request->process : null;
-        $task->sortorder = Task::max("sortorder") + 1;
-        $task->description = $request->has('description') ? $request->description : null;
-        $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
-        $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-        $task->created_by = 'Responsable Qualité'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
+        if ($dyst->status == 4) {
+            $task->text = $request->text;
+            $task->start_date = $request->start_date;
+            $task->duration = $request->duration;
+            $task->progress = $request->has("progress") ? $request->progress : 0;
+            $task->parent = $request->parent;
+            $task->process = $request->has('process') ? $request->process : null;
+            $task->sortorder = Task::max("sortorder") + 1;
+            $task->description = $request->has('description') ? $request->description : null;
+            $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
+            $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
+            $task->created_by = 'Responsable Qualité'; //Auth::user()->firstname . ' ' . Auth::user()->lastname;
 
-        $task->save();
+            $task->save();
 
-        return response()->json([
-            "action" => "inserted",
-            "tid" => $task->id,
-        ]);
+            return response()->json([
+                "action" => "inserted",
+                "tid" => $task->id,
+            ]);
+        } else {
+            return response()->json([
+                "action" => "Erreur ce dysfonctionnement n'est plus planifiable",
+            ], 401);
+        }
     }
 
     public function update($id, Request $request)
@@ -54,27 +58,32 @@ class TaskController extends RoutingController
             if (is_null($dyst)) {
                 throw new Exception('Ce dysfonctionnement est introuvable : ' . $request->dysfunction, 404);
             }
-            Gate::authorize('DysCanPlanify', $dyst);
-            $task->text = $request->text;
-            $task->start_date = $request->start_date;
-            $task->duration = $request->duration;
-            $task->progress = $request->has("progress") ? $request->progress : 0;
-            $task->parent = $request->parent;
-            $task->process = $request->has('process') ? $request->process : $task->process;
-            $task->description = $request->has('description') ? $request->description : null;
-            $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
-            $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
-            $task->open = $request->open == "true" ? 1 : 0;
+            if ($dyst->status == 4) {
+                $task->text = $request->text;
+                $task->start_date = $request->start_date;
+                $task->duration = $request->duration;
+                $task->progress = $request->has("progress") ? $request->progress : 0;
+                $task->parent = $request->parent;
+                $task->process = $request->has('process') ? $request->process : $task->process;
+                $task->description = $request->has('description') ? $request->description : null;
+                $task->unscheduled = $request->unscheduled == "true" ? 1 : 0;
+                $task->dysfunction = $request->has('dysfunction') ? $request->dysfunction : $task->dysfunction;
+                $task->open = $request->open == "true" ? 1 : 0;
 
-            $task->save();
+                $task->save();
 
-            if ($request->has("target")) {
-                $this->updateOrder($id, $request->target);
+                if ($request->has("target")) {
+                    $this->updateOrder($id, $request->target);
+                }
+
+                return response()->json([
+                    "action" => "updated",
+                ]);
+            } else {
+                return response()->json([
+                    "action" => "Erreur ce dysfonctionnement n'est plus planifiable",
+                ], 401);
             }
-
-            return response()->json([
-                "action" => "updated",
-            ]);
         } catch (Throwable $th) {
             return response()->json([
                 "action" => 'Erreur ' . $th->getMessage(),
@@ -115,20 +124,29 @@ class TaskController extends RoutingController
             if (is_null($task)) {
                 throw new Exception("Nous ne trouvons pas la ressource que vous demandez", 404);
             }
-            Gate::authorize('DysCanPlanify', Dysfunction::find($task->dysfunction));
-            /*if ($task->proof != null) {
-            $state = $this->deleteImage($task->proof, '/uploads/tasks/');
-            if ($state->getStatusCode() != 200) {
-            throw new Exception("Impossible de supprimer cette tâche.", 500);
+            $dyst = Dysfunction::find($task->dysfunction);
+            if (is_null($dyst)) {
+                throw new Exception('Ce dysfonctionnement est introuvable : ' . $task->dysfunction, 404);
             }
-            }*/
-            if ($task->proof != null) {
-                Storage::disk('public')->delete($task->proof);
+            if ($dyst->status == 4) {
+                /*if ($task->proof != null) {
+                $state = $this->deleteImage($task->proof, '/uploads/tasks/');
+                if ($state->getStatusCode() != 200) {
+                throw new Exception("Impossible de supprimer cette tâche.", 500);
+                }
+                }*/
+                if ($task->proof != null) {
+                    Storage::disk('public')->delete($task->proof);
+                }
+                $task->forcedelete();
+                return response()->json([
+                    "action" => "deleted",
+                ]);
+            } else {
+                return response()->json([
+                    "action" => "Erreur ce dysfonctionnement n'est plus planifiable",
+                ], 401);
             }
-            $task->delete();
-            return response()->json([
-                "action" => "deleted",
-            ]);
         } catch (Throwable $th) {
             return response()->json([
                 "action" => 'Erreur ' . $th->getMessage(),
