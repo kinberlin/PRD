@@ -36,13 +36,13 @@ class Send_TaskReminders extends Command
             ->select('tasks.id', 'tasks.text')
             ->distinct()
             ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
-            ->whereYear('tasks.created_at', session('currentYear'))
+            ->whereYear('tasks.created_at', $current->year)
             ->get();
 
         $tasks = Task::withoutGlobalScope(YearScope::class)->where(DB::raw('(progress * 100)'), '<', 100)->whereNotIn('id', $parentTasks->pluck('id')->unique())
             ->get();
         foreach ($tasks as $task) {
-            $diff = $current->diffInDays(Carbon::parse($task->start_date)->addDay($task->duration));
+            $diff = Carbon::parse($task->start_date)->addDay($task->duration)->diffInDays($current);
             if ($diff < 8 && $diff % 2 == 0) {
                 $task->notify(new TaskReminder($task));
             }
