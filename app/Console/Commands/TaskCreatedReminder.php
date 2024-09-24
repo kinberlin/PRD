@@ -35,14 +35,14 @@ class TaskCreatedReminder extends Command
             ->select('tasks.id', 'tasks.text')
             ->distinct()
             ->join('tasks as t2', 'tasks.id', '=', 't2.parent')
-            ->whereYear('tasks.created_at', session('currentYear'))
+            ->whereYear('tasks.created_at', $current->year)
             ->get();
 
         $tasks = Task::withoutGlobalScope(YearScope::class)->whereNotIn('id', $parentTasks->pluck('id')->unique())
             ->get();
         foreach ($tasks as $task) {
-            $diff = $current->diffInMinutes(Carbon::parse($task->created_at)->addDay($task->duration));
-            if ($diff == 5) {
+            $diff = $current->diffInMinutes(Carbon::parse($task->created_at));
+            if ($diff <= 5) {
                 $task->notify(new TaskCreated($task));
             }
         }
