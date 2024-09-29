@@ -83,7 +83,9 @@ class ProcessesController extends Controller
             Gate::authorize('isAdmin', Auth::user());
             DB::beginTransaction();
             $d = Processes::find($id);
-            $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
+            if ($d->dysfunctions()->count() == 0) {
+                $d->name = empty($request->input('name')) ? $d->name : $request->input('name');
+            }
             $d->surfix = empty($request->input('surfix')) ? $d->surfix : $request->input('surfix');
             $d->save();
             DB::commit();
@@ -118,7 +120,7 @@ class ProcessesController extends Controller
         }
     }
 
-        /**
+    /**
      * Import datas from the excel file, checks them and save to database
      */
     public function import(Request $request)

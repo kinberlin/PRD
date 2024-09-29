@@ -146,7 +146,7 @@
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="nameBasic" class="form-label">Nom</label>
-                                <input type="text" name="name" id="nameBasic" value="{{ $d->name }}"
+                                <input type="text" @if($d->dysfunctions()->count() > 0) disabled @endif name="name" id="nameBasic" value="{{ $d->name }}"
                                     class="form-control" placeholder="Entrer le nom">
                             </div>
                         </div>
