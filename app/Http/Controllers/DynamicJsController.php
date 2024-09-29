@@ -46,7 +46,7 @@ class DynamicJsController extends Controller
             }
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
-        $a_avgtProgression = collect($a_tdata)->avg() . ' %';
+        $a_avgtProgression = round(collect($a_tdata)->avg(),2) . ' %';
         $longestTask = $a_tasks->pluck('duration')->max() . 'J';
         //Site Chart
         $siteCounts = $alldys->groupBy('site')->map(function ($group) {
@@ -476,7 +476,7 @@ class DynamicJsController extends Controller
             }
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
-        $a_avgtProgression = collect($a_tdata)->avg() . ' %';
+        $a_avgtProgression = round(collect($a_tdata)->avg(),2) . ' %';
         $compDates = $alldys->map(function ($d) {
             $startDate = Carbon::parse($d->start_date);
             $compDate = $startDate->addDays($d->duration);
@@ -914,7 +914,7 @@ class DynamicJsController extends Controller
             $a_tdata[] = (100 * $a_tasks->where('dysfunction', $_a)->first()->progress);
         }
         $a_tdataString = '[' . implode(', ', $a_tdata) . ']';
-        $a_avgtProgression = collect($a_tdata)->avg() . ' %';
+        $a_avgtProgression = round(collect($a_tdata)->avg(),2) . ' %';
         $compDates = $alldys->map(function ($d) {
             $startDate = Carbon::parse($d->start_date);
             $compDate = $startDate->addDays($d->duration);
