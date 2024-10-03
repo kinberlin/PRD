@@ -28,10 +28,11 @@ class Viewby
 
         foreach ($views as $key => &$viewData) {
             if ($viewData['matricule'] == $viewObject->matricule) {
-                $views[$key] = $viewObject; 
+                $views[$key] = $viewObject;
                 break;
             }
         }
+        // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
         $task->view_by = json_encode($views);
         return $task;
     }

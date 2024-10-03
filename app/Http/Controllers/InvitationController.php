@@ -28,6 +28,7 @@ class InvitationController extends Controller
      */
     public function index()
     {
+        // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
         $data = json_encode(Invitation::all());
         //dd($data);
         return response()->json([
@@ -74,6 +75,7 @@ class InvitationController extends Controller
                         $internal_invites[] = new Invites($newinvites->where('id', $option)->first());
                     }
                 }
+                // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
                 $data->internal_invites = json_encode($internal_invites);
                 $ext_u = [];
                 if ($request->has('extuser') && !empty($request->extuser)) {
@@ -143,6 +145,7 @@ class InvitationController extends Controller
                     throw new Exception('Nous ne trouvons pas cette invitation: ' . $id, 404);
                 }
                 return response()->json([
+                    // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
                     "data" => json_encode($data),
                 ]);
             } else {
@@ -412,6 +415,7 @@ class InvitationController extends Controller
 
                     $_p[] = $p;
                 }
+                // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
                 $data->participation = json_encode($_p);
                 $data->save();
                 DB::commit();

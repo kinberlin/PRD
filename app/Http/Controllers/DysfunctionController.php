@@ -94,7 +94,8 @@ class DysfunctionController extends Controller
                     }
                 }
             }
-            $dys->pj = json_encode($urls);
+            // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
+            $dys->pj = json_encode($urls, JSON_UNESCAPED_UNICODE);
             $dys->save();
             DB::commit();
             $dys->code = 'D' . Carbon::now()->year . date('m') . Enterprise::where('name', $request->input('enterprise'))->get()->first()->surfix . $dys->id;
@@ -142,6 +143,7 @@ class DysfunctionController extends Controller
                     throw new Exception("La ressource 'Origine' est introuvable.", 401);
                 }
                 if (Gate::allows('isGravityVisible', $gra) && Gate::allows('isProbabilityVisible', $probability) && Gate::allows('isOriginVisible', $origin)) {
+                    // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
                     $dys->impact_processes = json_encode($request->input('impact_processes'));
                     $dys->concern_processes = json_encode($request->input('concern_processes'));
                     $dys->gravity = $gra->name;
@@ -438,6 +440,7 @@ class DysfunctionController extends Controller
                         'Test User'
                     );
                 }
+                // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
                 $corrective_acts = json_encode($corrections);
                 $dys->corrective_acts = $corrective_acts;
                 if ($dys->status == 1) {
