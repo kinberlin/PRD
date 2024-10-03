@@ -33,7 +33,7 @@ class Viewby
             }
         }
         // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-        $task->view_by = json_encode($views);
+        $task->view_by = json_encode($views, JSON_UNESCAPED_UNICODE);
         return $task;
     }
 

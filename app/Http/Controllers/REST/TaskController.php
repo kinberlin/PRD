@@ -222,7 +222,7 @@ class TaskController extends RoutingController
             if ($data->findViewByMatricule($task, $request->input('matricule')) == null) {
                 $views = $data->getViews($task);
                 $views = $data;
-                $task->view_by = json_encode($views);
+                $task->view_by = json_encode($views, JSON_UNESCAPED_UNICODE);
                 $task->save();
             }
             DB::commit();

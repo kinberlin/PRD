@@ -144,7 +144,7 @@ class Invitation extends Model
 
         if ($found) {
             // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-            $this->internal_invites = json_encode($invites);
+            $this->internal_invites = json_encode($invites, JSON_UNESCAPED_UNICODE);
             $this->save();
             return $this;
         } else {

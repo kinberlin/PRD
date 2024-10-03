@@ -144,8 +144,8 @@ class DysfunctionController extends Controller
                 }
                 if (Gate::allows('isGravityVisible', $gra) && Gate::allows('isProbabilityVisible', $probability) && Gate::allows('isOriginVisible', $origin)) {
                     // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-                    $dys->impact_processes = json_encode($request->input('impact_processes'));
-                    $dys->concern_processes = json_encode($request->input('concern_processes'));
+                    $dys->impact_processes = json_encode($request->input('impact_processes', JSON_UNESCAPED_UNICODE));
+                    $dys->concern_processes = json_encode($request->input('concern_processes', JSON_UNESCAPED_UNICODE));
                     $dys->gravity = $gra->name;
                     $dys->gravity_id = $gra->id;
                     $dys->origin = $request->input('origin');
@@ -441,7 +441,7 @@ class DysfunctionController extends Controller
                     );
                 }
                 // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-                $corrective_acts = json_encode($corrections);
+                $corrective_acts = json_encode($corrections, JSON_UNESCAPED_UNICODE);
                 $dys->corrective_acts = $corrective_acts;
                 if ($dys->status == 1) {
                     $dys->status = 2;

@@ -29,7 +29,7 @@ class InvitationController extends Controller
     public function index()
     {
         // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-        $data = json_encode(Invitation::all());
+        $data = json_encode(Invitation::all(), JSON_UNESCAPED_UNICODE);
         //dd($data);
         return response()->json([
             "events" => $data,
@@ -76,7 +76,7 @@ class InvitationController extends Controller
                     }
                 }
                 // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-                $data->internal_invites = json_encode($internal_invites);
+                $data->internal_invites = json_encode($internal_invites, JSON_UNESCAPED_UNICODE);
                 $ext_u = [];
                 if ($request->has('extuser') && !empty($request->extuser)) {
                     for ($i = 0; $i < count($request->extuser); $i++) {
@@ -84,7 +84,7 @@ class InvitationController extends Controller
                         $ext_u[] = $request->extuser[$i];
                     }
                 }
-                $data->external_invites = json_encode($ext_u);
+                $data->external_invites = json_encode($ext_u, JSON_UNESCAPED_UNICODE);
                 $data->save();
                 DB::commit();
                 //$emails = array_merge($newinvites->pluck('email')->unique()->toArray(), $ext_u);
@@ -146,7 +146,7 @@ class InvitationController extends Controller
                 }
                 return response()->json([
                     // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-                    "data" => json_encode($data),
+                    "data" => json_encode($data, JSON_UNESCAPED_UNICODE),
                 ]);
             } else {
                 // The user is neither an rq nor a super admin
@@ -219,7 +219,7 @@ class InvitationController extends Controller
                     }
                     //new invite collection
                     $new_invits = collect($internal_invites);
-                    $data->internal_invites = json_encode($internal_invites);
+                    $data->internal_invites = json_encode($internal_invites, JSON_UNESCAPED_UNICODE);
                     $ext_u = [];
                     if ($request->has('extuser') && !empty($request->extuser)) {
                         for ($i = 0; $i < count($request->extuser); $i++) {
@@ -227,7 +227,7 @@ class InvitationController extends Controller
                             $ext_u[] = $request->extuser[$i];
                         }
                     }
-                    $data->external_invites = json_encode($ext_u);
+                    $data->external_invites = json_encode($ext_u, JSON_UNESCAPED_UNICODE);
 
                     $is_updated = $data->isInvitationUpdated();
                     //inform internal and external invites about modification
@@ -416,7 +416,7 @@ class InvitationController extends Controller
                     $_p[] = $p;
                 }
                 // Use json_encode with JSON_UNESCAPED_UNICODE to prevent casting special characters
-                $data->participation = json_encode($_p);
+                $data->participation = json_encode($_p, JSON_UNESCAPED_UNICODE);
                 $data->save();
                 DB::commit();
                 return redirect()->back()->with('error', 'Participation pour la Réunion No. #' . $data->id . ' a été mise à jour.');
